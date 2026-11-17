@@ -1,0 +1,210 @@
+{
+ "id": "switch_balancin_kcd11_2p",
+ "nombre": "Interruptor balancín mini KCD11 2 pines ON-OFF (15 × 10.5 mm)",
+ "tipo": "electronico",
+ "categoria": "Interruptores",
+ "etiquetas": [
+  "balancín",
+  "rocker",
+  "KCD11",
+  "SPST",
+  "snap-in",
+  "panel"
+ ],
+ "fabricante": "Genérico (Shou Han / Yizhi y otros)",
+ "referencia": "KCD11-2P (KCD11-101)",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Mini interruptor de balancín para chasis/panel, 2 pines y 2 posiciones (ON-OFF), un polo un tiro (SPST). Marco negro rectangular con marcas I / O.",
+  "funcionamiento": "Al presionar el lado 'I' el balancín cierra el contacto entre los dos terminales; en 'O' lo abre. Se fija a presión (snap-in) en un recorte rectangular del panel mediante dos grapas laterales.",
+  "voltaje": "120/125 VAC (máx. 6 A) o 250 VAC (máx. 3 A); en DC usar con margen (≈12 V a pocos amperios)",
+  "corriente": "6 A @ 125 VAC; 3 A @ 250 VAC (carga resistiva)",
+  "interfaz": "Contacto seco SPST",
+  "entradas": "Terminal 1 (línea)",
+  "salidas": "Terminal 2 (carga)",
+  "dimensiones": "Marco 15 × 10.5 mm; altura total ≈17 mm (≈4.5 sobre el panel); recorte de panel 13.5 × 9 mm",
+  "datasheet": "https://jlcpcb.com/partdetail/SHOUHAN-KCD112P/C5884412",
+  "notas": "Recorte de panel 13.5 × 9 mm para chapa/plástico de 1–2 mm; en impresión 3D probar 13.6 × 9.1 y pared de 1.5 mm. Terminales para soldar o para conector faston pequeño. La descripción del proveedor dice 15 × 10 × 12 mm (el 12 es solo el cuerpo bajo el marco). Medidas de terminales estimadas: verificar con calibrador."
+ },
+ "especificaciones": [
+  {
+   "param": "Circuito",
+   "valor": "SPST, ON-OFF, 2 posiciones"
+  },
+  {
+   "param": "Contacto",
+   "valor": "6 A / 125 VAC; 3 A / 250 VAC"
+  },
+  {
+   "param": "Vida eléctrica",
+   "valor": "≈10 000 ciclos"
+  },
+  {
+   "param": "Temperatura",
+   "valor": "0 a 125 °C (según hoja de Shou Han)"
+  },
+  {
+   "param": "Montaje",
+   "valor": "Snap-in en panel, recorte 13.5 × 9 mm"
+  },
+  {
+   "param": "Marco",
+   "valor": "15 × 10.5 mm, negro, marcas I / O"
+  },
+  {
+   "param": "Terminales",
+   "valor": "2 lengüetas de soldadura ≈3 × 0.5 mm, separación ≈5 mm (estimado)"
+  },
+  {
+   "param": "Material",
+   "valor": "Cuerpo PA66/nylon, contactos de cobre plateado (típico)"
+  }
+ ],
+ "imagen": {
+  "src": "img/41_switch_balancin_kcd11_2p.png",
+  "origen": "foto del proveedor (enviada por John)",
+  "render": "img/41_switch_balancin_kcd11_2p_render.png"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 800,
+   "url": "https://es.aliexpress.com/w/wholesale-KCD11-rocker-switch-2-pin.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 3000,
+   "url": "https://www.amazon.com/s?k=KCD11+mini+rocker+switch+2+pin",
+   "fecha": "2026-11",
+   "estimado": true,
+   "nota": "se vende en paquetes; precio por unidad"
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 1500,
+   "url": "https://listado.mercadolibre.com.co/switch-balancin-mini-2-pines",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=KCD11+rocker+switch+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=KCD11+mini+rocker+switch+2+pin"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   15,
+   10.5,
+   1.5
+  ],
+  "fijacion": "snap-in en panel",
+  "agujeros": [],
+  "recorte_panel": {
+   "w": 13.5,
+   "h": 9.0,
+   "espesor_panel": [
+    1,
+    2
+   ]
+  },
+  "altura_superior": 3.0,
+  "altura_inferior": 13.5,
+  "nota": "Aquí 'pcb' es el marco (bezel). Z=0 = cara frontal del panel; el cuerpo (13.2 × 8.6 × 7) y los terminales (6.5 mm) bajan hacia −Z. Borrador, verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "boton",
+   "nombre": "Balancín I/O",
+   "cx": 0,
+   "cy": 0,
+   "w": 11.5,
+   "h": 7,
+   "z": [
+    1.5,
+    4.5
+   ],
+   "salida": "+Z",
+   "holgura": 8,
+   "regla": "Dejar acceso al dedo por encima del panel"
+  },
+  {
+   "tipo": "soldadura",
+   "nombre": "Terminales",
+   "cx": 0,
+   "cy": 0,
+   "w": 8,
+   "h": 3.4,
+   "z": [
+    -13.5,
+    -7
+   ],
+   "salida": "-Z",
+   "holgura": 12,
+   "regla": "Espacio para soldar cables y termoencogible"
+  },
+  {
+   "tipo": "prohibida",
+   "nombre": "Cuerpo bajo panel",
+   "cx": 0,
+   "cy": 0,
+   "w": 14.3,
+   "h": 10.5,
+   "z": [
+    -7,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 0,
+   "regla": "Incluye grapas snap-in (+0.55 mm por lado)"
+  }
+ ],
+ "pines": [
+  {
+   "n": "1",
+   "func": "Común / línea",
+   "x": -2.5,
+   "y": 1.2,
+   "conector": "lengüeta de soldadura"
+  },
+  {
+   "n": "2",
+   "func": "Salida a la carga (ON)",
+   "x": 2.5,
+   "y": -1.2,
+   "conector": "lengüeta de soldadura"
+  }
+ ],
+ "archivos": {
+  "step": {
+   "nombre": "switch_balancin_kcd11_2p_v1_modelo.step",
+   "version": 1,
+   "fecha": "2026-11-17",
+   "carpeta": "archivos/switch_balancin_kcd11_2p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/switch_balancin_kcd11_2p/switch_balancin_kcd11_2p_v1_modelo.step"
+  },
+  "dxf": {
+   "nombre": "switch_balancin_kcd11_2p_v1_recorte.dxf",
+   "version": 1,
+   "fecha": "2026-11-17",
+   "carpeta": "archivos/switch_balancin_kcd11_2p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/switch_balancin_kcd11_2p/switch_balancin_kcd11_2p_v1_recorte.dxf"
+  },
+  "datasheet": {
+   "nombre": "KCD11-2P (Shou Han) en JLCPCB/LCSC",
+   "url": "https://jlcpcb.com/partdetail/SHOUHAN-KCD112P/C5884412",
+   "carpeta": "enlace externo"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-17",
+   "nota": "Creado desde la ficha del proveedor enviada por John (2P, SPST ON-OFF, 120 VAC 6 A / 250 VAC 3 A). Dimensiones KCD11 estándar (marco 15 × 10.5, recorte 13.5 × 9); terminales estimados. STEP y DXF generados con CadQuery/ezdxf."
+  }
+ ]
+}
