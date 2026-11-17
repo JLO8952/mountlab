@@ -501,7 +501,7 @@
     const gh = `https://github.com/${Store.cfg.owner}/${Store.cfg.repo}`;
     body.innerHTML = `<div class="grid2">
       <div class="panel"><h3>Archivos CAD</h3>
-        <table class="t"><tr><th>Archivo</th><th>Nombre</th><th>Versión</th></tr>${Object.entries(A).map(([k, a]) => `<tr><td>${nombres[k] || k}</td><td>${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.nombre || "abrir")} ↗</a>` : esc(a.nombre || "")}<div class="small muted">${esc(a.carpeta || "")}</div></td><td>${a.version ? "v" + a.version : ""}</td></tr>`).join("") || '<tr><td colspan="3" class="muted">Sin archivos todavía</td></tr>'}</table>
+        <table class="t"><tr><th>Archivo</th><th>Nombre</th><th>Versión</th></tr>${Object.entries(A).map(([k, a]) => `<tr><td>${nombres[k] || k}</td><td>${a.url ? (/github\.com\/.+\/raw\/|raw\.githubusercontent\.com/.test(a.url) ? `<a href="#" data-dl="${esc(a.url)}" data-nm="${esc(a.nombre || "")}">⬇ ${esc(a.nombre || "descargar")}</a>` : `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.nombre || "abrir")} ↗</a>`) : esc(a.nombre || "")}<div class="small muted">${esc(a.carpeta || "")}</div></td><td>${a.version ? "v" + a.version : ""}</td></tr>`).join("") || '<tr><td colspan="3" class="muted">Sin archivos todavía</td></tr>'}</table>
         ${Object.values(A).some(a => String(a.carpeta || "").includes("repositorio"))
           ? `<div class="msg info" style="margin-top:10px">Los archivos de montaje se guardan en <b>GitHub</b> (<code>archivos/${esc(W.id)}</code>); al hacer clic se descargan. Con el <b>sincronizador de MountLab</b> instalado en tu PC también llegan solos (cada 10 min) a <b>D:\\Mi unidad\\MountLab\\biblioteca\\archivos\\${esc(W.id)}\\</b> para abrirlos en SolidWorks.</div>`
           : `<div class="msg info" style="margin-top:10px">En tu PC los encuentras en <b>D:\\Mi unidad\\MountLab\\biblioteca\\archivos\\${esc(W.id)}\\</b> (Drive para escritorio) para abrirlos directo en SolidWorks.</div>`}
@@ -512,6 +512,17 @@
         <button id="bCad" ${Store.mode === "github" && W.montaje ? "" : "disabled"}>Regenerar DXF + STEP en GitHub</button></div>
         ${Store.mode !== "github" ? '<div class="small muted" style="margin-top:6px">Para regenerar en GitHub configura el token en Ajustes.</div>' : `<div class="small" style="margin-top:6px"><a href="${gh}/actions" target="_blank" rel="noopener">Ver ejecuciones en GitHub Actions ↗</a></div>`}
         <h3 style="margin-top:16px">Convenciones</h3><ul class="small muted" style="margin:0;padding-left:18px"><li>Unidades en mm; origen (0,0) en el centro de la placa; X a lo largo, Y a lo ancho, Z hacia arriba desde la cara inferior del PCB.</li><li>Capas DXF: PCB, AGUJEROS, ZONAS, ZONAS_HOLGURA, PINES, EJES, TEXTO.</li><li>Cada cambio de geometría crea un archivo nuevo: <code>${esc(W.id)}_v${(W.version || 1)}_huella.dxf</code>; las versiones anteriores no se borran.</li></ul></div></div>`;
+    $$("[data-dl]", body).forEach(l => l.onclick = async e => {
+      e.preventDefault();
+      const raw = l.dataset.dl.replace(/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/raw\//, "https://raw.githubusercontent.com/$1/$2/");
+      try {
+        toast("Descargando " + l.dataset.nm + "…");
+        const r = await fetch(raw, { cache: "no-store" }); if (!r.ok) throw new Error("GitHub " + r.status);
+        const b = await r.blob(), a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([b], { type: "application/octet-stream" })); a.download = l.dataset.nm || raw.split("/").pop();
+        document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+      } catch (er) { toast("No se pudo descargar: " + er.message, 5000); }
+    });
     $("#bDxf").onclick = () => download(`${W.id}_v${W.version || 1}_huella.dxf`, MLDxf.componenteADxf(W), "application/dxf");
     $("#bCad").onclick = async () => {
       if (dirty()) return toast("Guarda primero los cambios");
