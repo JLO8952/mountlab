@@ -1,0 +1,166 @@
+{
+ "id": "adaptador_xbee_usb",
+ "nombre": "Adaptador XBee USB",
+ "tipo": "electronico",
+ "categoria": "Comunicación RF",
+ "etiquetas": [
+  "UART",
+  "USB"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Base USB-serial (FT232RL/CH340) para configurar XBee con XCTU.",
+  "funcionamiento": "Convierte USB a UART 3.3 V y alimenta el XBee con su regulador.",
+  "voltaje": "USB 5 V; salida al XBee 3.3 V",
+  "corriente": "≈500 mA (USB)",
+  "interfaz": "USB ↔ UART",
+  "entradas": "Mini/Micro USB",
+  "salidas": "Zócalo XBee 2 × 10 (2 mm)",
+  "dimensiones": "≈42 × 28 × 12 mm",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Chip USB",
+   "valor": "FT232RL o CH340"
+  },
+  {
+   "param": "LEDs",
+   "valor": "TX, RX, RSSI, ASSOC"
+  },
+  {
+   "param": "Botón",
+   "valor": "Reset"
+  }
+ ],
+ "imagen": {
+  "src": "img/22_adaptador_xbee_usb.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 9000,
+   "url": "https://es.aliexpress.com/w/wholesale-XBee-USB-adapter-explorer.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 30000,
+   "url": "https://www.amazon.com/s?k=XBee+USB+adapter+explorer",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 25000,
+   "url": "https://listado.mercadolibre.com.co/xbee-usb-adapter-explorer",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=XBee+USB+adapter+explorer+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=XBee+USB+adapter+explorer"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   42,
+   28,
+   1.6
+  ],
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 6.0,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 22,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Header hembra",
+   "cx": -8.0,
+   "cy": -10.0,
+   "w": 20.0,
+   "h": 2.0,
+   "z": [
+    1.6,
+    7.6
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header hembra",
+   "cx": -8.0,
+   "cy": 12.0,
+   "w": 20.0,
+   "h": 2.0,
+   "z": [
+    1.6,
+    7.6
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  },
+  {
+   "tipo": "usb",
+   "nombre": "Mini USB",
+   "cx": 18.5,
+   "cy": 0.0,
+   "w": 7,
+   "h": 8,
+   "z": [
+    1.6,
+    4.6
+   ],
+   "salida": "+X",
+   "holgura": 20
+  }
+ ],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "1GK_DUdJpIysh2U6JAcu-iGptZvt7jJPp",
+   "nombre": "22_adaptador_xbee_usb.step",
+   "url": "https://drive.google.com/file/d/1GK_DUdJpIysh2U6JAcu-iGptZvt7jJPp/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1A7huXPLDnYGKdii80qhgV_i3ohDWUcB2",
+   "nombre": "22_adaptador_xbee_usb.dxf",
+   "url": "https://drive.google.com/file/d/1A7huXPLDnYGKdii80qhgV_i3ohDWUcB2/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "adaptador_xbee_usb_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/adaptador_xbee_usb",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "adaptador_xbee_usb_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/adaptador_xbee_usb",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

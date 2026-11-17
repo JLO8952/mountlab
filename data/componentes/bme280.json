@@ -1,0 +1,185 @@
+{
+ "id": "bme280",
+ "nombre": "Sensor BME280",
+ "tipo": "electronico",
+ "categoria": "Sensores",
+ "etiquetas": [
+  "I2C",
+  "SPI"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Sensor Bosch de presión, humedad y temperatura (sin gas).",
+  "funcionamiento": "Elementos MEMS piezorresistivos (presión) y capacitivos (humedad), con compensación por coeficientes internos.",
+  "voltaje": "Módulo 3.3 V (hay versiones de 5 V con regulador); chip 1.71–3.6 V",
+  "corriente": "3.6 µA a 1 Hz (H/P/T)",
+  "interfaz": "I2C (0x76/0x77) y SPI",
+  "entradas": "SCL, SDA, CSB, SDO",
+  "salidas": "Datos digitales",
+  "dimensiones": "Módulo 15 × 11.5 × 3 mm (chip 2.5 × 2.5 × 0.93 mm)",
+  "datasheet": "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf",
+  "notas": "Cuidado: muchos módulos vendidos como BME280 son BMP280 (sin humedad). Verificar el ID del chip (0x60 = BME280)."
+ },
+ "especificaciones": [
+  {
+   "param": "Presión",
+   "valor": "300–1100 hPa (±1 hPa)"
+  },
+  {
+   "param": "Altitud relativa",
+   "valor": "±1 m"
+  },
+  {
+   "param": "Humedad",
+   "valor": "0–100 % (±3 %)"
+  },
+  {
+   "param": "Temperatura",
+   "valor": "-40 a 85 °C (±1 °C)"
+  }
+ ],
+ "imagen": {
+  "src": "img/20_bme280.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 9000,
+   "url": "https://es.aliexpress.com/w/wholesale-BME280-module-GY-BME280.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 30000,
+   "url": "https://www.amazon.com/s?k=BME280+module+GY-BME280",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 18000,
+   "url": "https://listado.mercadolibre.com.co/bme280-module-gy-bme280",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=BME280+module+GY-BME280+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=BME280+module+GY-BME280"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   15,
+   11.5,
+   1.6
+  ],
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": 0.0,
+    "y": 3.05,
+    "d": 3.0
+   }
+  ],
+  "altura_superior": 0.93,
+  "altura_inferior": 8.5,
+  "holgura_inferior_cableado": 22,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Header",
+   "cx": 0.0,
+   "cy": -4.25,
+   "w": 15.24,
+   "h": 2.54,
+   "z": [
+    -2.5,
+    0.0
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  }
+ ],
+ "pines": [
+  {
+   "n": "VIN",
+   "func": "3.3 V (o 5 V según versión)",
+   "x": -6.35,
+   "y": -4.25
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": -3.81,
+   "y": -4.25
+  },
+  {
+   "n": "SCL",
+   "func": "Reloj I2C / SCK",
+   "x": -1.27,
+   "y": -4.25
+  },
+  {
+   "n": "SDA",
+   "func": "Datos I2C / MOSI",
+   "x": 1.27,
+   "y": -4.25
+  },
+  {
+   "n": "CSB",
+   "func": "Chip select (alto = I2C)",
+   "x": 3.81,
+   "y": -4.25
+  },
+  {
+   "n": "SDO",
+   "func": "MISO / dirección I2C",
+   "x": 6.35,
+   "y": -4.25
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1O3yKCpFErVN0LHAkKwedNn_yOuaNZV-b",
+   "nombre": "20_bme280.step",
+   "url": "https://drive.google.com/file/d/1O3yKCpFErVN0LHAkKwedNn_yOuaNZV-b/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1Mivfe-uVVeWE5eY8KhCjylobwI5ig3hM",
+   "nombre": "20_bme280.dxf",
+   "url": "https://drive.google.com/file/d/1Mivfe-uVVeWE5eY8KhCjylobwI5ig3hM/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "bme280_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/bme280",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "bme280_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/bme280",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
+  }
+ ]
+}

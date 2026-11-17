@@ -1,0 +1,93 @@
+{
+ "id": "header_macho_40",
+ "nombre": "Header regleta macho × 40 pines 2.54 mm",
+ "tipo": "electronico",
+ "categoria": "Conectores",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Regleta de pines macho 1 × 40, paso 2.54 mm, divisible.",
+  "funcionamiento": "Conexión desmontable entre placas o con cables Dupont.",
+  "voltaje": "≤ 250 V AC",
+  "corriente": "3 A por pin",
+  "interfaz": "N/A",
+  "entradas": "N/A",
+  "salidas": "N/A",
+  "dimensiones": "101.6 × 2.5 × 11.5 mm",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Paso",
+   "valor": "2.54 mm"
+  },
+  {
+   "param": "Pin",
+   "valor": "0.64 mm cuadrado"
+  },
+  {
+   "param": "Largo",
+   "valor": "11.5 mm (3 + 2.5 + 6)"
+  }
+ ],
+ "imagen": {
+  "src": "img/17_header_macho_40.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 500,
+   "url": "https://es.aliexpress.com/w/wholesale-male-pin-header-1x40-2.54mm.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 8000,
+   "url": "https://www.amazon.com/s?k=male+pin+header+1x40+2.54mm",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 1000,
+   "url": "https://listado.mercadolibre.com.co/male-pin-header-1x40-2.54mm",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=male+pin+header+1x40+2.54mm+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=male+pin+header+1x40+2.54mm"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "16-Q5k9-XC441VLy6ISFfcoWezRrePRJi",
+   "nombre": "17_header_macho_40.step",
+   "url": "https://drive.google.com/file/d/16-Q5k9-XC441VLy6ISFfcoWezRrePRJi/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1Ysg9PlnkyH_eON5i_96L3g5hXAeLtI2C",
+   "nombre": "17_header_macho_40.dxf",
+   "url": "https://drive.google.com/file/d/1Ysg9PlnkyH_eON5i_96L3g5hXAeLtI2C/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

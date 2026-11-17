@@ -1,0 +1,487 @@
+{
+ "id": "esp32_devkit_30p",
+ "nombre": "ESP32 DevKit V1 (DOIT) 30 pines",
+ "tipo": "electronico",
+ "categoria": "Microcontroladores",
+ "etiquetas": [
+  "WiFi",
+  "Bluetooth",
+  "I2C",
+  "SPI",
+  "UART"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Placa de desarrollo con modulo ESP-WROOM-32 (WiFi + Bluetooth), USB micro-B y regulador AMS1117.",
+  "funcionamiento": "",
+  "voltaje": "USB 5 V o VIN 5 V; logica 3.3 V",
+  "corriente": "~80 mA tipico, picos ~250 mA con WiFi",
+  "interfaz": "WiFi, BT, I2C, SPI, UART, ADC, DAC, PWM",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "PCB 51.5 × 28.5 × 1.6 mm",
+  "datasheet": "https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf",
+  "notas": "Medidas y pinout tipicos del DOIT DevKit V1. Medir PCB, agujeros y posicion de headers con calibrador antes de imprimir."
+ },
+ "especificaciones": [],
+ "imagen": null,
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "pcb": [
+   51.5,
+   28.5,
+   1.6
+  ],
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -23.25,
+    "y": -11.75,
+    "d": 3
+   },
+   {
+    "x": -23.25,
+    "y": 11.75,
+    "d": 3
+   },
+   {
+    "x": 23.25,
+    "y": -11.75,
+    "d": 3
+   },
+   {
+    "x": 23.25,
+    "y": 11.75,
+    "d": 3
+   }
+  ],
+  "altura_superior": 3.1,
+  "altura_inferior": 8.5,
+  "holgura_inferior_cableado": 22,
+  "nota": "Headers macho hacia abajo: con cables Dupont se necesitan ~22 mm libres bajo el PCB.",
+  "origen": "centro"
+ },
+ "zonas": [
+  {
+   "tipo": "usb",
+   "nombre": "Micro USB",
+   "z": [
+    1.6,
+    4.2
+   ],
+   "salida": "-X",
+   "holgura": 20,
+   "ventana": [
+    13,
+    9
+   ],
+   "cx": -23.95,
+   "cy": 0.0,
+   "w": 5.6,
+   "h": 7.5
+  },
+  {
+   "tipo": "antena",
+   "nombre": "Antena PCB WROOM",
+   "z": [
+    1.6,
+    4.7
+   ],
+   "salida": "+X",
+   "holgura": 10,
+   "regla": "Sin metal ni cobre a menos de 10 mm",
+   "cx": 22.75,
+   "cy": 0.0,
+   "w": 6,
+   "h": 18
+  },
+  {
+   "tipo": "boton",
+   "nombre": "EN",
+   "z": [
+    1.6,
+    3.6
+   ],
+   "salida": "+Z",
+   "holgura": 3,
+   "cx": -18.0,
+   "cy": 8.25,
+   "w": 3.5,
+   "h": 3
+  },
+  {
+   "tipo": "boton",
+   "nombre": "BOOT",
+   "z": [
+    1.6,
+    3.6
+   ],
+   "salida": "+Z",
+   "holgura": 3,
+   "cx": -18.0,
+   "cy": -8.25,
+   "w": 3.5,
+   "h": 3
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header derecho",
+   "z": [
+    -8.5,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 22,
+   "cx": -0.37,
+   "cy": -12.7,
+   "w": 38.1,
+   "h": 2.54
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header izquierdo",
+   "z": [
+    -8.5,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 22,
+   "cx": -0.37,
+   "cy": 12.7,
+   "w": 38.1,
+   "h": 2.54
+  },
+  {
+   "tipo": "calor",
+   "nombre": "Modulo WROOM + AMS1117",
+   "z": [
+    1.6,
+    4.7
+   ],
+   "salida": "+Z",
+   "holgura": 15,
+   "regla": "Mantener sensores de temperatura a >15 mm",
+   "cx": 5.0,
+   "cy": 0.0,
+   "w": 41.5,
+   "h": 18
+  }
+ ],
+ "pines": [
+  {
+   "n": "D23",
+   "num": 1,
+   "fila": "derecha",
+   "func": "GPIO23 / VSPI MOSI",
+   "conector": "header_macho_2.54_abajo",
+   "x": 17.41,
+   "y": -12.7
+  },
+  {
+   "n": "D22",
+   "num": 2,
+   "fila": "derecha",
+   "func": "GPIO22 / I2C SCL",
+   "conector": "header_macho_2.54_abajo",
+   "x": 14.87,
+   "y": -12.7
+  },
+  {
+   "n": "TX0",
+   "num": 3,
+   "fila": "derecha",
+   "func": "GPIO1 / UART0 TX",
+   "conector": "header_macho_2.54_abajo",
+   "x": 12.33,
+   "y": -12.7
+  },
+  {
+   "n": "RX0",
+   "num": 4,
+   "fila": "derecha",
+   "func": "GPIO3 / UART0 RX",
+   "conector": "header_macho_2.54_abajo",
+   "x": 9.79,
+   "y": -12.7
+  },
+  {
+   "n": "D21",
+   "num": 5,
+   "fila": "derecha",
+   "func": "GPIO21 / I2C SDA",
+   "conector": "header_macho_2.54_abajo",
+   "x": 7.25,
+   "y": -12.7
+  },
+  {
+   "n": "D19",
+   "num": 6,
+   "fila": "derecha",
+   "func": "GPIO19 / VSPI MISO",
+   "conector": "header_macho_2.54_abajo",
+   "x": 4.71,
+   "y": -12.7
+  },
+  {
+   "n": "D18",
+   "num": 7,
+   "fila": "derecha",
+   "func": "GPIO18 / VSPI SCK",
+   "conector": "header_macho_2.54_abajo",
+   "x": 2.17,
+   "y": -12.7
+  },
+  {
+   "n": "D5",
+   "num": 8,
+   "fila": "derecha",
+   "func": "GPIO5 / VSPI CS (arranque)",
+   "conector": "header_macho_2.54_abajo",
+   "x": -0.37,
+   "y": -12.7
+  },
+  {
+   "n": "TX2",
+   "num": 9,
+   "fila": "derecha",
+   "func": "GPIO17 / UART2 TX",
+   "conector": "header_macho_2.54_abajo",
+   "x": -2.91,
+   "y": -12.7
+  },
+  {
+   "n": "RX2",
+   "num": 10,
+   "fila": "derecha",
+   "func": "GPIO16 / UART2 RX",
+   "conector": "header_macho_2.54_abajo",
+   "x": -5.45,
+   "y": -12.7
+  },
+  {
+   "n": "D4",
+   "num": 11,
+   "fila": "derecha",
+   "func": "GPIO4 / ADC2",
+   "conector": "header_macho_2.54_abajo",
+   "x": -7.99,
+   "y": -12.7
+  },
+  {
+   "n": "D2",
+   "num": 12,
+   "fila": "derecha",
+   "func": "GPIO2 / LED (arranque)",
+   "conector": "header_macho_2.54_abajo",
+   "x": -10.53,
+   "y": -12.7
+  },
+  {
+   "n": "D15",
+   "num": 13,
+   "fila": "derecha",
+   "func": "GPIO15 (arranque)",
+   "conector": "header_macho_2.54_abajo",
+   "x": -13.07,
+   "y": -12.7
+  },
+  {
+   "n": "GND",
+   "num": 14,
+   "fila": "derecha",
+   "func": "Tierra",
+   "conector": "header_macho_2.54_abajo",
+   "x": -15.61,
+   "y": -12.7
+  },
+  {
+   "n": "3V3",
+   "num": 15,
+   "fila": "derecha",
+   "func": "Salida 3.3 V",
+   "conector": "header_macho_2.54_abajo",
+   "x": -18.15,
+   "y": -12.7
+  },
+  {
+   "n": "EN",
+   "num": 1,
+   "fila": "izquierda",
+   "func": "Reset (activo bajo)",
+   "conector": "header_macho_2.54_abajo",
+   "x": 17.41,
+   "y": 12.7
+  },
+  {
+   "n": "VP",
+   "num": 2,
+   "fila": "izquierda",
+   "func": "GPIO36 / ADC1_0 (solo entrada)",
+   "conector": "header_macho_2.54_abajo",
+   "x": 14.87,
+   "y": 12.7
+  },
+  {
+   "n": "VN",
+   "num": 3,
+   "fila": "izquierda",
+   "func": "GPIO39 / ADC1_3 (solo entrada)",
+   "conector": "header_macho_2.54_abajo",
+   "x": 12.33,
+   "y": 12.7
+  },
+  {
+   "n": "D34",
+   "num": 4,
+   "fila": "izquierda",
+   "func": "GPIO34 / ADC1 (solo entrada)",
+   "conector": "header_macho_2.54_abajo",
+   "x": 9.79,
+   "y": 12.7
+  },
+  {
+   "n": "D35",
+   "num": 5,
+   "fila": "izquierda",
+   "func": "GPIO35 / ADC1 (solo entrada)",
+   "conector": "header_macho_2.54_abajo",
+   "x": 7.25,
+   "y": 12.7
+  },
+  {
+   "n": "D32",
+   "num": 6,
+   "fila": "izquierda",
+   "func": "GPIO32 / ADC1",
+   "conector": "header_macho_2.54_abajo",
+   "x": 4.71,
+   "y": 12.7
+  },
+  {
+   "n": "D33",
+   "num": 7,
+   "fila": "izquierda",
+   "func": "GPIO33 / ADC1",
+   "conector": "header_macho_2.54_abajo",
+   "x": 2.17,
+   "y": 12.7
+  },
+  {
+   "n": "D25",
+   "num": 8,
+   "fila": "izquierda",
+   "func": "GPIO25 / DAC1",
+   "conector": "header_macho_2.54_abajo",
+   "x": -0.37,
+   "y": 12.7
+  },
+  {
+   "n": "D26",
+   "num": 9,
+   "fila": "izquierda",
+   "func": "GPIO26 / DAC2",
+   "conector": "header_macho_2.54_abajo",
+   "x": -2.91,
+   "y": 12.7
+  },
+  {
+   "n": "D27",
+   "num": 10,
+   "fila": "izquierda",
+   "func": "GPIO27 / ADC2",
+   "conector": "header_macho_2.54_abajo",
+   "x": -5.45,
+   "y": 12.7
+  },
+  {
+   "n": "D14",
+   "num": 11,
+   "fila": "izquierda",
+   "func": "GPIO14 / ADC2",
+   "conector": "header_macho_2.54_abajo",
+   "x": -7.99,
+   "y": 12.7
+  },
+  {
+   "n": "D12",
+   "num": 12,
+   "fila": "izquierda",
+   "func": "GPIO12 (arranque, evitar)",
+   "conector": "header_macho_2.54_abajo",
+   "x": -10.53,
+   "y": 12.7
+  },
+  {
+   "n": "D13",
+   "num": 13,
+   "fila": "izquierda",
+   "func": "GPIO13 / ADC2",
+   "conector": "header_macho_2.54_abajo",
+   "x": -13.07,
+   "y": 12.7
+  },
+  {
+   "n": "GND",
+   "num": 14,
+   "fila": "izquierda",
+   "func": "Tierra",
+   "conector": "header_macho_2.54_abajo",
+   "x": -15.61,
+   "y": 12.7
+  },
+  {
+   "n": "VIN",
+   "num": 15,
+   "fila": "izquierda",
+   "func": "Entrada 5 V",
+   "conector": "header_macho_2.54_abajo",
+   "x": -18.15,
+   "y": 12.7
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1o5m72VadI1bjqmFKKctnaAYUHRchctnf",
+   "nombre": "esp32_devkit_30p_modelo.step",
+   "url": "https://drive.google.com/file/d/1o5m72VadI1bjqmFKKctnaAYUHRchctnf/view",
+   "carpeta": "MountLab/biblioteca/archivos"
+  },
+  "dxf": {
+   "drive_id": "1T41R4kvGCv3D-uuwaBtfa96mavubgoZB",
+   "nombre": "esp32_devkit_30p_huella.dxf",
+   "url": "https://drive.google.com/file/d/1T41R4kvGCv3D-uuwaBtfa96mavubgoZB/view",
+   "carpeta": "MountLab/biblioteca/archivos"
+  },
+  "dxf_huella": {
+   "nombre": "esp32_devkit_30p_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/esp32_devkit_30p",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "esp32_devkit_30p_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/esp32_devkit_30p",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-13",
+   "nota": "Creado en el Ejercicio 01 (Termo-01), medidas tipicas"
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado a MountLab unificado: origen de coordenadas movido al centro de la placa."
+  }
+ ]
+}

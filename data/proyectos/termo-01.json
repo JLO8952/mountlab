@@ -1,0 +1,31 @@
+{
+ "id": "termo-01",
+ "nombre": "Termo-01 · ejercicio de prueba",
+ "estado": "prototipo",
+ "descripcion": "Sensor de temperatura WiFi (ESP32 DevKit 30p + LM75 por I2C) usado para estrenar la suite MountLab. Caja PETG 99 × 53 × 39 mm.",
+ "creado": "2026-11-13",
+ "bom": [
+  {
+   "id": "esp32_devkit_30p",
+   "cantidad": 1,
+   "nota": "4 soportes de 24 mm con inserto M2.5"
+  },
+  {
+   "id": "lm75_modulo",
+   "cantidad": 1,
+   "nota": "Guía deslizante junto a rejillas"
+  },
+  {
+   "id": "cables_dupont",
+   "cantidad": 4,
+   "nota": "H-H: 3V3, GND, SDA (D21), SCL (D22)"
+  }
+ ],
+ "notas": [],
+ "historial": [
+  {
+   "fecha": "2026-11-13",
+   "nota": "Ejercicio 01 de la suite."
+  }
+ ]
+}

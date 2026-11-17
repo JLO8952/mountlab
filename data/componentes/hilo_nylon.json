@@ -1,0 +1,82 @@
+{
+ "id": "hilo_nylon",
+ "nombre": "Rollo de nylon textil",
+ "tipo": "material",
+ "categoria": "Materiales",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "rollo",
+ "ficha": {
+  "descripcion": "Hilo/cordón de nylon para costura y líneas de suspensión.",
+  "funcionamiento": "Fibra sintética de poliamida con buena resistencia y elongación.",
+  "voltaje": "N/A",
+  "corriente": "N/A",
+  "interfaz": "N/A",
+  "entradas": "N/A",
+  "salidas": "N/A",
+  "dimensiones": "Según presentación",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Material",
+   "valor": "Poliamida 6/6.6"
+  }
+ ],
+ "imagen": null,
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 5000,
+   "url": "https://es.aliexpress.com/w/wholesale-nylon-thread-spool.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 20000,
+   "url": "https://www.amazon.com/s?k=nylon+thread+spool",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 8000,
+   "url": "https://listado.mercadolibre.com.co/nylon-thread-spool",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=nylon+thread+spool+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=nylon+thread+spool"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": null,
+   "nombre": "",
+   "url": "",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": null,
+   "nombre": "",
+   "url": "",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

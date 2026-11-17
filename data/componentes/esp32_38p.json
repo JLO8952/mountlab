@@ -1,0 +1,310 @@
+{
+ "id": "esp32_38p",
+ "nombre": "ESP32 38 pines (DevKitC)",
+ "tipo": "electronico",
+ "categoria": "Microcontroladores",
+ "etiquetas": [
+  "I2C",
+  "SPI",
+  "UART"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Placa de desarrollo con módulo ESP32-WROOM-32: dual-core 240 MHz, Wi-Fi y Bluetooth.",
+  "funcionamiento": "Ejecuta el firmware (Arduino/ESP-IDF/MicroPython) y controla periféricos por GPIO, ADC, PWM, I2C, SPI y UART. Se programa por USB (CP2102/CH340).",
+  "voltaje": "USB 5 V o VIN 5 V; lógica 3.3 V (pines NO tolerantes a 5 V)",
+  "corriente": "≈80 mA promedio, 240 mA picos de Wi-Fi; deep sleep ≈10 µA (chip)",
+  "interfaz": "Wi-Fi 802.11 b/g/n, BT 4.2/BLE, 3 × UART, 2 × I2C, 3 × SPI, I2S, CAN (TWAI)",
+  "entradas": "ADC 18 canales 12 bits, 10 táctiles, GPIO",
+  "salidas": "GPIO, PWM (LEDC 16 canales), 2 × DAC 8 bits",
+  "dimensiones": "55 × 28 × 13 mm (con headers)",
+  "datasheet": "https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "CPU",
+   "valor": "Xtensa LX6 dual-core 240 MHz"
+  },
+  {
+   "param": "SRAM",
+   "valor": "520 KB"
+  },
+  {
+   "param": "Flash",
+   "valor": "4 MB"
+  },
+  {
+   "param": "Wi-Fi",
+   "valor": "2.4 GHz, hasta 150 Mbps"
+  },
+  {
+   "param": "Bluetooth",
+   "valor": "v4.2 BR/EDR + BLE"
+  },
+  {
+   "param": "Conversor USB",
+   "valor": "CP2102 o CH340"
+  },
+  {
+   "param": "Separación de filas",
+   "valor": "25.4 mm"
+  }
+ ],
+ "imagen": {
+  "src": "img/12_esp32_38p.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 18000,
+   "url": "https://es.aliexpress.com/w/wholesale-ESP32-DevKitC-38-pin.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 40000,
+   "url": "https://www.amazon.com/s?k=ESP32+DevKitC+38+pin",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 28000,
+   "url": "https://listado.mercadolibre.com.co/esp32-devkitc-38-pin",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=ESP32+DevKitC+38+pin+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=ESP32+DevKitC+38+pin"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   55,
+   28,
+   1.6
+  ],
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 3.2,
+  "altura_inferior": 8.5,
+  "holgura_inferior_cableado": 22,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "calor",
+   "nombre": "Módulo WROOM",
+   "cx": 14.75,
+   "cy": 0.0,
+   "w": 25.5,
+   "h": 18,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "usb",
+   "nombre": "Micro USB",
+   "cx": -25.7,
+   "cy": 0.0,
+   "w": 5.6,
+   "h": 7.5,
+   "z": [
+    1.6,
+    4.2
+   ],
+   "salida": "-X",
+   "holgura": 20
+  },
+  {
+   "tipo": "boton",
+   "nombre": "Botón EN",
+   "cx": -22.5,
+   "cy": -10.0,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    3.1
+   ],
+   "salida": "+Z",
+   "holgura": 3
+  },
+  {
+   "tipo": "boton",
+   "nombre": "Botón BOOT",
+   "cx": -22.5,
+   "cy": 10.0,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    3.1
+   ],
+   "salida": "+Z",
+   "holgura": 3
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header",
+   "cx": 0.0,
+   "cy": -12.7,
+   "w": 48.26,
+   "h": 2.54,
+   "z": [
+    -2.5,
+    0.0
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header",
+   "cx": 0.0,
+   "cy": 12.7,
+   "w": 48.26,
+   "h": 2.54,
+   "z": [
+    -2.5,
+    0.0
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  }
+ ],
+ "pines": [
+  {
+   "n": "3V3",
+   "func": "Salida 3.3 V",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "EN",
+   "func": "Reset",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "VP/GPIO36, VN/GPIO39, 34, 35",
+   "func": "Solo entrada (ADC1)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "32, 33",
+   "func": "ADC1 / táctil / GPIO",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "25, 26",
+   "func": "DAC1 / DAC2",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "27, 14, 12, 13",
+   "func": "ADC2 / táctil (ADC2 no usable con Wi-Fi)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "VIN (5V)",
+   "func": "Entrada 5 V",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "23, 19, 18, 5",
+   "func": "VSPI MOSI, MISO, CLK, CS",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "21, 22",
+   "func": "I2C SDA, SCL (por defecto)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "1, 3",
+   "func": "TX0, RX0 (USB)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "16, 17",
+   "func": "RX2, TX2",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "0, 2, 4, 15",
+   "func": "GPIO / strapping",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "6–11",
+   "func": "Flash SPI interna (no usar)",
+   "x": null,
+   "y": null
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "19BWeeGLqRZ5DRfph_B9OjtoTEtm6rHQr",
+   "nombre": "12_esp32_38p.step",
+   "url": "https://drive.google.com/file/d/19BWeeGLqRZ5DRfph_B9OjtoTEtm6rHQr/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1BQMBpYoc2e57uszLL5bRt3IddNwWh3BG",
+   "nombre": "12_esp32_38p.dxf",
+   "url": "https://drive.google.com/file/d/1BQMBpYoc2e57uszLL5bRt3IddNwWh3BG/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "esp32_38p_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/esp32_38p",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "esp32_38p_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/esp32_38p",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

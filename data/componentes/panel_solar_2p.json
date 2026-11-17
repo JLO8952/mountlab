@@ -1,0 +1,89 @@
+{
+ "id": "panel_solar_2p",
+ "nombre": "Panel solar PocketQube 2P (45 mm de ancho)",
+ "tipo": "electronico",
+ "categoria": "Energía",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Panel solar para cara lateral de un PocketQube 2P, 45 mm de ancho.",
+  "funcionamiento": "Las celdas fotovoltaicas generan corriente proporcional a la irradiancia; normalmente con diodo de bloqueo y MPPT/cargador.",
+  "voltaje": "Depende de las celdas (típ. 5–6 V en circuito abierto)",
+  "corriente": "Depende del área (≈50–100 mA a 1 sol)",
+  "interfaz": "N/A",
+  "entradas": "Luz solar",
+  "salidas": "+ / −",
+  "dimensiones": "Supuesto: 112 × 45 × 1.6 mm",
+  "datasheet": "",
+  "notas": "Las medidas son las del formato PocketQube 2P; confirmar con el panel elegido."
+ },
+ "especificaciones": [
+  {
+   "param": "Ancho",
+   "valor": "45 mm"
+  },
+  {
+   "param": "Largo 2P",
+   "valor": "≈112 mm (PocketQube 2P = 114 mm)"
+  }
+ ],
+ "imagen": {
+  "src": "img/38_panel_solar_2p.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 12000,
+   "url": "https://es.aliexpress.com/w/wholesale-small-solar-cell-panel-45mm.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 35000,
+   "url": "https://www.amazon.com/s?k=small+solar+cell+panel+45mm",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 20000,
+   "url": "https://listado.mercadolibre.com.co/small-solar-cell-panel-45mm",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=small+solar+cell+panel+45mm+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=small+solar+cell+panel+45mm"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "1GzJ_J5f86_xiLrzC_8FAfW2c0oQXDAi4",
+   "nombre": "38_panel_solar_2p.step",
+   "url": "https://drive.google.com/file/d/1GzJ_J5f86_xiLrzC_8FAfW2c0oQXDAi4/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1KBnKVj7KFgQydb3r7TQhnrV4YMEx_1_Z",
+   "nombre": "38_panel_solar_2p.dxf",
+   "url": "https://drive.google.com/file/d/1KBnKVj7KFgQydb3r7TQhnrV4YMEx_1_Z/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

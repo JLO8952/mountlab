@@ -1,0 +1,211 @@
+{
+ "id": "cansat-2027",
+ "nombre": "CanSat 2027 · lista Controladores",
+ "estado": "en curso",
+ "descripcion": "Lista inicial de componentes de la carpeta Controladores (semillero ECCIAN).",
+ "creado": "2026-11-16",
+ "bom": [
+  {
+   "id": "bme680",
+   "cantidad": 2,
+   "nota": ""
+  },
+  {
+   "id": "protoboard_400",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "cables_dupont",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "headers_macho_hembra",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "modulo_microsd",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "microsd_16gb",
+   "cantidad": 6,
+   "nota": ""
+  },
+  {
+   "id": "tp4056",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "bateria_18650",
+   "cantidad": 11,
+   "nota": ""
+  },
+  {
+   "id": "lm2596",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "portapilas_2x18650",
+   "cantidad": 4,
+   "nota": ""
+  },
+  {
+   "id": "portapilas_1x18650",
+   "cantidad": 7,
+   "nota": ""
+  },
+  {
+   "id": "esp32_38p",
+   "cantidad": 3,
+   "nota": ""
+  },
+  {
+   "id": "expansion_esp32_38p",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "bms_2s_4a",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "jack_dc_21",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "switch_codillo_6p",
+   "cantidad": 3,
+   "nota": ""
+  },
+  {
+   "id": "header_macho_40",
+   "cantidad": 10,
+   "nota": ""
+  },
+  {
+   "id": "cable_cinta_10h",
+   "cantidad": 10,
+   "nota": ""
+  },
+  {
+   "id": "fuente_12v_2a",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "bme280",
+   "cantidad": 3,
+   "nota": ""
+  },
+  {
+   "id": "xbee_s2c",
+   "cantidad": 4,
+   "nota": ""
+  },
+  {
+   "id": "adaptador_xbee_usb",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "ams1117_33",
+   "cantidad": 2,
+   "nota": ""
+  },
+  {
+   "id": "qmc5883",
+   "cantidad": 2,
+   "nota": ""
+  },
+  {
+   "id": "bno055",
+   "cantidad": 2,
+   "nota": ""
+  },
+  {
+   "id": "sim808",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "gps_max_m10n",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "tela_nylon",
+   "cantidad": 2,
+   "nota": ""
+  },
+  {
+   "id": "hilo_nylon",
+   "cantidad": 2,
+   "nota": ""
+  },
+  {
+   "id": "anillo_metalico",
+   "cantidad": 10,
+   "nota": ""
+  },
+  {
+   "id": "perno_ojo_14",
+   "cantidad": 2,
+   "nota": ""
+  },
+  {
+   "id": "arandela_14",
+   "cantidad": 10,
+   "nota": ""
+  },
+  {
+   "id": "tuerca_seguridad_14",
+   "cantidad": 10,
+   "nota": ""
+  },
+  {
+   "id": "estano_6337",
+   "cantidad": 2,
+   "nota": ""
+  },
+  {
+   "id": "filamento_pc",
+   "cantidad": 2,
+   "nota": ""
+  },
+  {
+   "id": "lana_roca",
+   "cantidad": 1,
+   "nota": ""
+  },
+  {
+   "id": "ov2640",
+   "cantidad": 3,
+   "nota": ""
+  },
+  {
+   "id": "panel_solar_2p",
+   "cantidad": 2,
+   "nota": ""
+  },
+  {
+   "id": "sg90_metal",
+   "cantidad": 6,
+   "nota": ""
+  }
+ ],
+ "notas": [],
+ "historial": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "Creado a partir de las cantidades del catálogo Controladores."
+  }
+ ]
+}

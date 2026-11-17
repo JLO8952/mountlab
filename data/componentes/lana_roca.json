@@ -1,0 +1,86 @@
+{
+ "id": "lana_roca",
+ "nombre": "Lana de roca bruta lubricada",
+ "tipo": "material",
+ "categoria": "Materiales",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Aislante térmico/acústico de fibra mineral.",
+  "funcionamiento": "Las fibras atrapan aire y reducen la conducción de calor y la transmisión de sonido.",
+  "voltaje": "N/A",
+  "corriente": "N/A",
+  "interfaz": "N/A",
+  "entradas": "N/A",
+  "salidas": "N/A",
+  "dimensiones": "Según presentación",
+  "datasheet": "",
+  "notas": "Usar guantes y mascarilla al manipular."
+ },
+ "especificaciones": [
+  {
+   "param": "Temperatura de servicio",
+   "valor": "hasta ≈750 °C"
+  },
+  {
+   "param": "Conductividad",
+   "valor": "≈0.035–0.040 W/m·K"
+  }
+ ],
+ "imagen": null,
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 20000,
+   "url": "https://es.aliexpress.com/w/wholesale-rock-wool-insulation.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 40000,
+   "url": "https://www.amazon.com/s?k=rock+wool+insulation",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 30000,
+   "url": "https://listado.mercadolibre.com.co/rock-wool-insulation",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=rock+wool+insulation+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=rock+wool+insulation"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": null,
+   "nombre": "",
+   "url": "",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": null,
+   "nombre": "",
+   "url": "",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

@@ -1,0 +1,168 @@
+{
+ "id": "ams1117_33",
+ "nombre": "Regulador 3.3 V AMS1117",
+ "tipo": "electronico",
+ "categoria": "Energía",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Regulador lineal LDO de 3.3 V y 1 A (módulo con condensadores).",
+  "funcionamiento": "Mantiene 3.3 V en la salida disipando la diferencia (Vin − Vout) × I como calor.",
+  "voltaje": "Entrada 4.5–12 V (máx. 15 V); salida 3.3 V ±1 %",
+  "corriente": "1 A máx. (limitado por disipación)",
+  "interfaz": "N/A",
+  "entradas": "VIN, GND",
+  "salidas": "VOUT 3.3 V",
+  "dimensiones": "Módulo 22 × 11 × 4 mm; SOT-223 6.5 × 3.5 × 1.6 mm",
+  "datasheet": "http://www.advanced-monolithic.com/pdf/ds1117.pdf",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Dropout",
+   "valor": "1.1–1.3 V a 1 A"
+  },
+  {
+   "param": "Encapsulado",
+   "valor": "SOT-223"
+  },
+  {
+   "param": "Protecciones",
+   "valor": "Límite de corriente y térmico"
+  }
+ ],
+ "imagen": {
+  "src": "img/23_ams1117_33.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 1500,
+   "url": "https://es.aliexpress.com/w/wholesale-AMS1117-3.3V-module.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 10000,
+   "url": "https://www.amazon.com/s?k=AMS1117+3.3V+module",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 3000,
+   "url": "https://listado.mercadolibre.com.co/ams1117-3.3v-module",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=AMS1117+3.3V+module+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=AMS1117+3.3V+module"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   22,
+   11,
+   1.6
+  ],
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 1.6,
+  "altura_inferior": 8.5,
+  "holgura_inferior_cableado": 22,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Header",
+   "cx": -8.5,
+   "cy": 0.0,
+   "w": 2.54,
+   "h": 7.62,
+   "z": [
+    -2.5,
+    0.0
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header",
+   "cx": 8.5,
+   "cy": 0.0,
+   "w": 2.54,
+   "h": 7.62,
+   "z": [
+    -2.5,
+    0.0
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  }
+ ],
+ "pines": [
+  {
+   "n": "1",
+   "func": "GND / ADJ",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "2",
+   "func": "VOUT (y tab)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "3",
+   "func": "VIN",
+   "x": null,
+   "y": null
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1OtAB5VK6qUn-6Lo-7Oq27RyGAGoEpEHa",
+   "nombre": "23_ams1117_33.step",
+   "url": "https://drive.google.com/file/d/1OtAB5VK6qUn-6Lo-7Oq27RyGAGoEpEHa/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1pf9T-7HLvOirj9Owhgq3Y_8i_0mjFnjI",
+   "nombre": "23_ams1117_33.dxf",
+   "url": "https://drive.google.com/file/d/1pf9T-7HLvOirj9Owhgq3Y_8i_0mjFnjI/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "ams1117_33_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/ams1117_33",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "ams1117_33_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/ams1117_33",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

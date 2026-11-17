@@ -1,0 +1,138 @@
+{
+ "id": "ov2640",
+ "nombre": "Cámara OV2640",
+ "tipo": "electronico",
+ "categoria": "Sensores",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Cámara CMOS de 2 MP con salida JPEG por hardware (formato del ESP32-CAM).",
+  "funcionamiento": "Se configura por SCCB (tipo I2C) y entrega imagen por bus paralelo DVP de 8 bits con PCLK, VSYNC y HREF.",
+  "voltaje": "DVDD 1.2–1.3 V, DOVDD 1.7–3.3 V, AVDD 2.5–3.0 V",
+  "corriente": "≈125 mW activo",
+  "interfaz": "SCCB + DVP paralelo 8 bits",
+  "entradas": "XCLK (6–27 MHz), SIOC, SIOD, PWDN, RESET",
+  "salidas": "D0–D7, PCLK, VSYNC, HREF",
+  "dimensiones": "Módulo 8.5 × 8.5 × 5 mm + flex ≈21 mm",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Resolución",
+   "valor": "1600 × 1200 (UXGA)"
+  },
+  {
+   "param": "Píxel",
+   "valor": "2.2 µm"
+  },
+  {
+   "param": "Formatos",
+   "valor": "JPEG, RGB565, YUV"
+  },
+  {
+   "param": "FPS",
+   "valor": "15 UXGA / 30 SVGA"
+  },
+  {
+   "param": "FPC",
+   "valor": "24 pines, paso 0.5 mm"
+  }
+ ],
+ "imagen": {
+  "src": "img/37_ov2640.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 8000,
+   "url": "https://es.aliexpress.com/w/wholesale-OV2640-camera-module-24pin.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 25000,
+   "url": "https://www.amazon.com/s?k=OV2640+camera+module+24pin",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 15000,
+   "url": "https://listado.mercadolibre.com.co/ov2640-camera-module-24pin",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=OV2640+camera+module+24pin+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=OV2640+camera+module+24pin"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [
+  {
+   "n": "SIOC/SIOD",
+   "func": "Configuración SCCB",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "XCLK",
+   "func": "Reloj de entrada",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "D2–D9",
+   "func": "Datos de imagen",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "PCLK",
+   "func": "Reloj de píxel",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "VSYNC/HREF",
+   "func": "Sincronismos",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "PWDN/RESET",
+   "func": "Control",
+   "x": null,
+   "y": null
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1LSZB19QpthBS8xMERH3hfJ2oWHKelMUW",
+   "nombre": "37_ov2640.step",
+   "url": "https://drive.google.com/file/d/1LSZB19QpthBS8xMERH3hfJ2oWHKelMUW/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1CNB0cHxK4Rct3EB0p4p8VljnVETOaQyR",
+   "nombre": "37_ov2640.dxf",
+   "url": "https://drive.google.com/file/d/1CNB0cHxK4Rct3EB0p4p8VljnVETOaQyR/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

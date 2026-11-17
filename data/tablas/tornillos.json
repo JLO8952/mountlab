@@ -1,0 +1,27 @@
+{
+  "M2.5": {
+    "pasante": 2.9,
+    "roscar": 2.05,
+    "inserto_termico": 3.6,
+    "od_soporte_3d": 6.0
+  },
+  "M3": {
+    "pasante": 3.4,
+    "roscar": 2.5,
+    "inserto_termico": 4.0,
+    "od_soporte_3d": 7.0
+  },
+  "M4": {
+    "pasante": 4.5,
+    "roscar": 3.3,
+    "inserto_termico": 5.6,
+    "od_soporte_3d": 9.0
+  },
+  "M5": {
+    "pasante": 5.5,
+    "roscar": 4.2,
+    "inserto_termico": 6.4,
+    "od_soporte_3d": 11.0
+  },
+  "nota": "Diametros de inserto aproximados: ajustar al fabricante del inserto."
+}

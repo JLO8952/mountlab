@@ -1,0 +1,93 @@
+{
+ "id": "cables_dupont",
+ "nombre": "Juego de cables Dupont",
+ "tipo": "electronico",
+ "categoria": "Cableado",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "juego",
+ "ficha": {
+  "descripcion": "Cables puente con terminal Dupont paso 2.54 mm (M-M, M-H, H-H).",
+  "funcionamiento": "Interconexión rápida entre protoboard, headers y módulos.",
+  "voltaje": "≤ 30 V",
+  "corriente": "≈1–2 A (cable 26–28 AWG)",
+  "interfaz": "N/A",
+  "entradas": "Terminal macho/hembra 2.54 mm",
+  "salidas": "Terminal macho/hembra 2.54 mm",
+  "dimensiones": "Carcasa 2.54 × 2.54 × 14 mm",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Longitud típica",
+   "valor": "10 / 20 / 30 cm"
+  },
+  {
+   "param": "Calibre",
+   "valor": "26–28 AWG"
+  },
+  {
+   "param": "Carcasa",
+   "valor": "1 pin, 2.54 × 2.54 × 14 mm"
+  }
+ ],
+ "imagen": {
+  "src": "img/03_cables_dupont.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 6000,
+   "url": "https://es.aliexpress.com/w/wholesale-dupont-jumper-wires-40pcs.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 25000,
+   "url": "https://www.amazon.com/s?k=dupont+jumper+wires+40pcs",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 10000,
+   "url": "https://listado.mercadolibre.com.co/dupont-jumper-wires-40pcs",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=dupont+jumper+wires+40pcs+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=dupont+jumper+wires+40pcs"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "1cRiqdtLJrTcXKN0b6oFi--LR5RT_qlKs",
+   "nombre": "03_cables_dupont.step",
+   "url": "https://drive.google.com/file/d/1cRiqdtLJrTcXKN0b6oFi--LR5RT_qlKs/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "132Ni7eLpNqjSOLFMnDhIE7gjphojJosc",
+   "nombre": "03_cables_dupont.dxf",
+   "url": "https://drive.google.com/file/d/132Ni7eLpNqjSOLFMnDhIE7gjphojJosc/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

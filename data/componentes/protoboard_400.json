@@ -1,0 +1,97 @@
+{
+ "id": "protoboard_400",
+ "nombre": "Protoboard mini 400 puntos",
+ "tipo": "herramienta",
+ "categoria": "Prototipado",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Placa de pruebas sin soldadura de 400 puntos con 2 rieles de alimentación por lado.",
+  "funcionamiento": "Tiras metálicas internas conectan grupos de 5 orificios en columna; los rieles laterales distribuyen VCC y GND.",
+  "voltaje": "Hasta 36 V (uso típico 3.3–12 V)",
+  "corriente": "≈1 A por contacto",
+  "interfaz": "N/A",
+  "entradas": "Componentes paso 2.54 mm",
+  "salidas": "N/A",
+  "dimensiones": "82.5 × 54.5 × 8.5 mm",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Puntos",
+   "valor": "300 de terminal + 100 de rieles"
+  },
+  {
+   "param": "Paso",
+   "valor": "2.54 mm"
+  },
+  {
+   "param": "Calibre de cable",
+   "valor": "20–29 AWG"
+  },
+  {
+   "param": "Base",
+   "valor": "Adhesiva, encajable lateralmente"
+  }
+ ],
+ "imagen": {
+  "src": "img/02_protoboard_400.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 5000,
+   "url": "https://es.aliexpress.com/w/wholesale-breadboard-400-points.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 25000,
+   "url": "https://www.amazon.com/s?k=breadboard+400+points",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 8000,
+   "url": "https://listado.mercadolibre.com.co/breadboard-400-points",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=breadboard+400+points+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=breadboard+400+points"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": null,
+   "nombre": "02_protoboard_400.step",
+   "url": "",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1SWo2FN6hg_OpQCGCgccoveO9jwF70RiT",
+   "nombre": "02_protoboard_400.dxf",
+   "url": "https://drive.google.com/file/d/1SWo2FN6hg_OpQCGCgccoveO9jwF70RiT/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

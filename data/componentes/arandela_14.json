@@ -1,0 +1,93 @@
+{
+ "id": "arandela_14",
+ "nombre": "Arandela metálica 1/4\"",
+ "tipo": "mecanico",
+ "categoria": "Herrajes",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Arandela plana SAE 1/4\".",
+  "funcionamiento": "Reparte la carga del perno/tuerca sobre la superficie.",
+  "voltaje": "N/A",
+  "corriente": "N/A",
+  "interfaz": "N/A",
+  "entradas": "N/A",
+  "salidas": "N/A",
+  "dimensiones": "Ø15.9 × Ø7.1 × 1.6 mm",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Ø interior",
+   "valor": "7.1 mm"
+  },
+  {
+   "param": "Ø exterior",
+   "valor": "15.9 mm"
+  },
+  {
+   "param": "Espesor",
+   "valor": "1.6 mm"
+  }
+ ],
+ "imagen": {
+  "src": "img/32_arandela_14.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 150,
+   "url": "https://es.aliexpress.com/w/wholesale-1%2F4-flat-washer-stainless.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 10000,
+   "url": "https://www.amazon.com/s?k=1%2F4+flat+washer+stainless",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 300,
+   "url": "https://listado.mercadolibre.com.co/1/4-flat-washer-stainless",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=1%2F4+flat+washer+stainless+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=1%2F4+flat+washer+stainless"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "1dR_1GDwwsvP11Q5nkB1Anwk99FsjVHTw",
+   "nombre": "32_arandela_14.step",
+   "url": "https://drive.google.com/file/d/1dR_1GDwwsvP11Q5nkB1Anwk99FsjVHTw/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1YoQhmaUb7unPhj793d3HsKVDMq6qFozY",
+   "nombre": "32_arandela_14.dxf",
+   "url": "https://drive.google.com/file/d/1YoQhmaUb7unPhj793d3HsKVDMq6qFozY/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

@@ -1,0 +1,93 @@
+{
+ "id": "fuente_12v_2a",
+ "nombre": "Fuente adaptador 12 V 2 A",
+ "tipo": "electronico",
+ "categoria": "Energía",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Adaptador conmutado de pared 100–240 V AC a 12 V DC 2 A con plug 5.5 × 2.1 mm.",
+  "funcionamiento": "Rectifica, conmuta y regula la red AC a 12 V DC aislado.",
+  "voltaje": "Entrada 100–240 V AC 50/60 Hz; salida 12 V DC",
+  "corriente": "2 A (24 W)",
+  "interfaz": "N/A",
+  "entradas": "Enchufe tipo A/B",
+  "salidas": "Plug 5.5 × 2.1 mm centro positivo",
+  "dimensiones": "≈75 × 45 × 32 mm (cuerpo)",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Potencia",
+   "valor": "24 W"
+  },
+  {
+   "param": "Cable",
+   "valor": "≈1–1.2 m"
+  },
+  {
+   "param": "Polaridad",
+   "valor": "Centro positivo"
+  }
+ ],
+ "imagen": {
+  "src": "img/19_fuente_12v_2a.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 9000,
+   "url": "https://es.aliexpress.com/w/wholesale-12V-2A-power-adapter-5.5x2.1.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 30000,
+   "url": "https://www.amazon.com/s?k=12V+2A+power+adapter+5.5x2.1",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 15000,
+   "url": "https://listado.mercadolibre.com.co/12v-2a-power-adapter-5.5x2.1",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=12V+2A+power+adapter+5.5x2.1+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=12V+2A+power+adapter+5.5x2.1"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "119vAipK8L0Fp29mZ3GsWbBq_XC4bvHb6",
+   "nombre": "19_fuente_12v_2a.step",
+   "url": "https://drive.google.com/file/d/119vAipK8L0Fp29mZ3GsWbBq_XC4bvHb6/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1-K3nkH4-4urk78cuV0adt6FJnubnc881",
+   "nombre": "19_fuente_12v_2a.dxf",
+   "url": "https://drive.google.com/file/d/1-K3nkH4-4urk78cuV0adt6FJnubnc881/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

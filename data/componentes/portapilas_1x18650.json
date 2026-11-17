@@ -1,0 +1,87 @@
+{
+ "id": "portapilas_1x18650",
+ "nombre": "Portapilas 18650 para 1 pila (sin resorte)",
+ "tipo": "electronico",
+ "categoria": "Energía",
+ "etiquetas": [
+  "18650"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Soporte plástico para 1 celda 18650.",
+  "funcionamiento": "Sujeta la celda y la conecta a los terminales.",
+  "voltaje": "3.7 V nominal",
+  "corriente": "≈3 A",
+  "interfaz": "N/A",
+  "entradas": "1 × 18650",
+  "salidas": "Cables o pines + / −",
+  "dimensiones": "77 × 21 × 20 mm (aprox.)",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Material",
+   "valor": "ABS"
+  }
+ ],
+ "imagen": {
+  "src": "img/11_portapilas_1x18650.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 1500,
+   "url": "https://es.aliexpress.com/w/wholesale-18650-battery-holder-1-slot.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 10000,
+   "url": "https://www.amazon.com/s?k=18650+battery+holder+1+slot",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 3500,
+   "url": "https://listado.mercadolibre.com.co/18650-battery-holder-1-slot",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=18650+battery+holder+1+slot+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=18650+battery+holder+1+slot"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "1iJ_WGf_FgXE1L7_f-yHMRDRzRND7xrf5",
+   "nombre": "11_portapilas_1x18650.step",
+   "url": "https://drive.google.com/file/d/1iJ_WGf_FgXE1L7_f-yHMRDRzRND7xrf5/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "16O7VNLDnCm044vhTVmC8D4sCE8mpJTjW",
+   "nombre": "11_portapilas_1x18650.dxf",
+   "url": "https://drive.google.com/file/d/16O7VNLDnCm044vhTVmC8D4sCE8mpJTjW/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

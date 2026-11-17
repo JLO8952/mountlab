@@ -1,0 +1,93 @@
+{
+ "id": "estano_6337",
+ "nombre": "Rollo de soldadura estaño 63/37",
+ "tipo": "material",
+ "categoria": "Materiales",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "rollo",
+ "ficha": {
+  "descripcion": "Alambre de soldadura eutéctica Sn63/Pb37 con núcleo de resina.",
+  "funcionamiento": "Funde a 183 °C sin fase pastosa (eutéctico), lo que da uniones limpias.",
+  "voltaje": "N/A",
+  "corriente": "N/A",
+  "interfaz": "N/A",
+  "entradas": "N/A",
+  "salidas": "N/A",
+  "dimensiones": "Según presentación (50–100 g)",
+  "datasheet": "",
+  "notas": "Contiene plomo: ventilación y lavado de manos."
+ },
+ "especificaciones": [
+  {
+   "param": "Punto de fusión",
+   "valor": "183 °C"
+  },
+  {
+   "param": "Diámetro típico",
+   "valor": "0.8 mm"
+  },
+  {
+   "param": "Fundente",
+   "valor": "Resina (rosin) 1.8–2 %"
+  }
+ ],
+ "imagen": {
+  "src": "img/34_estano_6337.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 8000,
+   "url": "https://es.aliexpress.com/w/wholesale-solder-wire-63%2F37-rosin-core.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 35000,
+   "url": "https://www.amazon.com/s?k=solder+wire+63%2F37+rosin+core",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 15000,
+   "url": "https://listado.mercadolibre.com.co/solder-wire-63/37-rosin-core",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=solder+wire+63%2F37+rosin+core+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=solder+wire+63%2F37+rosin+core"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "1EEDH_8xzq1PgPDGNb3OXqWFSJ_hpnmkn",
+   "nombre": "34_estano_6337.step",
+   "url": "https://drive.google.com/file/d/1EEDH_8xzq1PgPDGNb3OXqWFSJ_hpnmkn/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1HOrV0rzaG-9ioyjg8yZh0Y7wRNbC7l_v",
+   "nombre": "34_estano_6337.dxf",
+   "url": "https://drive.google.com/file/d/1HOrV0rzaG-9ioyjg8yZh0Y7wRNbC7l_v/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

@@ -1,0 +1,218 @@
+{
+ "id": "bno055",
+ "nombre": "Sensor BNO055 (IMU 9 ejes)",
+ "tipo": "electronico",
+ "categoria": "Sensores",
+ "etiquetas": [
+  "I2C",
+  "UART"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "IMU absoluta de 9 ejes de Bosch (acelerómetro, giroscopio, magnetómetro) con fusión de sensores interna.",
+  "funcionamiento": "Un Cortex-M0 interno fusiona los 9 ejes y entrega cuaterniones, ángulos de Euler, gravedad y aceleración lineal.",
+  "voltaje": "Módulo 3.3–5 V; chip 2.4–3.6 V",
+  "corriente": "12.3 mA (modo NDOF)",
+  "interfaz": "I2C (0x28/0x29) o UART (HID)",
+  "entradas": "SCL, SDA, ADR, RST, PS0/PS1",
+  "salidas": "INT, datos",
+  "dimensiones": "Módulo 26.7 × 20.3 × 3 mm (chip 5.2 × 3.8 × 1.1 mm)",
+  "datasheet": "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Acelerómetro",
+   "valor": "±2/4/8/16 g"
+  },
+  {
+   "param": "Giroscopio",
+   "valor": "±125 a ±2000 °/s"
+  },
+  {
+   "param": "Magnetómetro",
+   "valor": "±1300 µT (x,y), ±2500 µT (z)"
+  },
+  {
+   "param": "Salida de fusión",
+   "valor": "100 Hz"
+  }
+ ],
+ "imagen": {
+  "src": "img/25_bno055.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 45000,
+   "url": "https://es.aliexpress.com/w/wholesale-BNO055-module-9-DOF.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 140000,
+   "url": "https://www.amazon.com/s?k=BNO055+module+9+DOF",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 90000,
+   "url": "https://listado.mercadolibre.com.co/bno055-module-9-dof",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=BNO055+module+9+DOF+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=BNO055+module+9+DOF"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   26.7,
+   20.3,
+   1.6
+  ],
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -10.85,
+    "y": -7.65,
+    "d": 2.5
+   },
+   {
+    "x": 10.85,
+    "y": -7.65,
+    "d": 2.5
+   },
+   {
+    "x": -10.85,
+    "y": 7.65,
+    "d": 2.5
+   },
+   {
+    "x": 10.85,
+    "y": 7.65,
+    "d": 2.5
+   }
+  ],
+  "altura_superior": 1.1,
+  "altura_inferior": 8.5,
+  "holgura_inferior_cableado": 22,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Header",
+   "cx": 0.0,
+   "cy": -8.85,
+   "w": 22.86,
+   "h": 2.54,
+   "z": [
+    -2.5,
+    0.0
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  }
+ ],
+ "pines": [
+  {
+   "n": "VIN",
+   "func": "3.3–5 V",
+   "x": -10.16,
+   "y": -8.85
+  },
+  {
+   "n": "3VO",
+   "func": "Salida 3.3 V",
+   "x": -7.62,
+   "y": -8.85
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": -5.08,
+   "y": -8.85
+  },
+  {
+   "n": "SDA",
+   "func": "Datos I2C",
+   "x": -2.54,
+   "y": -8.85
+  },
+  {
+   "n": "SCL",
+   "func": "Reloj I2C",
+   "x": 0.0,
+   "y": -8.85
+  },
+  {
+   "n": "RST",
+   "func": "Reset (activo bajo)",
+   "x": 2.54,
+   "y": -8.85
+  },
+  {
+   "n": "INT",
+   "func": "Interrupción",
+   "x": 5.08,
+   "y": -8.85
+  },
+  {
+   "n": "ADR",
+   "func": "Dirección (alto = 0x29)",
+   "x": 7.62,
+   "y": -8.85
+  },
+  {
+   "n": "PS0/PS1",
+   "func": "Selección de protocolo",
+   "x": 10.16,
+   "y": -8.85
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1vIMdgUQ65bHXJNULpXCF8Wx-OLbRD6qj",
+   "nombre": "25_bno055.step",
+   "url": "https://drive.google.com/file/d/1vIMdgUQ65bHXJNULpXCF8Wx-OLbRD6qj/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "13G7BrV0hRLHxqDd7JcPD6qaPTUhwTj4R",
+   "nombre": "25_bno055.dxf",
+   "url": "https://drive.google.com/file/d/13G7BrV0hRLHxqDd7JcPD6qaPTUhwTj4R/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "bno055_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/bno055",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "bno055_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/bno055",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
+  }
+ ]
+}

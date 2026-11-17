@@ -1,0 +1,15 @@
+{
+  "dupont_26awg": {
+    "diametro": 1.2,
+    "longitudes_estandar_mm": [
+      100,
+      200,
+      300
+    ],
+    "carcasa_mm": [
+      2.54,
+      2.54,
+      14.0
+    ]
+  }
+}

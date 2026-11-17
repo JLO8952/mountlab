@@ -1,0 +1,194 @@
+{
+ "id": "bme680",
+ "nombre": "Sensor BME680",
+ "tipo": "electronico",
+ "categoria": "Sensores",
+ "etiquetas": [
+  "I2C",
+  "SPI"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Sensor ambiental 4 en 1 de Bosch: gas (VOC), presión, humedad y temperatura.",
+  "funcionamiento": "Mide T, HR y presión con elementos MEMS y la calidad del aire con una placa calefactora de óxido metálico cuya resistencia varía con los VOC. La librería BSEC calcula el índice IAQ.",
+  "voltaje": "Módulo 3.3–5 V (regulador y adaptador de nivel en placa); chip 1.71–3.6 V",
+  "corriente": "3.7 µA (T/P/H a 1 Hz); hasta 12 mA con calefactor de gas activo",
+  "interfaz": "I2C (0x76/0x77) y SPI",
+  "entradas": "Alimentación VCC/GND, SCL/SCK, SDA/SDI, CS, SDO (dirección)",
+  "salidas": "Datos digitales por I2C/SPI",
+  "dimensiones": "Módulo típico 15 × 13 × 3 mm (chip 3 × 3 × 0.93 mm)",
+  "datasheet": "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme680-ds001.pdf",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Temperatura",
+   "valor": "-40 a 85 °C (±1 °C)"
+  },
+  {
+   "param": "Humedad",
+   "valor": "0–100 % (±3 %)"
+  },
+  {
+   "param": "Presión",
+   "valor": "300–1100 hPa (±0.6 hPa)"
+  },
+  {
+   "param": "Gas",
+   "valor": "Resistencia del sensor MOX, índice IAQ 0–500"
+  },
+  {
+   "param": "Encapsulado chip",
+   "valor": "LGA 3.0 × 3.0 × 0.93 mm"
+  }
+ ],
+ "imagen": {
+  "src": "img/01_bme680.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 32000,
+   "url": "https://es.aliexpress.com/w/wholesale-BME680-module.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 60000,
+   "url": "https://www.amazon.com/s?k=BME680+module",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 45000,
+   "url": "https://listado.mercadolibre.com.co/bme680-module",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=BME680+module+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=BME680+module"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   16,
+   13,
+   1.6
+  ],
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -4.5,
+    "y": 3.0,
+    "d": 3.0
+   },
+   {
+    "x": 4.5,
+    "y": 3.0,
+    "d": 3.0
+   }
+  ],
+  "altura_superior": 0.93,
+  "altura_inferior": 8.5,
+  "holgura_inferior_cableado": 22,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Header",
+   "cx": 0.0,
+   "cy": -4.9,
+   "w": 15.24,
+   "h": 2.54,
+   "z": [
+    -2.5,
+    0.0
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  }
+ ],
+ "pines": [
+  {
+   "n": "VCC",
+   "func": "3.3–5 V",
+   "x": -6.35,
+   "y": -4.9
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": -3.81,
+   "y": -4.9
+  },
+  {
+   "n": "SCL",
+   "func": "Reloj I2C / SCK SPI",
+   "x": -1.27,
+   "y": -4.9
+  },
+  {
+   "n": "SDA",
+   "func": "Datos I2C / MOSI SPI",
+   "x": 1.27,
+   "y": -4.9
+  },
+  {
+   "n": "SDO",
+   "func": "MISO SPI / selección dirección I2C",
+   "x": 3.81,
+   "y": -4.9
+  },
+  {
+   "n": "CS",
+   "func": "Chip select SPI (alto = I2C)",
+   "x": 6.35,
+   "y": -4.9
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1RK2DPKNCVaL72Rf6Xo6Q-vd-gd3vrZAe",
+   "nombre": "01_bme680.step",
+   "url": "https://drive.google.com/file/d/1RK2DPKNCVaL72Rf6Xo6Q-vd-gd3vrZAe/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1QoixuSFfIYvV4AzQun30_L7XyNYJCbIv",
+   "nombre": "01_bme680.dxf",
+   "url": "https://drive.google.com/file/d/1QoixuSFfIYvV4AzQun30_L7XyNYJCbIv/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "bme680_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/bme680",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "bme680_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/bme680",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
+  }
+ ]
+}

@@ -1,0 +1,222 @@
+{
+ "id": "bms_2s_4a",
+ "nombre": "Cargador/BMS de litio 2 celdas 4 A",
+ "tipo": "electronico",
+ "categoria": "Energía",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Placa de protección para 2 celdas Li-ion en serie (7.4 V), 4 A.",
+  "funcionamiento": "Supervisa cada celda y corta con MOSFETs por sobrecarga (4.25–4.35 V), sobredescarga (2.5–3.0 V), sobrecorriente y cortocircuito. La carga se hace con una fuente CC/CV de 8.4 V.",
+  "voltaje": "Carga 8.4–9 V; pack 7.4 V nominal",
+  "corriente": "4 A continuos (≈6–8 A protección)",
+  "interfaz": "N/A",
+  "entradas": "B−, BM (punto medio), B+",
+  "salidas": "P+ / P− (carga y cargador)",
+  "dimensiones": "≈30 × 16 × 3.5 mm",
+  "datasheet": "",
+  "notas": "Un BMS protege pero no regula la carga: usar un cargador de 8.4 V o un módulo de carga 2S."
+ },
+ "especificaciones": [
+  {
+   "param": "Sobrecarga",
+   "valor": "4.25–4.35 V/celda"
+  },
+  {
+   "param": "Sobredescarga",
+   "valor": "2.5–3.0 V/celda"
+  },
+  {
+   "param": "Consumo en reposo",
+   "valor": "< 10 µA"
+  }
+ ],
+ "imagen": {
+  "src": "img/14_bms_2s_4a.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 2500,
+   "url": "https://es.aliexpress.com/w/wholesale-2S-4A-BMS-18650-protection-board.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 12000,
+   "url": "https://www.amazon.com/s?k=2S+4A+BMS+18650+protection+board",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 6000,
+   "url": "https://listado.mercadolibre.com.co/2s-4a-bms-18650-protection-board",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=2S+4A+BMS+18650+protection+board+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=2S+4A+BMS+18650+protection+board"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   30,
+   16,
+   1.6
+  ],
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 1.0,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "calor",
+   "nombre": "MOSFET",
+   "cx": -8.0,
+   "cy": 2.5,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    2.6
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "calor",
+   "nombre": "MOSFET",
+   "cx": -2.5,
+   "cy": 2.5,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    2.6
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "calor",
+   "nombre": "MOSFET",
+   "cx": 3.0,
+   "cy": 2.5,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    2.6
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "calor",
+   "nombre": "MOSFET",
+   "cx": 8.5,
+   "cy": 2.5,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    2.6
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "soldadura",
+   "nombre": "Pads B-/BM/B+ P-/P+",
+   "cx": 0.0,
+   "cy": -1.0,
+   "w": 29.4,
+   "h": 12.0,
+   "z": [
+    1.6,
+    1.65
+   ],
+   "salida": "+Z",
+   "holgura": 3
+  }
+ ],
+ "pines": [
+  {
+   "n": "B−",
+   "func": "Negativo celda 1",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "BM",
+   "func": "Unión entre celdas",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "B+",
+   "func": "Positivo celda 2",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "P−",
+   "func": "Salida/entrada negativa",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "P+",
+   "func": "Salida/entrada positiva",
+   "x": null,
+   "y": null
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1VZSJdjfKdu2rtxQ_ndf-xdAWsXRd8jZa",
+   "nombre": "14_bms_2s_4a.step",
+   "url": "https://drive.google.com/file/d/1VZSJdjfKdu2rtxQ_ndf-xdAWsXRd8jZa/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1JcpXXxk5n6tMB_TS8Fj3ZqUeZkwAaeUo",
+   "nombre": "14_bms_2s_4a.dxf",
+   "url": "https://drive.google.com/file/d/1JcpXXxk5n6tMB_TS8Fj3ZqUeZkwAaeUo/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "bms_2s_4a_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/bms_2s_4a",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "bms_2s_4a_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/bms_2s_4a",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

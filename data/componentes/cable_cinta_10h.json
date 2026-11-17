@@ -1,0 +1,97 @@
+{
+ "id": "cable_cinta_10h",
+ "nombre": "Cable cinta 10 hilos (1 metro)",
+ "tipo": "electronico",
+ "categoria": "Cableado",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "m",
+ "ficha": {
+  "descripcion": "Cable plano de 10 conductores, paso 1.27 mm, 28 AWG.",
+  "funcionamiento": "Conexión de buses (IDC) entre tarjetas.",
+  "voltaje": "≤ 300 V",
+  "corriente": "≈1 A por hilo",
+  "interfaz": "N/A",
+  "entradas": "Conector IDC 2 × 5",
+  "salidas": "Conector IDC 2 × 5",
+  "dimensiones": "12.7 mm de ancho × 1 m",
+  "datasheet": "",
+  "notas": "La lista indica 10 unidades de 1 m (10 m en total)."
+ },
+ "especificaciones": [
+  {
+   "param": "Hilos",
+   "valor": "10"
+  },
+  {
+   "param": "Paso",
+   "valor": "1.27 mm"
+  },
+  {
+   "param": "Calibre",
+   "valor": "28 AWG"
+  },
+  {
+   "param": "Ancho",
+   "valor": "12.7 mm"
+  }
+ ],
+ "imagen": {
+  "src": "img/18_cable_cinta_10h.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 2000,
+   "url": "https://es.aliexpress.com/w/wholesale-ribbon-cable-10-wire-1.27mm.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 15000,
+   "url": "https://www.amazon.com/s?k=ribbon+cable+10+wire+1.27mm",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 3000,
+   "url": "https://listado.mercadolibre.com.co/ribbon-cable-10-wire-1.27mm",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=ribbon+cable+10+wire+1.27mm+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=ribbon+cable+10+wire+1.27mm"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "1K89ChC5R4eusmakzcikt5LVMVS4hsI90",
+   "nombre": "18_cable_cinta_10h.step",
+   "url": "https://drive.google.com/file/d/1K89ChC5R4eusmakzcikt5LVMVS4hsI90/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1LBnK7wa-IgpAWr-tpi2NptDcMh2rd_W2",
+   "nombre": "18_cable_cinta_10h.dxf",
+   "url": "https://drive.google.com/file/d/1LBnK7wa-IgpAWr-tpi2NptDcMh2rd_W2/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

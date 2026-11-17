@@ -1,0 +1,99 @@
+{
+ "id": "bateria_18650",
+ "nombre": "Batería litio 18650 3.7 V 1000 mAh",
+ "tipo": "electronico",
+ "categoria": "Energía",
+ "etiquetas": [
+  "18650"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Celda cilíndrica de ion-litio 18650, 3.7 V nominal, 1000 mAh.",
+  "funcionamiento": "Almacena energía electroquímica; se carga con un perfil CC/CV a 4.2 V.",
+  "voltaje": "Nominal 3.7 V; carga 4.2 V; corte 2.75–3.0 V",
+  "corriente": "Descarga típica 1C (1 A); carga 0.5C",
+  "interfaz": "N/A",
+  "entradas": "Terminal + (cabeza)",
+  "salidas": "Terminal − (base)",
+  "dimensiones": "Ø18 × 65 mm",
+  "datasheet": "",
+  "notas": "Verificar la capacidad real: muchas celdas económicas declaran más de lo que entregan."
+ },
+ "especificaciones": [
+  {
+   "param": "Capacidad",
+   "valor": "1000 mAh (3.7 Wh)"
+  },
+  {
+   "param": "Química",
+   "valor": "Li-ion (NMC/LCO)"
+  },
+  {
+   "param": "Peso",
+   "valor": "≈40–45 g"
+  },
+  {
+   "param": "Temp. carga",
+   "valor": "0–45 °C"
+  }
+ ],
+ "imagen": {
+  "src": "img/08_bateria_18650.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 6000,
+   "url": "https://es.aliexpress.com/w/wholesale-18650-battery-3.7V.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 20000,
+   "url": "https://www.amazon.com/s?k=18650+battery+3.7V",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 9000,
+   "url": "https://listado.mercadolibre.com.co/18650-battery-3.7v",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=18650+battery+3.7V+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=18650+battery+3.7V"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "110EhivWzZ6IiL_1bu_vQ6sMcITn35jwn",
+   "nombre": "08_bateria_18650.step",
+   "url": "https://drive.google.com/file/d/110EhivWzZ6IiL_1bu_vQ6sMcITn35jwn/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1WxuJJ9JgTajMjitYzqj8pamwn3btCCCX",
+   "nombre": "08_bateria_18650.dxf",
+   "url": "https://drive.google.com/file/d/1WxuJJ9JgTajMjitYzqj8pamwn3btCCCX/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

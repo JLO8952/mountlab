@@ -1,0 +1,97 @@
+{
+ "id": "headers_macho_hembra",
+ "nombre": "Headers macho y hembra",
+ "tipo": "electronico",
+ "categoria": "Conectores",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "juego",
+ "ficha": {
+  "descripcion": "Regletas de pines paso 2.54 mm, macho y hembra, 1 × 40.",
+  "funcionamiento": "Permiten conectar módulos a PCB/protoboard de forma desmontable.",
+  "voltaje": "≤ 250 V AC",
+  "corriente": "3 A por pin",
+  "interfaz": "N/A",
+  "entradas": "Pines Ø0.64 mm cuadrados",
+  "salidas": "N/A",
+  "dimensiones": "Macho 101.6 × 2.5 × 11.5 mm; hembra 101.6 × 2.5 × 8.5 mm",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Paso",
+   "valor": "2.54 mm"
+  },
+  {
+   "param": "Pines",
+   "valor": "1 × 40 (divisible)"
+  },
+  {
+   "param": "Altura aislante",
+   "valor": "2.5 mm (macho), 8.5 mm (hembra)"
+  },
+  {
+   "param": "Largo pin macho",
+   "valor": "11.5 mm total"
+  }
+ ],
+ "imagen": {
+  "src": "img/04_headers_macho_hembra.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 4000,
+   "url": "https://es.aliexpress.com/w/wholesale-pin-header-male-female-2.54-40-pin.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 20000,
+   "url": "https://www.amazon.com/s?k=pin+header+male+female+2.54+40+pin",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 6000,
+   "url": "https://listado.mercadolibre.com.co/pin-header-male-female-2.54-40-pin",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=pin+header+male+female+2.54+40+pin+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=pin+header+male+female+2.54+40+pin"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "1b4iqlb6diuaTm3GpAm83X-aVwfTWUE_k",
+   "nombre": "04_headers_macho_hembra.step",
+   "url": "https://drive.google.com/file/d/1b4iqlb6diuaTm3GpAm83X-aVwfTWUE_k/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1IS_zuZN5AVlbHZAhkvb1PtQLpiy9I6Ds",
+   "nombre": "04_headers_macho_hembra.dxf",
+   "url": "https://drive.google.com/file/d/1IS_zuZN5AVlbHZAhkvb1PtQLpiy9I6Ds/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

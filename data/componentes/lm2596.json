@@ -1,0 +1,217 @@
+{
+ "id": "lm2596",
+ "nombre": "Convertidor DC-DC LM2596 reductor",
+ "tipo": "electronico",
+ "categoria": "Energía",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Regulador conmutado step-down ajustable (multivuelta) de 3 A.",
+  "funcionamiento": "Conmuta a 150 kHz y filtra con bobina y condensador. El potenciómetro ajusta la realimentación (Vout = 1.23 × (1 + R2/R1)).",
+  "voltaje": "Entrada 4.5–40 V; salida 1.25–37 V (Vin − 1.5 V mín.)",
+  "corriente": "2 A continuos (3 A pico con disipador)",
+  "interfaz": "N/A",
+  "entradas": "IN+ / IN−",
+  "salidas": "OUT+ / OUT−",
+  "dimensiones": "43 × 21 × 14 mm",
+  "datasheet": "https://www.ti.com/lit/ds/symlink/lm2596.pdf",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Frecuencia",
+   "valor": "150 kHz"
+  },
+  {
+   "param": "Eficiencia",
+   "valor": "hasta 92 %"
+  },
+  {
+   "param": "Rizado",
+   "valor": "< 30 mV"
+  },
+  {
+   "param": "Agujeros",
+   "valor": "2 × Ø3 mm"
+  }
+ ],
+ "imagen": {
+  "src": "img/09_lm2596.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 3500,
+   "url": "https://es.aliexpress.com/w/wholesale-LM2596-buck-converter-module.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 15000,
+   "url": "https://www.amazon.com/s?k=LM2596+buck+converter+module",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 6000,
+   "url": "https://listado.mercadolibre.com.co/lm2596-buck-converter-module",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=LM2596+buck+converter+module+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=LM2596+buck+converter+module"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   43,
+   21,
+   1.6
+  ],
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -18.0,
+    "y": 7.0,
+    "d": 3.0
+   },
+   {
+    "x": 18.0,
+    "y": -7.0,
+    "d": 3.0
+   }
+  ],
+  "altura_superior": 11.0,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "calor",
+   "nombre": "Inductor",
+   "cx": -1.5,
+   "cy": -0.5,
+   "w": 12,
+   "h": 12,
+   "z": [
+    1.6,
+    8.6
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "calor",
+   "nombre": "LM2596",
+   "cx": 11.5,
+   "cy": -4.0,
+   "w": 10,
+   "h": 9,
+   "z": [
+    1.6,
+    6.1
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "ajuste",
+   "nombre": "Trimmer",
+   "cx": 10.25,
+   "cy": 4.75,
+   "w": 9.5,
+   "h": 4.5,
+   "z": [
+    1.6,
+    11.6
+   ],
+   "salida": "+Z",
+   "holgura": 5
+  },
+  {
+   "tipo": "ajuste",
+   "nombre": "Tornillo trimmer",
+   "cx": 14.0,
+   "cy": 4.75,
+   "w": 2.4,
+   "h": 2.4,
+   "z": [
+    11.6,
+    12.6
+   ],
+   "salida": "+Z",
+   "holgura": 5
+  }
+ ],
+ "pines": [
+  {
+   "n": "IN+",
+   "func": "Entrada positiva",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "IN−",
+   "func": "Entrada negativa",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "OUT+",
+   "func": "Salida positiva",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "OUT−",
+   "func": "Salida negativa",
+   "x": null,
+   "y": null
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1RGqXKOcoRcgVJvdZDrKcRgZ7n_h7lLps",
+   "nombre": "09_lm2596.step",
+   "url": "https://drive.google.com/file/d/1RGqXKOcoRcgVJvdZDrKcRgZ7n_h7lLps/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1DXFZd44dxjM75FEK7ZSb0DnuHZxupIwC",
+   "nombre": "09_lm2596.dxf",
+   "url": "https://drive.google.com/file/d/1DXFZd44dxjM75FEK7ZSb0DnuHZxupIwC/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "lm2596_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/lm2596",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "lm2596_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/lm2596",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

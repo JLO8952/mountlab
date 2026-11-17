@@ -1,0 +1,106 @@
+{
+ "id": "switch_codillo_6p",
+ "nombre": "Switch de palanca 2 posiciones 6 pines",
+ "tipo": "electronico",
+ "categoria": "Conectores",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Interruptor de palanca DPDT (2 polos, 2 posiciones) tipo MTS-202.",
+  "funcionamiento": "Cada polo conecta su común con uno de dos terminales según la posición de la palanca.",
+  "voltaje": "125 V AC / 250 V AC",
+  "corriente": "6 A / 3 A",
+  "interfaz": "N/A",
+  "entradas": "2 comunes (terminales centrales)",
+  "salidas": "2 × 2 terminales",
+  "dimensiones": "Cuerpo 13 × 13 × 10 mm; rosca 9 mm; palanca 10 mm",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Tipo",
+   "valor": "DPDT ON-ON"
+  },
+  {
+   "param": "Rosca",
+   "valor": "M6 × 0.75"
+  },
+  {
+   "param": "Agujero de panel",
+   "valor": "Ø6 mm"
+  }
+ ],
+ "imagen": {
+  "src": "img/16_switch_codillo_6p.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 1000,
+   "url": "https://es.aliexpress.com/w/wholesale-MTS-202-toggle-switch-6-pin.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 10000,
+   "url": "https://www.amazon.com/s?k=MTS-202+toggle+switch+6+pin",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 2500,
+   "url": "https://listado.mercadolibre.com.co/mts-202-toggle-switch-6-pin",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=MTS-202+toggle+switch+6+pin+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=MTS-202+toggle+switch+6+pin"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [
+  {
+   "n": "1–2–3",
+   "func": "Polo A (2 = común)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "4–5–6",
+   "func": "Polo B (5 = común)",
+   "x": null,
+   "y": null
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1cOT0NMv1qz3pU8f-j7zaB6nSIK9GKs0Y",
+   "nombre": "16_switch_codillo_6p.step",
+   "url": "https://drive.google.com/file/d/1cOT0NMv1qz3pU8f-j7zaB6nSIK9GKs0Y/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1gJ6wRfYZyY89KHU0jjKVIy9oiC-dRWpf",
+   "nombre": "16_switch_codillo_6p.dxf",
+   "url": "https://drive.google.com/file/d/1gJ6wRfYZyY89KHU0jjKVIy9oiC-dRWpf/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

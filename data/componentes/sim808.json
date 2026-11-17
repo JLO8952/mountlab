@@ -1,0 +1,249 @@
+{
+ "id": "sim808",
+ "nombre": "Módulo SIM808 (GSM/GPRS + GPS)",
+ "tipo": "electronico",
+ "categoria": "Comunicación RF",
+ "etiquetas": [
+  "UART",
+  "GPS",
+  "GSM"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Módulo SIMCom cuatribanda GSM/GPRS con GPS y Bluetooth integrados.",
+  "funcionamiento": "Se controla con comandos AT por UART: SMS, llamadas, datos GPRS (TCP/HTTP) y posición GPS (NMEA).",
+  "voltaje": "Chip 3.4–4.4 V (típ. 4.0 V); placa 5–12 V según versión",
+  "corriente": "Picos de 2 A en transmisión GSM; 1 mA en sleep",
+  "interfaz": "UART (AT), GPS UART",
+  "entradas": "RXD, PWRKEY, micrófono",
+  "salidas": "TXD, RI, NETLIGHT, parlante",
+  "dimensiones": "Chip 24 × 24 × 2.6 mm; placa ≈50 × 45 × 8 mm",
+  "datasheet": "",
+  "notas": "Es 2G: verificar la cobertura 2G del operador en Colombia antes de usarlo en campo."
+ },
+ "especificaciones": [
+  {
+   "param": "Bandas",
+   "valor": "850/900/1800/1900 MHz"
+  },
+  {
+   "param": "GPRS",
+   "valor": "Clase 12"
+  },
+  {
+   "param": "GPS",
+   "valor": "22 canales de seguimiento, sensibilidad -165 dBm"
+  },
+  {
+   "param": "SIM",
+   "valor": "Micro/Nano según placa (2G)"
+  }
+ ],
+ "imagen": {
+  "src": "img/26_sim808.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 45000,
+   "url": "https://es.aliexpress.com/w/wholesale-SIM808-module-GSM-GPRS-GPS.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 110000,
+   "url": "https://www.amazon.com/s?k=SIM808+module+GSM+GPRS+GPS",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 85000,
+   "url": "https://listado.mercadolibre.com.co/sim808-module-gsm-gprs-gps",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=SIM808+module+GSM+GPRS+GPS+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=SIM808+module+GSM+GPRS+GPS"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   50,
+   45,
+   1.6
+  ],
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -22.0,
+    "y": -19.5,
+    "d": 3.0
+   },
+   {
+    "x": 22.0,
+    "y": -19.5,
+    "d": 3.0
+   },
+   {
+    "x": -22.0,
+    "y": 19.5,
+    "d": 3.0
+   },
+   {
+    "x": 22.0,
+    "y": 19.5,
+    "d": 3.0
+   }
+  ],
+  "altura_superior": 2.6,
+  "altura_inferior": 8.5,
+  "holgura_inferior_cableado": 22,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "conector",
+   "nombre": "Conector GSM",
+   "cx": 18.5,
+   "cy": -11.0,
+   "w": 7,
+   "h": 7,
+   "z": [
+    1.6,
+    3.1
+   ],
+   "salida": "+X",
+   "holgura": 15
+  },
+  {
+   "tipo": "conector",
+   "nombre": "Conector GPS",
+   "cx": 18.5,
+   "cy": 1.0,
+   "w": 7,
+   "h": 7,
+   "z": [
+    1.6,
+    3.1
+   ],
+   "salida": "+X",
+   "holgura": 15
+  },
+  {
+   "tipo": "conector",
+   "nombre": "Porta SIM",
+   "cx": -2.0,
+   "cy": 17.5,
+   "w": 16,
+   "h": 8,
+   "z": [
+    1.6,
+    4.1
+   ],
+   "salida": "+Y",
+   "holgura": 15
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header",
+   "cx": -20.0,
+   "cy": -6.61,
+   "w": 2.54,
+   "h": 20.32,
+   "z": [
+    -2.5,
+    0.0
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  }
+ ],
+ "pines": [
+  {
+   "n": "VCC/VIN",
+   "func": "Alimentación (≥2 A)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "TXD",
+   "func": "Salida serial",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "RXD",
+   "func": "Entrada serial",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "PWRKEY",
+   "func": "Encendido",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "GPS-ANT",
+   "func": "Antena GPS (activa)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "GSM-ANT",
+   "func": "Antena GSM",
+   "x": null,
+   "y": null
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1AOY5x4-AVZfb33LLQajgAVGyN_O6qtsH",
+   "nombre": "26_sim808.step",
+   "url": "https://drive.google.com/file/d/1AOY5x4-AVZfb33LLQajgAVGyN_O6qtsH/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1-rh5eHsAAHoGQusSw8yXb5RokHzZ1Cox",
+   "nombre": "26_sim808.dxf",
+   "url": "https://drive.google.com/file/d/1-rh5eHsAAHoGQusSw8yXb5RokHzZ1Cox/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "sim808_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/sim808",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "sim808_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/sim808",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

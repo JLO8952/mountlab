@@ -1,0 +1,213 @@
+{
+ "id": "modulo_microsd",
+ "nombre": "Módulo MicroSD",
+ "tipo": "electronico",
+ "categoria": "Almacenamiento",
+ "etiquetas": [
+  "SPI"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Lector de tarjetas MicroSD por SPI con regulador 3.3 V y adaptador de nivel.",
+  "funcionamiento": "El microcontrolador escribe/lee bloques de la tarjeta por SPI (librería SD / FatFS).",
+  "voltaje": "4.5–5.5 V (algunas versiones aceptan 3.3 V)",
+  "corriente": "≈80–200 mA en escritura",
+  "interfaz": "SPI",
+  "entradas": "CS, SCK, MOSI",
+  "salidas": "MISO",
+  "dimensiones": "42 × 24 × 5 mm",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Tarjetas",
+   "valor": "MicroSD / MicroSDHC (FAT32)"
+  },
+  {
+   "param": "Regulador",
+   "valor": "AMS1117-3.3"
+  },
+  {
+   "param": "Adaptador de nivel",
+   "valor": "74LVC125A"
+  },
+  {
+   "param": "Agujeros",
+   "valor": "4 × M2.5"
+  }
+ ],
+ "imagen": {
+  "src": "img/05_modulo_microsd.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 4000,
+   "url": "https://es.aliexpress.com/w/wholesale-micro-SD-card-module-SPI.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 18000,
+   "url": "https://www.amazon.com/s?k=micro+SD+card+module+SPI",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 7000,
+   "url": "https://listado.mercadolibre.com.co/micro-sd-card-module-spi",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=micro+SD+card+module+SPI+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=micro+SD+card+module+SPI"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   42,
+   24,
+   1.6
+  ],
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -16.0,
+    "y": -9.5,
+    "d": 2.6
+   },
+   {
+    "x": -16.0,
+    "y": 9.5,
+    "d": 2.6
+   },
+   {
+    "x": 18.5,
+    "y": -9.5,
+    "d": 2.6
+   },
+   {
+    "x": 18.5,
+    "y": 9.5,
+    "d": 2.6
+   }
+  ],
+  "altura_superior": 1.8,
+  "altura_inferior": 8.5,
+  "holgura_inferior_cableado": 22,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "conector",
+   "nombre": "Zócalo microSD",
+   "cx": 12.5,
+   "cy": -0.25,
+   "w": 15,
+   "h": 14.5,
+   "z": [
+    1.6,
+    3.4
+   ],
+   "salida": "+X",
+   "holgura": 15
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header",
+   "cx": -19.4,
+   "cy": 0.0,
+   "w": 2.54,
+   "h": 15.24,
+   "z": [
+    -2.5,
+    0.0
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  }
+ ],
+ "pines": [
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": -19.4,
+   "y": -6.35
+  },
+  {
+   "n": "VCC",
+   "func": "5 V",
+   "x": -19.4,
+   "y": -3.81
+  },
+  {
+   "n": "MISO",
+   "func": "Datos hacia el MCU",
+   "x": -19.4,
+   "y": -1.27
+  },
+  {
+   "n": "MOSI",
+   "func": "Datos desde el MCU",
+   "x": -19.4,
+   "y": 1.27
+  },
+  {
+   "n": "SCK",
+   "func": "Reloj SPI",
+   "x": -19.4,
+   "y": 3.81
+  },
+  {
+   "n": "CS",
+   "func": "Chip select",
+   "x": -19.4,
+   "y": 6.35
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "184oHPwr2el5idlGZRcUqgqayeYswX5Jt",
+   "nombre": "05_modulo_microsd.step",
+   "url": "https://drive.google.com/file/d/184oHPwr2el5idlGZRcUqgqayeYswX5Jt/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1uMbkFjE_Fm2o19vwOA3QGE1-ynPnNyRq",
+   "nombre": "05_modulo_microsd.dxf",
+   "url": "https://drive.google.com/file/d/1uMbkFjE_Fm2o19vwOA3QGE1-ynPnNyRq/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "modulo_microsd_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/modulo_microsd",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "modulo_microsd_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/modulo_microsd",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
+  }
+ ]
+}

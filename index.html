@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<title>MountLab</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f172a'/%3E%3Crect x='7' y='9' width='18' height='14' rx='2' fill='none' stroke='%2338bdf8' stroke-width='2'/%3E%3Ccircle cx='10.5' cy='12.5' r='1.6' fill='%2338bdf8'/%3E%3Ccircle cx='21.5' cy='19.5' r='1.6' fill='%2338bdf8'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="app/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="#/">
+    <svg viewBox="0 0 32 32" width="26" height="26"><rect width="32" height="32" rx="7" fill="#1e293b"/><rect x="7" y="9" width="18" height="14" rx="2" fill="none" stroke="#38bdf8" stroke-width="2"/><circle cx="10.5" cy="12.5" r="1.6" fill="#38bdf8"/><circle cx="21.5" cy="19.5" r="1.6" fill="#38bdf8"/></svg>
+    <span>MountLab</span>
+  </a>
+  <nav id="nav">
+    <a href="#/" data-r="catalogo">Catálogo</a>
+    <a href="#/proyectos" data-r="proyectos">Proyectos</a>
+    <a href="#/pendientes" data-r="pendientes">Pendientes <b id="nPend" class="cnt hide"></b></a>
+    <a href="#/asistente" data-r="asistente">Asistente IA</a>
+    <a href="#/ajustes" data-r="ajustes">Ajustes</a>
+  </nav>
+  <span id="estado" class="pill">Cargando…</span>
+</header>
+<main id="app"></main>
+<div id="toast"></div>
+<div id="modal" class="modal hide"><div class="modal-box" id="modalBox"></div></div>
+<script src="app/dxf.js"></script>
+<script src="app/storage.js"></script>
+<script src="app/editor.js"></script>
+<script src="app/app.js"></script>
+</body>
+</html>

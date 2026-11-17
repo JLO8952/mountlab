@@ -1,0 +1,93 @@
+{
+ "id": "tuerca_seguridad_14",
+ "nombre": "Tuerca de seguridad 1/4\"",
+ "tipo": "mecanico",
+ "categoria": "Herrajes",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Tuerca autoblocante con inserto de nylon, 1/4\"-20.",
+  "funcionamiento": "El inserto de nylon genera fricción en la rosca y evita que se afloje por vibración.",
+  "voltaje": "N/A",
+  "corriente": "N/A",
+  "interfaz": "N/A",
+  "entradas": "N/A",
+  "salidas": "N/A",
+  "dimensiones": "Hex 11.1 mm × 7.9 mm",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Entre caras",
+   "valor": "7/16\" (11.1 mm)"
+  },
+  {
+   "param": "Altura",
+   "valor": "7.9 mm"
+  },
+  {
+   "param": "Rosca",
+   "valor": "1/4\"-20 UNC"
+  }
+ ],
+ "imagen": {
+  "src": "img/33_tuerca_seguridad_14.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 200,
+   "url": "https://es.aliexpress.com/w/wholesale-1%2F4-20-nylon-lock-nut.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 10000,
+   "url": "https://www.amazon.com/s?k=1%2F4-20+nylon+lock+nut",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 400,
+   "url": "https://listado.mercadolibre.com.co/1/4-20-nylon-lock-nut",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=1%2F4-20+nylon+lock+nut+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=1%2F4-20+nylon+lock+nut"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "1xdq1vOkmDb8uthT3c-70X-JMV8fJMmOz",
+   "nombre": "33_tuerca_seguridad_14.step",
+   "url": "https://drive.google.com/file/d/1xdq1vOkmDb8uthT3c-70X-JMV8fJMmOz/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1eWxMiTeX-BV7UzY_RqCgKJ2CR3FZwnnC",
+   "nombre": "33_tuerca_seguridad_14.dxf",
+   "url": "https://drive.google.com/file/d/1eWxMiTeX-BV7UzY_RqCgKJ2CR3FZwnnC/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

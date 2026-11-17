@@ -1,0 +1,268 @@
+{
+ "id": "expansion_esp32_38p",
+ "nombre": "Placa de expansión ESP32 38 pines",
+ "tipo": "electronico",
+ "categoria": "Microcontroladores",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Base de expansión para el ESP32 DevKit de 38 pines con regleta G-V-S por GPIO y entrada de alimentación.",
+  "funcionamiento": "Regula 6.5–16 V a 5 V/3.3 V (AMS1117) y saca cada GPIO con su VCC y GND para conectar sensores y servos.",
+  "voltaje": "Jack DC 6.5–16 V o micro-USB/USB-C 5 V",
+  "corriente": "≈1 A (regulador lineal)",
+  "interfaz": "Todos los GPIO del ESP32",
+  "entradas": "Jack DC 5.5/2.1 mm, USB",
+  "salidas": "Filas G-V-S por GPIO, 5 V y 3.3 V",
+  "dimensiones": "≈70 × 55 × 15 mm",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Separación de zócalo",
+   "valor": "25.4 mm (38 pines)"
+  },
+  {
+   "param": "Selector de tensión",
+   "valor": "Jumper 3.3 V / 5 V en filas V"
+  },
+  {
+   "param": "Agujeros",
+   "valor": "4 × Ø3 mm"
+  }
+ ],
+ "imagen": {
+  "src": "img/13_expansion_esp32_38p.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 6000,
+   "url": "https://es.aliexpress.com/w/wholesale-ESP32-38-pin-expansion-board.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 20000,
+   "url": "https://www.amazon.com/s?k=ESP32+38+pin+expansion+board",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 12000,
+   "url": "https://listado.mercadolibre.com.co/esp32-38-pin-expansion-board",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=ESP32+38+pin+expansion+board+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=ESP32+38+pin+expansion+board"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   70,
+   55,
+   1.6
+  ],
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -31.5,
+    "y": -24.0,
+    "d": 3.0
+   },
+   {
+    "x": 31.5,
+    "y": -24.0,
+    "d": 3.0
+   },
+   {
+    "x": -31.5,
+    "y": 24.0,
+    "d": 3.0
+   },
+   {
+    "x": 31.5,
+    "y": 24.0,
+    "d": 3.0
+   }
+  ],
+  "altura_superior": 11.0,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 22,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Header hembra",
+   "cx": 0.0,
+   "cy": -12.7,
+   "w": 48.26,
+   "h": 2.54,
+   "z": [
+    1.6,
+    10.1
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header hembra",
+   "cx": 0.0,
+   "cy": 12.7,
+   "w": 48.26,
+   "h": 2.54,
+   "z": [
+    1.6,
+    10.1
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  },
+  {
+   "tipo": "pines",
+   "nombre": "GVS",
+   "cx": 0.0,
+   "cy": -17.7,
+   "w": 48.26,
+   "h": 2.54,
+   "z": [
+    1.6,
+    4.1
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  },
+  {
+   "tipo": "pines",
+   "nombre": "GVS",
+   "cx": 0.0,
+   "cy": 17.7,
+   "w": 48.26,
+   "h": 2.54,
+   "z": [
+    1.6,
+    4.1
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  },
+  {
+   "tipo": "pines",
+   "nombre": "GVS",
+   "cx": 0.0,
+   "cy": -20.24,
+   "w": 48.26,
+   "h": 2.54,
+   "z": [
+    1.6,
+    4.1
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  },
+  {
+   "tipo": "pines",
+   "nombre": "GVS",
+   "cx": 0.0,
+   "cy": 20.24,
+   "w": 48.26,
+   "h": 2.54,
+   "z": [
+    1.6,
+    4.1
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  },
+  {
+   "tipo": "pines",
+   "nombre": "GVS",
+   "cx": 0.0,
+   "cy": -22.78,
+   "w": 48.26,
+   "h": 2.54,
+   "z": [
+    1.6,
+    4.1
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  },
+  {
+   "tipo": "pines",
+   "nombre": "GVS",
+   "cx": 0.0,
+   "cy": 22.78,
+   "w": 48.26,
+   "h": 2.54,
+   "z": [
+    1.6,
+    4.1
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  },
+  {
+   "tipo": "conector",
+   "nombre": "Jack DC",
+   "cx": 29.0,
+   "cy": 0.0,
+   "w": 14,
+   "h": 9,
+   "z": [
+    1.6,
+    12.6
+   ],
+   "salida": "+X",
+   "holgura": 15
+  }
+ ],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "1pLXMAdgxQvxrToarHewhzITYRlSxDmVF",
+   "nombre": "13_expansion_esp32_38p.step",
+   "url": "https://drive.google.com/file/d/1pLXMAdgxQvxrToarHewhzITYRlSxDmVF/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1kcjg05CDKSkuj6rCkXqmd5lA9Wok__QA",
+   "nombre": "13_expansion_esp32_38p.dxf",
+   "url": "https://drive.google.com/file/d/1kcjg05CDKSkuj6rCkXqmd5lA9Wok__QA/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "expansion_esp32_38p_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/expansion_esp32_38p",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "expansion_esp32_38p_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/expansion_esp32_38p",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

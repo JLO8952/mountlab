@@ -1,0 +1,91 @@
+# MountLab · cada vez que la app guarda algo:
+#  1) regenera DXF/STEP de montaje de los componentes con "cad_pendiente" (o el que pidas a mano)
+#  2) sube los archivos a Google Drive (si existe el secreto RCLONE_CONFIG)
+#  3) reconstruye data/db.json y publica la web en GitHub Pages
+name: Datos, CAD y publicación
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      id:
+        description: "Id del componente a regenerar (vacío = los pendientes; --todos = todos)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: mountlab-datos
+  cancel-in-progress: false
+
+jobs:
+  datos:
+    if: ${{ !contains(github.event.head_commit.message, '[bot]') }}
+    runs-on: ubuntu-latest
+    env:
+      HAS_DRIVE: ${{ secrets.RCLONE_CONFIG != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: ¿Hay CAD por regenerar?
+        id: pend
+        run: |
+          if [ -n "${{ inputs.id }}" ] || grep -lq '"cad_pendiente": true' data/componentes/*.json 2>/dev/null; then
+            echo "cad=1" >> "$GITHUB_OUTPUT"; else echo "cad=0" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Instalar CadQuery
+        if: steps.pend.outputs.cad == '1'
+        run: pip install cadquery ezdxf
+
+      - name: Configurar rclone (Google Drive)
+        if: steps.pend.outputs.cad == '1' && env.HAS_DRIVE == 'true'
+        env:
+          RCLONE_CONFIG_TXT: ${{ secrets.RCLONE_CONFIG }}
+        run: |
+          curl -fsSL https://rclone.org/install.sh | sudo bash
+          mkdir -p ~/.config/rclone
+          printf '%s\n' "$RCLONE_CONFIG_TXT" > ~/.config/rclone/rclone.conf
+
+      - name: Regenerar DXF + STEP
+        if: steps.pend.outputs.cad == '1'
+        env:
+          DRIVE_REMOTE: ${{ env.HAS_DRIVE == 'true' && (vars.DRIVE_REMOTE || 'gdrive:MountLab/biblioteca/archivos') || '' }}
+        run: python cad/regenerar.py ${{ inputs.id }}
+
+      - name: Reconstruir db.json
+        run: python tools/build_db.py
+
+      - name: Guardar cambios
+        run: |
+          git config user.name "mountlab-bot"
+          git config user.email "mountlab-bot@users.noreply.github.com"
+          git add -A data archivos 2>/dev/null || git add -A data
+          if git diff --cached --quiet; then echo "Sin cambios"; exit 0; fi
+          git commit -m "[bot] db.json y CAD actualizados"
+          for i in 1 2 3; do git pull --rebase -X ours origin main && git push && break; sleep 5; done
+
+  publicar:
+    needs: datos
+    if: ${{ always() && !contains(github.event.head_commit.message, '[bot]') }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+      - id: deploy
+        uses: actions/deploy-pages@v4

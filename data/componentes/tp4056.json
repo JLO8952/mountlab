@@ -1,0 +1,170 @@
+{
+ "id": "tp4056",
+ "nombre": "Módulo TP4056",
+ "tipo": "electronico",
+ "categoria": "Energía",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Cargador de 1 celda Li-ion 4.2 V a 1 A con protección (DW01A + FS8205A).",
+  "funcionamiento": "Carga a corriente constante y luego tensión constante (CC/CV) hasta 4.2 V. La protección corta por sobredescarga (2.4 V), sobrecarga y cortocircuito.",
+  "voltaje": "Entrada 4.5–5.5 V (USB); salida batería 4.2 V ±1 %",
+  "corriente": "Carga 1 A (ajustable con RPROG = 1.2 kΩ)",
+  "interfaz": "N/A",
+  "entradas": "USB o IN+/IN−",
+  "salidas": "B+/B− (celda), OUT+/OUT− (carga protegida)",
+  "dimensiones": "26 × 17 × 4 mm (con conector USB)",
+  "datasheet": "https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Tensión final",
+   "valor": "4.2 V"
+  },
+  {
+   "param": "Corte sobredescarga",
+   "valor": "≈2.4 V"
+  },
+  {
+   "param": "Corriente de carga",
+   "valor": "1000 mA"
+  },
+  {
+   "param": "RPROG",
+   "valor": "1.2 kΩ (1 A)"
+  }
+ ],
+ "imagen": {
+  "src": "img/07_tp4056.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 2500,
+   "url": "https://es.aliexpress.com/w/wholesale-TP4056-module-protection-USB-C.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 15000,
+   "url": "https://www.amazon.com/s?k=TP4056+module+protection+USB-C",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 5000,
+   "url": "https://listado.mercadolibre.com.co/tp4056-module-protection-usb-c",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=TP4056+module+protection+USB-C+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=TP4056+module+protection+USB-C"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   26,
+   17,
+   1.6
+  ],
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 3.2,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "usb",
+   "nombre": "USB-C",
+   "cx": -10.5,
+   "cy": 0.0,
+   "w": 7.4,
+   "h": 9,
+   "z": [
+    1.6,
+    4.8
+   ],
+   "salida": "-X",
+   "holgura": 20
+  }
+ ],
+ "pines": [
+  {
+   "n": "IN+ / IN−",
+   "func": "Entrada 5 V",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "B+ / B−",
+   "func": "Celda 18650",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "OUT+ / OUT−",
+   "func": "Salida a la carga",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "LED rojo",
+   "func": "Cargando",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "LED azul/verde",
+   "func": "Carga completa",
+   "x": null,
+   "y": null
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1MeKrcHDhh7cQ-JhYWMz0cSYDJxJTL_Oi",
+   "nombre": "07_tp4056.step",
+   "url": "https://drive.google.com/file/d/1MeKrcHDhh7cQ-JhYWMz0cSYDJxJTL_Oi/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1FxnjsKQLFYSWxSEKn9hOBWYTXc5WraU3",
+   "nombre": "07_tp4056.dxf",
+   "url": "https://drive.google.com/file/d/1FxnjsKQLFYSWxSEKn9hOBWYTXc5WraU3/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "tp4056_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/tp4056",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "tp4056_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/tp4056",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

@@ -1,0 +1,118 @@
+{
+ "id": "sg90_metal",
+ "nombre": "Servomotor SG90 180° engranaje metálico (MG90S)",
+ "tipo": "electronico",
+ "categoria": "Actuadores",
+ "etiquetas": [
+  "PWM"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Microservo de 9 g con engranajes metálicos y giro de 180°.",
+  "funcionamiento": "Un controlador interno compara el ancho de pulso PWM con un potenciómetro y mueve el motor hasta la posición pedida.",
+  "voltaje": "4.8–6 V",
+  "corriente": "≈100–250 mA en movimiento; hasta 700 mA en bloqueo",
+  "interfaz": "PWM 50 Hz (pulso 0.5–2.5 ms)",
+  "entradas": "Señal PWM",
+  "salidas": "Posición del eje 0–180°",
+  "dimensiones": "22.8 × 12.2 × 28.5 mm; aletas 32.5 mm",
+  "datasheet": "http://www.ee.ic.ac.uk/pcheung/teaching/DE1_EE/stores/sg90_datasheet.pdf",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Torque",
+   "valor": "1.8 kg·cm (4.8 V) – 2.2 kg·cm (6 V)"
+  },
+  {
+   "param": "Velocidad",
+   "valor": "0.10 s/60°"
+  },
+  {
+   "param": "Peso",
+   "valor": "13.4 g"
+  },
+  {
+   "param": "Agujeros",
+   "valor": "2 × Ø2 mm a 27.5 mm"
+  }
+ ],
+ "imagen": {
+  "src": "img/39_sg90_metal.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 7000,
+   "url": "https://es.aliexpress.com/w/wholesale-MG90S-metal-gear-servo.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 30000,
+   "url": "https://www.amazon.com/s?k=MG90S+metal+gear+servo",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 14000,
+   "url": "https://listado.mercadolibre.com.co/mg90s-metal-gear-servo",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=MG90S+metal+gear+servo+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=MG90S+metal+gear+servo"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [
+  {
+   "n": "Marrón",
+   "func": "GND",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "Rojo",
+   "func": "VCC 4.8–6 V",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "Naranja",
+   "func": "Señal PWM",
+   "x": null,
+   "y": null
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1oqIOu0WBuebqZqahD33F_sfupCRTiFjl",
+   "nombre": "39_sg90_metal.step",
+   "url": "https://drive.google.com/file/d/1oqIOu0WBuebqZqahD33F_sfupCRTiFjl/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1SgoJHGfNRHaMKLTIhdtdYGsj4W8r8sZT",
+   "nombre": "39_sg90_metal.dxf",
+   "url": "https://drive.google.com/file/d/1SgoJHGfNRHaMKLTIhdtdYGsj4W8r8sZT/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

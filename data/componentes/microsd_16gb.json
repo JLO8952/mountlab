@@ -1,0 +1,144 @@
+{
+ "id": "microsd_16gb",
+ "nombre": "Memoria MicroSD 16 GB",
+ "tipo": "electronico",
+ "categoria": "Almacenamiento",
+ "etiquetas": [
+  "SPI"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Tarjeta MicroSDHC de 16 GB, clase 10 / UHS-I.",
+  "funcionamiento": "Memoria flash NAND; en microcontroladores se usa en modo SPI.",
+  "voltaje": "2.7–3.6 V",
+  "corriente": "≈100 mA máx. en escritura",
+  "interfaz": "SD 4 bits / SPI",
+  "entradas": "CMD, CLK, DAT0–3",
+  "salidas": "DAT0–3",
+  "dimensiones": "15 × 11 × 1.0 mm",
+  "datasheet": "https://www.sdcard.org/downloads/pls/",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Capacidad",
+   "valor": "16 GB"
+  },
+  {
+   "param": "Formato",
+   "valor": "FAT32"
+  },
+  {
+   "param": "Velocidad",
+   "valor": "Clase 10 (≥10 MB/s)"
+  }
+ ],
+ "imagen": {
+  "src": "img/06_microsd_16gb.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 12000,
+   "url": "https://es.aliexpress.com/w/wholesale-microSD-16GB-class-10.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 25000,
+   "url": "https://www.amazon.com/s?k=microSD+16GB+class+10",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 18000,
+   "url": "https://listado.mercadolibre.com.co/microsd-16gb-class-10",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=microSD+16GB+class+10+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=microSD+16GB+class+10"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [
+  {
+   "n": "1",
+   "func": "DAT2",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "2",
+   "func": "CD/DAT3 (CS en SPI)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "3",
+   "func": "CMD (MOSI)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "4",
+   "func": "VDD",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "5",
+   "func": "CLK",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "6",
+   "func": "VSS",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "7",
+   "func": "DAT0 (MISO)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "8",
+   "func": "DAT1",
+   "x": null,
+   "y": null
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1cakWCfmZVXjfFXSo5MSQTAWxw7IHo8yV",
+   "nombre": "06_microsd_16gb.step",
+   "url": "https://drive.google.com/file/d/1cakWCfmZVXjfFXSo5MSQTAWxw7IHo8yV/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1rcnKlWnI0LsVTvFiiZukzDn_bJL8XnX7",
+   "nombre": "06_microsd_16gb.dxf",
+   "url": "https://drive.google.com/file/d/1rcnKlWnI0LsVTvFiiZukzDn_bJL8XnX7/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

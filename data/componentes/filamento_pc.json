@@ -1,0 +1,97 @@
+{
+ "id": "filamento_pc",
+ "nombre": "Filamento policarbonato",
+ "tipo": "material",
+ "categoria": "Materiales",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "rollo",
+ "ficha": {
+  "descripcion": "Filamento PC para impresión 3D (1.75 mm, 1 kg).",
+  "funcionamiento": "Termoplástico de alta resistencia térmica e impacto; requiere boquilla caliente y cama caliente/cerramiento.",
+  "voltaje": "N/A",
+  "corriente": "N/A",
+  "interfaz": "N/A",
+  "entradas": "N/A",
+  "salidas": "N/A",
+  "dimensiones": "Carrete estándar Ø200 × 70 mm",
+  "datasheet": "",
+  "notas": "Secar antes de imprimir (higroscópico)."
+ },
+ "especificaciones": [
+  {
+   "param": "Boquilla",
+   "valor": "260–300 °C"
+  },
+  {
+   "param": "Cama",
+   "valor": "100–120 °C"
+  },
+  {
+   "param": "Tg",
+   "valor": "≈147 °C"
+  },
+  {
+   "param": "Diámetro",
+   "valor": "1.75 mm ± 0.05"
+  }
+ ],
+ "imagen": {
+  "src": "img/35_filamento_pc.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 110000,
+   "url": "https://es.aliexpress.com/w/wholesale-polycarbonate-filament-1.75mm-1kg.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 180000,
+   "url": "https://www.amazon.com/s?k=polycarbonate+filament+1.75mm+1kg",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 150000,
+   "url": "https://listado.mercadolibre.com.co/polycarbonate-filament-1.75mm-1kg",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=polycarbonate+filament+1.75mm+1kg+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=polycarbonate+filament+1.75mm+1kg"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {
+  "step": {
+   "drive_id": "11WeTgNdAYlXxuGffaH5KiZw8X56SsuW4",
+   "nombre": "35_filamento_pc.step",
+   "url": "https://drive.google.com/file/d/11WeTgNdAYlXxuGffaH5KiZw8X56SsuW4/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1ejDemOquMGNssmXNirZNd6YiyOb9STwn",
+   "nombre": "35_filamento_pc.dxf",
+   "url": "https://drive.google.com/file/d/1ejDemOquMGNssmXNirZNd6YiyOb9STwn/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

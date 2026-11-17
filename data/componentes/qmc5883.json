@@ -1,0 +1,183 @@
+{
+ "id": "qmc5883",
+ "nombre": "Placa magnetómetro QMC5883L (GY-271)",
+ "tipo": "electronico",
+ "categoria": "Sensores",
+ "etiquetas": [
+  "I2C"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Magnetómetro de 3 ejes (brújula electrónica), reemplazo del HMC5883L.",
+  "funcionamiento": "Sensores magnetorresistivos AMR miden el campo en X, Y, Z; con la componente horizontal se calcula el rumbo.",
+  "voltaje": "Módulo 3–5 V; chip 2.16–3.6 V",
+  "corriente": "75 µA (medición continua)",
+  "interfaz": "I2C (dirección 0x0D)",
+  "entradas": "SCL, SDA",
+  "salidas": "DRDY (dato listo)",
+  "dimensiones": "18 × 14 × 3 mm",
+  "datasheet": "",
+  "notas": "La dirección 0x0D identifica al QMC5883L; 0x1E corresponde al HMC5883L original (librerías distintas)."
+ },
+ "especificaciones": [
+  {
+   "param": "Rango",
+   "valor": "±2 a ±8 gauss"
+  },
+  {
+   "param": "Resolución",
+   "valor": "16 bits"
+  },
+  {
+   "param": "Precisión de rumbo",
+   "valor": "1–2°"
+  },
+  {
+   "param": "Tasa",
+   "valor": "hasta 200 Hz"
+  }
+ ],
+ "imagen": {
+  "src": "img/24_qmc5883.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 4000,
+   "url": "https://es.aliexpress.com/w/wholesale-QMC5883L-GY-271-module.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 15000,
+   "url": "https://www.amazon.com/s?k=QMC5883L+GY-271+module",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 9000,
+   "url": "https://listado.mercadolibre.com.co/qmc5883l-gy-271-module",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=QMC5883L+GY-271+module+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=QMC5883L+GY-271+module"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   18,
+   14,
+   1.6
+  ],
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -6.5,
+    "y": 4.5,
+    "d": 3.0
+   },
+   {
+    "x": 6.5,
+    "y": 4.5,
+    "d": 3.0
+   }
+  ],
+  "altura_superior": 0.9,
+  "altura_inferior": 8.5,
+  "holgura_inferior_cableado": 22,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Header",
+   "cx": 0.0,
+   "cy": -5.6,
+   "w": 12.7,
+   "h": 2.54,
+   "z": [
+    -2.5,
+    0.0
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  }
+ ],
+ "pines": [
+  {
+   "n": "VCC",
+   "func": "3–5 V",
+   "x": -5.08,
+   "y": -5.6
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": -2.54,
+   "y": -5.6
+  },
+  {
+   "n": "SCL",
+   "func": "Reloj I2C",
+   "x": 0.0,
+   "y": -5.6
+  },
+  {
+   "n": "SDA",
+   "func": "Datos I2C",
+   "x": 2.54,
+   "y": -5.6
+  },
+  {
+   "n": "DRDY",
+   "func": "Interrupción de dato listo",
+   "x": 5.08,
+   "y": -5.6
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1BY1K4wLoFU9z_RFH2EHJ9QlF5qYO8YYl",
+   "nombre": "24_qmc5883.step",
+   "url": "https://drive.google.com/file/d/1BY1K4wLoFU9z_RFH2EHJ9QlF5qYO8YYl/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1W_-nDkyXG16K8HJcNxgIjfdzbbzWXLWa",
+   "nombre": "24_qmc5883.dxf",
+   "url": "https://drive.google.com/file/d/1W_-nDkyXG16K8HJcNxgIjfdzbbzWXLWa/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "qmc5883_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/qmc5883",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "qmc5883_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/qmc5883",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
+  }
+ ]
+}

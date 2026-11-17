@@ -1,0 +1,18 @@
+{
+  "M2.5x4": {
+    "agujero": 3.6,
+    "profundidad": 4.6
+  },
+  "M3x5.7": {
+    "agujero": 4.0,
+    "profundidad": 6.2
+  },
+  "M4x8.1": {
+    "agujero": 5.6,
+    "profundidad": 8.6
+  },
+  "M5x9.5": {
+    "agujero": 6.4,
+    "profundidad": 10.0
+  }
+}

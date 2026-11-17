@@ -1,0 +1,108 @@
+{
+ "id": "jack_dc_21",
+ "nombre": "Conector jack hembra 2.1 mm",
+ "tipo": "electronico",
+ "categoria": "Conectores",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Conector DC hembra para PCB tipo DC-005, 5.5 × 2.1 mm.",
+  "funcionamiento": "Recibe el plug de una fuente: centro positivo (normalmente), camisa negativa y un contacto de conmutación.",
+  "voltaje": "≤ 30 V",
+  "corriente": "0.5–3 A",
+  "interfaz": "N/A",
+  "entradas": "Plug 5.5 mm (exterior) / 2.1 mm (pin)",
+  "salidas": "3 terminales PCB",
+  "dimensiones": "14.2 × 9 × 11 mm",
+  "datasheet": "",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Pin central",
+   "valor": "Ø2.0–2.1 mm"
+  },
+  {
+   "param": "Montaje",
+   "valor": "THT"
+  }
+ ],
+ "imagen": {
+  "src": "img/15_jack_dc_21.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 500,
+   "url": "https://es.aliexpress.com/w/wholesale-DC-005-DC-jack-5.5-2.1.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 8000,
+   "url": "https://www.amazon.com/s?k=DC-005+DC+jack+5.5+2.1",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 1500,
+   "url": "https://listado.mercadolibre.com.co/dc-005-dc-jack-5.5-2.1",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=DC-005+DC+jack+5.5+2.1+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=DC-005+DC+jack+5.5+2.1"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [
+  {
+   "n": "1",
+   "func": "Pin central (+)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "2",
+   "func": "Camisa (−)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "3",
+   "func": "Contacto de conmutación",
+   "x": null,
+   "y": null
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1gkNKpQ0BeORnoj44FnPIwobJm3CvtJfH",
+   "nombre": "15_jack_dc_21.step",
+   "url": "https://drive.google.com/file/d/1gkNKpQ0BeORnoj44FnPIwobJm3CvtJfH/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "14xwy9IjQTjn7HSNMXDK2xm2julCUy22z",
+   "nombre": "15_jack_dc_21.dxf",
+   "url": "https://drive.google.com/file/d/14xwy9IjQTjn7HSNMXDK2xm2julCUy22z/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

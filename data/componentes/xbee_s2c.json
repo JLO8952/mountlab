@@ -1,0 +1,229 @@
+{
+ "id": "xbee_s2c",
+ "nombre": "XBee S2C 2 mW antena de cable",
+ "tipo": "electronico",
+ "categoria": "Comunicación RF",
+ "etiquetas": [
+  "SPI",
+  "UART"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Módulo Digi XBee 3/S2C Zigbee 2.4 GHz, 2 mW (+3 dBm), antena de cable (XB24CZ7WIT-004).",
+  "funcionamiento": "Transceptor 802.15.4/Zigbee: modo transparente (AT) o por tramas API. Se configura con XCTU y forma redes en malla.",
+  "voltaje": "2.1–3.6 V (NO tolerante a 5 V)",
+  "corriente": "TX 33 mA, RX 28 mA, sleep < 1 µA",
+  "interfaz": "UART (hasta 1 Mbps), SPI",
+  "entradas": "DIN (RX), DI/O, AD0–AD3 (ADC 10 bits)",
+  "salidas": "DOUT (TX), DIO, PWM0",
+  "dimensiones": "24.38 × 27.61 mm (+ antena ≈25 mm)",
+  "datasheet": "https://www.digi.com/resources/documentation/digidocs/pdfs/90002002.pdf",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Frecuencia",
+   "valor": "2.4 GHz ISM"
+  },
+  {
+   "param": "Potencia TX",
+   "valor": "+3 dBm (2 mW)"
+  },
+  {
+   "param": "Sensibilidad",
+   "valor": "-102 dBm"
+  },
+  {
+   "param": "Alcance",
+   "valor": "60 m interior / 1200 m línea de vista"
+  },
+  {
+   "param": "Paso de pines",
+   "valor": "2.0 mm (no 2.54)"
+  },
+  {
+   "param": "Filas",
+   "valor": "2 × 10, separadas 22 mm"
+  }
+ ],
+ "imagen": {
+  "src": "img/21_xbee_s2c.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 90000,
+   "url": "https://es.aliexpress.com/w/wholesale-XBee-S2C-wire-antenna-XB24CZ7WIT.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 160000,
+   "url": "https://www.amazon.com/s?k=XBee+S2C+wire+antenna+XB24CZ7WIT",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 130000,
+   "url": "https://listado.mercadolibre.com.co/xbee-s2c-wire-antenna-xb24cz7wit",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=XBee+S2C+wire+antenna+XB24CZ7WIT+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=XBee+S2C+wire+antenna+XB24CZ7WIT"
+ },
+ "montaje": null,
+ "zonas": [],
+ "pines": [
+  {
+   "n": "1",
+   "func": "VCC",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "2",
+   "func": "DOUT (TX)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "3",
+   "func": "DIN (RX)",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "4",
+   "func": "DIO12",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "5",
+   "func": "RESET",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "6",
+   "func": "RSSI/PWM0",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "7",
+   "func": "DIO11",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "8",
+   "func": "Reservado",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "9",
+   "func": "DTR/SLEEP_RQ",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "10",
+   "func": "GND",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "11",
+   "func": "DIO4",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "12",
+   "func": "CTS/DIO7",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "13",
+   "func": "ON/SLEEP",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "14",
+   "func": "VREF",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "15",
+   "func": "ASSOC/DIO5",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "16",
+   "func": "RTS/DIO6",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "17",
+   "func": "AD3/DIO3",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "18",
+   "func": "AD2/DIO2",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "19",
+   "func": "AD1/DIO1",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "20",
+   "func": "AD0/DIO0/Commissioning",
+   "x": null,
+   "y": null
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "17u332yaDGGNv5WuezDf3eq3VpXUAsdh3",
+   "nombre": "21_xbee_s2c.step",
+   "url": "https://drive.google.com/file/d/17u332yaDGGNv5WuezDf3eq3VpXUAsdh3/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1VO2ViRNhISX8TnlwxFHLQuSp7262cy7K",
+   "nombre": "21_xbee_s2c.dxf",
+   "url": "https://drive.google.com/file/d/1VO2ViRNhISX8TnlwxFHLQuSp7262cy7K/view",
+   "carpeta": "Controladores/DXF"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  }
+ ]
+}

@@ -1,0 +1,209 @@
+{
+ "id": "gps_max_m10n",
+ "nombre": "GPS u-blox MAX-M10N",
+ "tipo": "electronico",
+ "categoria": "Comunicación RF",
+ "etiquetas": [
+  "I2C",
+  "UART",
+  "GPS"
+ ],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Receptor GNSS u-blox M10 de ultra bajo consumo (GPS, Galileo, GLONASS, BeiDou, QZSS).",
+  "funcionamiento": "Rastrea hasta 4 constelaciones en paralelo y entrega NMEA/UBX por UART o I2C.",
+  "voltaje": "Módulo 3.3–5 V; chip 2.7–3.6 V",
+  "corriente": "≈25 mW en seguimiento continuo",
+  "interfaz": "UART (9600 bps por defecto), I2C (0x42)",
+  "entradas": "RX, SDA/SCL, RESET",
+  "salidas": "TX, TIMEPULSE (PPS)",
+  "dimensiones": "Placa ≈26 × 30 × 7 mm con antena cerámica",
+  "datasheet": "https://content.u-blox.com/sites/default/files/MAX-M10S_DataSheet_UBX-20035208.pdf",
+  "notas": ""
+ },
+ "especificaciones": [
+  {
+   "param": "Sensibilidad",
+   "valor": "-166 dBm (seguimiento)"
+  },
+  {
+   "param": "TTFF",
+   "valor": "≈23 s en frío"
+  },
+  {
+   "param": "Precisión",
+   "valor": "1.5 m CEP"
+  },
+  {
+   "param": "Tasa de navegación",
+   "valor": "hasta 10 Hz (4 constelaciones)"
+  },
+  {
+   "param": "Chip",
+   "valor": "9.7 × 10.1 × 2.5 mm"
+  }
+ ],
+ "imagen": {
+  "src": "img/27_gps_max_m10n.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 40000,
+   "url": "https://es.aliexpress.com/w/wholesale-u-blox-MAX-M10-GPS-module.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 90000,
+   "url": "https://www.amazon.com/s?k=u-blox+MAX-M10+GPS+module",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 75000,
+   "url": "https://listado.mercadolibre.com.co/u-blox-max-m10-gps-module",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=u-blox+MAX-M10+GPS+module+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=u-blox+MAX-M10+GPS+module"
+ },
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   26,
+   30,
+   1.6
+  ],
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -10.0,
+    "y": 12.0,
+    "d": 3.0
+   },
+   {
+    "x": 10.0,
+    "y": 12.0,
+    "d": 3.0
+   }
+  ],
+  "altura_superior": 2.5,
+  "altura_inferior": 8.5,
+  "holgura_inferior_cableado": 22,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+ },
+ "zonas": [
+  {
+   "tipo": "antena",
+   "nombre": "Antena cerámica (cara inferior)",
+   "cx": 0.0,
+   "cy": 3.0,
+   "w": 18,
+   "h": 18,
+   "z": [
+    -4.5,
+    0.0
+   ],
+   "salida": "+Y",
+   "holgura": 10
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header",
+   "cx": 0.0,
+   "cy": -13.7,
+   "w": 15.24,
+   "h": 2.54,
+   "z": [
+    -2.5,
+    0.0
+   ],
+   "salida": "-Z",
+   "holgura": 22
+  }
+ ],
+ "pines": [
+  {
+   "n": "VCC",
+   "func": "Alimentación",
+   "x": -6.35,
+   "y": -13.7
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": -3.81,
+   "y": -13.7
+  },
+  {
+   "n": "TX",
+   "func": "Datos NMEA/UBX",
+   "x": -1.27,
+   "y": -13.7
+  },
+  {
+   "n": "RX",
+   "func": "Configuración",
+   "x": 1.27,
+   "y": -13.7
+  },
+  {
+   "n": "SDA/SCL",
+   "func": "I2C (DDC)",
+   "x": 3.81,
+   "y": -13.7
+  },
+  {
+   "n": "PPS",
+   "func": "1 pulso por segundo",
+   "x": 6.35,
+   "y": -13.7
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1_ULAhaExSYouEsbIPgD0ytvDDzSb61le",
+   "nombre": "27_gps_max_m10n.step",
+   "url": "https://drive.google.com/file/d/1_ULAhaExSYouEsbIPgD0ytvDDzSb61le/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1OWGwKesHcfHvRptBB-Jy6FaVsVl6-ZSm",
+   "nombre": "27_gps_max_m10n.dxf",
+   "url": "https://drive.google.com/file/d/1OWGwKesHcfHvRptBB-Jy6FaVsVl6-ZSm/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "gps_max_m10n_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/gps_max_m10n",
+   "url": null
+  },
+  "step_montaje": {
+   "nombre": "gps_max_m10n_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-16",
+   "carpeta": "MountLab/biblioteca/archivos/gps_max_m10n",
+   "url": null
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
+  }
+ ]
+}

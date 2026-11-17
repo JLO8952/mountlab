@@ -1,0 +1,29 @@
+{
+  "PETG": {
+    "proceso": "impresion_3d",
+    "temp_max_C": 70,
+    "pared_min": 1.6,
+    "ul94": "HB",
+    "contacto_alimentos": "No (FDM poroso)",
+    "resistencia_quimica": "Buena a alcohol isopropilico",
+    "costo_cop_kg": 85000
+  },
+  "PLA": {
+    "proceso": "impresion_3d",
+    "temp_max_C": 50,
+    "pared_min": 1.2,
+    "ul94": "HB",
+    "contacto_alimentos": "No (FDM poroso)",
+    "resistencia_quimica": "Regular",
+    "costo_cop_kg": 70000
+  },
+  "ASA": {
+    "proceso": "impresion_3d",
+    "temp_max_C": 90,
+    "pared_min": 1.6,
+    "ul94": "HB",
+    "contacto_alimentos": "No",
+    "resistencia_quimica": "Buena, resiste UV",
+    "costo_cop_kg": 110000
+  }
+}
