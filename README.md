@@ -39,6 +39,10 @@ Biblioteca de componentes, catálogo y proyectos de John Fredy Correa. Une **Mou
    (Alternativa: secreto `RCLONE_CONFIG` para que la Action suba directo a Drive; requiere un client_id propio de Google.)
 5. (Opcional) Asistente IA: clave de console.anthropic.com en Ajustes.
 
+## Asistente
+- **⚡ Cerebro local** (`app/local.js`, sin internet ni clave): búsqueda TF-IDF tolerante a errores, red neuronal pequeña (trigramas de letras) entrenada en el navegador con la biblioteca, respuestas por plantilla (voltaje, pines, medidas, precios…), comandos `aprende: alias = componente` / `olvida: alias` / `revisa proyecto X`, y un **sistema experto** que revisa cada proyecto (direcciones I2C, niveles 3.3/5 V, consumo, servos, baterías sin protección, GSM, ADC2).
+- **☁ Nube** (Claude, Gemini u OpenAI): investiga en internet y propone fichas para aprobar. En modo **Automático** responde local y solo usa la nube cuando no sabe o le pides investigar.
+
 ## Comandos locales
 ```bash
 python tools/build_db.py                 # reconstruye data/db.json

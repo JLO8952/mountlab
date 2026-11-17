@@ -44,6 +44,7 @@
   function dirty() { return S.W && S.orig && JSON.stringify(S.W) !== S.orig; }
   window.addEventListener("beforeunload", e => { if (dirty()) { e.preventDefault(); e.returnValue = ""; } });
 
+  const fmtTexto = t => esc(t).replace(/\[\[([a-z0-9_]+)\]\]/g, (m, id) => comp(id) ? `<a class="cref" href="#/c/${id}">${esc(comp(id).nombre)}</a>` : m).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
   // ---------- router
   let lastHash = location.hash;
   async function route() {
@@ -70,6 +71,8 @@
   // =====================================================================  CATÁLOGO
   function filtrar() {
     const f = S.f, q = f.q.trim().toLowerCase();
+    let difusa = null;   // tolerante a errores de ortografía (cerebro local)
+    if (q && window.MLLocal) { MLLocal.asegurar(Store.db.componentes); difusa = new Set(MLLocal.buscar(q, 15).filter(r => r.s >= 0.6).map(r => r.c.id)); }
     return Store.db.componentes.filter(c => {
       if (f.tipo && c.tipo !== f.tipo) return false;
       if (f.cat && c.categoria !== f.cat) return false;
@@ -78,7 +81,7 @@
       if (f.estado === "borrador" && c.estado === "verificado") return false;
       if (f.estado === "montaje" && !(c.montaje && c.montaje.pcb)) return false;
       if (f.estado === "sinimg" && c.imagen) return false;
-      if (q) { const t = [c.id, c.nombre, c.categoria, c.fabricante, c.referencia, ...(c.etiquetas || []), ...Object.values(c.ficha || {})].join(" ").toLowerCase(); if (!q.split(/\s+/).every(w => t.includes(w))) return false; }
+      if (q) { const t = [c.id, c.nombre, c.categoria, c.fabricante, c.referencia, ...(c.alias || []), ...(c.etiquetas || []), ...Object.values(c.ficha || {})].join(" ").toLowerCase(); if (!q.split(/\s+/).every(w => t.includes(w)) && !(difusa && difusa.has(c.id))) return false; }
       return true;
     }).sort((a, b) => a.categoria.localeCompare(b.categoria, "es") || a.nombre.localeCompare(b.nombre, "es"));
   }
@@ -587,6 +590,7 @@
               <div style="margin-top:8px"><label>Descripción</label><textarea id="pDs">${esc(P.descripcion || "")}</textarea></div><div class="small muted" style="margin-top:6px">Creado ${esc(P.creado || "")}</div></div>
             <div class="panel"><h3>Costo estimado</h3><table class="t"><tr><td>Mezcla más barata</td><td class="num"><b>${cop(t.barato)}</b></td></tr>${Object.entries(t.prov).map(([k, v]) => `<tr><td>Todo en ${esc(k)}</td><td class="num">${cop(v)}</td></tr>`).join("")}</table>
               ${t.sinPrecio ? `<div class="small muted" style="margin-top:6px">${t.sinPrecio} referencia(s) sin precio.</div>` : ""}</div>
+            <div class="panel"><h3>🧪 Revisión técnica</h3>${(() => { const al = window.MLLocal ? MLLocal.revisar(P, Store.db) : []; return al.length ? al.map(a => `<div class="small" style="margin-bottom:6px" title="${esc(a.por)}">${a.nivel === "rojo" ? "🔴" : a.nivel === "amarillo" ? "🟡" : "🔵"} ${fmtTexto(a.msg)}</div>`).join("") + '<div class="small muted">Sistema experto con reglas fijas (pasa el mouse para ver el porqué). Orienta, no reemplaza tu criterio.</div>' : '<div class="small muted">Sin observaciones.</div>'; })()}</div>
             <div class="panel"><h3>Historial</h3>${(P.historial || []).slice().reverse().slice(0, 12).map(h => `<div class="small" style="margin-bottom:4px"><span class="muted">${esc(h.fecha)}</span> · ${esc(h.nota)}</div>`).join("")}</div>
           </div></div>`;
       const set = () => { pinta(); };
@@ -656,6 +660,7 @@
 
   // ---- proveedores de IA (la clave queda solo en este navegador)
   const IAS = { anthropic: "Claude (Anthropic)", gemini: "Google Gemini", openai: "OpenAI / compatible" };
+  const nubeLista = () => iaLista();
   function iaLista() { const c = Store.cfg; return c.aiProv === "gemini" ? !!c.gemKey : c.aiProv === "openai" ? !!(c.oaKey && c.oaModel) : !!c.aiKey; }
   function iaNombre() { const c = Store.cfg; return (IAS[c.aiProv] || IAS.anthropic) + " · " + (c.aiProv === "gemini" ? c.gemModel : c.aiProv === "openai" ? c.oaModel : c.aiModel); }
   const iaBusca = () => (Store.cfg.aiProv || "anthropic") !== "openai";
@@ -767,21 +772,32 @@
     return Store.save("pendientes", pend, `Pendiente: propuesta del asistente para ${p.componente}`);
   }
   function vAsistente() {
-    const sinKey = !iaLista();
+    const sinKey = false;   // el modo local funciona sin clave
     if (S.buscar === undefined) S.buscar = true;
-    app.innerHTML = `<div class="chat"><div class="row" style="justify-content:space-between"><h2>Asistente IA</h2><span class="small muted">${esc(iaNombre())} · ${Store.db.componentes.length} componentes · ${Store.db.proyectos.length} proyectos</span></div>
-      ${sinKey ? '<div class="msg warn">Para usar el asistente elige un proveedor (Claude, Gemini u OpenAI) y pega su clave en <a href="#/ajustes">Ajustes</a>. Se guarda solo en este navegador.</div>' : ""}
+    if (!S.modo) S.modo = nubeLista() ? "auto" : "local";
+    if (!nubeLista() && S.modo !== "local") S.modo = "local";
+    MLLocal.asegurar(Store.db.componentes);
+    const sinResp = (() => { try { return JSON.parse(localStorage.getItem("ml_sinresp")) || []; } catch (e) { return []; } })();
+    app.innerHTML = `<div class="chat"><div class="row" style="justify-content:space-between"><h2>Asistente IA</h2><div class="row" style="gap:4px">${[["auto", "🔀 Automático", "Responde local y gratis; si no sabe o le pides investigar, consulta a la nube"], ["local", "⚡ Local", "Sin internet ni costo: busca en tu biblioteca"], ["nube", "☁ Nube", iaNombre()]].map(([k, n, t]) => `<button class="sm ${S.modo === k ? "on" : ""}" data-modo="${k}" title="${esc(t)}" ${k !== "local" && !nubeLista() ? "disabled" : ""}>${n}</button>`).join("")}</div></div>
+      ${!nubeLista() ? '<div class="msg info small" style="margin:6px 0">Modo ⚡ local: responde gratis desde tu biblioteca (también entiende con errores de ortografía). Para investigar en internet y crear fichas agrega una clave de Claude o Gemini en <a href="#/ajustes">Ajustes</a>.</div>' : ""}
+      <details class="small" style="margin:4px 0"><summary>🧠 Cerebro local: <span id="cbE">${esc(MLLocal.estado())}</span>${sinResp.length ? ` · <b>${sinResp.length} pregunta(s) sin respuesta</b>` : ""}</summary>
+        <div class="panel" style="margin-top:6px;padding:10px"><div class="row" style="flex-wrap:nowrap"><input id="cbQ" placeholder="Prueba cómo interpreta una frase, ej. “sensr de presion”"><button class="sm" id="cbR">Reentrenar</button></div><div id="cbO" class="small" style="margin-top:6px"></div>
+        <div class="small muted" style="margin-top:6px">Comandos: <code>aprende: termo = lm75_modulo</code> · <code>olvida: termo</code> · <code>revisa proyecto termo-01</code></div>
+        ${sinResp.length ? `<div style="margin-top:8px"><b>Sin respuesta</b> (enséñale a qué componente se refieren):${sinResp.slice(-10).reverse().map(x => `<div class="row" style="justify-content:space-between;margin-top:3px"><span>“${esc(x)}”</span><button class="sm" data-ens="${esc(x)}">Enseñar</button></div>`).join("")}<button class="sm" id="cbL" style="margin-top:6px">Limpiar lista</button></div>` : ""}</div></details>
       <div class="log" id="log"></div>
       <div class="row small" style="margin-top:6px;gap:14px"><label class="row" style="gap:6px;margin:0;color:var(--ink)"><input type="checkbox" id="qB" style="width:auto" ${S.buscar && iaBusca() ? "checked" : ""} ${iaBusca() ? "" : "disabled"}> 🔎 Buscar en internet (datasheets, medidas, precios)</label>
         ${iaBusca() ? "" : '<span class="muted">El proveedor OpenAI/compatible no busca en internet desde aquí.</span>'}<button class="sm" id="qC" style="margin-left:auto">Nueva conversación</button></div>
       <div class="in"><textarea id="q" rows="2" placeholder="Ej: “Agrega el MPU6050 GY-521 con su datasheet, pines, medidas y precios”" ${sinKey ? "disabled" : ""}></textarea><button class="pri" id="send" ${sinKey ? "disabled" : ""}>Enviar</button></div></div>`;
     const log = $("#log");
     const fmt = t => esc(t).replace(/\[\[([a-z0-9_]+)\]\]/g, (m, id) => comp(id) ? `<a class="cref" href="#/c/${id}">${esc(comp(id).nombre)}</a>` : m).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
-    const ejemplos = ["Agrega el sensor MPU6050 (GY-521): datasheet, pines, medidas de la placa y precios en Colombia", "Completa el datasheet y las especificaciones del BNO055", "¿Qué sensores I2C tengo y a qué voltaje funcionan?", "Busca precios actualizados del módulo GPS MAX-M10N"];
+    const ejemplos = ["¿Qué voltaje usa el bme28o?", "pines del lm75", "¿Qué sensores I2C tengo?", "revisa proyecto termo-01", ...(nubeLista() ? ["Agrega el sensor MPU6050 (GY-521): datasheet, pines, medidas y precios en Colombia", "Completa el datasheet del TP4056"] : [])];
     const pintaLog = () => {
-      if (!S.chat.length) { log.innerHTML = `<div class="muted small" style="text-align:center;margin-top:20px">Pídele que agregue o complete componentes: investiga en internet y te muestra una <b>propuesta</b>. Nada se guarda hasta que la apruebes.</div><div class="row" style="justify-content:center;margin-top:8px">${ejemplos.map(e => `<button class="sm ex">${esc(e)}</button>`).join("")}</div>`; $$(".ex").forEach(b => b.onclick = () => { if (!sinKey) { $("#q").value = b.textContent; enviar(); } }); return; }
+      if (!S.chat.length) { log.innerHTML = `<div class="muted small" style="text-align:center;margin-top:20px">Pregúntale por tus componentes (⚡ responde gratis desde tu biblioteca) o pídele que <b>agregue o complete</b> uno: investiga en internet y te muestra una <b>propuesta</b> que tú apruebas.</div><div class="row" style="justify-content:center;margin-top:8px">${ejemplos.map(e => `<button class="sm ex">${esc(e)}</button>`).join("")}</div>`; $$(".ex").forEach(b => b.onclick = () => { if (!sinKey) { $("#q").value = b.textContent; enviar(); } }); return; }
       log.innerHTML = S.chat.map((m, mi) => m.role === "user" ? `<div class="bub u">${esc(m.content)}</div>` :
-        `<div class="bub a" style="max-width:100%">${fmt(m.vista ?? m.content)}
+        `<div class="bub a" style="max-width:100%">${m.local ? `<div class="small muted" style="margin-bottom:4px">⚡ local · ${esc(m.via)}${m.conf ? " · " + Math.round(m.conf * 100) + "%" : ""}</div>` : ""}${fmt(m.vista ?? m.content)}
+          ${m.local && (m.ids || []).length ? `<div class="row" style="margin-top:6px;gap:4px">${m.ids.map(id => comp(id) ? `<button class="sm" data-sug="${esc(comp(id).nombre)}">${esc(comp(id).nombre)}</button>` : "").join("")}</div>` : ""}
+          ${m.accion && !m.accionHecha ? `<div class="row" style="margin-top:6px"><button class="pri sm" data-acc="${mi}">Confirmar</button><button class="sm" data-accx="${mi}">Cancelar</button></div>` : m.accionHecha ? `<div class="small" style="margin-top:4px">${esc(m.accionHecha)}</div>` : ""}
+          ${m.local && nubeLista() && !m.subida ? `<div style="margin-top:6px"><button class="sm" data-nube="${mi}">☁ Preguntar a la nube${S.buscar ? " (con búsqueda)" : ""}</button></div>` : ""}
           ${(m.props || []).map((p, pi) => htmlPropuesta(p, mi + ":" + pi, (m.estados || {})[pi])).join("")}
           ${(m.fuentes || []).length ? `<details style="margin-top:6px"><summary class="small">Fuentes consultadas (${m.fuentes.length})</summary><ul class="small" style="margin:4px 0;padding-left:18px">${m.fuentes.slice(0, 15).map(f => `<li><a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.titulo)}</a></li>`).join("")}</ul></details>` : ""}</div>`).join("");
       log.scrollTop = log.scrollHeight;
@@ -800,14 +816,51 @@
         try { await propuestaAPendientes(p, ks, fuenteTxt()); marca(m, pi, "Enviado a Pendientes"); estadoPill(); } catch (e) { toast("Error: " + e.message, 6000); }
       });
       $$("[data-pd]", log).forEach(b => b.onclick = () => { const { m, pi } = cl(b.dataset.pd); marca(m, pi, "Descartado"); });
+      $$("[data-sug]", log).forEach(b => b.onclick = () => { $("#q").value = b.dataset.sug; enviar(); });
+      $$("[data-nube]", log).forEach(b => b.onclick = () => { const mi = +b.dataset.nube; S.chat[mi].subida = true; nube(S.chat[mi - 1].content); });
+      $$("[data-accx]", log).forEach(b => b.onclick = () => { S.chat[+b.dataset.accx].accionHecha = "Cancelado"; pintaLog(); });
+      $$("[data-acc]", log).forEach(b => b.onclick = async () => {
+        const m = S.chat[+b.dataset.acc], A = m.accion, c = clone(comp(A.id)); if (!c) return;
+        c.alias = c.alias || [];
+        if (A.tipo === "alias" && !c.alias.includes(A.alias)) c.alias.push(A.alias);
+        if (A.tipo === "olvida") c.alias = c.alias.filter(x => norm(x) !== norm(A.alias));
+        try { await Store.save("componentes", c, `${c.id}: ${A.tipo === "alias" ? "aprende alias “" + A.alias + "”" : "olvida alias “" + A.alias + "”"}`); m.accionHecha = A.tipo === "alias" ? `✓ Aprendido: “${A.alias}” → ${c.nombre}` : "✓ Alias eliminado";
+          let L = []; try { L = JSON.parse(localStorage.getItem("ml_sinresp")) || []; } catch (e) {} localStorage.setItem("ml_sinresp", JSON.stringify(L.filter(x => norm(x) !== norm(A.alias))));
+          MLLocal.construir(Store.db.componentes); estadoPill(); } catch (e) { toast("Error: " + e.message, 5000); }
+        pintaLog();
+      });
     };
+    const norm = t => String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+    $$("[data-modo]").forEach(b => b.onclick = () => { S.modo = b.dataset.modo; vAsistente(); });
+    const cbO = () => { const q = $("#cbQ").value; if (!q.trim()) { $("#cbO").innerHTML = ""; return; } const B = MLLocal.buscar(q, 3), N = MLLocal.red(q, 3);
+      $("#cbO").innerHTML = `<b>Búsqueda:</b> ${B.map(r => `${esc(r.c.nombre)} <span class="muted">${Math.round(r.s * 100)}%</span>`).join(" · ") || "—"}<br><b>Red neuronal:</b> ${N.map(r => `${esc(r.c.nombre)} <span class="muted">${Math.round(r.p * 100)}%</span>`).join(" · ") || "entrenando…"}`; };
+    $("#cbQ").oninput = cbO;
+    $("#cbR").onclick = () => { MLLocal.construir(Store.db.componentes); $("#cbE").textContent = "entrenando…"; };
+    document.addEventListener("ml-red", () => { const e = $("#cbE"); if (e) e.textContent = MLLocal.estado(); }, { once: true });
+    $$("[data-ens]").forEach(b => b.onclick = () => { $("#q").value = `aprende: ${b.dataset.ens} = `; $("#q").focus(); });
+    const cl2 = $("#cbL"); if (cl2) cl2.onclick = () => { localStorage.removeItem("ml_sinresp"); vAsistente(); };
     pintaLog();
     $("#q").onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); enviar(); } };
     $("#send").onclick = enviar;
     $("#qB").onchange = e => { S.buscar = e.target.checked; };
     $("#qC").onclick = () => { S.chat = []; pintaLog(); };
+    const PIDE_NUBE = /\b(agrega\w*|añad\w*|anad\w*|crea\w*|busca\w*|complet\w*|actualiz\w*|investig\w*|internet|recomiend\w*|recomend\w*|necesito|disen\w*|diseñ\w*|compar\w*|alternativ\w*|por que|porque|explica\w*)\b/i;
     async function enviar() {
       const q = $("#q").value.trim(); if (!q) return; $("#q").value = "";
+      if (S.modo !== "nube") {
+        const r = MLLocal.responder(q, Store.db);
+        const directo = S.modo === "local" || !nubeLista() || ["comando", "sistema experto"].includes(r.via) || (!PIDE_NUBE.test(q) && r.confianza >= 0.6 && !r.sinRespuesta);
+        if (directo) {
+          if (r.sinRespuesta) { let L = []; try { L = JSON.parse(localStorage.getItem("ml_sinresp")) || []; } catch (e) {} if (!L.includes(q)) L.push(q); localStorage.setItem("ml_sinresp", JSON.stringify(L.slice(-50))); }
+          let texto = r.texto;
+          if (r.sinRespuesta && PIDE_NUBE.test(q) && !nubeLista()) texto += "\n\nPara buscarlo en internet y crear la ficha necesito una clave de Claude o Gemini (Ajustes).";
+          S.chat.push({ role: "user", content: q }, { role: "assistant", content: texto, local: true, via: r.via, conf: r.confianza, ids: r.ids, accion: r.accion });
+          pintaLog(); return;
+        }
+      }
+      return nube(q);
+    }
+    async function nube(q) {
       const buscar = S.buscar && iaBusca();
       S.chat.push({ role: "user", content: q }); S.chat.push({ role: "assistant", content: buscar ? "🔎 Investigando…" : "…" }); pintaLog();
       $("#send").disabled = true;
@@ -844,7 +897,9 @@ PROYECTOS:
 ${proys}`;
       const last = S.chat[S.chat.length - 1];
       try {
-        const hist = S.chat.slice(0, -1).slice(-12).map(m => ({ role: m.role, content: m.content }));
+        const hist = S.chat.slice(0, -1).slice(-12).map(m => ({ role: m.role, content: m.content })).filter((m, i, A) => !(m.role === "assistant" && i === 0));
+        while (hist.length > 1 && hist[0].role !== "user") hist.shift();
+        for (let i = hist.length - 1; i > 0; i--) if (hist[i].role === hist[i - 1].role) hist[i - 1].content += "\n" + hist.splice(i, 1)[0].content;
         const r = await llamarIA(system, hist, buscar);
         const { limpio, props } = extraerPropuestas(r.text);
         Object.assign(last, { content: r.text, vista: limpio || (props.length ? "Esta es mi propuesta:" : r.text), props, fuentes: r.fuentes });
@@ -926,7 +981,7 @@ ${proys}`;
   // ---------- inicio
   (async function () {
     app.innerHTML = '<div class="panel muted">Cargando biblioteca…</div>';
-    await Store.load(); estadoPill(); route();
+    await Store.load(); estadoPill(); if (window.MLLocal) MLLocal.construir(Store.db.componentes); route();
     if (Store.error && Store.mode !== "github") console.warn(Store.error);
   })();
   window.ML = { S, route, toast };
