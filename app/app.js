@@ -500,9 +500,11 @@
     const nombres = { step: "Modelo 3D (STEP)", dxf: "Plano (DXF)", step_montaje: "STEP de montaje (placa + agujeros + zonas)", dxf_huella: "DXF de huella (origen al centro)" };
     const gh = `https://github.com/${Store.cfg.owner}/${Store.cfg.repo}`;
     body.innerHTML = `<div class="grid2">
-      <div class="panel"><h3>Archivos en Google Drive</h3>
+      <div class="panel"><h3>Archivos CAD</h3>
         <table class="t"><tr><th>Archivo</th><th>Nombre</th><th>Versión</th></tr>${Object.entries(A).map(([k, a]) => `<tr><td>${nombres[k] || k}</td><td>${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.nombre || "abrir")} ↗</a>` : esc(a.nombre || "")}<div class="small muted">${esc(a.carpeta || "")}</div></td><td>${a.version ? "v" + a.version : ""}</td></tr>`).join("") || '<tr><td colspan="3" class="muted">Sin archivos todavía</td></tr>'}</table>
-        <div class="msg info" style="margin-top:10px">En tu PC los encuentras en <b>D:\\Mi unidad\\MountLab\\biblioteca\\archivos\\${esc(W.id)}\\</b> (Drive para escritorio) para abrirlos directo en SolidWorks.</div>
+        ${Object.values(A).some(a => String(a.carpeta || "").includes("repositorio"))
+          ? `<div class="msg warn" style="margin-top:10px">Los archivos de montaje están guardados en <b>GitHub</b> (carpeta <code>archivos/${esc(W.id)}</code>): al hacer clic se <b>descargan</b> y los abres en SolidWorks desde Descargas. Para que lleguen solos a <b>D:\\Mi unidad\\MountLab\\biblioteca\\archivos\\${esc(W.id)}\\</b> falta activar la subida a Drive (rclone, ver README).</div>`
+          : `<div class="msg info" style="margin-top:10px">En tu PC los encuentras en <b>D:\\Mi unidad\\MountLab\\biblioteca\\archivos\\${esc(W.id)}\\</b> (Drive para escritorio) para abrirlos directo en SolidWorks.</div>`}
         ${W.cad_pendiente ? '<div class="msg warn">Hay cambios de geometría pendientes de regenerar en CAD.</div>' : ""}</div>
       <div class="panel"><h3>Generar</h3>
         <p class="small muted">El DXF de huella se puede bajar ya mismo desde aquí (lo genera el navegador). El STEP de montaje lo genera GitHub con CadQuery al guardar cambios de geometría, y lo sube a Drive como versión nueva.</p>
