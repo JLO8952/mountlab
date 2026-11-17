@@ -10,7 +10,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Sensor Bosch de presión, humedad y temperatura (sin gas).",
@@ -83,9 +83,9 @@
   "fijacion": "tornillo",
   "agujeros": [
    {
-    "x": 0.0,
-    "y": 3.05,
-    "d": 3.0
+    "x": 3.5,
+    "y": 2.5,
+    "d": 3
    }
   ],
   "altura_superior": 0.93,
@@ -97,13 +97,13 @@
   {
    "tipo": "pines",
    "nombre": "Header",
-   "cx": 0.0,
+   "cx": 0,
    "cy": -4.25,
    "w": 15.24,
    "h": 2.54,
    "z": [
     -2.5,
-    0.0
+    0
    ],
    "salida": "-Z",
    "holgura": 22
@@ -180,6 +180,16 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-16",
+   "nota": "prueba de agujero",
+   "cambios": [
+    "montaje"
+   ]
   }
- ]
+ ],
+ "cad_pendiente": true,
+ "modificado": "2026-11-17T03:43:02.228Z"
 }
