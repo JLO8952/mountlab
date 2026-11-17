@@ -497,11 +497,11 @@
   // ---- Archivos CAD
   function tabArchivos(body, W) {
     const A = W.archivos || {};
-    const nombres = { step: "Modelo 3D (STEP)", dxf: "Plano (DXF)", step_montaje: "STEP de montaje (placa + agujeros + zonas)", dxf_huella: "DXF de huella (origen al centro)" };
+    const nombres = { step: "Modelo 3D (STEP)", dxf: "Plano (DXF)", step_montaje: "STEP de montaje (placa + agujeros + zonas)", dxf_huella: "DXF de huella (origen al centro)", datasheet: "Datasheet (copia PDF)" };
     const gh = `https://github.com/${Store.cfg.owner}/${Store.cfg.repo}`;
     body.innerHTML = `<div class="grid2">
       <div class="panel"><h3>Archivos CAD</h3>
-        <table class="t"><tr><th>Archivo</th><th>Nombre</th><th>Versión</th></tr>${Object.entries(A).map(([k, a]) => `<tr><td>${nombres[k] || k}</td><td>${a.url ? (/github\.com\/.+\/raw\/|raw\.githubusercontent\.com/.test(a.url) ? `<a href="#" data-dl="${esc(a.url)}" data-nm="${esc(a.nombre || "")}">⬇ ${esc(a.nombre || "descargar")}</a>` : `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.nombre || "abrir")} ↗</a>`) : esc(a.nombre || "")}<div class="small muted">${esc(a.carpeta || "")}</div></td><td>${a.version ? "v" + a.version : ""}</td></tr>`).join("") || '<tr><td colspan="3" class="muted">Sin archivos todavía</td></tr>'}</table>
+        <table class="t"><tr><th>Archivo</th><th>Nombre</th><th>Versión</th></tr>${Object.entries(A).map(([k, a]) => `<tr><td>${nombres[k] || k}</td><td>${a.url ? (/github\.com\/.+\/raw\/|raw\.githubusercontent\.com/.test(a.url) ? `<a href="#" data-dl="${esc(a.url)}" data-nm="${esc(a.nombre || "")}">⬇ ${esc(a.nombre || "descargar")}</a>` : `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.nombre || "abrir")} ↗</a>`) : esc(a.nombre || "")}<div class="small muted">${esc(a.carpeta || "")}</div></td><td>${a.version ? "v" + a.version : ""}${a.error ? `<div class="small" style="color:var(--warn)">Sin copia: ${esc(a.error)}${a.fuente ? ` · <a href="${esc(a.fuente)}" target="_blank" rel="noopener">abrir original ↗</a>` : ""}</div>` : ""}</td></tr>`).join("") || '<tr><td colspan="3" class="muted">Sin archivos todavía</td></tr>'}</table>
         ${Object.values(A).some(a => String(a.carpeta || "").includes("repositorio"))
           ? `<div class="msg info" style="margin-top:10px">Los archivos de montaje se guardan en <b>GitHub</b> (<code>archivos/${esc(W.id)}</code>); al hacer clic se descargan. Con el <b>sincronizador de MountLab</b> instalado en tu PC también llegan solos (cada 10 min) a <b>D:\\Mi unidad\\MountLab\\biblioteca\\archivos\\${esc(W.id)}\\</b> para abrirlos en SolidWorks.</div>`
           : `<div class="msg info" style="margin-top:10px">En tu PC los encuentras en <b>D:\\Mi unidad\\MountLab\\biblioteca\\archivos\\${esc(W.id)}\\</b> (Drive para escritorio) para abrirlos directo en SolidWorks.</div>`}
@@ -628,18 +628,16 @@
     const L = Store.db.pendientes;
     app.innerHTML = `<div class="row" style="justify-content:space-between;margin-bottom:6px"><h2>Pendientes por aprobar</h2></div>
       <p class="muted" style="margin-top:0">Aquí llega la información que se descarga automáticamente (fotos, datasheets, precios, proveedores). No se guarda en la biblioteca hasta que la apruebes.</p>
-      ${L.length ? L.map((p, i) => { const c = comp(p.componente); return `<div class="panel" style="margin-bottom:12px"><div class="row" style="justify-content:space-between"><div><b>${c ? `<a href="#/c/${esc(c.id)}">${esc(c.nombre)}</a>` : esc(p.componente) + ' <span class="tag bad">nuevo / no existe</span>'}</b> <span class="small muted">· ${esc(p.fuente || "")} · ${esc(p.fecha || "")}</span></div>
+      ${L.length ? L.map((p, i) => { const c = comp(p.componente); return `<div class="panel" style="margin-bottom:12px"><div class="row" style="justify-content:space-between"><div><b>${c ? `<a href="#/c/${esc(c.id)}">${esc(c.nombre)}</a>` : esc(p.componente) + ' <span class="tag bad">nuevo / no existe</span>'}</b> <span class="small muted">· ${esc(p.fuente || "")} · ${esc(p.fecha || "")}</span>${p.resumen ? `<div class="small muted">${esc(p.resumen)}</div>` : ""}</div>
         <div class="row"><button class="sm" data-all="${i}">Marcar todo</button><button class="pri sm" data-ok="${i}">Aprobar seleccionados</button><button class="sm danger" data-no="${i}">Rechazar todo</button></div></div>
         <div class="diff" style="margin-top:10px"><div class="h">Campo</div><div class="h">Actual</div><div class="h">Propuesto</div>
-        ${Object.entries(p.cambios || {}).map(([k, v]) => `<div><label class="row" style="gap:6px;margin:0;color:var(--ink)"><input type="checkbox" data-p="${i}" data-k="${esc(k)}" style="width:auto">${esc(k)}</label></div><div class="old">${show(c ? getPath(c, k) : null)}</div><div class="new">${k === "imagen.src" && v ? `<img src="${esc(v)}" style="max-height:100px">` : show(v)}</div>`).join("")}</div></div>`; }).join("") : '<div class="panel muted">No hay nada pendiente. 🎉</div>'}`;
+        ${Object.entries(p.cambios || {}).map(([k, v]) => `<div><label class="row" style="gap:6px;margin:0;color:var(--ink)"><input type="checkbox" data-p="${i}" data-k="${esc(k)}" style="width:auto">${esc(k)}</label></div><div class="old">${show(c ? getPath(c, k) : null)}</div><div class="new">${k === "imagen.src" && v ? `<img src="${esc(v)}" style="max-height:100px">` : show(v)}${(p.fuentes || {})[k] ? `<div class="small"><a href="${esc(p.fuentes[k])}" target="_blank" rel="noopener">fuente ↗</a>${(p.confianza || {})[k] ? " · confianza " + esc(p.confianza[k]) : ""}</div>` : ""}</div>`).join("")}</div></div>`; }).join("") : '<div class="panel muted">No hay nada pendiente. 🎉</div>'}`;
     $$("[data-all]").forEach(b => b.onclick = () => $$(`[data-p="${b.dataset.all}"]`).forEach(x => x.checked = true));
     $$("[data-no]").forEach(b => b.onclick = async () => { const p = L[+b.dataset.no]; try { await Store.remove("pendientes", p.id, `Rechazar propuesta ${p.id}`); } catch (e) { toast(e.message); } estadoPill(); vPendientes(); });
     $$("[data-ok]").forEach(b => b.onclick = async () => {
       const i = +b.dataset.ok, p = L[i], ks = $$(`[data-p="${i}"]`).filter(x => x.checked).map(x => x.dataset.k);
       if (!ks.length) return toast("Marca al menos un campo");
-      let c = comp(p.componente); c = c ? clone(c) : { id: p.componente, nombre: p.componente, tipo: "electronico", categoria: "Otros", estado: "borrador", version: 1, ficha: {}, precios: [], zonas: [], pines: [], archivos: {}, historial: [] };
-      for (const k of ks) { const v = p.cambios[k]; if (k === "precios" && Array.isArray(v)) { const ex = c.precios || []; for (const nv of v) { const j = ex.findIndex(x => x.proveedor === nv.proveedor); if (j >= 0) ex[j] = nv; else ex.push(nv); } c.precios = ex; } else setPath(c, k, v); }
-      c.historial = c.historial || []; c.historial.push({ v: c.version || 1, fecha: hoy(), nota: `Aprobado de ${p.fuente || "búsqueda automática"}: ${ks.join(", ")}` });
+      const c = aplicarCambios(comp(p.componente), p.componente, p.cambios, ks, p.fuente);
       try {
         await Store.save("componentes", c, `${c.id}: aprobar datos de ${p.fuente || "búsqueda"} (${ks.join(", ")})`);
         const resto = Object.keys(p.cambios).filter(k => !ks.includes(k));
@@ -660,16 +658,19 @@
   const IAS = { anthropic: "Claude (Anthropic)", gemini: "Google Gemini", openai: "OpenAI / compatible" };
   function iaLista() { const c = Store.cfg; return c.aiProv === "gemini" ? !!c.gemKey : c.aiProv === "openai" ? !!(c.oaKey && c.oaModel) : !!c.aiKey; }
   function iaNombre() { const c = Store.cfg; return (IAS[c.aiProv] || IAS.anthropic) + " · " + (c.aiProv === "gemini" ? c.gemModel : c.aiProv === "openai" ? c.oaModel : c.aiModel); }
-  async function llamarIA(system, msgs) {
-    const c = Store.cfg, prov = c.aiProv || "anthropic";
+  const iaBusca = () => (Store.cfg.aiProv || "anthropic") !== "openai";
+  /** Devuelve { text, fuentes:[{titulo,url}] }. Con buscar=true usa la búsqueda web del proveedor. */
+  async function llamarIA(system, msgs, buscar) {
+    const c = Store.cfg, prov = c.aiProv || "anthropic", fuentes = [];
+    const addF = (url, titulo) => { if (url && !fuentes.some(f => f.url === url)) fuentes.push({ url, titulo: titulo || url }); };
     if (prov === "gemini") {
-      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(c.gemModel || "gemini-2.5-flash")}:generateContent`, {
-        method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": c.gemKey },
-        body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: msgs.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] })), generationConfig: { maxOutputTokens: 4096 } }),
-      });
+      const body = { systemInstruction: { parts: [{ text: system }] }, contents: msgs.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] })), generationConfig: { maxOutputTokens: 8192 } };
+      if (buscar) body.tools = [{ google_search: {} }];
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(c.gemModel || "gemini-2.5-flash")}:generateContent`, { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": c.gemKey }, body: JSON.stringify(body) });
       const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
       const cand = (j.candidates || [])[0]; if (!cand) throw new Error("Gemini no devolvió respuesta" + (j.promptFeedback ? " (" + JSON.stringify(j.promptFeedback) + ")" : ""));
-      return ((cand.content || {}).parts || []).filter(p => p.text && !p.thought).map(p => p.text).join("\n") || "(respuesta vacía: " + (cand.finishReason || "") + ")";
+      for (const ch of ((cand.groundingMetadata || {}).groundingChunks || [])) if (ch.web) addF(ch.web.uri, ch.web.title);
+      return { text: ((cand.content || {}).parts || []).filter(p => p.text && !p.thought).map(p => p.text).join("\n") || "(respuesta vacía: " + (cand.finishReason || "") + ")", fuentes };
     }
     if (prov === "openai") {
       const r = await fetch(String(c.oaUrl || "https://api.openai.com/v1").replace(/\/$/, "") + "/chat/completions", {
@@ -677,51 +678,178 @@
         body: JSON.stringify({ model: c.oaModel, messages: [{ role: "system", content: system }, ...msgs] }),
       });
       const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
-      return ((j.choices || [])[0] || {}).message?.content || "(respuesta vacía)";
+      return { text: ((j.choices || [])[0] || {}).message?.content || "(respuesta vacía)", fuentes };
     }
-    const r = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST", headers: { "content-type": "application/json", "x-api-key": c.aiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
-      body: JSON.stringify({ model: c.aiModel || "claude-sonnet-5-5", max_tokens: 1500, system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }], messages: msgs }),
-    });
-    const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
-    return (j.content || []).filter(b => b.type === "text").map(b => b.text).join("\n");
+    let conv = msgs.slice(), texto = "";
+    for (let paso = 0; paso < 4; paso++) {
+      const body = { model: c.aiModel || "claude-sonnet-5-5", max_tokens: 8000, system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }], messages: conv };
+      if (buscar) body.tools = [{ type: "web_search_20250305", name: "web_search", max_uses: 6 }];
+      const r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "content-type": "application/json", "x-api-key": c.aiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" }, body: JSON.stringify(body) });
+      const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
+      for (const b of j.content || []) {
+        if (b.type === "text") { texto += b.text; for (const ci of b.citations || []) addF(ci.url, ci.title); }
+        if (b.type === "web_search_tool_result" && b.content && b.content.type === "web_search_tool_result_error") texto += `\n(La búsqueda web falló: ${b.content.error_code}${b.content.error_code === "invalid_tool_input" ? "" : ". Revisa que la búsqueda web esté habilitada en console.anthropic.com"})\n`;
+      }
+      if (j.stop_reason !== "pause_turn") break;
+      conv = conv.concat([{ role: "assistant", content: j.content }]);   // la búsqueda pidió continuar
+    }
+    return { text: texto, fuentes };
   }
   async function listarGemini(key) {
     const r = await fetch("https://generativelanguage.googleapis.com/v1beta/models?pageSize=200", { headers: { "x-goog-api-key": key } });
     const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
     return (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes("generateContent") && /gemini/.test(m.name)).map(m => m.name.replace(/^models\//, ""));
   }
+
+  // ---- propuestas (crear / actualizar componentes): nada se guarda sin aprobar
+  function compVacio(id, nombre) {
+    return { id, nombre: nombre || id, tipo: "electronico", categoria: "Otros", etiquetas: [], fabricante: "", referencia: "", estado: "borrador", version: 1, unidad: "und",
+      ficha: { descripcion: "", funcionamiento: "", voltaje: "", corriente: "", interfaz: "", entradas: "", salidas: "", dimensiones: "", datasheet: "", notas: "" },
+      especificaciones: [], imagen: null, precios: [], busquedas: {}, montaje: null, zonas: [], pines: [], archivos: {}, historial: [] };
+  }
+  const GEO = ["montaje", "zonas", "pines"];
+  /** Aplica los campos elegidos de una propuesta; devuelve el componente nuevo (sin guardar). */
+  function aplicarCambios(base, id, cambios, claves, fuente) {
+    const c = base ? clone(base) : compVacio(id, cambios.nombre);
+    let geo = false;
+    for (const k of claves) {
+      let v = clone(cambios[k]);
+      if (k === "precios" && Array.isArray(v)) { const ex = c.precios || []; for (const nv of v) { nv.fecha = nv.fecha || hoy().slice(0, 7); const i = ex.findIndex(x => x.proveedor === nv.proveedor); if (i >= 0) ex[i] = nv; else ex.push(nv); } c.precios = ex; continue; }
+      if (k === "especificaciones" && Array.isArray(v)) { const ex = c.especificaciones || []; for (const nv of v) { const i = ex.findIndex(x => x.param === nv.param); if (i >= 0) ex[i] = nv; else ex.push(nv); } c.especificaciones = ex; continue; }
+      if (k === "etiquetas" && Array.isArray(v)) { c.etiquetas = [...new Set([...(c.etiquetas || []), ...v])]; continue; }
+      if (k === "imagen.src" || k === "imagen") { c.imagen = { src: typeof v === "string" ? v : (v && v.src), origen: "web (" + (fuente || "propuesta") + ")" }; continue; }
+      if (k === "montaje" && v) { v = Object.assign({ origen: "centro", fijacion: (v.agujeros || []).length ? "tornillo" : "guia_deslizante", agujeros: [], altura_superior: 0, altura_inferior: 0, holgura_inferior_cableado: 0 }, v); v.nota = (v.nota ? v.nota + " " : "") + "Propuesto por el asistente a partir del datasheet: verificar con calibrador."; }
+      if (k === "pines" && Array.isArray(v)) v = v.map(p => Object.assign({ x: null, y: null }, p));
+      setPath(c, k, v);
+      if (GEO.includes(k.split(".")[0])) geo = true;
+    }
+    if (base && geo) c.version = (c.version || 1) + 1;
+    if (geo && c.montaje && c.montaje.pcb) c.cad_pendiente = true;
+    if (geo || !base) c.estado = "borrador";
+    c.historial = c.historial || [];
+    c.historial.push({ v: c.version || 1, fecha: hoy(), nota: (base ? "Actualizado" : "Creado") + ` con datos de ${fuente || "búsqueda automática"} (aprobado): ${claves.join(", ")}`, cambios: claves });
+    c.modificado = new Date().toISOString();
+    return c;
+  }
+  function extraerPropuestas(text) {
+    const props = []; const re = /```mountlab-propuesta\s*([\s\S]*?)```/g; let m;
+    while ((m = re.exec(text))) { try { const p = JSON.parse(m[1]); if (p && p.componente && p.cambios) props.push(p); } catch (e) { props.push({ error: "No pude leer la propuesta: " + e.message }); } }
+    return { limpio: text.replace(re, "").trim(), props };
+  }
+  const corto = v => { if (v == null) return '<span class="muted">(vacío)</span>'; if (typeof v === "string") return /^https?:/.test(v) ? (/\.(png|jpe?g|webp|gif)(\?|$)/i.test(v) ? `<img src="${esc(v)}" style="max-height:70px;max-width:120px">` : `<a href="${esc(v)}" target="_blank" rel="noopener">${esc(v.slice(0, 60))}…</a>`) : esc(v.length > 160 ? v.slice(0, 160) + "…" : v);
+    const s = JSON.stringify(v); return s.length < 90 ? `<code>${esc(s)}</code>` : `<details><summary>${Array.isArray(v) ? v.length + " elementos" : "objeto"}</summary><pre style="white-space:pre-wrap;font-size:11px;margin:4px 0">${esc(JSON.stringify(v, null, 1))}</pre></details>`; };
+  function htmlPropuesta(p, i, estado) {
+    if (p.error) return `<div class="msg warn">${esc(p.error)}</div>`;
+    const base = comp(p.componente), crear = !base;
+    const filas = Object.entries(p.cambios).map(([k, v]) => {
+      const f = (p.fuentes || {})[k], cf = (p.confianza || {})[k];
+      return `<tr><td><input type="checkbox" data-pk="${i}" data-k="${esc(k)}" ${cf === "baja" ? "" : "checked"} style="width:auto" ${estado ? "disabled" : ""}></td><td><b>${esc(k)}</b>${cf ? ` <span class="tag ${cf === "alta" ? "ok" : cf === "media" ? "warn" : "bad"}">${esc(cf)}</span>` : ""}${GEO.includes(k.split(".")[0]) ? ' <span class="tag warn">verificar</span>' : ""}</td>
+        ${crear ? "" : `<td class="small">${corto(getPath(base, k))}</td>`}<td class="small">${corto(v)}</td><td class="small">${f ? `<a href="${esc(f)}" target="_blank" rel="noopener">fuente ↗</a>` : '<span class="muted">—</span>'}</td></tr>`;
+    }).join("");
+    return `<div class="panel" style="margin-top:8px;padding:12px;background:#f8fafc">
+      <div class="row" style="justify-content:space-between"><b>${crear ? "➕ Crear" : "✎ Actualizar"} ${esc(p.cambios.nombre || (base && base.nombre) || p.componente)} <span class="tag">${esc(p.componente)}</span></b>
+      ${estado ? `<span class="tag ${estado.startsWith("Aprobado") || estado.startsWith("Enviado") ? "ok" : "bad"}">${esc(estado)}</span>` : ""}</div>
+      ${p.resumen ? `<div class="small muted" style="margin:4px 0">${esc(p.resumen)}</div>` : ""}
+      <div style="overflow:auto"><table class="t" style="margin-top:6px"><tr><th></th><th>Campo</th>${crear ? "" : "<th>Actual</th>"}<th>Propuesto</th><th>Fuente</th></tr>${filas}</table></div>
+      ${estado ? "" : `<div class="row" style="margin-top:8px"><button class="pri sm" data-pa="${i}">Aprobar seleccionados</button><button class="sm" data-pp="${i}">Enviar a Pendientes</button><button class="sm danger" data-pd="${i}">Descartar</button></div>`}</div>`;
+  }
+  async function guardarPropuesta(p, claves, fuenteTxt) {
+    const base = comp(p.componente);
+    if (!base && !p.cambios.nombre) throw new Error("La propuesta no trae nombre para el componente nuevo");
+    const c = aplicarCambios(base, p.componente, p.cambios, claves, fuenteTxt);
+    if (!base) { if (!claves.includes("categoria") && p.cambios.categoria) c.categoria = p.cambios.categoria; if (!claves.includes("nombre")) c.nombre = p.cambios.nombre; }
+    const m = await Store.save("componentes", c, `${c.id} v${c.version || 1}: ${base ? "actualizado" : "creado"} con el asistente (${claves.join(", ")})`);
+    return { c, m };
+  }
+  async function propuestaAPendientes(p, claves, fuenteTxt) {
+    const cambios = Object.fromEntries(claves.map(k => [k, p.cambios[k]]));
+    const pend = { id: `${p.componente}_${Date.now().toString(36)}`, componente: p.componente, fuente: fuenteTxt, fecha: hoy(), resumen: p.resumen || "", cambios, fuentes: p.fuentes || {}, confianza: p.confianza || {} };
+    return Store.save("pendientes", pend, `Pendiente: propuesta del asistente para ${p.componente}`);
+  }
   function vAsistente() {
     const sinKey = !iaLista();
-    app.innerHTML = `<div class="chat"><div class="row" style="justify-content:space-between"><h2>Asistente IA</h2><span class="small muted">${esc(iaNombre())} · conoce tus ${Store.db.componentes.length} componentes y ${Store.db.proyectos.length} proyectos</span></div>
+    if (S.buscar === undefined) S.buscar = true;
+    app.innerHTML = `<div class="chat"><div class="row" style="justify-content:space-between"><h2>Asistente IA</h2><span class="small muted">${esc(iaNombre())} · ${Store.db.componentes.length} componentes · ${Store.db.proyectos.length} proyectos</span></div>
       ${sinKey ? '<div class="msg warn">Para usar el asistente elige un proveedor (Claude, Gemini u OpenAI) y pega su clave en <a href="#/ajustes">Ajustes</a>. Se guarda solo en este navegador.</div>' : ""}
-      <div class="log" id="log">${S.chat.length ? "" : `<div class="muted small" style="text-align:center;margin-top:20px">Ejemplos:</div><div class="row" style="justify-content:center">${["¿Qué sensores I2C tengo y a qué voltaje funcionan?", "Necesito un datalogger con GPS, IMU y batería 2S: ¿qué componentes uso?", "Resúmeme el BNO055 para decidir si lo uso", "¿Qué me falta comprar para el proyecto Termo-01?"].map(e => `<button class="sm ex">${esc(e)}</button>`).join("")}</div>`}</div>
-      <div class="in"><textarea id="q" rows="2" placeholder="Pregunta, pide una recomendación o un resumen técnico…" ${sinKey ? "disabled" : ""}></textarea><button class="pri" id="send" ${sinKey ? "disabled" : ""}>Enviar</button></div></div>`;
+      <div class="log" id="log"></div>
+      <div class="row small" style="margin-top:6px;gap:14px"><label class="row" style="gap:6px;margin:0;color:var(--ink)"><input type="checkbox" id="qB" style="width:auto" ${S.buscar && iaBusca() ? "checked" : ""} ${iaBusca() ? "" : "disabled"}> 🔎 Buscar en internet (datasheets, medidas, precios)</label>
+        ${iaBusca() ? "" : '<span class="muted">El proveedor OpenAI/compatible no busca en internet desde aquí.</span>'}<button class="sm" id="qC" style="margin-left:auto">Nueva conversación</button></div>
+      <div class="in"><textarea id="q" rows="2" placeholder="Ej: “Agrega el MPU6050 GY-521 con su datasheet, pines, medidas y precios”" ${sinKey ? "disabled" : ""}></textarea><button class="pri" id="send" ${sinKey ? "disabled" : ""}>Enviar</button></div></div>`;
     const log = $("#log");
     const fmt = t => esc(t).replace(/\[\[([a-z0-9_]+)\]\]/g, (m, id) => comp(id) ? `<a class="cref" href="#/c/${id}">${esc(comp(id).nombre)}</a>` : m).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
-    const pintaLog = () => { if (!S.chat.length) return; log.innerHTML = S.chat.map(m => `<div class="bub ${m.role === "user" ? "u" : "a"}">${m.role === "user" ? esc(m.content) : fmt(m.content)}</div>`).join(""); log.scrollTop = log.scrollHeight; };
+    const ejemplos = ["Agrega el sensor MPU6050 (GY-521): datasheet, pines, medidas de la placa y precios en Colombia", "Completa el datasheet y las especificaciones del BNO055", "¿Qué sensores I2C tengo y a qué voltaje funcionan?", "Busca precios actualizados del módulo GPS MAX-M10N"];
+    const pintaLog = () => {
+      if (!S.chat.length) { log.innerHTML = `<div class="muted small" style="text-align:center;margin-top:20px">Pídele que agregue o complete componentes: investiga en internet y te muestra una <b>propuesta</b>. Nada se guarda hasta que la apruebes.</div><div class="row" style="justify-content:center;margin-top:8px">${ejemplos.map(e => `<button class="sm ex">${esc(e)}</button>`).join("")}</div>`; $$(".ex").forEach(b => b.onclick = () => { if (!sinKey) { $("#q").value = b.textContent; enviar(); } }); return; }
+      log.innerHTML = S.chat.map((m, mi) => m.role === "user" ? `<div class="bub u">${esc(m.content)}</div>` :
+        `<div class="bub a" style="max-width:100%">${fmt(m.vista ?? m.content)}
+          ${(m.props || []).map((p, pi) => htmlPropuesta(p, mi + ":" + pi, (m.estados || {})[pi])).join("")}
+          ${(m.fuentes || []).length ? `<details style="margin-top:6px"><summary class="small">Fuentes consultadas (${m.fuentes.length})</summary><ul class="small" style="margin:4px 0;padding-left:18px">${m.fuentes.slice(0, 15).map(f => `<li><a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.titulo)}</a></li>`).join("")}</ul></details>` : ""}</div>`).join("");
+      log.scrollTop = log.scrollHeight;
+      const cl = id => { const [mi, pi] = id.split(":").map(Number); return { m: S.chat[mi], p: S.chat[mi].props[pi], pi }; };
+      const claves = id => $$(`[data-pk="${id}"]`).filter(x => x.checked).map(x => x.dataset.k);
+      const fuenteTxt = () => "asistente IA · " + iaNombre();
+      const marca = (m, pi, txt) => { m.estados = m.estados || {}; m.estados[pi] = txt; pintaLog(); };
+      $$("[data-pa]", log).forEach(b => b.onclick = async () => {
+        const { m, p, pi } = cl(b.dataset.pa), ks = claves(b.dataset.pa); if (!ks.length) return toast("Marca al menos un campo");
+        b.disabled = true; b.textContent = "Guardando…";
+        try { const r = await guardarPropuesta(p, ks, fuenteTxt()); marca(m, pi, `Aprobado · ${r.m === "github" ? "guardado en GitHub" : "guardado local"}${r.c.cad_pendiente ? " · generando DXF/STEP" : ""}`); estadoPill(); toast("Guardado: " + r.c.nombre); }
+        catch (e) { toast("Error: " + e.message, 6000); b.disabled = false; b.textContent = "Aprobar seleccionados"; }
+      });
+      $$("[data-pp]", log).forEach(b => b.onclick = async () => {
+        const { m, p, pi } = cl(b.dataset.pp), ks = claves(b.dataset.pp); if (!ks.length) return toast("Marca al menos un campo");
+        try { await propuestaAPendientes(p, ks, fuenteTxt()); marca(m, pi, "Enviado a Pendientes"); estadoPill(); } catch (e) { toast("Error: " + e.message, 6000); }
+      });
+      $$("[data-pd]", log).forEach(b => b.onclick = () => { const { m, pi } = cl(b.dataset.pd); marca(m, pi, "Descartado"); });
+    };
     pintaLog();
-    $$(".ex").forEach(b => b.onclick = () => { if (!sinKey) { $("#q").value = b.textContent; enviar(); } });
     $("#q").onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); enviar(); } };
     $("#send").onclick = enviar;
+    $("#qB").onchange = e => { S.buscar = e.target.checked; };
+    $("#qC").onclick = () => { S.chat = []; pintaLog(); };
     async function enviar() {
       const q = $("#q").value.trim(); if (!q) return; $("#q").value = "";
-      S.chat.push({ role: "user", content: q }); S.chat.push({ role: "assistant", content: "…" }); pintaLog();
+      const buscar = S.buscar && iaBusca();
+      S.chat.push({ role: "user", content: q }); S.chat.push({ role: "assistant", content: buscar ? "🔎 Investigando…" : "…" }); pintaLog();
+      $("#send").disabled = true;
       const proys = Store.db.proyectos.map(p => `${p.id} "${p.nombre}" (${p.estado}): ` + (p.bom || []).map(b => `${b.id}×${b.cantidad}`).join(", ")).join("\n");
-      const system = `Eres el asistente de MountLab, la biblioteca de componentes de John (estudiante de ingeniería biomédica/mecatrónica en Colombia, diseña dispositivos con ESP32, KiCad y SolidWorks). Responde en español, breve y técnico.
+      const system = `Eres el asistente de MountLab, la biblioteca de componentes de John (estudiante de ingeniería biomédica/mecatrónica en Colombia; diseña dispositivos con ESP32, KiCad y SolidWorks). Responde en español, breve y técnico.
 Cuando menciones un componente de la biblioteca escribe su id entre dobles corchetes, por ejemplo [[esp32_38p]], para que la app lo convierta en enlace.
-Para recomendaciones: prioriza lo que ya tiene en la biblioteca, revisa compatibilidad de voltajes (3.3 V vs 5 V), interfaces y consumo, y di claramente qué le falta comprar. Los precios son estimados en COP.
-Si algo no está en la biblioteca, dilo y sugiere el tipo de componente genérico. No inventes datos de la biblioteca.
+Para recomendaciones: prioriza lo que ya tiene, revisa voltajes (3.3 V vs 5 V), interfaces y consumo, y di qué le falta comprar. Los precios de la biblioteca son estimados en COP.
+${buscar ? "Tienes búsqueda web: úsala para datasheets oficiales (fabricante, distribuidores como Mouser, DigiKey, LCSC, Adafruit, SparkFun), planos con medidas del módulo y precios actuales en Colombia (Mercado Libre Colombia, tiendas de electrónica colombianas) y AliExpress/Amazon." : "No tienes búsqueda web en esta pregunta: no inventes enlaces ni precios."}
+
+PROPUESTAS — cuando John pida AGREGAR, CREAR, COMPLETAR o ACTUALIZAR componentes:
+1. Investiga y explica en 3-6 líneas qué encontraste y qué dudas quedan.
+2. Termina con un bloque por componente, exactamente con este formato (JSON válido, sin comentarios):
+\`\`\`mountlab-propuesta
+{"componente":"id_en_minusculas_con_guiones_bajos","resumen":"una línea",
+ "cambios":{
+  "nombre":"…","tipo":"electronico|mecanico|material|herramienta|otro","categoria":"…","etiquetas":["I2C","…"],"fabricante":"…","referencia":"…",
+  "ficha.descripcion":"…","ficha.funcionamiento":"…","ficha.voltaje":"…","ficha.corriente":"…","ficha.interfaz":"…","ficha.dimensiones":"…","ficha.datasheet":"URL directa al PDF",
+  "especificaciones":[{"param":"…","valor":"…"}],
+  "pines":[{"n":"VCC","func":"Alimentación 3.3–5 V"}],
+  "montaje":{"pcb":[largo_mm,ancho_mm,espesor_mm],"agujeros":[{"x":0,"y":0,"d":3}],"altura_superior":0,"altura_inferior":0},
+  "precios":[{"proveedor":"Mercado Libre CO","precio_cop":0,"url":"…"}],
+  "imagen.src":"URL directa a una imagen .jpg/.png del producto"},
+ "fuentes":{"campo":"URL de donde salió ese dato"},
+ "confianza":{"campo":"alta|media|baja"}}
+\`\`\`
+Reglas: para ACTUALIZAR usa el id existente de la biblioteca y pon solo los campos que cambian o faltan; para CREAR usa un id nuevo que no exista. Incluye "nombre" y "categoria" al crear (usa categorías existentes si encajan: ${[...new Set(Store.db.componentes.map(c => c.categoria))].join(", ")}).
+Montaje: mm, ORIGEN EN EL CENTRO de la placa, X a lo largo, Y a lo ancho; agujeros con coordenadas desde el centro. Inclúyelo solo si hallaste un plano o medidas confiables (si no, omítelo). Precios en pesos colombianos (convierte de USD si hace falta y dilo en el resumen).
+Nunca inventes URLs: si no encontraste un dato, omite el campo. Marca confianza "baja" a lo dudoso.
 
 BIBLIOTECA (id | nombre | categoría | tipo | voltaje | corriente | interfaz | dimensiones | etiquetas | precio | estado | descripción):
 ${contextoCatalogo()}
 
 PROYECTOS:
 ${proys}`;
+      const last = S.chat[S.chat.length - 1];
       try {
-        S.chat[S.chat.length - 1].content = await llamarIA(system, S.chat.slice(0, -1).slice(-12));
-      } catch (e) { S.chat[S.chat.length - 1].content = "No pude responder: " + e.message; }
-      pintaLog();
+        const hist = S.chat.slice(0, -1).slice(-12).map(m => ({ role: m.role, content: m.content }));
+        const r = await llamarIA(system, hist, buscar);
+        const { limpio, props } = extraerPropuestas(r.text);
+        Object.assign(last, { content: r.text, vista: limpio || (props.length ? "Esta es mi propuesta:" : r.text), props, fuentes: r.fuentes });
+      } catch (e) { Object.assign(last, { content: "No pude responder: " + e.message, vista: null }); }
+      $("#send").disabled = false; pintaLog();
     }
   }
 
