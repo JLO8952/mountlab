@@ -28,7 +28,7 @@ REMOTO = os.environ.get("DRIVE_REMOTE", "").strip()
 COLOR = {"usb": "#38bdf8", "conector": "#a78bfa", "antena": "#f472b6", "boton": "#fbbf24", "pines": "#94a3b8",
          "calor": "#f87171", "sensor": "#34d399", "ajuste": "#fb923c", "led": "#facc15", "soldadura": "#e2e8f0",
          "prohibida": "#ef4444", "otra": "#cbd5e1"}
-ACI = {"PCB": 3, "AGUJEROS": 1, "ZONAS": 4, "ZONAS_HOLGURA": 8, "PINES": 2, "EJES": 3, "TEXTO": 7}
+ACI = {"PCB": 3, "AGUJEROS": 1, "ZONAS": 4, "ZONAS_HOLGURA": 8, "PINES": 2, "EJES": 3, "TEXTO": 7, "PIEZAS_A": 5, "PIEZAS_B": 6}
 
 
 def hex_rgb(h, a=1.0):
@@ -71,7 +71,10 @@ def dxf(c, ruta):
         msp.add_lwpolyline([(cx - w / 2, cy - h / 2), (cx + w / 2, cy - h / 2), (cx + w / 2, cy + h / 2), (cx - w / 2, cy + h / 2)],
                            close=True, dxfattribs={"layer": layer})
 
-    rect(0, 0, L, W, "PCB")
+    if m.get("forma") == "redonda":
+        msp.add_circle((0, 0), L / 2, dxfattribs={"layer": "PCB"})
+    else:
+        rect(0, 0, L, W, "PCB")
     e = max(L, W) * 0.08
     msp.add_line((-e, 0), (e, 0), dxfattribs={"layer": "EJES"})
     msp.add_line((0, -e), (0, e), dxfattribs={"layer": "EJES"})
@@ -83,6 +86,12 @@ def dxf(c, ruta):
         if hb and z.get("salida") in ("-X", "+X", "-Y", "+Y"):
             rect(hb[0], hb[1], hb[3], hb[4], "ZONAS_HOLGURA")
         msp.add_text(ascii(z.get("nombre") or z["tipo"]), height=0.8, dxfattribs={"layer": "TEXTO"}).set_placement((z["cx"] - z["w"] / 2, z["cy"] + z["h"] / 2 + 0.4))
+    for q in (c.get("modelo") or {}).get("cuerpos", []):
+        capa = "PIEZAS_A" if q["z0"] >= m["pcb"][2] - 1e-6 else "PIEZAS_B"
+        if q["f"] == "cil":
+            msp.add_circle((q["cx"], q["cy"]), q["d"] / 2, dxfattribs={"layer": capa})
+        else:
+            rect(q["cx"], q["cy"], q["w"], q["h"], capa)
     for p in c.get("pines", []):
         if p.get("x") is None or p.get("y") is None:
             continue
@@ -93,14 +102,54 @@ def dxf(c, ruta):
     doc.saveas(ruta)
 
 
+def placa_solida(m):
+    L, W, T = m["pcb"][0], m["pcb"][1], (m["pcb"][2] if len(m["pcb"]) > 2 else 1.6)
+    forma = m.get("forma", "rect")
+    if forma == "redonda":
+        return cq.Workplane("XY").circle(L / 2).extrude(T)
+    pcb = cq.Workplane("XY").box(L, W, T, centered=(True, True, False))
+    r = float(m.get("radio") or 0)
+    if forma == "redondeada" and r > 0.05:
+        pcb = pcb.edges("|Z").fillet(min(r, L / 2 - 0.05, W / 2 - 0.05))
+    return pcb
+
+
+def cuerpo_solido(q):
+    alto = max(q["z1"] - q["z0"], 0.05)
+    if q["f"] == "cil":
+        s = cq.Workplane("XY").circle(q["d"] / 2).extrude(alto)
+    else:
+        s = cq.Workplane("XY").box(max(q["w"], 0.05), max(q["h"], 0.05), alto, centered=(True, True, False))
+        r = float(q.get("r") or 0)
+        if r > 0.05:
+            try:
+                s = s.edges("|Z").fillet(min(r, q["w"] / 2 - 0.02, q["h"] / 2 - 0.02))
+            except Exception:
+                pass
+    return s.translate((q["cx"], q["cy"], q["z0"]))
+
+
 def step(c, ruta):
     m = c["montaje"]
     L, W, T = m["pcb"][0], m["pcb"][1], (m["pcb"][2] if len(m["pcb"]) > 2 else 1.6)
-    pcb = cq.Workplane("XY").box(L, W, T, centered=(True, True, False))
+    pcb = placa_solida(m)
     for h in m.get("agujeros", []):
         pcb = pcb.cut(cq.Workplane("XY").center(h["x"], h["y"]).circle(h["d"] / 2).extrude(T))
     a = cq.Assembly(name=c["id"])
-    a.add(pcb, name="PCB", color=cq.Color(0.08, 0.40, 0.20, 1))
+    mod = c.get("modelo") or {}
+    col_placa = (mod.get("base") or {}).get("color") or "#14662f"
+    a.add(pcb, name="PCB", color=hex_rgb(col_placa))
+    # piezas del Modelo 3D (cada una con su color), agrupadas por pieza
+    nombres = {p.get("id"): p.get("nombre") or p.get("plantilla") for p in mod.get("piezas", [])}
+    cont = {}
+    for q in mod.get("cuerpos", []):
+        pid = q.get("pieza", "pieza")
+        cont[pid] = cont.get(pid, 0) + 1
+        nom = ascii(f"{'A' if q['z0'] >= T - 1e-6 else 'B'}_{nombres.get(pid, pid)}_{cont[pid]}").replace(" ", "_")[:60]
+        try:
+            a.add(cuerpo_solido(q), name=nom, color=hex_rgb(q.get("color") or "#64748b"))
+        except Exception as e:
+            print(f"  (pieza {nom} omitida: {e})")
     for i, z in enumerate(c.get("zonas", [])):
         z0, z1 = (z.get("z") or [T, T + 1])[:2]
         alto = max(z1 - z0, 0.2)

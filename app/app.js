@@ -160,7 +160,7 @@
       montaje: r.placa ? { origen: "centro", pcb: [30, 20, 1.6], fijacion: "tornillo", agujeros: [], altura_superior: 3, altura_inferior: 0, holgura_inferior_cableado: 0, nota: "" } : null,
       zonas: [], pines: [], archivos: {}, historial: [{ v: 1, fecha: hoy(), nota: "Creado" }],
     };
-    S.nuevo = c; location.hash = "#/c/" + encodeURIComponent(c.id);
+    S.nuevo = c; S.tab = r.placa ? "modelo" : "ficha"; if (r.placa) c.montaje = Object.assign(c.montaje, { agujeros: [] }); location.hash = "#/c/" + encodeURIComponent(c.id);
   }
 
   // =====================================================================  COMPONENTE
@@ -180,7 +180,7 @@
         <label class="btn" style="margin:0;color:${W.estado === "verificado" ? "var(--ok)" : "var(--warn)"}"><input type="checkbox" id="chkVer" style="width:auto" ${W.estado === "verificado" ? "checked" : ""}> ${W.estado === "verificado" ? "Verificado con calibrador" : "Sin verificar"}</label>
         <button id="bSave" class="pri">Guardar</button><button id="bUndo">Descartar</button>
         <button id="bDup">Duplicar</button><button id="bVar">Crear variante</button><button id="bProj">Añadir a proyecto</button><button id="bDel" class="danger">Eliminar</button></div></div>
-      <div class="tabs">${[["ficha", "Ficha"], ["montaje", "Montaje"], ["zonas", "Zonas"], ["pines", "Pines"], ["archivos", "Archivos CAD"], ["versiones", "Versiones"], ["json", "JSON"]].map(([k, n]) => `<button data-tab="${k}" class="${S.tab === k ? "on" : ""}">${n}</button>`).join("")}</div>
+      <div class="tabs">${[["ficha", "Ficha"], ["modelo", "Modelo 3D"], ["montaje", "Montaje"], ["zonas", "Zonas"], ["pines", "Pines"], ["archivos", "Archivos CAD"], ["versiones", "Versiones"], ["json", "JSON"]].map(([k, n]) => `<button data-tab="${k}" class="${S.tab === k ? "on" : ""}">${n}</button>`).join("")}</div>
       <div id="tabBody"></div>`;
     const mark = () => { $("#dirtyMark").innerHTML = dirty() ? '<span class="dirty">Cambios sin guardar</span>' : ""; $("#bSave").disabled = !dirty(); $("#bUndo").disabled = !dirty(); };
     S.mark = mark; mark();
@@ -213,17 +213,17 @@
   }
   function cambiosDe(W, O) {
     const out = []; if (!O.id) return ["nuevo"];
-    for (const k of ["montaje", "zonas", "pines"]) if (JSON.stringify(W[k]) !== JSON.stringify(O[k])) out.push(k);
+    for (const k of ["modelo", "montaje", "zonas", "pines"]) if (JSON.stringify(W[k]) !== JSON.stringify(O[k])) out.push(k);
     for (const k of ["ficha", "especificaciones", "precios", "imagen", "nombre", "categoria", "tipo", "etiquetas", "estado", "fabricante", "referencia"]) if (JSON.stringify(W[k]) !== JSON.stringify(O[k])) out.push(k);
     return out;
   }
   async function guardarComponente() {
     const W = S.W, O = JSON.parse(S.orig || "{}"), ch = cambiosDe(W, O);
-    const geo = ch.some(k => ["montaje", "zonas", "pines"].includes(k)) && O.id;
-    const nombres = { montaje: "montaje/agujeros", zonas: "zonas", pines: "pines", ficha: "ficha técnica", precios: "precios", imagen: "imagen", especificaciones: "especificaciones", estado: "estado de verificación" };
+    const geo = ch.some(k => ["modelo", "montaje", "zonas", "pines"].includes(k)) && O.id;
+    const nombres = { modelo: "modelo 3D", montaje: "montaje/agujeros", zonas: "zonas", pines: "pines", ficha: "ficha técnica", precios: "precios", imagen: "imagen", especificaciones: "especificaciones", estado: "estado de verificación" };
     const sug = ch[0] === "nuevo" ? "Creado" : "Actualizado: " + ch.map(k => nombres[k] || k).join(", ");
     const nota = await modal(`<h3>Guardar ${esc(W.nombre)}</h3>
-      ${geo ? `<div class="msg info">Cambiaste la geometría (${ch.filter(k => ["montaje", "zonas", "pines"].includes(k)).join(", ")}): se crea la <b>versión ${(W.version || 1) + 1}</b> y GitHub regenera el DXF y el STEP de montaje.</div>` : ""}
+      ${geo ? `<div class="msg info">Cambiaste la geometría (${ch.filter(k => ["modelo", "montaje", "zonas", "pines"].includes(k)).join(", ")}): se crea la <b>versión ${(W.version || 1) + 1}</b> y GitHub regenera el DXF y el STEP de montaje.</div>` : ""}
       <div><label>Nota del cambio (queda en el historial)</label><textarea id="gN">${esc(sug)}</textarea></div>
       <div class="row" style="justify-content:flex-end"><button data-close>Cancelar</button><button class="pri" id="gOk">Guardar</button></div>`, (b, close) => { $("#gOk", b).onclick = () => close($("#gN", b).value.trim() || sug); });
     if (nota == null) return;
@@ -231,6 +231,8 @@
     W.historial = W.historial || [];
     if (O.id) W.historial.push({ v: W.version || 1, fecha: hoy(), nota, cambios: ch });
     W.modificado = new Date().toISOString();
+    if (!W.imagen && W.modelo && S.ed && S.ed.captura) { try { const src = await S.ed.captura(); if (src) W.imagen = { src, origen: "render del modelo 3D" }; } catch (e) { } }
+    if (W.modelo && W.montaje && W.montaje.pcb && (!O.id || geo)) W.cad_pendiente = true;
     if (W.imagen && String(W.imagen.src).startsWith("data:") && Store.mode === "github") {
       try { toast("Subiendo imagen…"); W.imagen.src = await Store.uploadImage(W.id, W.imagen.src); } catch (e) { toast("No se pudo subir la imagen: " + e.message, 5000); return; }
     }
@@ -261,6 +263,7 @@
     const body = $("#tabBody"), W = S.W; if (S.ed) { S.ed.destroy(); S.ed = null; }
     const ch = () => S.mark();
     if (S.tab === "ficha") return tabFicha(body, W, ch);
+    if (S.tab === "modelo") { S.ed = MLModelo.montar(body, W, { onChange: ch, toast }); return; }
     if (["montaje", "zonas", "pines"].includes(S.tab)) return tabEditor(body, W, ch);
     if (S.tab === "archivos") return tabArchivos(body, W);
     if (S.tab === "versiones") return tabVersiones(body, W);
@@ -426,7 +429,7 @@
     const z = sel != null ? W.zonas[sel] : null, ZT = MLEditor.ZT;
     sd.innerHTML = `<div class="panel"><h3>Nueva zona</h3><div class="row" style="flex-wrap:nowrap"><select id="zT">${Object.entries(ZT).map(([k, v]) => `<option value="${k}" ${(S.zoneType || "conector") === k ? "selected" : ""}>${v.n}</option>`).join("")}</select><button class="pri sm" id="zD">▭ Dibujar</button></div>
         <div class="small muted" style="margin-top:6px">Elige el tipo, pulsa Dibujar y arrastra un rectángulo sobre la placa. Las líneas punteadas muestran la holgura hacia donde sale el cable o conector.</div></div>
-      <div class="panel"><h3>Zonas (${W.zonas.length})</h3><div class="list">${W.zonas.map((q, i) => `<div class="it ${sel === i ? "sel" : ""}" data-i="${i}"><span class="sw" style="background:${(ZT[q.tipo] || ZT.otra).c}"></span>${esc(q.nombre || q.tipo)}<span class="muted small" style="margin-left:auto">${MLEditor.SALIDAS[q.salida] ? q.salida : ""}</span></div>`).join("") || '<div class="it muted">Sin zonas</div>'}</div></div>
+      <div class="panel"><h3>Zonas (${W.zonas.length})</h3><div class="list">${W.zonas.map((q, i) => `<div class="it ${sel === i ? "sel" : ""}" data-i="${i}"><span class="sw" style="background:${(ZT[q.tipo] || ZT.otra).c}"></span>${esc(q.nombre || q.tipo)}${q.auto ? ' <span class="tag" title="Se genera desde la pestaña Modelo 3D: edítala allá">modelo 3D</span>' : ""}<span class="muted small" style="margin-left:auto">${MLEditor.SALIDAS[q.salida] ? q.salida : ""}</span></div>`).join("") || '<div class="it muted">Sin zonas</div>'}</div></div>
       ${z ? `<div class="panel"><h3>Zona seleccionada</h3>
         <div class="grid2"><div><label>Tipo</label><select id="zt">${Object.entries(ZT).map(([k, v]) => `<option value="${k}" ${z.tipo === k ? "selected" : ""}>${v.n}</option>`).join("")}</select></div><div><label>Nombre</label><input data-n="nombre" value="${esc(z.nombre || "")}"></div></div>
         <div class="kv" style="margin-top:8px"><div><label>Centro X</label><input type="number" step="0.1" data-n="cx" value="${z.cx}"></div><div><label>Centro Y</label><input type="number" step="0.1" data-n="cy" value="${z.cy}"></div><div></div>

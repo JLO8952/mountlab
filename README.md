@@ -39,6 +39,12 @@ Biblioteca de componentes, catálogo y proyectos de John Fredy Correa. Une **Mou
    (Alternativa: secreto `RCLONE_CONFIG` para que la Action suba directo a Drive; requiere un client_id propio de Google.)
 5. (Opcional) Asistente IA: clave de console.anthropic.com en Ajustes.
 
+## Modelo 3D (pestaña de cada componente)
+Se dibuja en 2D (vista superior) con formas simples y plantillas; la vista 3D (three.js, en `app/vendor/`) se actualiza en vivo.
+- Placa (rectangular, esquinas redondeadas, redonda), espesor y agujeros; **cara A / cara B**; elevación y altura en Z.
+- Librería paramétrica (`app/plantillas.js`): conectores, chips, pasivos, interfaz, potencia, accesorios y formas libres; **Mis plantillas** en `data/plantillas/`.
+- Al editar se sincronizan solos: `montaje` (placa y alturas), `zonas` automáticas (`auto: true`), `pines` automáticos (`pieza`), y `modelo.cuerpos`, que `cad/regenerar.py` convierte en un STEP con cada pieza y su color (y capas PIEZAS_A/B en el DXF).
+
 ## Asistente
 - **⚡ Cerebro local** (`app/local.js`, sin internet ni clave): búsqueda TF-IDF tolerante a errores, red neuronal pequeña (trigramas de letras) entrenada en el navegador con la biblioteca, respuestas por plantilla (voltaje, pines, medidas, precios…), comandos `aprende: alias = componente` / `olvida: alias` / `revisa proyecto X`, y un **sistema experto** que revisa cada proyecto (direcciones I2C, niveles 3.3/5 V, consumo, servos, baterías sin protección, GSM, ADC2).
 - **☁ Nube** (Claude, Gemini u OpenAI): investiga en internet y propone fichas para aprobar. En modo **Automático** responde local y solo usa la nube cuando no sabe o le pides investigar.

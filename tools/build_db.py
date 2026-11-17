@@ -27,6 +27,7 @@ def main():
         "componentes": leer("componentes"),
         "proyectos": leer("proyectos"),
         "pendientes": leer("pendientes"),
+        "plantillas": leer("plantillas"),
         "tablas": tablas,
     }
     with open(os.path.join(D, "db.json"), "w", encoding="utf-8") as fh:

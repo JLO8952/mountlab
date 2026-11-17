@@ -4,7 +4,7 @@
    - Sin token: modo local (los cambios quedan en este navegador y se suben luego con "Subir cambios locales"). */
 (function () {
   const KCFG = "ml_cfg", KOV = "ml_overlay";
-  const KINDS = { componentes: "data/componentes", proyectos: "data/proyectos", pendientes: "data/pendientes" };
+  const KINDS = { componentes: "data/componentes", proyectos: "data/proyectos", pendientes: "data/pendientes", plantillas: "data/plantillas" };
   const ls = {
     get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { console.warn("localStorage", e); } },
@@ -14,7 +14,7 @@
 
   const Store = {
     cfg: Object.assign({ owner: "JLO8952", repo: "mountlab", branch: "main", token: "", aiProv: "anthropic", aiKey: "", aiModel: "claude-sonnet-5-5", gemKey: "", gemModel: "gemini-2.5-flash", oaUrl: "https://api.openai.com/v1", oaKey: "", oaModel: "", drive: "" }, ls.get(KCFG, {})),
-    db: { componentes: [], proyectos: [], pendientes: [], tablas: {}, generado: null },
+    db: { componentes: [], proyectos: [], pendientes: [], plantillas: [], tablas: {}, generado: null },
     mode: "local", error: null,
 
     saveCfg(c) { Object.assign(this.cfg, c); ls.set(KCFG, this.cfg); },
@@ -43,13 +43,13 @@
           this.mode = "local";
         }
       }
-      this.db = { componentes: db.componentes || [], proyectos: db.proyectos || [], pendientes: db.pendientes || [], tablas: db.tablas || {}, generado: db.generado || null };
+      this.db = { componentes: db.componentes || [], proyectos: db.proyectos || [], pendientes: db.pendientes || [], plantillas: db.plantillas || [], tablas: db.tablas || {}, generado: db.generado || null };
       this.applyOverlay();
       return this.db;
     },
 
     // Cambios guardados aún no reflejados en db.json (o hechos sin conexión)
-    overlay() { return ls.get(KOV, { componentes: {}, proyectos: {}, pendientes: {} }); },
+    overlay() { return ls.get(KOV, { componentes: {}, proyectos: {}, pendientes: {}, plantillas: {} }); },
     applyOverlay() {
       const ov = this.overlay(), gen = this.db.generado ? Date.parse(this.db.generado) : 0;
       let cambio = false;
