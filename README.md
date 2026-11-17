@@ -33,10 +33,10 @@ Biblioteca de componentes, catálogo y proyectos de John Fredy Correa. Une **Mou
 1. Crear el repositorio `mountlab` y subir esta carpeta.
 2. **Settings → Pages → Source: GitHub Actions** (gratis si el repo es público; en privado requiere GitHub Pro).
 3. Crear un token *fine-grained* solo para este repo con **Contents: Read and write** y **Actions: Read and write**, y pegarlo en la app (Ajustes). Se guarda solo en ese dispositivo.
-4. (Opcional) Subida automática a Drive:
-   - En el PC: instalar [rclone](https://rclone.org/downloads/) y ejecutar `rclone config` → *n* (nuevo) → nombre `gdrive` → tipo `drive` → scope `drive` → autorizar en el navegador.
-   - Copiar el contenido de `rclone config file` (normalmente `%APPDATA%\rclone\rclone.conf`) en **Settings → Secrets and variables → Actions → New repository secret** con nombre `RCLONE_CONFIG`.
-   - Si la carpeta en Drive no es `MountLab/biblioteca/archivos`, crear la variable `DRIVE_REMOTE` (ej. `gdrive:Otra/Ruta`).
+4. Archivos CAD en el PC (Drive): ejecutar una vez `tools/windows/instalar_sincronizador.ps1` (clic derecho → *Ejecutar con PowerShell*).
+   Crea la tarea programada **"MountLab - sincronizar archivos CAD"**, que cada 10 minutos baja de `archivos/` los DXF/STEP nuevos a
+   `D:\Mi unidad\MountLab\biblioteca\archivos\`; Drive para escritorio los sube a la nube. Registro: `%LOCALAPPDATA%\MountLab\sincronizar.log`.
+   (Alternativa: secreto `RCLONE_CONFIG` para que la Action suba directo a Drive; requiere un client_id propio de Google.)
 5. (Opcional) Asistente IA: clave de console.anthropic.com en Ajustes.
 
 ## Comandos locales
