@@ -655,10 +655,46 @@
   function contextoCatalogo() {
     return Store.db.componentes.map(c => { const pm = precioMin(c), F = c.ficha || {}; return [c.id, c.nombre, c.categoria, TIPOS[c.tipo], F.voltaje, F.corriente, F.interfaz, F.dimensiones, (c.etiquetas || []).join("/"), pm ? "desde " + pm.precio_cop + " COP" : "", c.estado === "verificado" ? "verificado" : "", (F.descripcion || "").slice(0, 160)].filter(Boolean).join(" | "); }).join("\n");
   }
+
+  // ---- proveedores de IA (la clave queda solo en este navegador)
+  const IAS = { anthropic: "Claude (Anthropic)", gemini: "Google Gemini", openai: "OpenAI / compatible" };
+  function iaLista() { const c = Store.cfg; return c.aiProv === "gemini" ? !!c.gemKey : c.aiProv === "openai" ? !!(c.oaKey && c.oaModel) : !!c.aiKey; }
+  function iaNombre() { const c = Store.cfg; return (IAS[c.aiProv] || IAS.anthropic) + " · " + (c.aiProv === "gemini" ? c.gemModel : c.aiProv === "openai" ? c.oaModel : c.aiModel); }
+  async function llamarIA(system, msgs) {
+    const c = Store.cfg, prov = c.aiProv || "anthropic";
+    if (prov === "gemini") {
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(c.gemModel || "gemini-2.5-flash")}:generateContent`, {
+        method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": c.gemKey },
+        body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: msgs.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] })), generationConfig: { maxOutputTokens: 4096 } }),
+      });
+      const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
+      const cand = (j.candidates || [])[0]; if (!cand) throw new Error("Gemini no devolvió respuesta" + (j.promptFeedback ? " (" + JSON.stringify(j.promptFeedback) + ")" : ""));
+      return ((cand.content || {}).parts || []).filter(p => p.text && !p.thought).map(p => p.text).join("\n") || "(respuesta vacía: " + (cand.finishReason || "") + ")";
+    }
+    if (prov === "openai") {
+      const r = await fetch(String(c.oaUrl || "https://api.openai.com/v1").replace(/\/$/, "") + "/chat/completions", {
+        method: "POST", headers: { "content-type": "application/json", Authorization: "Bearer " + c.oaKey },
+        body: JSON.stringify({ model: c.oaModel, messages: [{ role: "system", content: system }, ...msgs] }),
+      });
+      const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
+      return ((j.choices || [])[0] || {}).message?.content || "(respuesta vacía)";
+    }
+    const r = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST", headers: { "content-type": "application/json", "x-api-key": c.aiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+      body: JSON.stringify({ model: c.aiModel || "claude-sonnet-5-5", max_tokens: 1500, system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }], messages: msgs }),
+    });
+    const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
+    return (j.content || []).filter(b => b.type === "text").map(b => b.text).join("\n");
+  }
+  async function listarGemini(key) {
+    const r = await fetch("https://generativelanguage.googleapis.com/v1beta/models?pageSize=200", { headers: { "x-goog-api-key": key } });
+    const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
+    return (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes("generateContent") && /gemini/.test(m.name)).map(m => m.name.replace(/^models\//, ""));
+  }
   function vAsistente() {
-    const sinKey = !Store.cfg.aiKey;
-    app.innerHTML = `<div class="chat"><div class="row" style="justify-content:space-between"><h2>Asistente IA</h2><span class="small muted">Conoce tus ${Store.db.componentes.length} componentes y ${Store.db.proyectos.length} proyectos</span></div>
-      ${sinKey ? '<div class="msg warn">Para usar el asistente agrega tu clave de la API de Anthropic en <a href="#/ajustes">Ajustes</a>. Se guarda solo en este navegador.</div>' : ""}
+    const sinKey = !iaLista();
+    app.innerHTML = `<div class="chat"><div class="row" style="justify-content:space-between"><h2>Asistente IA</h2><span class="small muted">${esc(iaNombre())} · conoce tus ${Store.db.componentes.length} componentes y ${Store.db.proyectos.length} proyectos</span></div>
+      ${sinKey ? '<div class="msg warn">Para usar el asistente elige un proveedor (Claude, Gemini u OpenAI) y pega su clave en <a href="#/ajustes">Ajustes</a>. Se guarda solo en este navegador.</div>' : ""}
       <div class="log" id="log">${S.chat.length ? "" : `<div class="muted small" style="text-align:center;margin-top:20px">Ejemplos:</div><div class="row" style="justify-content:center">${["¿Qué sensores I2C tengo y a qué voltaje funcionan?", "Necesito un datalogger con GPS, IMU y batería 2S: ¿qué componentes uso?", "Resúmeme el BNO055 para decidir si lo uso", "¿Qué me falta comprar para el proyecto Termo-01?"].map(e => `<button class="sm ex">${esc(e)}</button>`).join("")}</div>`}</div>
       <div class="in"><textarea id="q" rows="2" placeholder="Pregunta, pide una recomendación o un resumen técnico…" ${sinKey ? "disabled" : ""}></textarea><button class="pri" id="send" ${sinKey ? "disabled" : ""}>Enviar</button></div></div>`;
     const log = $("#log");
@@ -683,12 +719,7 @@ ${contextoCatalogo()}
 PROYECTOS:
 ${proys}`;
       try {
-        const r = await fetch("https://api.anthropic.com/v1/messages", {
-          method: "POST", headers: { "content-type": "application/json", "x-api-key": Store.cfg.aiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
-          body: JSON.stringify({ model: Store.cfg.aiModel || "claude-sonnet-5-5", max_tokens: 1500, system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }], messages: S.chat.slice(0, -1).slice(-12) }),
-        });
-        const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
-        S.chat[S.chat.length - 1].content = (j.content || []).filter(b => b.type === "text").map(b => b.text).join("\n");
+        S.chat[S.chat.length - 1].content = await llamarIA(system, S.chat.slice(0, -1).slice(-12));
       } catch (e) { S.chat[S.chat.length - 1].content = "No pude responder: " + e.message; }
       pintaLog();
     }
@@ -709,10 +740,10 @@ ${proys}`;
           <li>Copia el token y pégalo aquí. En el celular haz lo mismo (o genera otro token).</li></ol></details>
         ${n ? `<div class="msg warn" style="margin-top:10px">Hay ${n} cambio(s) hechos en modo local sin subir. <button class="sm" id="gSync">Subir ahora</button></div>` : ""}</div>
       <div class="panel"><h3>Asistente IA</h3>
-        <div><label>Clave API de Anthropic · se guarda solo en este dispositivo</label><input id="aK" type="password" value="${esc(c.aiKey)}" placeholder="sk-ant-…"></div>
-        <div style="margin-top:8px"><label>Modelo</label><input id="aM" value="${esc(c.aiModel)}"></div>
-        <div class="row" style="margin-top:8px"><button class="pri" id="aS">Guardar</button></div>
-        <div class="small muted" style="margin-top:6px">La clave se crea en console.anthropic.com. El uso se cobra por consumo a tu cuenta de la API.</div></div>
+        <div><label>Proveedor</label><select id="aP">${Object.entries(IAS).map(([k, n]) => `<option value="${k}" ${(c.aiProv || "anthropic") === k ? "selected" : ""}>${n}</option>`).join("")}</select></div>
+        <div id="aBox" style="margin-top:8px"></div>
+        <div class="row" style="margin-top:8px"><button class="pri" id="aS">Guardar</button><span class="small muted" id="aMsg"></span></div>
+        <div class="small muted" style="margin-top:6px">Las claves se guardan solo en este dispositivo. Puedes dejar varias guardadas y cambiar de proveedor cuando quieras.</div></div>
       <div class="panel"><h3>Google Drive (archivos pesados)</h3>
         <div><label>Carpeta MountLab en Drive (enlace)</label><input id="dD" value="${esc(c.drive)}" placeholder="https://drive.google.com/drive/folders/…"></div>
         <div class="row" style="margin-top:8px"><button id="dS">Guardar</button>${c.drive ? `<a class="btn" href="${esc(c.drive)}" target="_blank" rel="noopener">Abrir carpeta ↗</a>` : ""}</div>
@@ -729,7 +760,26 @@ ${proys}`;
     };
     $("#gX").onclick = async () => { Store.saveCfg({ token: "" }); await Store.load(); estadoPill(); vAjustes(); };
     const sy = $("#gSync"); if (sy) sy.onclick = async () => { try { const k = await Store.syncLocal(i => toast(`Subiendo ${i}…`)); toast(`${k} cambio(s) subidos`); } catch (e) { toast(e.message, 5000); } estadoPill(); vAjustes(); };
-    $("#aS").onclick = () => { Store.saveCfg({ aiKey: $("#aK").value.trim(), aiModel: $("#aM").value.trim() || "claude-sonnet-5-5" }); toast("Guardado"); };
+    const aBox = () => {
+      const p = $("#aP").value;
+      if (p === "anthropic") $("#aBox").innerHTML = `<div><label>Clave API de Anthropic (console.anthropic.com)</label><input id="k1" type="password" value="${esc(c.aiKey)}" placeholder="sk-ant-…"></div><div style="margin-top:8px"><label>Modelo</label><input id="m1" value="${esc(c.aiModel)}"></div>`;
+      if (p === "gemini") $("#aBox").innerHTML = `<div><label>Clave API de Gemini (aistudio.google.com → Get API key)</label><input id="k2" type="password" value="${esc(c.gemKey)}" placeholder="AIza…"></div>
+        <div style="margin-top:8px"><label>Modelo</label><div class="row" style="flex-wrap:nowrap"><input id="m2" list="dlGem" value="${esc(c.gemModel)}"><datalist id="dlGem"></datalist><button class="sm" id="gL">Ver modelos</button></div></div>
+        <div class="small muted" style="margin-top:6px">Google tiene un nivel gratuito con límite de peticiones por minuto y por día; en ese nivel puede usar tus preguntas para mejorar sus modelos.</div>`;
+      if (p === "openai") $("#aBox").innerHTML = `<div><label>URL base (OpenAI, OpenRouter, Groq, DeepSeek…)</label><input id="u3" value="${esc(c.oaUrl)}"></div><div style="margin-top:8px"><label>Clave API</label><input id="k3" type="password" value="${esc(c.oaKey)}" placeholder="sk-…"></div><div style="margin-top:8px"><label>Modelo</label><input id="m3" value="${esc(c.oaModel)}" placeholder="ej. gpt-…"></div>`;
+      const gl = $("#gL"); if (gl) gl.onclick = async () => {
+        const k = $("#k2").value.trim(); if (!k) return toast("Pega primero la clave");
+        try { const ms = await listarGemini(k); $("#dlGem").innerHTML = ms.map(m => `<option value="${esc(m)}">`).join(""); $("#aMsg").textContent = ms.length + " modelos disponibles: haz clic en el campo Modelo para elegir"; } catch (e) { $("#aMsg").textContent = "✗ " + e.message; }
+      };
+    };
+    $("#aP").onchange = aBox; aBox();
+    $("#aS").onclick = () => {
+      const p = $("#aP").value, v = id => ($("#" + id) ? $("#" + id).value.trim() : undefined), o = { aiProv: p };
+      if (p === "anthropic") Object.assign(o, { aiKey: v("k1"), aiModel: v("m1") || "claude-sonnet-5-5" });
+      if (p === "gemini") Object.assign(o, { gemKey: v("k2"), gemModel: v("m2") || "gemini-2.5-flash" });
+      if (p === "openai") Object.assign(o, { oaUrl: v("u3") || "https://api.openai.com/v1", oaKey: v("k3"), oaModel: v("m3") });
+      Store.saveCfg(o); $("#aMsg").textContent = "✓ Guardado: " + iaNombre(); toast("Asistente: " + iaNombre());
+    };
     $("#dS").onclick = () => { Store.saveCfg({ drive: $("#dD").value.trim() }); vAjustes(); };
     $("#xE").onclick = () => download(`mountlab_${hoy()}.json`, JSON.stringify({ formato: "mountlab-db", version: 2, exportado: new Date().toISOString(), componentes: Store.db.componentes, proyectos: Store.db.proyectos }, null, 1), "application/json");
     $("#xR").onclick = async () => { await Store.load(); estadoPill(); toast("Recargado"); vAjustes(); };
