@@ -1,0 +1,182 @@
+{
+ "id": "inr21700_48g",
+ "nombre": "Batería Li-ion 21700 INR21700-48G 3.6 V 4800 mAh 17.3 Wh",
+ "tipo": "electronico",
+ "categoria": "Energía",
+ "etiquetas": [
+  "21700",
+  "Li-ion",
+  "flat top",
+  "sin protección",
+  "9.6 A"
+ ],
+ "fabricante": "Samsung SDI",
+ "referencia": "INR21700-48G",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Celda cilíndrica de ion-litio formato 21700 (Ø21 × 70 mm), 3.6 V nominal, 4800 mAh / 17.3 Wh, terminal positivo plano (flat top) y sin circuito de protección.",
+  "funcionamiento": "Almacena energía electroquímica (química NMC). Se carga con perfil CC/CV hasta 4.20 V y se descarga hasta un corte de 2.50 V. Requiere BMS o cargador con protección externa (sobrecarga, sobredescarga, cortocircuito y temperatura).",
+  "voltaje": "Nominal 3.6 V (a 0.2C); carga 4.20 V; corte de descarga 2.50 V",
+  "corriente": "Carga estándar 1.44 A (0.3C), rápida 4.8 A (1C, acorta la vida útil); descarga continua máx. 9.6 A (2C); pulsos 35 A·10 s / 25 A·30 s / 18 A·60 s",
+  "interfaz": "N/A",
+  "entradas": "Terminal + (cabeza, flat top)",
+  "salidas": "Terminal − (base de la lata)",
+  "dimensiones": "Ø21 × 70 mm nominal (máx. Ø21.1 × 70.15 mm); peso máx. 69 g",
+  "datasheet": "https://cdn.shopify.com/s/files/1/0469/3511/3894/files/INR21700-48G_6de0a297-0cf8-4241-9146-23078b3a9666.pdf",
+  "notas": "Sin protección: no usar sin BMS. No soldar directo a la celda (usar soldadura por puntos con cinta de níquel o portapilas). Variante: la marca '-48' también existe como 48X (3.64 V); esta ficha es la 48G — verificar la etiqueta de la celda. Ojo con celdas falsificadas: comprobar peso (~68–69 g) y capacidad real con un cargador analizador."
+ },
+ "especificaciones": [
+  {
+   "param": "Capacidad",
+   "valor": "Típ. 4800 mAh / mín. 4700 mAh (descarga 0.2C)"
+  },
+  {
+   "param": "Energía",
+   "valor": "17.3 Wh nominal en la etiqueta (datasheet: típ. 17.4 Wh / mín. 17.04 Wh)"
+  },
+  {
+   "param": "Química",
+   "valor": "Li-ion NMC"
+  },
+  {
+   "param": "Tensión de carga",
+   "valor": "4.20 V (CC/CV, corte 0.02C = 96 mA)"
+  },
+  {
+   "param": "Tiempo de carga",
+   "valor": "Estándar 5 h; rápida 2.5 h"
+  },
+  {
+   "param": "Descarga continua máx.",
+   "valor": "9.6 A (2C)"
+  },
+  {
+   "param": "Impedancia",
+   "valor": "AC 1 kHz ≤ 35 mΩ; DC (50 % SOC) ≤ 50 mΩ"
+  },
+  {
+   "param": "Temp. carga",
+   "valor": "0 a 50 °C (superficie de la celda)"
+  },
+  {
+   "param": "Temp. descarga",
+   "valor": "−20 a 60 °C"
+  },
+  {
+   "param": "Almacenamiento",
+   "valor": "−20 a 25 °C (1 año); −20 a 45 °C (3 meses); −20 a 55 °C (1 mes)"
+  },
+  {
+   "param": "Vida útil",
+   "valor": "500 ciclos a 1C y 23 °C con ≥ 3525 mAh (≈73 %)"
+  },
+  {
+   "param": "Peso",
+   "valor": "Máx. 69 g"
+  },
+  {
+   "param": "Terminal +",
+   "valor": "Plano (flat top), Ø≈10 mm (estimado, verificar)"
+  }
+ ],
+ "imagen": {
+  "src": "img/40_inr21700_48g.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 12000,
+   "url": "https://es.aliexpress.com/w/wholesale-INR21700-48G.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 40000,
+   "url": "https://www.amazon.com/s?k=Samsung+INR21700-48G",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 25000,
+   "url": "https://listado.mercadolibre.com.co/bateria-21700-48g",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "NKON (Países Bajos, referencia)",
+   "precio_cop": 11500,
+   "url": "https://nkon.nl/en/samsung-inr21700-48g-4800mah-35a.html",
+   "fecha": "2026-11",
+   "estimado": true,
+   "nota": "≈ €2.47 sin IVA por unidad; sin envío"
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=INR21700-48G+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=Samsung+INR21700-48G"
+ },
+ "montaje": null,
+ "envolvente": {
+  "forma": "cilindro",
+  "eje": "X",
+  "d": 21.0,
+  "l": 70.0,
+  "d_max": 21.1,
+  "l_max": 70.15,
+  "origen": "centro de la celda en X/Y; Z=0 en la superficie de apoyo (eje a Z=10.5); +X = polo positivo",
+  "holgura_recomendada": {
+   "radial": 0.5,
+   "por_extremo": 1.0
+  }
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "n": "+",
+   "func": "Polo positivo (cabeza plana)",
+   "x": 35.0,
+   "y": 0,
+   "conector": "cinta de níquel / contacto de portapilas"
+  },
+  {
+   "n": "−",
+   "func": "Polo negativo (base de la lata)",
+   "x": -35.0,
+   "y": 0,
+   "conector": "cinta de níquel / resorte de portapilas"
+  }
+ ],
+ "archivos": {
+  "step": {
+   "nombre": "inr21700_48g_v1_modelo.step",
+   "version": 1,
+   "fecha": "2026-11-17",
+   "carpeta": "archivos/inr21700_48g (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/inr21700_48g/inr21700_48g_v1_modelo.step"
+  },
+  "dxf": {
+   "nombre": "inr21700_48g_v1_planos.dxf",
+   "version": 1,
+   "fecha": "2026-11-17",
+   "carpeta": "archivos/inr21700_48g (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/inr21700_48g/inr21700_48g_v1_planos.dxf"
+  },
+  "datasheet": {
+   "nombre": "INR21700-48G (Samsung SDI, spec. tentativa oct. 2015)",
+   "url": "https://cdn.shopify.com/s/files/1/0469/3511/3894/files/INR21700-48G_6de0a297-0cf8-4241-9146-23078b3a9666.pdf",
+   "carpeta": "enlace externo"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-17",
+   "nota": "Creado. Datos del datasheet Samsung SDI INR21700-48G; modelo 3D y DXF generados con CadQuery/ezdxf (Ø21 × 70 nominal; polo + y ranura de engaste estimados, sin verificar con calibrador). Precios estimados."
+  }
+ ]
+}
