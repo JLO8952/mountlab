@@ -83,6 +83,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+      - name: Evitar caché del navegador (versión en los scripts)
+        run: sed -i -E "s#(app/[a-z]+\.(js|css))(\?v=[0-9a-z]+)?\"#\1?v=${GITHUB_SHA::7}\"#g" index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
