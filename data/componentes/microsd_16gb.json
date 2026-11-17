@@ -132,6 +132,11 @@
    "nombre": "06_microsd_16gb.dxf",
    "url": "https://drive.google.com/file/d/1rcnKlWnI0LsVTvFiiZukzDn_bJL8XnX7/view",
    "carpeta": "Controladores/DXF"
+  },
+  "datasheet": {
+   "fuente": "https://www.sdcard.org/downloads/pls/",
+   "error": "la dirección no entrega un PDF directo (es una página web)",
+   "fecha": "2026-11-17"
   }
  },
  "historial": [

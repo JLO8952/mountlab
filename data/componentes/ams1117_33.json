@@ -156,6 +156,14 @@
    "fecha": "2026-11-16",
    "carpeta": "MountLab/biblioteca/archivos/ams1117_33",
    "url": null
+  },
+  "datasheet": {
+   "nombre": "ams1117_33_datasheet.pdf",
+   "fuente": "http://www.advanced-monolithic.com/pdf/ds1117.pdf",
+   "fecha": "2026-11-17",
+   "carpeta": "archivos/ams1117_33 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/ams1117_33/ams1117_33_datasheet.pdf",
+   "kb": 93
   }
  },
  "historial": [

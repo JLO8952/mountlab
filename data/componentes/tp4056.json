@@ -158,6 +158,11 @@
    "fecha": "2026-11-16",
    "carpeta": "MountLab/biblioteca/archivos/tp4056",
    "url": null
+  },
+  "datasheet": {
+   "fuente": "https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf",
+   "error": "HTTP Error 502: Bad Gateway",
+   "fecha": "2026-11-17"
   }
  },
  "historial": [

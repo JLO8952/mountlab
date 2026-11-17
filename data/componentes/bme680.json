@@ -182,6 +182,14 @@
    "fecha": "2026-11-16",
    "carpeta": "MountLab/biblioteca/archivos/bme680",
    "url": null
+  },
+  "datasheet": {
+   "nombre": "bme680_datasheet.pdf",
+   "fuente": "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme680-ds001.pdf",
+   "fecha": "2026-11-17",
+   "carpeta": "archivos/bme680 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme680/bme680_datasheet.pdf",
+   "kb": 1358
   }
  },
  "historial": [

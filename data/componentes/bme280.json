@@ -173,6 +173,14 @@
    "fecha": "2026-11-17",
    "carpeta": "archivos/bme280 (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme280/bme280_v2_montaje.step"
+  },
+  "datasheet": {
+   "nombre": "bme280_datasheet.pdf",
+   "fuente": "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf",
+   "fecha": "2026-11-17",
+   "carpeta": "archivos/bme280 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme280/bme280_datasheet.pdf",
+   "kb": 1625
   }
  },
  "historial": [

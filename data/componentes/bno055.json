@@ -206,6 +206,14 @@
    "fecha": "2026-11-16",
    "carpeta": "MountLab/biblioteca/archivos/bno055",
    "url": null
+  },
+  "datasheet": {
+   "nombre": "bno055_datasheet.pdf",
+   "fuente": "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf",
+   "fecha": "2026-11-17",
+   "carpeta": "archivos/bno055 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bno055/bno055_datasheet.pdf",
+   "kb": 2005
   }
  },
  "historial": [

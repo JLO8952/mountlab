@@ -136,6 +136,11 @@
    "fecha": "2026-11-16",
    "carpeta": "MountLab/biblioteca/archivos/lm75_modulo",
    "url": null
+  },
+  "datasheet": {
+   "fuente": "https://www.nxp.com/docs/en/data-sheet/LM75A.pdf",
+   "error": "HTTP Error 404: Not Found",
+   "fecha": "2026-11-17"
   }
  },
  "historial": [

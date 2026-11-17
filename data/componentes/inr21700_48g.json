@@ -167,9 +167,12 @@
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/inr21700_48g/inr21700_48g_v1_planos.dxf"
   },
   "datasheet": {
-   "nombre": "INR21700-48G (Samsung SDI, spec. tentativa oct. 2015)",
-   "url": "https://cdn.shopify.com/s/files/1/0469/3511/3894/files/INR21700-48G_6de0a297-0cf8-4241-9146-23078b3a9666.pdf",
-   "carpeta": "enlace externo"
+   "nombre": "inr21700_48g_datasheet.pdf",
+   "fuente": "https://cdn.shopify.com/s/files/1/0469/3511/3894/files/INR21700-48G_6de0a297-0cf8-4241-9146-23078b3a9666.pdf",
+   "fecha": "2026-11-17",
+   "carpeta": "archivos/inr21700_48g (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/inr21700_48g/inr21700_48g_datasheet.pdf",
+   "kb": 420
   }
  },
  "historial": [

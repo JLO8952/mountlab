@@ -197,6 +197,14 @@
    "fecha": "2026-11-16",
    "carpeta": "MountLab/biblioteca/archivos/gps_max_m10n",
    "url": null
+  },
+  "datasheet": {
+   "nombre": "gps_max_m10n_datasheet.pdf",
+   "fuente": "https://content.u-blox.com/sites/default/files/MAX-M10S_DataSheet_UBX-20035208.pdf",
+   "fecha": "2026-11-17",
+   "carpeta": "archivos/gps_max_m10n (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/gps_max_m10n/gps_max_m10n_datasheet.pdf",
+   "kb": 3183
   }
  },
  "historial": [

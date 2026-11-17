@@ -298,6 +298,14 @@
    "fecha": "2026-11-16",
    "carpeta": "MountLab/biblioteca/archivos/esp32_38p",
    "url": null
+  },
+  "datasheet": {
+   "nombre": "esp32_38p_datasheet.pdf",
+   "fuente": "https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf",
+   "fecha": "2026-11-17",
+   "carpeta": "archivos/esp32_38p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_38p/esp32_38p_datasheet.pdf",
+   "kb": 605
   }
  },
  "historial": [

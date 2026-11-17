@@ -195,9 +195,9 @@
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/switch_balancin_kcd11_2p/switch_balancin_kcd11_2p_v1_recorte.dxf"
   },
   "datasheet": {
-   "nombre": "KCD11-2P (Shou Han) en JLCPCB/LCSC",
-   "url": "https://jlcpcb.com/partdetail/SHOUHAN-KCD112P/C5884412",
-   "carpeta": "enlace externo"
+   "fuente": "https://jlcpcb.com/partdetail/SHOUHAN-KCD112P/C5884412",
+   "error": "la dirección no entrega un PDF directo (es una página web)",
+   "fecha": "2026-11-17"
   }
  },
  "historial": [

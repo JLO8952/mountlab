@@ -217,6 +217,14 @@
    "nombre": "21_xbee_s2c.dxf",
    "url": "https://drive.google.com/file/d/1VO2ViRNhISX8TnlwxFHLQuSp7262cy7K/view",
    "carpeta": "Controladores/DXF"
+  },
+  "datasheet": {
+   "nombre": "xbee_s2c_datasheet.pdf",
+   "fuente": "https://www.digi.com/resources/documentation/digidocs/pdfs/90002002.pdf",
+   "fecha": "2026-11-17",
+   "carpeta": "archivos/xbee_s2c (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/xbee_s2c/xbee_s2c_datasheet.pdf",
+   "kb": 6353
   }
  },
  "historial": [

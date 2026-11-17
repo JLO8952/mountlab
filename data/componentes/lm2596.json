@@ -205,6 +205,14 @@
    "fecha": "2026-11-16",
    "carpeta": "MountLab/biblioteca/archivos/lm2596",
    "url": null
+  },
+  "datasheet": {
+   "nombre": "lm2596_datasheet.pdf",
+   "fuente": "https://www.ti.com/lit/ds/symlink/lm2596.pdf",
+   "fecha": "2026-11-17",
+   "carpeta": "archivos/lm2596 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596/lm2596_datasheet.pdf",
+   "kb": 4976
   }
  },
  "historial": [
