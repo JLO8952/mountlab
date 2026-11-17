@@ -709,8 +709,10 @@ ${proys}`;
     $("#gS").onclick = async () => {
       Store.saveCfg({ owner: $("#gO").value.trim(), repo: $("#gR").value.trim(), branch: $("#gB").value.trim() || "main", token: $("#gT").value.trim() });
       $("#gMsg").textContent = "Probando…";
-      try { await Store.test(); await Store.load(); $("#gMsg").textContent = "Conectado ✓"; toast("Conectado a GitHub"); } catch (e) { $("#gMsg").textContent = e.message; Store.mode = "local"; }
+      let err = null;
+      try { await Store.test(); await Store.load(); toast("Conectado a GitHub"); } catch (e) { err = e.message; Store.mode = "local"; Store.error = e.message; }
       estadoPill(); vAjustes();
+      if (err) { $("#gMsg").innerHTML = `<span style="color:var(--bad)">✗ ${esc(err)}</span>`; toast(err, 7000); } else $("#gMsg").innerHTML = '<span style="color:var(--ok)">✓ Conectado</span>';
     };
     $("#gX").onclick = async () => { Store.saveCfg({ token: "" }); await Store.load(); estadoPill(); vAjustes(); };
     const sy = $("#gSync"); if (sy) sy.onclick = async () => { try { const k = await Store.syncLocal(i => toast(`Subiendo ${i}…`)); toast(`${k} cambio(s) subidos`); } catch (e) { toast(e.message, 5000); } estadoPill(); vAjustes(); };

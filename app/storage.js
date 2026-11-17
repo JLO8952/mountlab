@@ -19,7 +19,7 @@
 
     saveCfg(c) { Object.assign(this.cfg, c); ls.set(KCFG, this.cfg); },
     hasGit() { return !!(this.cfg.token && this.cfg.owner && this.cfg.repo); },
-    api(path) { return `https://api.github.com/repos/${this.cfg.owner}/${this.cfg.repo}/${path}`; },
+    api(path) { return `https://api.github.com/repos/${this.cfg.owner}/${this.cfg.repo}` + (path ? `/${path}` : ""); },
     headers(extra) { return Object.assign({ Authorization: `Bearer ${this.cfg.token}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" }, extra || {}); },
 
     async load() {
@@ -148,8 +148,9 @@
     },
     async test() {
       const r = await fetch(this.api(""), { headers: this.headers() });
-      if (!r.ok) throw new Error(r.status === 404 ? "Repositorio no encontrado o el token no tiene acceso" : `GitHub ${r.status}`);
-      const j = await r.json(); if (!j.permissions || !j.permissions.push) throw new Error("El token no tiene permiso de escritura (Contents: Read and write)");
+      if (r.status === 401) throw new Error("Token inválido o vencido (GitHub 401). Genera uno nuevo.");
+      if (!r.ok) throw new Error(r.status === 404 ? "Repositorio no encontrado o el token no tiene acceso a él (revisa Repository access → mountlab)" : `GitHub ${r.status}`);
+      const j = await r.json(); if (j.permissions && j.permissions.push === false) throw new Error("El token no tiene permiso de escritura (Contents: Read and write)");
       return j;
     },
   };
