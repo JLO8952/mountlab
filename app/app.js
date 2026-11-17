@@ -685,7 +685,7 @@ ${proys}`;
       try {
         const r = await fetch("https://api.anthropic.com/v1/messages", {
           method: "POST", headers: { "content-type": "application/json", "x-api-key": Store.cfg.aiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
-          body: JSON.stringify({ model: Store.cfg.aiModel || "claude-sonnet-5-5", max_tokens: 1500, system, messages: S.chat.slice(0, -1).slice(-12) }),
+          body: JSON.stringify({ model: Store.cfg.aiModel || "claude-sonnet-5-5", max_tokens: 1500, system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }], messages: S.chat.slice(0, -1).slice(-12) }),
         });
         const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
         S.chat[S.chat.length - 1].content = (j.content || []).filter(b => b.type === "text").map(b => b.text).join("\n");
