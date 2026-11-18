@@ -13,6 +13,7 @@
     { n: "Módulo sensor (20 × 15)", base: { forma: "rect", L: 20, W: 15 }, agujeros: 2.5 },
   ];
 
+  const FONDO3D = "#0b1220";
   // ---------------- three.js (se carga solo al abrir la pestaña)
   let threeP = null;
   function cargarThree() {
@@ -25,7 +26,7 @@
 
   function montar(host, W, opt) {
     opt = opt || {};
-    const st = { cara: "A", tool: "sel", colocar: null, sel: [], selH: null, k: 8, ox: 0, oy: 0, snap: 0.5, drag: null, fitted: false, explotar: false, filtro: "", grupo: "Conectores" };
+    const st = { cara: "A", tool: "sel", colocar: null, sel: [], selH: null, k: 8, ox: 0, oy: 0, snap: 0.5, drag: null, fitted: false, explotar: false, filtro: "", grupo: "Conectores", multi: false, varias: false, area: false, ptrs: new Map() };
     const listeners = [];
     const on = (el, ev, fn, o) => { el.addEventListener(ev, fn, o); listeners.push([el, ev, fn, o]); };
     let v3 = null;   // estado de la vista 3D
@@ -42,7 +43,10 @@
         <h3>Modelo 3D</h3><p class="muted" style="margin-top:0">Dibuja el componente con formas simples vistas desde arriba y la vista 3D se arma sola. Empieza por la placa:</p>
         ${tieneMontaje ? `<button class="pri" id="moDesde">Crear a partir de su montaje (${W.montaje.pcb[0]} × ${W.montaje.pcb[1]} mm${(W.zonas || []).length ? `, ${W.zonas.length} zonas` : ""})</button><div class="small muted" style="margin:6px 0 14px">Toma la placa, los agujeros y convierte las zonas en piezas que puedes ajustar.</div>` : ""}
         <div class="small" style="margin-bottom:6px"><b>${tieneMontaje ? "O empieza con una placa de plantilla:" : "Placas de plantilla:"}</b></div>
-        <div class="row">${PLACAS.map((p, i) => `<button data-pl="${i}">${esc(p.n)}</button>`).join("")}</div></div>`;
+        <div class="row">${PLACAS.map((p, i) => `<button data-pl="${i}">${esc(p.n)}</button>`).join("")}</div>
+        <div class="small" style="margin:16px 0 6px"><b>Otras bases</b> <span class="muted">(motores, servos y cuerpos sólidos: las piezas se montan encima o debajo)</span></div>
+        <div class="row">${Object.entries(MLPlant.MOTORES).map(([k, m]) => `<button data-bm="${k}">⚙ ${esc(m.n)}</button>`).join("")}${Object.entries(MLPlant.SERVOS).map(([k, m]) => `<button data-bs="${k}">⛭ Servo ${esc(m.n)}</button>`).join("")}
+          <button data-bx="prisma">▣ Prisma / caja</button><button data-bx="cilindro">◉ Cilindro</button></div></div>`;
       const d = host.querySelector("#moDesde");
       if (d) d.onclick = () => { W.modelo = MLPlant.desdeMontaje(W); armar(); changed(); };
       host.querySelectorAll("[data-pl]").forEach(b => b.onclick = () => {
@@ -53,6 +57,17 @@
         if (P.agujeros) { const ax = r2(P.base.L / 2 - P.agujeros), ay = r2(P.base.W / 2 - P.agujeros); W.montaje.agujeros = [[-ax, -ay], [ax, -ay], [ax, ay], [-ax, ay]].map(([x, y]) => ({ x, y, d: 3 })); }
         armar(); changed();
       });
+      const nuevaBase = (tipo, extra) => {
+        W.modelo = { version: 1, base: Object.assign({ tipo }, JSON.parse(JSON.stringify(MLPlant.BASES[tipo].def)), extra || {}), piezas: [] };
+        W.montaje = Object.assign(W.montaje || {}, { agujeros: [] });
+        const bi = MLPlant.baseInfo(W.modelo.base); if (bi.agujerosDef) W.montaje.agujeros = bi.agujerosDef;
+        MLPlant.sincronizar(W);
+        if (tipo === "servo" || tipo === "motor") W.montaje.fijacion = tipo === "servo" ? "tornillo" : "abrazadera";
+        armar(); changed();
+      };
+      host.querySelectorAll("[data-bm]").forEach(b => b.onclick = () => nuevaBase("motor", { modelo: b.dataset.bm }));
+      host.querySelectorAll("[data-bs]").forEach(b => b.onclick = () => nuevaBase("servo", { modelo: b.dataset.bs }));
+      host.querySelectorAll("[data-bx]").forEach(b => b.onclick = () => nuevaBase(b.dataset.bx));
     }
 
     // ---------------- estructura
@@ -60,11 +75,11 @@
       host.innerHTML = `<div class="mo-layout">
         <div class="mo-izq">
           <div class="mo-bar" id="moBar"></div>
-          <div class="canvas-wrap mo-plan"><svg id="moSvg"></svg><div class="ed-info" id="moInfo"></div><div id="moHint" style="display:none;position:absolute;top:8px;left:8px;right:8px;background:#0369a1;color:#fff;padding:6px 10px;border-radius:8px;font-size:12.5px;pointer-events:none"></div></div>
+          <div class="canvas-wrap mo-plan"><svg id="moSvg"></svg><div class="ed-info" id="moInfo"></div><div id="moHint" style="display:none;position:absolute;top:8px;left:8px;right:8px;background:rgba(14,165,233,.92);color:#04121f;font-weight:600;padding:6px 10px;border-radius:8px;font-size:12.5px;pointer-events:none"></div></div>
           <div class="panel mo-lib"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><b>Librería</b><input id="moQ" placeholder="Buscar pieza…" style="max-width:220px"></div><div class="tabs" id="moGr" style="margin:6px 0"></div><div id="moLib" class="mo-items"></div></div>
         </div>
         <div class="mo-der">
-          <div class="mo-3d"><div id="mo3d"><div class="muted small" style="padding:20px;color:#94a3b8">Cargando vista 3D…</div></div>
+          <div class="mo-3d"><div id="mo3d"><div class="muted small" style="padding:20px">Cargando vista 3D…</div></div>
             <div class="mo-3dbar"><button class="sm" data-v="iso">Iso</button><button class="sm" data-v="arriba">Arriba</button><button class="sm" data-v="abajo">Abajo</button><button class="sm" id="moEx">Explotar</button><button class="sm" id="moFoto" title="Usar esta vista como imagen del componente">📷 Imagen</button></div></div>
           <div class="panel" id="moPanel"></div>
           <div id="moRev"></div>
@@ -93,15 +108,18 @@
         <span class="mo-sep"></span>
         <button class="sm" data-a="rot" title="Girar 90° (R)">↻</button><button class="sm" data-a="dup" title="Duplicar (Ctrl+D)">⧉</button><button class="sm" data-a="fila" title="Repetir en fila">⋯ Fila</button><button class="sm" data-a="cara" title="Pasar a la otra cara">⇅ Cara</button><button class="sm danger" data-a="del" title="Eliminar (Supr)">🗑</button>
         <span class="mo-sep"></span>
+        <button class="sm ${st.multi ? "on" : ""}" data-m="multi" title="Cada toque agrega o quita piezas de la selección (igual que Shift + clic)">☑ Multi</button><button class="sm ${st.area ? "on" : ""}" data-m="area" title="Arrastrar en vacío selecciona por área (igual que Shift + arrastrar)">⬚ Área</button><button class="sm ${st.varias ? "on" : ""}" data-m="varias" title="Al colocar una pieza de la librería, seguir colocando copias (igual que Shift)">⊕ Colocar varias</button>
+        <span class="mo-sep"></span>
         <button class="sm" data-z="in">＋</button><button class="sm" data-z="out">－</button><button class="sm" data-z="fit">Ajustar</button>
         <select id="moSnap" style="width:auto;padding:3px 6px">${[[0, "Libre"], [0.1, "0.1"], [0.5, "0.5"], [1, "1"], [1.27, "1.27"], [2.54, "2.54"]].map(([v, n]) => `<option value="${v}" ${st.snap == v ? "selected" : ""}>Rejilla ${n} mm</option>`).join("")}</select></div>
 `;
-      const hint = host.querySelector("#moHint"); if (hint) { hint.innerHTML = st.colocar ? `Colocando <b>${esc(MLPlant.plantilla(st.colocar)?.n)}</b> en la cara ${st.cara}: clic en la placa · Shift = varias · Esc = terminar` : ""; hint.style.display = st.colocar ? "block" : "none"; }
+      const hint = host.querySelector("#moHint"); if (hint) { hint.innerHTML = st.colocar ? `Colocando <b>${esc(MLPlant.plantilla(st.colocar)?.n)}</b> en la cara ${st.cara}: clic en la placa · ${st.varias ? "sigue colocando: pulsa ⊕ o Esc para terminar" : "Shift o ⊕ = varias · Esc = terminar"}` : ""; hint.style.display = st.colocar ? "block" : "none"; }
       b.querySelectorAll("[data-c]").forEach(x => x.onclick = () => { st.cara = x.dataset.c; st.sel = []; barra(); dibujar(); panel(); });
       b.querySelectorAll("[data-t]").forEach(x => x.onclick = () => { const t = x.dataset.t; if (t === "esq") return esquinas(); st.tool = t; st.colocar = null; barra(); });
       b.querySelectorAll("[data-a]").forEach(x => x.onclick = () => accion(x.dataset.a));
       b.querySelectorAll("[data-z]").forEach(x => x.onclick = () => { const z = x.dataset.z; if (z === "fit") st.fitted = false; else st.k *= z === "in" ? 1.25 : 0.8; dibujar(); });
       b.querySelector("#moSnap").onchange = e => st.snap = +e.target.value;
+      b.querySelectorAll("[data-m]").forEach(x => x.onclick = () => { st[x.dataset.m] = !st[x.dataset.m]; barra(); });
     }
 
     // ---------------- librería
@@ -111,8 +129,15 @@
       host.querySelector("#moGr").innerHTML = q ? "" : grupos.map(g => `<button data-g="${esc(g)}" class="${st.grupo === g ? "on" : ""}">${esc(g)}</button>`).join("");
       host.querySelectorAll("[data-g]").forEach(b => b.onclick = () => { st.grupo = b.dataset.g; libreria(); });
       const L = todas.filter(t => q ? (t.n + " " + t.g).toLowerCase().includes(q) : t.g === st.grupo);
-      host.querySelector("#moLib").innerHTML = L.map(t => `<div class="mo-item ${st.colocar === t.id ? "on" : ""}" data-pt="${esc(t.id)}" title="Clic y luego clic en la placa">${icono(t)}<span>${esc(t.n)}</span>${t.propia ? `<button class="sm" data-del="${esc(t.id)}" title="Eliminar plantilla">✕</button>` : ""}</div>`).join("") || '<div class="muted small">Sin resultados</div>';
-      host.querySelectorAll("[data-pt]").forEach(d => d.onclick = e => { if (e.target.dataset.del) return; st.colocar = st.colocar === d.dataset.pt ? null : d.dataset.pt; st.tool = "sel"; barra(); libreria(); });
+      host.querySelector("#moLib").innerHTML = L.map(t => `<div class="mo-item ${st.colocar === t.id ? "on" : ""}" data-pt="${esc(t.id)}" title="Clic y luego clic en la placa">${icono(t)}<span>${esc(t.n)}</span>${t.propia ? `<button class="sm ghost" data-ren="${esc(t.id)}" title="Renombrar plantilla">✎</button><button class="sm ghost" data-del="${esc(t.id)}" title="Eliminar plantilla">✕</button>` : ""}</div>`).join("") || '<div class="muted small">Sin resultados</div>';
+      host.querySelectorAll("[data-pt]").forEach(d => d.onclick = e => { if (e.target.dataset.del || e.target.dataset.ren) return; st.colocar = st.colocar === d.dataset.pt ? null : d.dataset.pt; st.tool = "sel"; barra(); libreria(); });
+      host.querySelectorAll("[data-ren]").forEach(b => b.onclick = e => {
+        e.stopPropagation(); const u = (Store.db.plantillas || []).find(t => t.id === b.dataset.ren); if (!u) return;
+        dialogo(`<h3>Renombrar plantilla</h3><div><label>Nombre</label><input id="tN" value="${esc(u.nombre)}"></div>`, async bx => {
+          const n = bx.querySelector("#tN").value.trim(); if (!n || n === u.nombre) return;
+          try { await Store.save("plantillas", Object.assign({}, u, { nombre: n }), `Plantilla ${u.id}: renombrada a ${n}`); libreria(); opt.toast && opt.toast("Plantilla renombrada"); } catch (er) { opt.toast && opt.toast(er.message); }
+        });
+      });
       host.querySelectorAll("[data-del]").forEach(b => b.onclick = async e => { e.stopPropagation(); if (!confirm || true) { try { await Store.remove("plantillas", b.dataset.del, `Eliminar plantilla ${b.dataset.del}`); opt.toast && opt.toast("Plantilla eliminada"); libreria(); } catch (er) { opt.toast && opt.toast(er.message); } } });
     }
     function icono(t) { // miniatura de la plantilla en planta
@@ -130,7 +155,7 @@
     const toW = (sx, sy) => { const [w, h] = size(); return [(sx - w / 2) / st.k + st.ox, -(sy - h / 2) / st.k + st.oy]; };
     const snap = v => st.snap ? Math.round(v / st.snap) * st.snap : v;
     const pt = e => { const b = svgEl().getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
-    function ajustar() { const [w, h] = size(), b = M().base, L = b.forma === "redonda" ? b.d : b.L, Wd = b.forma === "redonda" ? b.d : b.W; st.k = Math.min((w - 70) / (L + 16), (h - 60) / (Wd + 16)); st.ox = 0; st.oy = 0; st.fitted = true; }
+    function ajustar() { const [w, h] = size(), bi = MLPlant.baseInfo(M().base), L = bi.L || 30, Wd = bi.W || 20; st.k = Math.min((w - 70) / (L + 16), (h - 60) / (Wd + 16)); st.ox = 0; st.oy = 0; st.fitted = true; }
     function dibujar() {
       const svg = svgEl(); if (!svg) return; const [w, h] = size(); if (!st.fitted) ajustar();
       const b = M().base, esp = b.espesor;
@@ -139,8 +164,12 @@
       for (let x = Math.floor(x0 / step) * step; x <= x1; x += step) { const [sx] = toS(x, 0); s += `<line x1="${sx}" y1="0" x2="${sx}" y2="${h}" stroke="${Math.round(x) % 5 === 0 ? "#1e293b" : "#131c2e"}"/>`; }
       for (let y = Math.floor(y0 / step) * step; y <= y1; y += step) { const [, sy] = toS(0, y); s += `<line x1="0" y1="${sy}" x2="${w}" y2="${sy}" stroke="${Math.round(y) % 5 === 0 ? "#1e293b" : "#131c2e"}"/>`; }
       const [ax, ay] = toS(0, 0); s += `<line x1="0" y1="${ay}" x2="${w}" y2="${ay}" stroke="#7f1d1d"/><line x1="${ax}" y1="0" x2="${ax}" y2="${h}" stroke="#14532d"/>`;
-      // placa
-      if (b.forma === "redonda") s += `<circle cx="${ax}" cy="${ay}" r="${b.d / 2 * st.k}" fill="${b.color || "#166534"}" fill-opacity=".75" stroke="#22c55e" stroke-width="1.5"/>`;
+      // base
+      const bi = MLPlant.baseInfo(b);
+      if (bi.prim.length) { for (const c of bi.prim.slice().sort((p, q) => p.z0 - q.z0)) { if (c.z1 <= 0) continue;
+          if (c.f === "cil") { const [cx, cy] = toS(c.cx, c.cy); s += `<circle cx="${cx}" cy="${cy}" r="${c.d / 2 * st.k}" fill="${c.color}" fill-opacity=".6" stroke="#cbd5e1" stroke-width="1"/>`; }
+          else { const [rx, ry] = toS(c.cx - c.w / 2, c.cy + c.h / 2); s += `<rect x="${rx}" y="${ry}" width="${c.w * st.k}" height="${c.h * st.k}" rx="${(c.r || 0) * st.k}" fill="${c.color}" fill-opacity=".55" stroke="#cbd5e1" stroke-width="1"/>`; } } }
+      else if (b.forma === "redonda") s += `<circle cx="${ax}" cy="${ay}" r="${b.d / 2 * st.k}" fill="${b.color || "#166534"}" fill-opacity=".75" stroke="#22c55e" stroke-width="1.5"/>`;
       else { const [px, py] = toS(-b.L / 2, b.W / 2); s += `<rect x="${px}" y="${py}" width="${b.L * st.k}" height="${b.W * st.k}" rx="${(b.forma === "redondeada" ? b.radio || 0 : 0) * st.k}" fill="${b.color || "#166534"}" fill-opacity=".75" stroke="#22c55e" stroke-width="1.5"/>`; }
       // piezas: primero la otra cara (fantasma), luego la activa
       const ps = M().piezas || [];
@@ -160,7 +189,7 @@
       // agujeros
       (W.montaje && W.montaje.agujeros || []).forEach((a, i) => { const [hx, hy] = toS(a.x, a.y), rr = Math.max(3, a.d / 2 * st.k); s += `<circle data-h="${i}" cx="${hx}" cy="${hy}" r="${rr}" fill="#0b1220" stroke="${st.selH === i ? "#fff" : "#fbbf24"}" stroke-width="${st.selH === i ? 2.5 : 1.5}" style="cursor:move"/>`; });
       // cotas y origen
-      const L = b.forma === "redonda" ? b.d : b.L, Wd = b.forma === "redonda" ? b.d : b.W, [qx, qy] = toS(-L / 2, -Wd / 2);
+      const L = bi.L, Wd = bi.W, [qx, qy] = toS(-L / 2, -Wd / 2);
       s += `<text x="${ax}" y="${qy + 18}" fill="#94a3b8" font-size="12" text-anchor="middle">${b.forma === "redonda" ? "Ø " + b.d : L} mm</text>${b.forma === "redonda" ? "" : `<text x="${qx - 8}" y="${ay}" fill="#94a3b8" font-size="12" text-anchor="end" dominant-baseline="middle">${Wd} mm</text>`}`;
       s += `<circle cx="${ax}" cy="${ay}" r="4" fill="none" stroke="#fff"/><text x="${w - 8}" y="16" fill="${st.cara === "A" ? "#38bdf8" : "#f472b6"}" font-size="13" text-anchor="end" font-weight="700">CARA ${st.cara}${st.cara === "B" ? " (vista a través de la placa)" : ""}</text>`;
       if (st.drag && st.drag.rect) { const R = st.drag.rect; const [a1, b1] = toS(Math.min(R[0], R[2]), Math.max(R[1], R[3])); s += `<rect x="${a1}" y="${b1}" width="${Math.abs(R[2] - R[0]) * st.k}" height="${Math.abs(R[3] - R[1]) * st.k}" fill="#38bdf822" stroke="#38bdf8" stroke-dasharray="4 3"/>`; }
@@ -168,26 +197,37 @@
     }
     function pDown(e) {
       const [sx, sy] = pt(e), [wx, wy] = toW(sx, sy), t = e.target; svgEl().setPointerCapture(e.pointerId);
+      st.ptrs.set(e.pointerId, [sx, sy]);
+      if (st.ptrs.size === 2) { // pellizcar para acercar (celular / tableta)
+        const [a, b2] = [...st.ptrs.values()], mid = [(a[0] + b2[0]) / 2, (a[1] + b2[1]) / 2];
+        if (st.drag && st.drag.piezas && st.drag.moved) st.drag.piezas.forEach(o => { o.p.x = o.x; o.p.y = o.y; });
+        st.drag = { pinch: { d0: Math.hypot(a[0] - b2[0], a[1] - b2[1]) || 1, k0: st.k, mw: toW(mid[0], mid[1]) } }; return;
+      }
+      if (st.ptrs.size > 2) return;
+      const shift = e.shiftKey || st.multi;
       if (st.colocar) {
         const tp = MLPlant.plantilla(st.colocar); const id = nuevoId();
         const n = (M().piezas || []).filter(p => p.plantilla === st.colocar).length + 1;
         M().piezas.push({ id, plantilla: st.colocar, nombre: `${tp.n.split(" (")[0]} ${n}`, cara: st.cara, x: r2(snap(wx)), y: r2(snap(wy)), rot: 0, z: 0, params: MLPlant.paramsDef(tp) });
-        st.sel = [id]; if (!e.shiftKey) { st.colocar = null; barra(); libreria(); } changed(); return;
+        st.sel = [id]; if (!e.shiftKey && !st.varias) { st.colocar = null; barra(); libreria(); } changed(); return;
       }
       if (st.tool === "hole") { W.montaje.agujeros = W.montaje.agujeros || []; const d = (W.montaje.agujeros.at(-1) || {}).d || 3; W.montaje.agujeros.push({ x: r2(snap(wx)), y: r2(snap(wy)), d }); st.selH = W.montaje.agujeros.length - 1; st.sel = []; st.tool = "sel"; barra(); changed(false); render3d(); return; }
       if (t.dataset.h != null && t.dataset.h !== "") { const i = +t.dataset.h, a = W.montaje.agujeros[i]; st.selH = i; st.sel = []; st.drag = { h: i, dx: wx - a.x, dy: wy - a.y }; panel(); dibujar(); return; }
       if (t.dataset.p) {
         const id = t.dataset.p;
-        if (e.shiftKey) st.sel = st.sel.includes(id) ? st.sel.filter(x => x !== id) : [...st.sel, id];
+        if (shift) st.sel = st.sel.includes(id) ? st.sel.filter(x => x !== id) : [...st.sel, id];
         else if (!st.sel.includes(id)) st.sel = [id];
         st.selH = null;
         st.drag = { piezas: piezasSel().map(p => ({ p, x: p.x, y: p.y })), wx, wy, moved: false }; panel(); dibujar(); return;
       }
-      if (e.shiftKey) { st.drag = { rect: [wx, wy, wx, wy] }; return; }
+      if (e.shiftKey || st.area) { st.drag = { rect: [wx, wy, wx, wy] }; return; }
       st.sel = []; st.selH = null; st.drag = { pan: [sx, sy, st.ox, st.oy] }; panel(); dibujar();
     }
     function pMove(e) {
       const [sx, sy] = pt(e), [wx, wy] = toW(sx, sy), d = st.drag;
+      if (st.ptrs.has(e.pointerId)) st.ptrs.set(e.pointerId, [sx, sy]);
+      if (d && d.pinch) { if (st.ptrs.size < 2) return; const [a, b2] = [...st.ptrs.values()], mid = [(a[0] + b2[0]) / 2, (a[1] + b2[1]) / 2];
+        st.k = Math.max(0.3, Math.min(400, d.pinch.k0 * Math.hypot(a[0] - b2[0], a[1] - b2[1]) / d.pinch.d0)); const [nx, ny] = toW(mid[0], mid[1]); st.ox += d.pinch.mw[0] - nx; st.oy += d.pinch.mw[1] - ny; dibujar(); return; }
       host.querySelector("#moInfo").textContent = `x ${r2(wx)}  y ${r2(wy)} mm · cara ${st.cara} · origen = centro de la placa`;
       if (!d) return;
       if (d.pan) { st.ox = d.pan[2] - (sx - d.pan[0]) / st.k; st.oy = d.pan[3] + (sy - d.pan[1]) / st.k; dibujar(); return; }
@@ -195,7 +235,9 @@
       if (d.h != null) { const a = W.montaje.agujeros[d.h]; a.x = r2(snap(wx - d.dx)); a.y = r2(snap(wy - d.dy)); d.moved = true; dibujar(); return; }
       if (d.piezas) { const dx = snap(wx - d.wx), dy = snap(wy - d.wy); d.piezas.forEach(o => { o.p.x = r2(o.x + dx); o.p.y = r2(o.y + dy); }); d.moved = true; dibujar(); }
     }
-    function pUp() {
+    function pUp(e) {
+      if (e && e.pointerId != null) st.ptrs.delete(e.pointerId);
+      if (st.drag && st.drag.pinch) { if (st.ptrs.size === 0) st.drag = null; return; }
       const d = st.drag; st.drag = null; if (!d) return;
       if (d.rect) { const [a, b, c, e2] = d.rect, x0 = Math.min(a, c), x1 = Math.max(a, c), y0 = Math.min(b, e2), y1 = Math.max(b, e2);
         st.sel = (M().piezas || []).filter(p => (p.cara || "A") === st.cara && p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1).map(p => p.id); panel(); dibujar(); return; }
@@ -271,28 +313,69 @@
         box.querySelectorAll("[data-a2]").forEach(x => x.onclick = () => accion(x.dataset.a2));
         box.querySelector("#pTpl").onclick = () => guardarPlantilla(S);
       } else if (S.length > 1) {
-        box.innerHTML = `<h3>${S.length} piezas seleccionadas</h3><div class="row"><button class="sm" data-a2="dup">⧉ Duplicar</button><button class="sm" data-a2="cara">⇅ Pasar a la otra cara</button><button class="sm" data-a2="rot">↻ Girar</button><button class="sm" id="pTpl">★ Guardar grupo como plantilla</button><button class="sm danger" data-a2="del">Eliminar</button></div><div class="small muted" style="margin-top:6px">Shift + clic agrega o quita piezas; Shift + arrastrar en vacío selecciona por área.</div>`;
+        box.innerHTML = `<h3>${S.length} piezas seleccionadas</h3>
+          <div class="small muted" style="margin-bottom:4px">Alinear</div><div class="row" style="gap:4px;margin-bottom:8px">${[["izq", "⇤ Izq."], ["cx", "↔ Centro X"], ["der", "⇥ Der."], ["arr", "⤒ Arriba"], ["cy", "↕ Centro Y"], ["aba", "⤓ Abajo"]].map(([k, n]) => `<button class="sm" data-al="${k}">${n}</button>`).join("")}</div>
+          ${S.length > 2 ? `<div class="small muted" style="margin-bottom:4px">Distribuir (espacios iguales)</div><div class="row" style="gap:4px;margin-bottom:8px"><button class="sm" data-di="x">⇿ En X</button><button class="sm" data-di="y">⇳ En Y</button></div>` : ""}
+          <div class="row"><button class="sm" data-a2="dup">⧉ Duplicar</button><button class="sm" data-a2="cara">⇅ Pasar a la otra cara</button><button class="sm" data-a2="rot">↻ Girar</button><button class="sm" id="pTpl">★ Guardar grupo como plantilla</button><button class="sm danger" data-a2="del">Eliminar</button></div><div class="small muted" style="margin-top:6px">Shift + clic agrega o quita piezas; Shift + arrastrar en vacío selecciona por área.</div>`;
         box.querySelectorAll("[data-a2]").forEach(x => x.onclick = () => accion(x.dataset.a2));
         box.querySelector("#pTpl").onclick = () => guardarPlantilla(S);
+        box.querySelectorAll("[data-al]").forEach(x => x.onclick = () => alinear(S, x.dataset.al));
+        box.querySelectorAll("[data-di]").forEach(x => x.onclick = () => distribuir(S, x.dataset.di));
       } else if (st.selH != null && W.montaje.agujeros[st.selH]) {
         const a = W.montaje.agujeros[st.selH];
         box.innerHTML = `<h3>Agujero H${st.selH + 1}</h3><div class="kv"><div><label>X</label><input type="number" step="0.1" id="hX" value="${a.x}"></div><div><label>Y</label><input type="number" step="0.1" id="hY" value="${a.y}"></div><div><label>Ø</label><input type="number" step="0.1" id="hD" value="${a.d}"></div></div><div class="row" style="margin-top:8px"><button class="sm danger" data-a2="del">Eliminar agujero</button></div>`;
         ["X", "Y", "D"].forEach(k => box.querySelector("#h" + k).onchange = e => { a[k === "D" ? "d" : k.toLowerCase()] = r2(num(e.target.value, 0)); changed(); });
         box.querySelector("[data-a2]").onclick = () => accion("del");
       } else {
-        box.innerHTML = `<h3>Placa</h3>
-          <div class="grid2"><div><label>Forma</label><select id="bF"><option value="rect" ${b.forma === "rect" ? "selected" : ""}>Rectangular</option><option value="redondeada" ${b.forma === "redondeada" ? "selected" : ""}>Esquinas redondeadas</option><option value="redonda" ${b.forma === "redonda" ? "selected" : ""}>Redonda</option></select></div><div><label>Color</label><input type="color" id="bC" value="${esc(b.color || "#166534")}" style="height:34px;padding:2px"></div></div>
-          <div class="kv" style="margin-top:8px">${b.forma === "redonda" ? `<div><label>Diámetro</label><input type="number" step="0.1" id="bD" value="${b.d}"></div>` : `<div><label>Largo X</label><input type="number" step="0.1" id="bL" value="${b.L}"></div><div><label>Ancho Y</label><input type="number" step="0.1" id="bW" value="${b.W}"></div>`}<div><label>Espesor</label><input type="number" step="0.1" id="bE" value="${b.espesor}"></div>${b.forma === "redondeada" ? `<div><label>Radio</label><input type="number" step="0.1" id="bR" value="${b.radio || 0}"></div>` : ""}</div>
+        const tipo = MLPlant.tipoBase(b), bi = MLPlant.baseInfo(b), placaLike = !["motor", "servo"].includes(tipo);
+        const tipos = `<div><label>Tipo de base</label><select id="bT">${Object.entries(MLPlant.BASES).map(([k, v]) => `<option value="${k}" ${tipo === k ? "selected" : ""}>${v.ic} ${esc(v.n)}</option>`).join("")}</select></div>`;
+        let campos = "";
+        if (placaLike) campos = `<div class="grid2" style="margin-top:8px"><div><label>Forma</label><select id="bF"><option value="rect" ${b.forma === "rect" ? "selected" : ""}>Rectangular</option><option value="redondeada" ${b.forma === "redondeada" ? "selected" : ""}>Esquinas redondeadas</option><option value="redonda" ${b.forma === "redonda" ? "selected" : ""}>Redonda</option></select></div><div><label>Color</label><input type="color" id="bC" value="${esc(b.color || "#166534")}" style="height:34px;padding:2px"></div></div>
+          <div class="kv" style="margin-top:8px">${b.forma === "redonda" ? `<div><label>Diámetro</label><input type="number" step="0.1" id="bD" value="${b.d}"></div>` : `<div><label>Largo X</label><input type="number" step="0.1" id="bL" value="${b.L}"></div><div><label>Ancho Y</label><input type="number" step="0.1" id="bW" value="${b.W}"></div>`}<div><label>${tipo === "placa" ? "Espesor" : "Altura"}</label><input type="number" step="0.1" id="bE" value="${b.espesor}"></div>${b.forma === "redondeada" ? `<div><label>Radio</label><input type="number" step="0.1" id="bR" value="${b.radio || 0}"></div>` : ""}</div>`;
+        else {
+          const cat = tipo === "motor" ? MLPlant.MOTORES : MLPlant.SERVOS, m = bi.medidas;
+          const ks = tipo === "motor" ? [["d", "Ø / ancho"], ["plano", "Entre planos"], ["largo", "Largo cuerpo"], ["reductor", "Reductor"], ["eje_d", "Ø eje"], ["eje_l", "Largo eje"]] : [["L", "Largo cuerpo"], ["W", "Ancho"], ["alto", "Alto cuerpo"], ["oL", "Largo orejas"], ["oz0", "Altura orejas"], ["sx", "Eje desde centro"]];
+          campos = `<div class="grid2" style="margin-top:8px"><div><label>Modelo</label><select id="bM">${Object.entries(cat).map(([k, v]) => `<option value="${k}" ${b.modelo === k ? "selected" : ""}>${esc(v.n)}</option>`).join("")}</select></div><div><label>Color</label><input type="color" id="bC" value="${esc(b.color || "#9ca3af")}" style="height:34px;padding:2px"></div></div>
+            <div class="kv" style="margin-top:8px">${ks.map(([k, n]) => `<div><label>${n}</label><input type="number" step="0.1" data-bm="${k}" value="${m[k]}"></div>`).join("")}</div>
+            <div class="row" style="margin-top:8px">${tipo === "servo" ? '<button class="sm" id="bAg">◎ Agujeros de las orejas</button>' : ""}<button class="sm" id="bRs">↺ Medidas del catálogo</button></div>
+            <div class="small muted" style="margin-top:6px">${tipo === "motor" ? "Eje hacia +Z (cara A = cara del eje); terminales hacia −Z." : "Eje de salida hacia +Z; la cara A es la tapa del servo y las orejas llevan los agujeros de fijación."} Medidas típicas del fabricante: verifícalas con calibrador.</div>`;
+        }
+        box.innerHTML = `<h3>Base</h3>${tipos}${campos}
           <div class="small" style="margin-top:10px"><b>Agujeros:</b> ${(W.montaje.agujeros || []).length ? W.montaje.agujeros.map((a, i) => `<a href="#" data-hs="${i}">H${i + 1} Ø${a.d}</a>`).join(" · ") : "ninguno (usa ◯ Agujero o ⌗ 4 esquinas)"}</div>
-          <div class="small muted" style="margin-top:8px">${(M().piezas || []).length} pieza(s) · alto sobre la placa ${W.montaje.altura_superior ?? 0} mm · bajo la placa ${W.montaje.altura_inferior ?? 0} mm · ${(W.pines || []).filter(p => p.pieza).length} pines automáticos · ${(W.zonas || []).filter(z => z.auto).length} zonas automáticas</div>
-          <div class="small muted" style="margin-top:6px">Elige una pieza en la <b>Librería</b> y haz clic en la placa. La cara B se dibuja como si vieras a través de la placa desde arriba.</div>`;
+          <div class="small muted" style="margin-top:8px">${(M().piezas || []).length} pieza(s) · alto sobre la base ${W.montaje.altura_superior ?? 0} mm · bajo la base ${W.montaje.altura_inferior ?? 0} mm · ${(W.pines || []).filter(p => p.pieza).length} pines automáticos · ${(W.zonas || []).filter(z => z.auto).length} zonas automáticas</div>
+          <div class="small muted" style="margin-top:6px">Elige una pieza en la <b>Librería</b> y haz clic en la base. La cara B se dibuja como si vieras a través de la base desde arriba.</div>`;
         const set = (k, v) => { b[k] = v; if (k === "d" && b.forma === "redonda") { b.L = v; b.W = v; } st.fitted = false; changed(); };
-        box.querySelector("#bF").onchange = e => { b.forma = e.target.value; if (b.forma === "redonda" && !b.d) b.d = Math.min(b.L, b.W); if (b.forma !== "redonda" && !b.L) { b.L = b.d; b.W = b.d; } if (b.forma === "redondeada" && !b.radio) b.radio = 3; st.fitted = false; changed(); };
-        box.querySelector("#bC").onchange = e => set("color", e.target.value);
+        box.querySelector("#bT").onchange = e => {
+          const t = e.target.value, prev = b.color; Object.keys(b).forEach(k => delete b[k]); Object.assign(b, { tipo: t }, JSON.parse(JSON.stringify(MLPlant.BASES[t].def)));
+          if (t === "placa" && prev) b.color = prev; const nb = MLPlant.baseInfo(b); if (nb.agujerosDef) W.montaje.agujeros = nb.agujerosDef; st.fitted = false; changed();
+        };
+        const bc = box.querySelector("#bC"); if (bc) bc.onchange = e => set("color", e.target.value);
+        const bf = box.querySelector("#bF"); if (bf) bf.onchange = e => { b.forma = e.target.value; if (b.forma === "redonda" && !b.d) b.d = Math.min(b.L, b.W); if (b.forma !== "redonda" && !b.L) { b.L = b.d; b.W = b.d; } if (b.forma === "redondeada" && !b.radio) b.radio = 3; st.fitted = false; changed(); };
         [["bL", "L"], ["bW", "W"], ["bD", "d"], ["bE", "espesor"], ["bR", "radio"]].forEach(([id, k]) => { const i = box.querySelector("#" + id); if (i) i.onchange = () => set(k, Math.max(0.1, r2(num(i.value, b[k])))); });
+        const bm = box.querySelector("#bM"); if (bm) bm.onchange = e => { b.modelo = e.target.value; delete b.medidas; const nb = MLPlant.baseInfo(b); if (nb.agujerosDef) W.montaje.agujeros = nb.agujerosDef; st.fitted = false; changed(); };
+        box.querySelectorAll("[data-bm]").forEach(i => i.onchange = () => { b.medidas = Object.assign({}, b.medidas || {}, { [i.dataset.bm]: Math.max(0, r2(num(i.value, 0))) }); st.fitted = false; changed(); });
+        const ag = box.querySelector("#bAg"); if (ag) ag.onclick = () => { W.montaje.agujeros = MLPlant.baseInfo(b).agujerosDef || []; changed(); };
+        const rs = box.querySelector("#bRs"); if (rs) rs.onclick = () => { delete b.medidas; st.fitted = false; changed(); };
         box.querySelectorAll("[data-hs]").forEach(x => x.onclick = ev => { ev.preventDefault(); st.selH = +x.dataset.hs; panel(); dibujar(); });
       }
       revisiones();
+    }
+    function alinear(S, modo) {
+      const H = S.map(p => ({ p, h: MLPlant.huella(p) })).filter(o => o.h); if (H.length < 2) return;
+      const x0 = Math.min(...H.map(o => o.h.x0)), x1 = Math.max(...H.map(o => o.h.x1)), y0 = Math.min(...H.map(o => o.h.y0)), y1 = Math.max(...H.map(o => o.h.y1));
+      for (const { p, h } of H) {
+        if (modo === "izq") p.x = r2(p.x + x0 - h.x0); if (modo === "der") p.x = r2(p.x + x1 - h.x1); if (modo === "cx") p.x = r2(p.x + (x0 + x1) / 2 - (h.x0 + h.x1) / 2);
+        if (modo === "aba") p.y = r2(p.y + y0 - h.y0); if (modo === "arr") p.y = r2(p.y + y1 - h.y1); if (modo === "cy") p.y = r2(p.y + (y0 + y1) / 2 - (h.y0 + h.y1) / 2);
+      }
+      changed();
+    }
+    function distribuir(S, eje) {
+      const H = S.map(p => ({ p, h: MLPlant.huella(p) })).filter(o => o.h); if (H.length < 3) return;
+      const a = eje === "x" ? ["x0", "x1", "x"] : ["y0", "y1", "y"]; H.sort((m, n) => m.h[a[0]] - n.h[a[0]]);
+      const total = H[H.length - 1].h[a[1]] - H[0].h[a[0]], ocup = H.reduce((t, o) => t + o.h[a[1]] - o.h[a[0]], 0), gap = (total - ocup) / (H.length - 1);
+      let cur = H[0].h[a[1]] + gap;
+      for (const o of H.slice(1, -1)) { const w = o.h[a[1]] - o.h[a[0]]; o.p[a[2]] = r2(o.p[a[2]] + cur - o.h[a[0]]); cur += w + gap; }
+      changed();
     }
     function revisiones() {
       const R = MLPlant.revisar(W), box = host.querySelector("#moRev"); if (!box) return;
@@ -319,20 +402,22 @@
     function iniciar3d() {
       const T = THREE, cont = host.querySelector("#mo3d"); if (!cont) return;
       cont.innerHTML = "";
-      const ren = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+      const ren = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, alpha: true });
       ren.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); cont.appendChild(ren.domElement);
-      const scene = new T.Scene(); scene.background = new T.Color("#e2e8f0");
+      const scene = new T.Scene(); scene.background = new T.Color(FONDO3D);
       const cam = new T.PerspectiveCamera(35, 1, 0.1, 5000);
       scene.add(new T.HemisphereLight(0xffffff, 0x8899aa, 0.75));
       const dl = new T.DirectionalLight(0xffffff, 0.75); dl.position.set(60, 120, 80); scene.add(dl);
       const dl2 = new T.DirectionalLight(0xffffff, 0.35); dl2.position.set(-80, -60, -40); scene.add(dl2);
       const ctl = new T.OrbitControls(cam, ren.domElement); ctl.enableDamping = true;
       const grupo = new T.Group(); scene.add(grupo);
+      const rej = new T.GridHelper(200, 40, 0x1e3a5f, 0x14203a); rej.position.y = -0.01; scene.add(rej);
       let raf = 0; const loop = () => { raf = requestAnimationFrame(loop); ctl.update(); ren.render(scene, cam); }; loop();
       const resize = () => { const w = cont.clientWidth || 360, h = cont.clientHeight || 280; ren.setSize(w, h); cam.aspect = w / h; cam.updateProjectionMatrix(); };
-      const vista = v => { const b = M().base, R = Math.max(b.forma === "redonda" ? b.d : b.L, b.forma === "redonda" ? b.d : b.W, 20) * 1.6; ctl.target.set(0, 0, 0);
-        if (v === "arriba") cam.position.set(0, R * 1.3, 0.001); else if (v === "abajo") cam.position.set(0, -R * 1.3, 0.001); else cam.position.set(R * 0.75, R * 0.8, R * 0.95); cam.lookAt(0, 0, 0); ctl.update(); };
-      v3 = { T, ren, scene, cam, ctl, grupo, resize, vista, stop: () => { cancelAnimationFrame(raf); ren.dispose(); } };
+      const vista = v => { const bi = MLPlant.baseInfo(M().base), mt = W.montaje || {}, alto = (bi.top || 0) + (mt.altura_superior || 0) + (mt.altura_inferior || 0), zc = ((bi.top || 0) + (mt.altura_superior || 0) - (mt.altura_inferior || 0)) / 2;
+        const R = Math.max(bi.L || 20, bi.W || 20, alto, 20) * 1.6; ctl.target.set(0, zc, 0);
+        if (v === "arriba") cam.position.set(0, R * 1.3, 0.001); else if (v === "abajo") cam.position.set(0, -R * 1.3, 0.001); else cam.position.set(R * 0.75, zc + R * 0.8, R * 0.95); cam.lookAt(0, zc, 0); ctl.update(); };
+      v3 = { T, ren, scene, cam, ctl, grupo, rej, resize, vista, stop: () => { cancelAnimationFrame(raf); ren.dispose(); } };
       resize(); vista("iso"); render3d();
     }
     function forma2D(T, b) {
@@ -346,16 +431,24 @@
     function render3d() {
       if (!v3) return; const { T, grupo } = v3;
       grupo.children.slice().forEach(o => { grupo.remove(o); o.geometry && o.geometry.dispose(); o.material && o.material.dispose(); });
-      const b = M().base, esp = b.espesor, E = st.explotar ? Math.max(6, esp * 4) : 0;
-      const pg = new T.ExtrudeGeometry(forma2D(T, b), { depth: esp, bevelEnabled: false, curveSegments: 32 }); pg.rotateX(-Math.PI / 2);
-      grupo.add(new T.Mesh(pg, new T.MeshStandardMaterial({ color: b.color || "#166534", roughness: 0.75 })));
-      for (const c of MLPlant.cuerposDe ? (M().piezas || []).flatMap(p => MLPlant.cuerposDe(p, esp)) : []) {
-        const alto = Math.max(0.05, c.z1 - c.z0), mid = (c.z0 + c.z1) / 2 + (c.z0 >= esp - 1e-6 ? E : c.z1 <= 1e-6 ? -E : 0);
+      const b = M().base, esp = b.espesor, E = st.explotar ? Math.max(6, Math.min(esp, 10) * 4) : 0, bi = MLPlant.baseInfo(b);
+      if (!bi.prim.length) {
+        const pg = new T.ExtrudeGeometry(forma2D(T, b), { depth: esp, bevelEnabled: false, curveSegments: 32 }); pg.rotateX(-Math.PI / 2);
+        grupo.add(new T.Mesh(pg, new T.MeshStandardMaterial({ color: b.color || "#166534", roughness: 0.75 })));
+      }
+      if (v3.rej) v3.rej.position.y = Math.min(0, ...bi.prim.map(c => c.z0)) - 0.02 - (st.explotar ? E : 0);
+      const lista = bi.prim.map(c => Object.assign({}, c, { esBase: true })).concat((M().piezas || []).flatMap(p => MLPlant.cuerposDe(p, esp)));
+      for (const c of lista) {
+        const alto = Math.max(0.05, c.z1 - c.z0), mid = (c.z0 + c.z1) / 2 + (c.esBase ? 0 : c.z0 >= esp - 1e-6 ? E : c.z1 <= 1e-6 ? -E : 0);
         let g;
-        if (c.f === "cil") g = new T.CylinderGeometry(c.d / 2, c.d / 2, alto, 28);
-        else if (c.r && c.r > 0.05) { const s = new T.Shape(), w = c.w / 2, h = c.h / 2, r = Math.min(c.r, w - 0.01, h - 0.01); s.moveTo(-w + r, -h); s.lineTo(w - r, -h); s.absarc(w - r, -h + r, r, -Math.PI / 2, 0); s.lineTo(w, h - r); s.absarc(w - r, h - r, r, 0, Math.PI / 2); s.lineTo(-w + r, h); s.absarc(-w + r, h - r, r, Math.PI / 2, Math.PI); s.lineTo(-w, -h + r); s.absarc(-w + r, -h + r, r, Math.PI, Math.PI * 1.5);
+        const hs = c.orejas ? ((W.montaje && W.montaje.agujeros) || []).filter(a => Math.abs(a.x - c.cx) < c.w / 2 && Math.abs(a.y - c.cy) < c.h / 2) : [];
+        if (hs.length) { const s = new T.Shape(), w = c.w / 2, h = c.h / 2; s.moveTo(-w, -h); s.lineTo(w, -h); s.lineTo(w, h); s.lineTo(-w, h); s.lineTo(-w, -h);
+          hs.forEach(a => { const p = new T.Path(); p.absarc(a.x - c.cx, a.y - c.cy, a.d / 2, 0, Math.PI * 2, true); s.holes.push(p); });
+          g = new T.ExtrudeGeometry(s, { depth: alto, bevelEnabled: false, curveSegments: 20 }); g.rotateX(-Math.PI / 2); g.translate(0, -alto / 2, 0); }
+        else if (c.f === "cil") g = new T.CylinderGeometry(c.d / 2, c.d / 2, alto, 28);
+        else if (c.f !== "cil" && c.r && c.r > 0.05) { const s = new T.Shape(), w = c.w / 2, h = c.h / 2, r = Math.min(c.r, w - 0.01, h - 0.01); s.moveTo(-w + r, -h); s.lineTo(w - r, -h); s.absarc(w - r, -h + r, r, -Math.PI / 2, 0); s.lineTo(w, h - r); s.absarc(w - r, h - r, r, 0, Math.PI / 2); s.lineTo(-w + r, h); s.absarc(-w + r, h - r, r, Math.PI / 2, Math.PI); s.lineTo(-w, -h + r); s.absarc(-w + r, -h + r, r, Math.PI, Math.PI * 1.5);
           g = new T.ExtrudeGeometry(s, { depth: alto, bevelEnabled: false, curveSegments: 12 }); g.rotateX(-Math.PI / 2); g.translate(0, -alto / 2, 0); }
-        else g = new T.BoxGeometry(c.w, alto, c.h);
+        else if (!g) g = new T.BoxGeometry(c.w, alto, c.h);
         const m = new T.Mesh(g, new T.MeshStandardMaterial({ color: c.color || "#64748b", roughness: 0.55, metalness: /#c|#d|#9/.test(c.color || "") ? 0.35 : 0.05 }));
         m.position.set(c.cx, mid, -c.cy);
         if (st.sel.includes(c.pieza)) m.material.emissive = new T.Color("#0369a1");
@@ -364,14 +457,26 @@
     }
     async function captura() {
       if (!v3) { opt.toast && opt.toast("La vista 3D aún no está lista"); return null; }
-      const sel = st.sel; st.sel = []; render3d(); v3.vista("iso"); v3.ctl.update(); v3.scene.background = new v3.T.Color("#ffffff"); v3.ren.render(v3.scene, v3.cam);
-      const src = v3.ren.domElement.toDataURL("image/png"); v3.scene.background = new v3.T.Color("#e2e8f0"); st.sel = sel; render3d(); return src;
+      const sel = st.sel; st.sel = []; render3d(); v3.vista("iso"); v3.ctl.update(); v3.scene.background = null; v3.rej.visible = false; v3.ren.setClearColor(0x000000, 0); v3.ren.render(v3.scene, v3.cam);
+      const src = v3.ren.domElement.toDataURL("image/png"); v3.scene.background = new v3.T.Color(FONDO3D); v3.rej.visible = true; st.sel = sel; render3d(); return src;
     }
 
     if (!W.modelo || !W.modelo.base) inicio(); else { MLPlant.sincronizar(W); armar(); }
     return {
       destroy() { listeners.forEach(([el, ev, fn, o]) => { if (el) el.removeEventListener(ev, fn, o); else fn(); }); v3 && v3.stop(); },
       captura, redraw: () => dibujar(),
+      api: {
+        cara: c => { if (!W.modelo) return false; st.cara = c === "B" ? "B" : "A"; st.sel = []; barra(); dibujar(); panel(); return true; },
+        explotar: v => { if (!W.modelo) return false; st.explotar = v == null ? !st.explotar : !!v; const b = host.querySelector("#moEx"); if (b) b.classList.toggle("on", st.explotar); render3d(); return true; },
+        vista: v => { v3 && v3.vista(v || "iso"); return !!v3; },
+        imagen: async () => { const src = await captura(); if (!src) return false; W.imagen = { src, origen: "render del modelo 3D" }; opt.onChange && opt.onChange(); return true; },
+        colocar: (id, params, cara) => { if (!W.modelo) return false; const tp = MLPlant.plantilla(id); if (!tp) return false; const pid = nuevoId(); const n = (M().piezas || []).filter(p => p.plantilla === id).length + 1;
+          M().piezas.push({ id: pid, plantilla: id, nombre: `${tp.n.split(" (")[0]} ${n}`, cara: cara === "B" ? "B" : st.cara, x: 0, y: 0, rot: 0, z: 0, params: Object.assign(MLPlant.paramsDef(tp), params || {}) }); st.sel = [pid]; changed(); return true; },
+        armarColocacion: id => { if (!W.modelo || !MLPlant.plantilla(id)) return false; st.colocar = id; st.tool = "sel"; barra(); libreria(); return true; },
+        todo: () => { if (!W.modelo) return false; st.sel = (M().piezas || []).filter(p => (p.cara || "A") === st.cara).map(p => p.id); dibujar(); panel(); return true; },
+        ajustar: () => { st.fitted = false; dibujar(); return true; },
+        tiene: () => !!(W.modelo && W.modelo.base),
+      },
     };
   }
   window.MLModelo = { montar };

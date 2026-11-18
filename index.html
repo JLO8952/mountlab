@@ -3,35 +3,60 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#070b12">
+<meta name="robots" content="noindex">
 <title>MountLab</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f172a'/%3E%3Crect x='7' y='9' width='18' height='14' rx='2' fill='none' stroke='%2338bdf8' stroke-width='2'/%3E%3Ccircle cx='10.5' cy='12.5' r='1.6' fill='%2338bdf8'/%3E%3Ccircle cx='21.5' cy='19.5' r='1.6' fill='%2338bdf8'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="app/style.css?v=202611162312">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2338bdf8'/%3E%3Cstop offset='.6' stop-color='%23818cf8'/%3E%3Cstop offset='1' stop-color='%23c084fc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Crect x='7' y='9' width='18' height='14' rx='2' fill='none' stroke='%2305121e' stroke-width='2.2'/%3E%3Ccircle cx='10.5' cy='12.5' r='1.7' fill='%2305121e'/%3E%3Ccircle cx='21.5' cy='19.5' r='1.7' fill='%2305121e'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="app/style.css?v=202611171200">
 </head>
 <body>
-<header class="top">
-  <a class="brand" href="#/">
-    <svg viewBox="0 0 32 32" width="26" height="26"><rect width="32" height="32" rx="7" fill="#1e293b"/><rect x="7" y="9" width="18" height="14" rx="2" fill="none" stroke="#38bdf8" stroke-width="2"/><circle cx="10.5" cy="12.5" r="1.6" fill="#38bdf8"/><circle cx="21.5" cy="19.5" r="1.6" fill="#38bdf8"/></svg>
-    <span>MountLab</span>
-  </a>
-  <nav id="nav">
-    <a href="#/" data-r="catalogo">Catálogo</a>
-    <a href="#/proyectos" data-r="proyectos">Proyectos</a>
-    <a href="#/pendientes" data-r="pendientes">Pendientes <b id="nPend" class="cnt hide"></b></a>
-    <a href="#/asistente" data-r="asistente">Asistente IA</a>
-    <a href="#/ajustes" data-r="ajustes">Ajustes</a>
-  </nav>
-  <span id="estado" class="pill">Cargando…</span>
-</header>
-<main id="app"></main>
+<div id="shell">
+  <aside id="side">
+    <a class="brand" href="#/"><span class="logo"><svg viewBox="0 0 32 32" width="22" height="22"><rect x="6" y="8" width="20" height="16" rx="2.5" fill="none" stroke="#05121e" stroke-width="2.4"/><circle cx="10.5" cy="12.5" r="1.8" fill="#05121e"/><circle cx="21.5" cy="19.5" r="1.8" fill="#05121e"/></svg></span><span>MountLab</span></a>
+    <nav id="nav">
+      <a href="#/" data-r="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Inicio</span></a>
+      <a href="#/catalogo" data-r="catalogo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Catálogo</span></a>
+      <a href="#/proyectos" data-r="proyectos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Proyectos</span></a>
+      <a href="#/pendientes" data-r="pendientes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13L22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/></svg><span>Pendientes</span><b id="nPend" class="cnt hide"></b></a>
+      <a href="#/ajustes" data-r="ajustes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3h0a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v0a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></svg><span>Ajustes</span></a>
+    </nav>
+    <div class="side-foot">
+      <div class="who" id="who"></div>
+      <button class="sm" id="btnLock" title="Bloquear MountLab">🔒 Bloquear</button>
+    </div>
+  </aside>
+  <div id="maincol">
+    <header class="topbar">
+      <button class="searchbox" id="btnBuscar" title="Buscar en toda la app (Ctrl+K)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>Buscar componentes, proyectos, acciones…</span><kbd>Ctrl K</kbd></button>
+      <span id="estado" class="pill">Cargando…</span>
+      <button class="ai-btn" id="btnIA" title="Asistente (Ctrl+J)">✦ <span class="lbl">Asistente</span></button>
+    </header>
+    <main id="app"></main>
+  </div>
+</div>
+
+<aside id="drawer" aria-label="Asistente">
+  <div class="dr-head"><div class="t"><i>✦</i>Asistente</div>
+    <button class="sm ghost" id="drWide" title="Ampliar / reducir">⤢</button><button class="sm ghost" id="drClose" title="Cerrar (Esc)">✕</button></div>
+  <div class="dr-ctx" id="drCtx"></div>
+  <div class="dr-sug" id="drSug"></div>
+  <div id="asHost" class="chat"></div>
+</aside>
+<button id="fab" title="Asistente (Ctrl+J)">✦</button>
+<div id="fabTip" class="hide"></div>
+<div id="palette" class="hide"></div>
+<div id="lock" class="hide"></div>
+
 <div id="toast"></div>
 <div id="modal" class="modal hide"><div class="modal-box" id="modalBox"></div></div>
-<script src="app/dxf.js?v=202611162312"></script>
-<script src="app/storage.js?v=202611162312"></script>
-<script src="app/editor.js?v=202611162312"></script>
-<script src="app/local.js?v=202611162312"></script>
-<script src="app/plantillas.js?v=202611162312"></script>
-<script src="app/modelo.js?v=202611162312"></script>
-<script src="app/app.js?v=202611162312"></script>
+<script src="app/dxf.js?v=202611171200"></script>
+<script src="app/storage.js?v=202611171200"></script>
+<script src="app/auth.js?v=202611171200"></script>
+<script src="app/editor.js?v=202611171200"></script>
+<script src="app/local.js?v=202611171200"></script>
+<script src="app/plantillas.js?v=202611171200"></script>
+<script src="app/modelo.js?v=202611171200"></script>
+<script src="app/agent.js?v=202611171200"></script>
+<script src="app/app.js?v=202611171200"></script>
 </body>
 </html>

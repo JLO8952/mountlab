@@ -206,5 +206,6 @@
    "fecha": "2026-11-17",
    "nota": "Creado desde la ficha del proveedor enviada por John (2P, SPST ON-OFF, 120 VAC 6 A / 250 VAC 3 A). Dimensiones KCD11 estándar (marco 15 × 10.5, recorte 13.5 × 9); terminales estimados. STEP y DXF generados con CadQuery/ezdxf."
   }
- ]
+ ],
+ "cad_pendiente": true
 }

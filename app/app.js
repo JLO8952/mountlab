@@ -40,6 +40,8 @@
     p.textContent = t + (n ? ` · ${n} sin subir` : ""); p.className = "pill " + (Store.mode === "github" ? "ok" : "loc");
     p.title = Store.error || "Clic para ajustes"; p.onclick = () => location.hash = "#/ajustes";
     const np = Store.db.pendientes.length, b = $("#nPend"); b.textContent = np; b.classList.toggle("hide", !np);
+    const pf = window.Auth ? Auth.perfil() : {}, rol = { "dueño": "Dueño", edicion: "Invitado · edición", lectura: "Invitado · solo lectura" }[pf.rol] || "";
+    const w = $("#who"); if (w) w.innerHTML = pf.rol ? `<span class="avatar">${esc((pf.nombre || "?").slice(0, 1).toUpperCase())}</span><span><b style="color:var(--ink)">${esc(pf.nombre || "")}</b><br>${esc(rol)}${pf.rol === "dueño" && Store.permisos && Store.permisos.admin ? " ✓" : ""}</span>` : "";
   }
   function dirty() { return S.W && S.orig && JSON.stringify(S.W) !== S.orig; }
   window.addEventListener("beforeunload", e => { if (dirty()) { e.preventDefault(); e.returnValue = ""; } });
@@ -56,15 +58,17 @@
     if (S.ed) { S.ed.destroy(); S.ed = null; }
     if (!h.startsWith("#/c/")) { S.W = null; S.orig = null; }
     const [, r, id] = h.split("/");
-    $$("#nav a").forEach(a => a.classList.toggle("act", a.dataset.r === ({ "": "catalogo", c: "catalogo", p: "proyectos" }[r] ?? r)));
+    $$("#nav a").forEach(a => a.classList.toggle("act", a.dataset.r === ({ "": "inicio", asistente: "inicio", invitacion: "inicio", c: "catalogo", p: "proyectos" }[r] ?? r)));
     window.scrollTo(0, 0);
+    if (r !== "asistente" && $("#drawer").classList.contains("wide")) { $("#drawer").classList.remove("wide"); document.body.classList.remove("drawer-wide"); }
+    if (r === "asistente") { abrirAsistente(true); history.replaceState(null, "", "#/"); lastHash = "#/"; return vInicio(); }
+    if (r === "catalogo") return vCatalogo();
     if (r === "c" && id) return vComponente(decodeURIComponent(id));
     if (r === "proyectos") return vProyectos();
     if (r === "p" && id) return vProyecto(decodeURIComponent(id));
     if (r === "pendientes") return vPendientes();
-    if (r === "asistente") return vAsistente();
     if (r === "ajustes") return vAjustes();
-    return vCatalogo();
+    return vInicio();
   }
   window.addEventListener("hashchange", route);
 
@@ -167,12 +171,12 @@
   function vComponente(id) {
     let c = comp(id);
     if (!c && S.nuevo && S.nuevo.id === id) c = S.nuevo;
-    if (!c) { app.innerHTML = `<div class="panel">No existe el elemento <b>${esc(id)}</b>. <a href="#/">Volver al catálogo</a></div>`; return; }
+    if (!c) { app.innerHTML = `<div class="panel">No existe el elemento <b>${esc(id)}</b>. <a href="#/catalogo">Volver al catálogo</a></div>`; return; }
     if (!S.W || S.W.id !== id) { S.W = clone(c); S.orig = S.nuevo && S.nuevo.id === id ? "{}" : JSON.stringify(c); S.tab = S.tab || "ficha"; }
     const W = S.W;
     const enProy = Store.db.proyectos.filter(p => (p.bom || []).some(b => b.id === W.id));
     app.innerHTML = `<div class="det-head">
-      <div><div class="small"><a href="#/">← Catálogo</a></div><h2 style="margin-top:4px">${esc(W.nombre)}</h2>
+      <div><div class="small"><a href="#/catalogo">← Catálogo</a></div><h2 style="margin-top:4px">${esc(W.nombre)}</h2>
         <div class="row" style="gap:6px;margin-top:6px"><span class="tag">${esc(W.id)}</span><span class="tag cat">${esc(W.categoria)}</span><span class="tag">${TIPOS[W.tipo] || W.tipo}</span><span class="tag">v${W.version || 1}</span>
         ${W.variante_de ? `<span class="tag">variante de <a href="#/c/${esc(W.variante_de)}">${esc(W.variante_de)}</a></span>` : ""}
         ${enProy.map(p => `<a class="tag" href="#/p/${esc(p.id)}">📁 ${esc(p.nombre)}</a>`).join("")}<span id="dirtyMark"></span></div></div>
@@ -187,13 +191,13 @@
     $$("[data-tab]").forEach(b => b.onclick = () => { S.tab = b.dataset.tab; $$("[data-tab]").forEach(x => x.classList.toggle("on", x === b)); tab(); });
     $("#chkVer").onchange = e => { W.estado = e.target.checked ? "verificado" : "borrador"; vComponente(id); };
     $("#bSave").onclick = guardarComponente;
-    $("#bUndo").onclick = () => { if (S.nuevo && S.nuevo.id === id) { S.W = null; S.orig = null; S.nuevo = null; location.hash = "#/"; return; } S.W = null; vComponente(id); };
+    $("#bUndo").onclick = () => { if (S.nuevo && S.nuevo.id === id) { S.W = null; S.orig = null; S.nuevo = null; location.hash = "#/catalogo"; return; } S.W = null; vComponente(id); };
     $("#bDup").onclick = () => copiar(false); $("#bVar").onclick = () => copiar(true);
     $("#bProj").onclick = () => aProyecto(W.id);
     $("#bDel").onclick = async () => {
       if (!(await confirmar(`¿Eliminar <b>${esc(W.nombre)}</b>? ${enProy.length ? `Está en ${enProy.length} proyecto(s).` : ""} El historial queda en GitHub.`, "Eliminar"))) return;
       try { const m = await Store.remove("componentes", W.id, `Eliminar ${W.id}`); toast(m === "github" ? "Eliminado (commit en GitHub)" : "Eliminado en modo local"); } catch (e) { toast("Error: " + e.message, 5000); }
-      S.W = null; S.orig = null; estadoPill(); location.hash = "#/";
+      S.W = null; S.orig = null; estadoPill(); location.hash = "#/catalogo";
     };
     tab();
   }
@@ -503,7 +507,7 @@
   // ---- Archivos CAD
   function tabArchivos(body, W) {
     const A = W.archivos || {};
-    const nombres = { step: "Modelo 3D (STEP)", dxf: "Plano (DXF)", step_montaje: "STEP de montaje (placa + agujeros + zonas)", dxf_huella: "DXF de huella (origen al centro)", datasheet: "Datasheet (copia PDF)" };
+    const nombres = { step: "Modelo 3D (STEP)", dxf: "Plano (DXF)", step_montaje: "STEP de montaje (placa + agujeros + zonas)", dxf_huella: "DXF de huella (origen al centro)", datasheet: "Datasheet (copia PDF)", dxf_plano: "Plano de taller (DXF: 3 vistas + cotas + cajetín)" };
     const gh = `https://github.com/${Store.cfg.owner}/${Store.cfg.repo}`;
     body.innerHTML = `<div class="grid2">
       <div class="panel"><h3>Archivos CAD</h3>
@@ -513,11 +517,11 @@
           : `<div class="msg info" style="margin-top:10px">En tu PC los encuentras en <b>D:\\Mi unidad\\MountLab\\biblioteca\\archivos\\${esc(W.id)}\\</b> (Drive para escritorio) para abrirlos directo en SolidWorks.</div>`}
         ${W.cad_pendiente ? '<div class="msg warn">Hay cambios de geometría pendientes de regenerar en CAD.</div>' : ""}</div>
       <div class="panel"><h3>Generar</h3>
-        <p class="small muted">El DXF de huella se puede bajar ya mismo desde aquí (lo genera el navegador). El STEP de montaje lo genera GitHub con CadQuery al guardar cambios de geometría, y lo sube a Drive como versión nueva.</p>
+        <p class="small muted">El DXF de huella se puede bajar ya mismo desde aquí (lo genera el navegador). El STEP de montaje y el <b>plano de taller</b> (vista superior, frontal y lateral con cotas generales, agujeros y cajetín, escala 1:1) los genera GitHub con CadQuery al guardar cambios de geometría, como versión nueva.</p>
         <div class="row"><button class="pri" id="bDxf" ${W.montaje ? "" : "disabled"}>Descargar DXF de huella (v${W.version || 1})</button>
         <button id="bCad" ${Store.mode === "github" && W.montaje ? "" : "disabled"}>Regenerar DXF + STEP en GitHub</button></div>
         ${Store.mode !== "github" ? '<div class="small muted" style="margin-top:6px">Para regenerar en GitHub configura el token en Ajustes.</div>' : `<div class="small" style="margin-top:6px"><a href="${gh}/actions" target="_blank" rel="noopener">Ver ejecuciones en GitHub Actions ↗</a></div>`}
-        <h3 style="margin-top:16px">Convenciones</h3><ul class="small muted" style="margin:0;padding-left:18px"><li>Unidades en mm; origen (0,0) en el centro de la placa; X a lo largo, Y a lo ancho, Z hacia arriba desde la cara inferior del PCB.</li><li>Capas DXF: PCB, AGUJEROS, ZONAS, ZONAS_HOLGURA, PINES, EJES, TEXTO.</li><li>Cada cambio de geometría crea un archivo nuevo: <code>${esc(W.id)}_v${(W.version || 1)}_huella.dxf</code>; las versiones anteriores no se borran.</li></ul></div></div>`;
+        <h3 style="margin-top:16px">Convenciones</h3><ul class="small muted" style="margin:0;padding-left:18px"><li>Unidades en mm; origen (0,0) en el centro de la placa; X a lo largo, Y a lo ancho, Z hacia arriba desde la cara inferior del PCB.</li><li>Capas DXF de huella: PCB, AGUJEROS, ZONAS, ZONAS_HOLGURA, PINES, EJES, TEXTO, PIEZAS_A/B.</li><li>Plano: capas CONTORNO, PIEZAS, OCULTAS, CENTRO, COTAS, TEXTO, MARCO; proyección ISO-E (primer diedro).</li><li>Cada cambio de geometría crea un archivo nuevo: <code>${esc(W.id)}_v${(W.version || 1)}_huella.dxf</code>; las versiones anteriores no se borran.</li></ul></div></div>`;
     $$("[data-dl]", body).forEach(l => l.onclick = async e => {
       e.preventDefault();
       const raw = l.dataset.dl.replace(/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/raw\//, "https://raw.githubusercontent.com/$1/$2/");
@@ -754,7 +758,7 @@
       return `<tr><td><input type="checkbox" data-pk="${i}" data-k="${esc(k)}" ${cf === "baja" ? "" : "checked"} style="width:auto" ${estado ? "disabled" : ""}></td><td><b>${esc(k)}</b>${cf ? ` <span class="tag ${cf === "alta" ? "ok" : cf === "media" ? "warn" : "bad"}">${esc(cf)}</span>` : ""}${GEO.includes(k.split(".")[0]) ? ' <span class="tag warn">verificar</span>' : ""}</td>
         ${crear ? "" : `<td class="small">${corto(getPath(base, k))}</td>`}<td class="small">${corto(v)}</td><td class="small">${f ? `<a href="${esc(f)}" target="_blank" rel="noopener">fuente ↗</a>` : '<span class="muted">—</span>'}</td></tr>`;
     }).join("");
-    return `<div class="panel" style="margin-top:8px;padding:12px;background:#f8fafc">
+    return `<div class="panel" style="margin-top:8px;padding:12px;background:var(--bg2)">
       <div class="row" style="justify-content:space-between"><b>${crear ? "➕ Crear" : "✎ Actualizar"} ${esc(p.cambios.nombre || (base && base.nombre) || p.componente)} <span class="tag">${esc(p.componente)}</span></b>
       ${estado ? `<span class="tag ${estado.startsWith("Aprobado") || estado.startsWith("Enviado") ? "ok" : "bad"}">${esc(estado)}</span>` : ""}</div>
       ${p.resumen ? `<div class="small muted" style="margin:4px 0">${esc(p.resumen)}</div>` : ""}
@@ -774,6 +778,17 @@
     const pend = { id: `${p.componente}_${Date.now().toString(36)}`, componente: p.componente, fuente: fuenteTxt, fecha: hoy(), resumen: p.resumen || "", cambios, fuentes: p.fuentes || {}, confianza: p.confianza || {} };
     return Store.save("pendientes", pend, `Pendiente: propuesta del asistente para ${p.componente}`);
   }
+  // ---- panel del asistente (en todas las ventanas)
+  function abrirAsistente(ancho) {
+    const d = $("#drawer"); d.classList.add("open"); document.body.classList.add("drawer-open");
+    if (ancho != null) { d.classList.toggle("wide", !!ancho); document.body.classList.toggle("drawer-wide", !!ancho); }
+    $("#btnIA").classList.add("on"); try { localStorage.setItem("ml_drawer", "1"); } catch (e) { }
+    if (!$("#asHost").childElementCount) vAsistente();
+    if (window.MLAgent) MLAgent.refrescar();
+    setTimeout(() => { const q = $("#q"); if (q && matchMedia("(pointer:fine)").matches) q.focus(); }, 250);
+  }
+  function cerrarAsistente() { $("#drawer").classList.remove("open", "wide"); document.body.classList.remove("drawer-open", "drawer-wide"); $("#btnIA").classList.remove("on"); try { localStorage.removeItem("ml_drawer"); } catch (e) { } }
+  function preguntar(q) { abrirAsistente(); const t = $("#q"); if (!t) return; t.value = q; $("#send").click(); }
   function vAsistente() {
     const sinKey = false;   // el modo local funciona sin clave
     if (S.buscar === undefined) S.buscar = true;
@@ -781,26 +796,27 @@
     if (!nubeLista() && S.modo !== "local") S.modo = "local";
     MLLocal.asegurar(Store.db.componentes);
     const sinResp = (() => { try { return JSON.parse(localStorage.getItem("ml_sinresp")) || []; } catch (e) { return []; } })();
-    app.innerHTML = `<div class="chat"><div class="row" style="justify-content:space-between"><h2>Asistente IA</h2><div class="row" style="gap:4px">${[["auto", "🔀 Automático", "Responde local y gratis; si no sabe o le pides investigar, consulta a la nube"], ["local", "⚡ Local", "Sin internet ni costo: busca en tu biblioteca"], ["nube", "☁ Nube", iaNombre()]].map(([k, n, t]) => `<button class="sm ${S.modo === k ? "on" : ""}" data-modo="${k}" title="${esc(t)}" ${k !== "local" && !nubeLista() ? "disabled" : ""}>${n}</button>`).join("")}</div></div>
-      ${!nubeLista() ? '<div class="msg info small" style="margin:6px 0">Modo ⚡ local: responde gratis desde tu biblioteca (también entiende con errores de ortografía). Para investigar en internet y crear fichas agrega una clave de Claude o Gemini en <a href="#/ajustes">Ajustes</a>.</div>' : ""}
-      <details class="small" style="margin:4px 0"><summary>🧠 Cerebro local: <span id="cbE">${esc(MLLocal.estado())}</span>${sinResp.length ? ` · <b>${sinResp.length} pregunta(s) sin respuesta</b>` : ""}</summary>
+    const H = $("#asHost");
+    H.innerHTML = `<div class="row" style="justify-content:space-between;padding:8px 14px 0;gap:6px"><div class="row" style="gap:4px">${[["auto", "🔀 Auto", "Responde local y gratis; si no sabe o le pides investigar, consulta a la nube"], ["local", "⚡ Local", "Sin internet ni costo: busca en tu biblioteca y maneja la app"], ["nube", "☁ Nube", iaNombre()]].map(([k, n, t]) => `<button class="sm ${S.modo === k ? "on" : ""}" data-modo="${k}" title="${esc(t)}" ${k !== "local" && !nubeLista() ? "disabled" : ""}>${n}</button>`).join("")}</div>
+        <div class="row" style="gap:4px"><label class="sm btn" style="margin:0;padding:4px 8px;font-size:12px" title="${iaBusca() ? "La nube busca datasheets, medidas y precios en internet" : "El proveedor OpenAI/compatible no busca en internet desde aquí"}"><input type="checkbox" id="qB" ${S.buscar && iaBusca() ? "checked" : ""} ${iaBusca() ? "" : "disabled"}> 🔎 Web</label><button class="sm ghost" id="qC" title="Nueva conversación">🗋</button></div></div>
+      ${!nubeLista() ? '<div class="msg info small" style="margin:8px 14px 0">Modo ⚡ local: responde gratis desde tu biblioteca y maneja la app con órdenes (“abre el bme280”, “pasa a la cara B”). Para investigar en internet agrega una clave de Claude o Gemini en <a href="#/ajustes">Ajustes</a>.</div>' : ""}
+      <details class="small" style="margin:6px 14px 0"><summary>🧠 Cerebro local: <span id="cbE">${esc(MLLocal.estado())}</span>${sinResp.length ? ` · <b>${sinResp.length} sin respuesta</b>` : ""}</summary>
         <div class="panel" style="margin-top:6px;padding:10px"><div class="row" style="flex-wrap:nowrap"><input id="cbQ" placeholder="Prueba cómo interpreta una frase, ej. “sensr de presion”"><button class="sm" id="cbR">Reentrenar</button></div><div id="cbO" class="small" style="margin-top:6px"></div>
-        <div class="small muted" style="margin-top:6px">Comandos: <code>aprende: termo = lm75_modulo</code> · <code>olvida: termo</code> · <code>revisa proyecto termo-01</code></div>
+        <div class="small muted" style="margin-top:6px">Comandos: <code>aprende: termo = lm75_modulo</code> · <code>olvida: termo</code> · <code>revisa proyecto termo-01</code> · órdenes de la app (“exporta el BOM”, “toma la imagen del modelo”)</div>
         ${sinResp.length ? `<div style="margin-top:8px"><b>Sin respuesta</b> (enséñale a qué componente se refieren):${sinResp.slice(-10).reverse().map(x => `<div class="row" style="justify-content:space-between;margin-top:3px"><span>“${esc(x)}”</span><button class="sm" data-ens="${esc(x)}">Enseñar</button></div>`).join("")}<button class="sm" id="cbL" style="margin-top:6px">Limpiar lista</button></div>` : ""}</div></details>
       <div class="log" id="log"></div>
-      <div class="row small" style="margin-top:6px;gap:14px"><label class="row" style="gap:6px;margin:0;color:var(--ink)"><input type="checkbox" id="qB" style="width:auto" ${S.buscar && iaBusca() ? "checked" : ""} ${iaBusca() ? "" : "disabled"}> 🔎 Buscar en internet (datasheets, medidas, precios)</label>
-        ${iaBusca() ? "" : '<span class="muted">El proveedor OpenAI/compatible no busca en internet desde aquí.</span>'}<button class="sm" id="qC" style="margin-left:auto">Nueva conversación</button></div>
-      <div class="in"><textarea id="q" rows="2" placeholder="Ej: “Agrega el MPU6050 GY-521 con su datasheet, pines, medidas y precios”" ${sinKey ? "disabled" : ""}></textarea><button class="pri" id="send" ${sinKey ? "disabled" : ""}>Enviar</button></div></div>`;
+      <div class="in"><textarea id="q" rows="2" placeholder="Pregunta o da una orden… (Enter envía)" ${sinKey ? "disabled" : ""}></textarea><button class="pri" id="send" ${sinKey ? "disabled" : ""}>➤</button></div>`;
     const log = $("#log");
     const fmt = t => esc(t).replace(/\[\[([a-z0-9_]+)\]\]/g, (m, id) => comp(id) ? `<a class="cref" href="#/c/${id}">${esc(comp(id).nombre)}</a>` : m).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
-    const ejemplos = ["¿Qué voltaje usa el bme28o?", "pines del lm75", "¿Qué sensores I2C tengo?", "revisa proyecto termo-01", ...(nubeLista() ? ["Agrega el sensor MPU6050 (GY-521): datasheet, pines, medidas y precios en Colombia", "Completa el datasheet del TP4056"] : [])];
+    const ejemplos = ["¿Qué voltaje usa el bme28o?", "pines del lm75", "¿Qué sensores I2C tengo?", "abre el proyecto cansat", "busca I2C", ...(nubeLista() ? ["Agrega el sensor MPU6050 (GY-521): datasheet, pines, medidas y precios en Colombia", "Completa el datasheet del TP4056"] : [])];
     const pintaLog = () => {
-      if (!S.chat.length) { log.innerHTML = `<div class="muted small" style="text-align:center;margin-top:20px">Pregúntale por tus componentes (⚡ responde gratis desde tu biblioteca) o pídele que <b>agregue o complete</b> uno: investiga en internet y te muestra una <b>propuesta</b> que tú apruebas.</div><div class="row" style="justify-content:center;margin-top:8px">${ejemplos.map(e => `<button class="sm ex">${esc(e)}</button>`).join("")}</div>`; $$(".ex").forEach(b => b.onclick = () => { if (!sinKey) { $("#q").value = b.textContent; enviar(); } }); return; }
-      log.innerHTML = S.chat.map((m, mi) => m.role === "user" ? `<div class="bub u">${esc(m.content)}</div>` :
+      if (!S.chat.length) { log.innerHTML = `<div class="muted small" style="text-align:center;margin-top:20px">Pregúntale por tus componentes, dale <b>órdenes</b> para manejar la app (“abre el bme280”, “exporta el BOM”, “pasa a la cara B”) o pídele que <b>agregue o complete</b> uno: investiga y te muestra una <b>propuesta</b> que tú apruebas.</div><div class="row" style="justify-content:center;margin-top:8px">${ejemplos.map(e => `<button class="sm ex">${esc(e)}</button>`).join("")}</div>`; $$(".ex").forEach(b => b.onclick = () => { if (!sinKey) { $("#q").value = b.textContent; enviar(); } }); return; }
+      log.innerHTML = S.chat.map((m, mi) => m.role === "user" ? `<div class="bub u">${esc(m.content)}</div>` : m.role === "act" ? `<div class="bub act">${m.ok === false ? "⚠" : "⚡"} ${esc(m.content)}</div>` :
         `<div class="bub a" style="max-width:100%">${m.local ? `<div class="small muted" style="margin-bottom:4px">⚡ local · ${esc(m.via)}${m.conf ? " · " + Math.round(m.conf * 100) + "%" : ""}</div>` : ""}${fmt(m.vista ?? m.content)}
           ${m.local && (m.ids || []).length ? `<div class="row" style="margin-top:6px;gap:4px">${m.ids.map(id => comp(id) ? `<button class="sm" data-sug="${esc(comp(id).nombre)}">${esc(comp(id).nombre)}</button>` : "").join("")}</div>` : ""}
           ${m.accion && !m.accionHecha ? `<div class="row" style="margin-top:6px"><button class="pri sm" data-acc="${mi}">Confirmar</button><button class="sm" data-accx="${mi}">Cancelar</button></div>` : m.accionHecha ? `<div class="small" style="margin-top:4px">${esc(m.accionHecha)}</div>` : ""}
           ${m.local && nubeLista() && !m.subida ? `<div style="margin-top:6px"><button class="sm" data-nube="${mi}">☁ Preguntar a la nube${S.buscar ? " (con búsqueda)" : ""}</button></div>` : ""}
+          ${(m.acciones || []).map((a, ai) => `<div class="row" style="margin-top:6px;gap:6px"><span class="tag vio">⚡ ${esc(a.n)}</span>${a.estado ? `<span class="small muted">${esc(a.estado)}</span>` : `<button class="pri sm" data-ax="${mi}:${ai}">Hacer</button><button class="sm" data-axn="${mi}:${ai}">No</button>`}</div>`).join("")}
           ${(m.props || []).map((p, pi) => htmlPropuesta(p, mi + ":" + pi, (m.estados || {})[pi])).join("")}
           ${(m.fuentes || []).length ? `<details style="margin-top:6px"><summary class="small">Fuentes consultadas (${m.fuentes.length})</summary><ul class="small" style="margin:4px 0;padding-left:18px">${m.fuentes.slice(0, 15).map(f => `<li><a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.titulo)}</a></li>`).join("")}</ul></details>` : ""}</div>`).join("");
       log.scrollTop = log.scrollHeight;
@@ -821,6 +837,8 @@
       $$("[data-pd]", log).forEach(b => b.onclick = () => { const { m, pi } = cl(b.dataset.pd); marca(m, pi, "Descartado"); });
       $$("[data-sug]", log).forEach(b => b.onclick = () => { $("#q").value = b.dataset.sug; enviar(); });
       $$("[data-nube]", log).forEach(b => b.onclick = () => { const mi = +b.dataset.nube; S.chat[mi].subida = true; nube(S.chat[mi - 1].content); });
+      $$("[data-ax]", log).forEach(b => b.onclick = async () => { const [mi, ai] = b.dataset.ax.split(":").map(Number), a = S.chat[mi].acciones[ai]; const r = await ejecutarAccionIA(a, true); a.estado = r.ok ? "✓ " + r.msg : "⚠ " + r.msg; pintaLog(); });
+      $$("[data-axn]", log).forEach(b => b.onclick = () => { const [mi, ai] = b.dataset.axn.split(":").map(Number); S.chat[mi].acciones[ai].estado = "Descartada"; pintaLog(); });
       $$("[data-accx]", log).forEach(b => b.onclick = () => { S.chat[+b.dataset.accx].accionHecha = "Cancelado"; pintaLog(); });
       $$("[data-acc]", log).forEach(b => b.onclick = async () => {
         const m = S.chat[+b.dataset.acc], A = m.accion, c = clone(comp(A.id)); if (!c) return;
@@ -848,8 +866,15 @@
     $("#qB").onchange = e => { S.buscar = e.target.checked; };
     $("#qC").onclick = () => { S.chat = []; pintaLog(); };
     const PIDE_NUBE = /\b(agrega\w*|añad\w*|anad\w*|crea\w*|busca\w*|complet\w*|actualiz\w*|investig\w*|internet|recomiend\w*|recomend\w*|necesito|disen\w*|diseñ\w*|compar\w*|alternativ\w*|por que|porque|explica\w*)\b/i;
+    S.pintaLog = pintaLog;
     async function enviar() {
       const q = $("#q").value.trim(); if (!q) return; $("#q").value = "";
+      // 1) ¿es una orden para la app? (agente local, sin internet)
+      const it = window.MLAgent && !/^(aprende|olvida|revisa proyecto)\b/i.test(q) ? MLAgent.intencion(q) : null;
+      if (it) {
+        S.chat.push({ role: "user", content: q }); const r = await MLAgent.ejecutar(it.a, it.args);
+        S.chat.push({ role: "act", content: r.msg, ok: r.ok }); pintaLog(); return;
+      }
       if (S.modo !== "nube") {
         const r = MLLocal.responder(q, Store.db);
         const directo = S.modo === "local" || !nubeLista() || ["comando", "sistema experto"].includes(r.via) || (!PIDE_NUBE.test(q) && r.confianza >= 0.6 && !r.sinRespuesta);
@@ -897,15 +922,26 @@ BIBLIOTECA (id | nombre | categoría | tipo | voltaje | corriente | interfaz | d
 ${contextoCatalogo()}
 
 PROYECTOS:
-${proys}`;
+${proys}
+
+PANTALLA ACTUAL: ${ctxActual().titulo}${S.W ? ` (componente [[${S.W.id}]], pestaña ${S.tab})` : ""}.
+ACCIONES DE LA APP — si John te pide hacer algo en la interfaz (abrir, cambiar de pestaña, guardar, exportar, colocar piezas en el modelo 3D…), además de responder agrega uno o más bloques así (JSON válido):
+\`\`\`mountlab-accion
+{"accion":"id_de_la_accion","args":{}}
+\`\`\`
+Acciones disponibles ahora (id: descripción [args]):
+${accionesParaIA()}
+Usa solo ids de esta lista. Las de navegación se ejecutan solas; las que modifican datos le piden confirmación a John.`;
       const last = S.chat[S.chat.length - 1];
       try {
-        const hist = S.chat.slice(0, -1).slice(-12).map(m => ({ role: m.role, content: m.content })).filter((m, i, A) => !(m.role === "assistant" && i === 0));
+        const hist = S.chat.slice(0, -1).filter(m => m.role !== "act").slice(-12).map(m => ({ role: m.role, content: m.content })).filter((m, i, A) => !(m.role === "assistant" && i === 0));
         while (hist.length > 1 && hist[0].role !== "user") hist.shift();
         for (let i = hist.length - 1; i > 0; i--) if (hist[i].role === hist[i - 1].role) hist[i - 1].content += "\n" + hist.splice(i, 1)[0].content;
         const r = await llamarIA(system, hist, buscar);
         const { limpio, props } = extraerPropuestas(r.text);
-        Object.assign(last, { content: r.text, vista: limpio || (props.length ? "Esta es mi propuesta:" : r.text), props, fuentes: r.fuentes });
+        const { limpio: limpio2, acciones } = extraerAcciones(limpio);
+        Object.assign(last, { content: r.text, vista: limpio2 || (props.length ? "Esta es mi propuesta:" : acciones.length ? "Listo:" : r.text), props, fuentes: r.fuentes, acciones });
+        for (const a of acciones) if (!a.peligro && !a.estado) { const x = await ejecutarAccionIA(a); a.estado = x.ok ? "✓ " + x.msg : "⚠ " + x.msg; }
       } catch (e) { Object.assign(last, { content: "No pude responder: " + e.message, vista: null }); }
       $("#send").disabled = false; pintaLog();
     }
@@ -934,6 +970,7 @@ ${proys}`;
         <div><label>Carpeta MountLab en Drive (enlace)</label><input id="dD" value="${esc(c.drive)}" placeholder="https://drive.google.com/drive/folders/…"></div>
         <div class="row" style="margin-top:8px"><button id="dS">Guardar</button>${c.drive ? `<a class="btn" href="${esc(c.drive)}" target="_blank" rel="noopener">Abrir carpeta ↗</a>` : ""}</div>
         <div class="small muted" style="margin-top:6px">Los STEP/DXF se guardan en <b>MountLab/biblioteca/archivos/&lt;id&gt;/</b>. La subida automática desde GitHub se configura con el secreto <code>RCLONE_CONFIG</code> (ver README).</div></div>
+      <div class="panel" style="grid-column:1/-1"><h3>🔐 Acceso y seguridad</h3><div id="acc"></div></div>
       <div class="panel"><h3>Datos</h3><div class="small muted">Base cargada: ${Store.db.componentes.length} componentes, ${Store.db.proyectos.length} proyectos${Store.db.generado ? " · generada " + esc(Store.db.generado) : ""}.</div>
         <div class="row" style="margin-top:8px"><button id="xE">Exportar todo (JSON)</button><label class="btn" style="margin:0">Importar JSON<input type="file" id="xI" accept=".json" hidden></label><button id="xR">Recargar</button></div></div></div>`;
     $("#gS").onclick = async () => {
@@ -967,6 +1004,7 @@ ${proys}`;
       Store.saveCfg(o); $("#aMsg").textContent = "✓ Guardado: " + iaNombre(); toast("Asistente: " + iaNombre());
     };
     $("#dS").onclick = () => { Store.saveCfg({ drive: $("#dD").value.trim() }); vAjustes(); };
+    panelAcceso($("#acc"));
     $("#xE").onclick = () => download(`mountlab_${hoy()}.json`, JSON.stringify({ formato: "mountlab-db", version: 2, exportado: new Date().toISOString(), componentes: Store.db.componentes, proyectos: Store.db.proyectos }, null, 1), "application/json");
     $("#xR").onclick = async () => { await Store.load(); estadoPill(); toast("Recargado"); vAjustes(); };
     $("#xI").onchange = async e => {
@@ -981,11 +1019,213 @@ ${proys}`;
     };
   }
 
+  // =====================================================================  INICIO
+  function vInicio() {
+    const cs = Store.db.componentes, ps = Store.db.proyectos, n = cs.length || 1;
+    const ver = cs.filter(c => c.estado === "verificado").length, mon = cs.filter(c => c.montaje && c.montaje.pcb).length, mod = cs.filter(c => c.modelo && c.modelo.base).length;
+    const sinImg = cs.filter(c => !c.imagen && !(c.montaje && c.montaje.pcb)).length, sinDs = cs.filter(c => c.tipo === "electronico" && !(c.ficha || {}).datasheet).length, sinPrecio = cs.filter(c => !precioMin(c)).length;
+    const recientes = cs.slice().sort((a, b) => String(b.modificado || "").localeCompare(String(a.modificado || ""))).slice(0, 6);
+    const pred = window.MLAgent ? MLAgent.predecir(ctxActual(), 4) : [];
+    const p = Auth.perfil ? Auth.perfil() : {}, hora = new Date().getHours();
+    app.innerHTML = `<div class="hero"><div><div class="muted small">${hora < 12 ? "Buenos días" : hora < 19 ? "Buenas tardes" : "Buenas noches"}${p.nombre ? ", " + esc(p.nombre) : ""}</div><h1>Tu laboratorio de <span>componentes</span></h1></div>
+        <div class="row"><button id="hBus">🔎 Buscar <kbd>Ctrl K</kbd></button><button class="pri" id="hNew">+ Nuevo componente</button></div></div>
+      <div class="kpis">
+        <div class="kpi" data-go="#/catalogo"><b>${cs.length}</b><span>componentes en la biblioteca</span><div class="bar"><i style="width:100%"></i></div></div>
+        <div class="kpi" data-go="#/catalogo" data-f="verificado"><b>${ver}</b><span>verificados con calibrador · ${Math.round(ver / n * 100)}%</span><div class="bar"><i style="width:${ver / n * 100}%"></i></div></div>
+        <div class="kpi" data-go="#/catalogo" data-f="montaje"><b>${mon}</b><span>con montaje · ${mod} con modelo 3D</span><div class="bar"><i style="width:${mon / n * 100}%"></i></div></div>
+        <div class="kpi" data-go="#/proyectos"><b>${ps.length}</b><span>proyectos · ${ps.reduce((a, q) => a + (q.bom || []).length, 0)} referencias en BOM</span><div class="bar"><i style="width:${Math.min(100, ps.length * 20)}%"></i></div></div>
+        <div class="kpi" data-go="#/pendientes"><b>${Store.db.pendientes.length}</b><span>pendientes por aprobar</span><div class="bar"><i style="width:${Math.min(100, Store.db.pendientes.length * 10)}%"></i></div></div>
+      </div>
+      <div class="home-grid">
+        <div class="side">
+          <div class="panel"><h3>Acciones rápidas</h3><div class="quick">
+            <button data-q="nuevo"><span class="qi">＋</span><b>Nuevo componente</b><small>Ficha, modelo 3D y montaje</small></button>
+            <button data-q="ia"><span class="qi">✦</span><b>Preguntar al asistente</b><small>Local o con IA en la nube</small></button>
+            <button data-q="proy"><span class="qi">📁</span><b>Nuevo proyecto</b><small>Con lista de materiales</small></button>
+            <button data-q="cat"><span class="qi">▦</span><b>Explorar catálogo</b><small>Filtros y búsqueda difusa</small></button>
+          </div></div>
+          <div class="panel"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Modificados recientemente</h3><a class="small" href="#/catalogo">Ver todo →</a></div>
+            <div style="margin-top:8px">${recientes.map(c => `<div class="lst-it" data-c="${esc(c.id)}"><div class="mini">${imgHtml(c)}</div><div style="min-width:0;flex:1"><b>${esc(c.nombre)}</b><div class="small muted">${esc(c.categoria)} · v${c.version || 1}${c.modificado ? " · " + esc(String(c.modificado).slice(0, 10)) : ""}</div></div>${c.estado === "verificado" ? '<span class="tag ok">✓</span>' : '<span class="tag warn">por verificar</span>'}</div>`).join("") || '<div class="muted small">Aún no hay componentes.</div>'}</div></div>
+        </div>
+        <div class="side">
+          <div class="panel" style="border-color:rgba(167,139,250,.35)"><h3>✦ El asistente sugiere</h3>${pred.length ? pred.map((o, i) => `<div class="lst-it" data-pr="${i}"><span class="tag vio">${esc(o.a.ic || "✦")}</span><div style="flex:1"><b>${esc(o.a.n)}</b><div class="small muted">${esc(o.motivo || "")}</div></div><span class="small muted">${Math.round(o.s * 100)}%</span></div>`).join("") : '<div class="small muted">Aprende de lo que haces: mientras más uses MountLab, mejores sugerencias.</div>'}</div>
+          <div class="panel"><h3>Salud de la biblioteca</h3>
+            ${[["Sin imagen ni montaje", sinImg, "sinimg"], ["Electrónicos sin datasheet", sinDs, ""], ["Sin precio", sinPrecio, ""], ["Por verificar con calibrador", cs.length - ver, "borrador"]].map(([t, v, f]) => `<div class="lst-it" ${f ? `data-fe="${f}"` : 'data-go2="#/catalogo"'}><div style="flex:1">${t}</div><b class="${v ? "" : "muted"}">${v}</b></div>`).join("")}
+            ${sinDs && nubeLista() ? '<button class="sm" id="hDs" style="margin-top:8px">✦ Pedirle al asistente que complete datasheets</button>' : ""}</div>
+          <div class="panel"><h3>Proyectos</h3>${ps.slice(0, 5).map(q => { const t = totalesBom(q); return `<div class="lst-it" data-p="${esc(q.id)}"><span>📁</span><div style="flex:1"><b>${esc(q.nombre)}</b><div class="small muted">${esc(ESTP[q.estado] || q.estado || "")} · ${(q.bom || []).length} ref.</div></div><span class="small">${cop(t.barato)}</span></div>`; }).join("") || '<div class="small muted">Sin proyectos</div>'}</div>
+        </div></div>`;
+    $$("[data-go]", app).forEach(k => k.onclick = () => { if (k.dataset.f) { Object.assign(S.f, { q: "", tipo: "", cat: "", tag: "", estado: k.dataset.f }); } location.hash = k.dataset.go; });
+    $$("[data-fe]", app).forEach(k => k.onclick = () => { Object.assign(S.f, { q: "", tipo: "", cat: "", tag: "", estado: k.dataset.fe }); location.hash = "#/catalogo"; });
+    $$("[data-go2]", app).forEach(k => k.onclick = () => location.hash = k.dataset.go2);
+    $$("[data-c]", app).forEach(k => k.onclick = () => location.hash = "#/c/" + encodeURIComponent(k.dataset.c));
+    $$("[data-p]", app).forEach(k => k.onclick = () => location.hash = "#/p/" + encodeURIComponent(k.dataset.p));
+    $$("[data-pr]", app).forEach(k => k.onclick = async () => { const r = await MLAgent.ejecutar(pred[+k.dataset.pr].a); toast(r.msg); });
+    $("#hBus").onclick = () => MLAgent.paleta(); $("#hNew").onclick = () => nuevoComponente();
+    $$("[data-q]", app).forEach(b => b.onclick = async () => { const q = b.dataset.q; if (q === "nuevo") nuevoComponente(); if (q === "ia") abrirAsistente(); if (q === "cat") location.hash = "#/catalogo"; if (q === "proy") { const pr = await crearProyecto(false); if (pr) location.hash = "#/p/" + encodeURIComponent(pr.id); } });
+    const hd = $("#hDs"); if (hd) hd.onclick = () => preguntar("Busca y completa el datasheet (URL directa al PDF) de los componentes electrónicos que no lo tienen: " + cs.filter(c => c.tipo === "electronico" && !(c.ficha || {}).datasheet).slice(0, 5).map(c => c.id).join(", "));
+  }
+
+  // =====================================================================  AGENTE: contexto, acciones y reglas
+  function ctxActual() {
+    const [, r, id] = (location.hash || "#/").split("/"), v = { "": "inicio", c: "componente", p: "proyecto" }[r || ""] ?? r;
+    const o = { vista: v || "inicio", id: id ? decodeURIComponent(id) : null, tab: v === "componente" ? S.tab : null };
+    const nom = { inicio: "Inicio", catalogo: "Catálogo", proyectos: "Proyectos", pendientes: "Pendientes", ajustes: "Ajustes" };
+    if (v === "componente") o.titulo = `Componente · ${S.W ? S.W.nombre : o.id} · ${({ ficha: "Ficha", modelo: "Modelo 3D", montaje: "Montaje", zonas: "Zonas", pines: "Pines", archivos: "Archivos CAD", versiones: "Versiones", json: "JSON" })[S.tab] || S.tab}`;
+    else if (v === "proyecto") { const p = Store.db.proyectos.find(x => x.id === o.id); o.titulo = "Proyecto · " + (p ? p.nombre : o.id); }
+    else o.titulo = nom[o.vista] || o.vista;
+    return o;
+  }
+  const edApi = () => S.ed && S.ed.api;
+  function irTab(t) { if (!S.W) return false; S.tab = t; const b = $(`[data-tab="${t}"]`); if (b) b.click(); else vComponente(S.W.id); return true; }
+  function clic(sel) { const b = $(sel); if (!b || b.disabled) return false; b.click(); return true; }
+  function buscarComponente(q) { MLLocal.asegurar(Store.db.componentes); const r = MLLocal.buscar(q, 1)[0]; let mejor = r ? { c: r.c, s: r.s } : null; for (const c of Store.db.componentes) { const s = window.MLAgent ? MLAgent.sim(q, c.nombre + " " + c.id.replace(/_/g, " ")) : 0; if (!mejor || s > mejor.s) mejor = { c, s }; } return mejor; }
+  function buscarProyecto(q) { let mejor = null; for (const p of Store.db.proyectos) { const s = MLAgent.sim(q, p.nombre + " " + p.id.replace(/-/g, " ")); if (!mejor || s > mejor.s) mejor = { p, s }; } return mejor; }
+  function buscarCatalogo(q) { Object.assign(S.f, { q, tipo: "", cat: "", tag: "", estado: "" }); if (location.hash === "#/catalogo") vCatalogo(); else location.hash = "#/catalogo"; return `Catálogo filtrado por “${q}”`; }
+  const ACCIONES = [
+    // navegación
+    { id: "ir_inicio", n: "Ir al inicio", ic: "⌂", k: "home tablero resumen", global: true, run: () => { location.hash = "#/"; } },
+    { id: "ir_catalogo", n: "Ir al catálogo", ic: "▦", k: "biblioteca componentes lista", global: true, run: () => { location.hash = "#/catalogo"; } },
+    { id: "ir_proyectos", n: "Ir a proyectos", ic: "📁", k: "proyectos bom", global: true, run: () => { location.hash = "#/proyectos"; } },
+    { id: "ir_pendientes", n: "Revisar pendientes por aprobar", ic: "📥", k: "pendientes aprobar bandeja propuestas", global: true, run: () => { location.hash = "#/pendientes"; } },
+    { id: "ir_ajustes", n: "Abrir ajustes", ic: "⚙", k: "configuracion token github clave ia drive", global: true, run: () => { location.hash = "#/ajustes"; } },
+    { id: "abrir_componente", n: "Abrir un componente", ic: "▭", k: "ver ficha", global: true, args: '{"id":"id_del_componente"}', run: a => { const c = comp(a.id) || (a.q && buscarComponente(a.q)?.c); if (!c) return false; location.hash = "#/c/" + encodeURIComponent(c.id); return "Abierto " + c.nombre; } },
+    { id: "abrir_proyecto", n: "Abrir un proyecto", ic: "📁", global: true, args: '{"id":"id_del_proyecto"}', run: a => { const p = Store.db.proyectos.find(x => x.id === a.id) || (a.q && buscarProyecto(a.q)?.p); if (!p) return false; location.hash = "#/p/" + encodeURIComponent(p.id); return "Abierto " + p.nombre; } },
+    { id: "buscar_catalogo", n: "Buscar en el catálogo", ic: "🔎", k: "filtrar", global: true, args: '{"q":"texto"}', run: a => buscarCatalogo(a.q || "") },
+    { id: "nuevo_componente", n: "Crear componente nuevo", ic: "＋", k: "agregar nuevo elemento ficha", global: true, run: () => { nuevoComponente(); } },
+    { id: "nuevo_proyecto", n: "Crear proyecto nuevo", ic: "📁", k: "nuevo proyecto", global: true, run: async () => { const p = await crearProyecto(false); if (p) location.hash = "#/p/" + encodeURIComponent(p.id); } },
+    { id: "abrir_asistente", n: "Abrir el asistente", ic: "✦", k: "chat ia", global: true, run: () => abrirAsistente() },
+    { id: "paleta", n: "Buscar en toda la app", ic: "⌘", k: "paleta comandos", global: true, run: () => MLAgent.paleta() },
+    { id: "bloquear", n: "Bloquear MountLab", ic: "🔒", k: "cerrar sesion salir candado", global: true, run: () => Auth.bloquear() },
+    { id: "invitar", n: "Invitar a alguien", ic: "✉", k: "compartir acceso codigo invitacion", global: true, when: () => Auth.esDueño(), run: () => { location.hash = "#/ajustes"; setTimeout(() => dlgInvitar(), 200); } },
+    { id: "subir_locales", n: "Subir cambios hechos sin conexión", ic: "⇪", k: "sincronizar subir local", global: true, when: () => Store.localPendientes() > 0 && Store.mode === "github", run: async () => { const k = await Store.syncLocal(); estadoPill(); return k + " cambio(s) subidos"; } },
+    { id: "recargar", n: "Recargar la biblioteca", ic: "↻", k: "actualizar refrescar datos", global: true, run: async () => { await Store.load(); estadoPill(); route(); return "Biblioteca recargada"; } },
+    // componente
+    ...[["ficha", "Ficha"], ["modelo", "Modelo 3D"], ["montaje", "Montaje"], ["zonas", "Zonas"], ["pines", "Pines"], ["archivos", "Archivos CAD"], ["versiones", "Versiones"], ["json", "JSON"]].map(([t, n]) => ({ id: "tab_" + t, n: "Ver pestaña " + n, ic: "▤", k: t === "archivos" ? "dxf step descargar planos" : t === "modelo" ? "3d modelado diseño" : "", grupo: "Componente", when: c => c.vista === "componente" && c.tab !== t, run: () => irTab(t) })),
+    { id: "guardar", n: "Guardar cambios", ic: "💾", k: "guardar commit", grupo: "Componente", sel: "#bSave", when: c => c.vista === "componente" && dirty(), run: () => clic("#bSave") },
+    { id: "descartar", n: "Descartar cambios", ic: "↺", grupo: "Componente", peligro: true, when: c => c.vista === "componente" && dirty(), run: () => clic("#bUndo") },
+    { id: "verificar", n: "Marcar como verificado", ic: "✓", k: "calibrador medido verificar", grupo: "Componente", when: c => c.vista === "componente" && S.W && S.W.estado !== "verificado", run: () => { S.W.estado = "verificado"; vComponente(S.W.id); return "Marcado como verificado (falta guardar)"; } },
+    { id: "duplicar", n: "Duplicar componente", ic: "⧉", grupo: "Componente", when: c => c.vista === "componente", run: () => clic("#bDup") },
+    { id: "variante", n: "Crear variante", ic: "⑂", grupo: "Componente", when: c => c.vista === "componente", run: () => clic("#bVar") },
+    { id: "a_proyecto", n: "Añadir a un proyecto", ic: "📁", k: "bom agregar", grupo: "Componente", when: c => c.vista === "componente", run: () => clic("#bProj") },
+    { id: "regenerar_cad", n: "Regenerar DXF, STEP y plano en GitHub", ic: "⟳", k: "cad regenerar planos step dxf", grupo: "Componente", peligro: false, when: c => c.vista === "componente" && Store.mode === "github" && S.W && S.W.montaje, run: async () => { if (dirty()) return "Guarda primero los cambios"; await Store.dispatch("datos.yml", { id: S.W.id }); return "GitHub está regenerando los archivos (1–3 min)"; } },
+    { id: "descargar_dxf", n: "Descargar DXF de huella", ic: "⬇", k: "dxf descargar plano huella", grupo: "Componente", when: c => c.vista === "componente" && S.W && S.W.montaje && S.W.montaje.pcb, run: () => { download(`${S.W.id}_v${S.W.version || 1}_huella.dxf`, MLDxf.componenteADxf(S.W), "application/dxf"); return "DXF descargado"; } },
+    { id: "completar_ia", n: "Completar la ficha con el asistente", ic: "✦", k: "datasheet investigar buscar internet", grupo: "Componente", when: c => c.vista === "componente" && S.W && !S.nuevo, run: () => { preguntar(`Completa la ficha de [[${S.W.id}]] (${S.W.nombre}): datasheet en PDF, voltaje, corriente, interfaz, pines, medidas y precios en Colombia. Solo lo que falte.`); } },
+    { id: "eliminar", n: "Eliminar componente", ic: "🗑", grupo: "Componente", peligro: true, when: c => c.vista === "componente", run: () => clic("#bDel") },
+    // modelo 3D
+    { id: "cara_a", n: "Pasar a la cara A (arriba)", ic: "▲", k: "cara superior top", grupo: "Modelo 3D", when: c => c.tab === "modelo" && edApi()?.tiene(), run: () => edApi().cara("A") },
+    { id: "cara_b", n: "Pasar a la cara B (abajo)", ic: "▼", k: "cara inferior bottom", grupo: "Modelo 3D", when: c => c.tab === "modelo" && edApi()?.tiene(), run: () => edApi().cara("B") },
+    { id: "explotar", n: "Explotar / juntar la vista 3D", ic: "✷", k: "explosionar separar", grupo: "Modelo 3D", when: c => c.tab === "modelo" && edApi()?.tiene(), run: () => edApi().explotar() },
+    { id: "vista_iso", n: "Vista 3D isométrica", ic: "◇", grupo: "Modelo 3D", when: c => c.tab === "modelo" && edApi()?.tiene(), run: () => edApi().vista("iso") },
+    { id: "vista_arriba", n: "Vista 3D desde arriba", ic: "⤒", grupo: "Modelo 3D", when: c => c.tab === "modelo" && edApi()?.tiene(), run: () => edApi().vista("arriba") },
+    { id: "vista_abajo", n: "Vista 3D desde abajo", ic: "⤓", grupo: "Modelo 3D", when: c => c.tab === "modelo" && edApi()?.tiene(), run: () => edApi().vista("abajo") },
+    { id: "imagen_modelo", n: "Usar la vista 3D como imagen", ic: "📷", k: "foto captura render imagen", grupo: "Modelo 3D", when: c => c.tab === "modelo" && edApi()?.tiene(), run: async () => (await edApi().imagen()) ? "Imagen lista (falta guardar)" : false },
+    { id: "seleccionar_todo", n: "Seleccionar todas las piezas de esta cara", ic: "☑", grupo: "Modelo 3D", when: c => c.tab === "modelo" && edApi()?.tiene(), run: () => edApi().todo() },
+    { id: "colocar", n: "Colocar una pieza de la librería", ic: "⊕", grupo: "Modelo 3D", args: '{"plantilla":"id (header_macho, usb_c, micro_usb, jst_xh, pulsador, led_smd, wroom, electrolitico, separador, f_caja…)","params":{"n":8},"cara":"A|B"}', when: c => c.tab === "modelo" && edApi()?.tiene(), run: a => edApi().colocar(a.plantilla, a.params, a.cara) ? "Pieza colocada en el centro: arrástrala a su lugar" : false },
+    // proyecto
+    { id: "exportar_bom", n: "Exportar BOM (CSV)", ic: "⬇", k: "lista materiales excel csv", grupo: "Proyecto", when: c => c.vista === "proyecto", run: () => clic("#pCsv") },
+    { id: "revisar_proyecto", n: "Revisar el proyecto (sistema experto)", ic: "🧪", k: "revision tecnica voltajes i2c consumo", grupo: "Proyecto", when: c => c.vista === "proyecto", run: () => { abrirAsistente(); const t = $("#q"); t.value = "revisa proyecto " + ctxActual().id; $("#send").click(); } },
+    { id: "guardar_proyecto", n: "Guardar el proyecto", ic: "💾", grupo: "Proyecto", when: c => c.vista === "proyecto" && $("#pSv") && !$("#pSv").disabled, run: () => clic("#pSv") },
+  ];
+  function reglas(c) {
+    const R = [], W = S.W, np = Store.db.pendientes.length, nl = Store.localPendientes();
+    if (c.vista === "componente" && W) {
+      if (dirty()) R.push({ accion: "guardar", peso: 1, motivo: "Tienes cambios sin guardar" });
+      if (W.montaje && W.montaje.pcb && !(W.modelo && W.modelo.base) && c.tab !== "modelo") R.push({ accion: "tab_modelo", peso: 0.55, motivo: "Aún no tiene modelo 3D" });
+      if (c.tab === "modelo" && W.modelo && !W.imagen) R.push({ accion: "imagen_modelo", peso: 0.7, motivo: "El componente no tiene imagen" });
+      if (W.cad_pendiente && Store.mode === "github" && !dirty()) R.push({ accion: "regenerar_cad", peso: 0.6, motivo: "Hay geometría pendiente de regenerar" });
+      if (!(W.ficha || {}).datasheet && W.tipo === "electronico" && nubeLista()) R.push({ accion: "completar_ia", peso: 0.45, motivo: "Le falta el datasheet" });
+      if (W.estado !== "verificado" && W.montaje && W.montaje.pcb && c.tab !== "modelo") R.push({ accion: "verificar", peso: 0.25, motivo: "Medidas sin verificar" });
+      if (c.tab === "archivos" && W.montaje) R.push({ accion: "descargar_dxf", peso: 0.35, motivo: "Descarga inmediata desde el navegador" });
+    }
+    if (c.vista === "proyecto") { R.push({ accion: "revisar_proyecto", peso: 0.4, motivo: "Detecta choques de voltaje, I2C y consumo" }); R.push({ accion: "exportar_bom", peso: 0.3, motivo: "Para comprar o cotizar" }); }
+    if (np && c.vista !== "pendientes") R.push({ accion: "ir_pendientes", peso: c.vista === "inicio" ? 0.65 : 0.35, motivo: `${np} propuesta(s) esperan tu aprobación` });
+    if (nl && Store.mode === "github") R.push({ accion: "subir_locales", peso: 0.8, motivo: `${nl} cambio(s) solo en este navegador` });
+    if (Store.mode !== "github" && Auth.esDueño() && c.vista !== "ajustes") R.push({ accion: "ir_ajustes", peso: 0.5, motivo: "Conecta GitHub para guardar tus cambios" });
+    if (c.vista === "catalogo" || c.vista === "inicio") R.push({ accion: "nuevo_componente", peso: 0.2, motivo: "" });
+    return R;
+  }
+  function accionesParaIA() { const c = ctxActual(); return ACCIONES.filter(a => !a.when || a.when(c)).map(a => `${a.id}: ${a.n}${a.args ? " " + a.args : ""}${a.peligro ? " (pide confirmación)" : ""}`).join("\n"); }
+  function extraerAcciones(text) {
+    const acciones = []; const re = /```mountlab-accion\s*([\s\S]*?)```/g; let m;
+    while ((m = re.exec(text || ""))) { try { const j = JSON.parse(m[1]); for (const x of Array.isArray(j) ? j : [j]) { const a = ACCIONES.find(z => z.id === x.accion); if (a) acciones.push({ id: a.id, n: a.n, args: x.args || {}, peligro: !!a.peligro || ["guardar", "eliminar", "descartar", "regenerar_cad", "verificar", "bloquear"].includes(a.id) }); } } catch (e) { } }
+    return { limpio: String(text || "").replace(re, "").trim(), acciones };
+  }
+  async function ejecutarAccionIA(x, confirmado) { const a = ACCIONES.find(z => z.id === x.id); if (!a) return { ok: false, msg: "Acción desconocida" }; return MLAgent.ejecutar(a, x.args, { confirmado }); }
+  const miniHtml = c => `<div class="mini" style="width:30px;height:30px">${imgHtml(c).replace("<svg ", '<svg style="max-width:30px;max-height:30px" ').replace("<img ", '<img style="max-width:30px;max-height:30px" ')}</div>`;
+  function recientesVisitados() { try { return (JSON.parse(localStorage.getItem("ml_recientes")) || []).map(comp).filter(Boolean); } catch (e) { return []; } }
+  window.addEventListener("hashchange", () => { const m = location.hash.match(/^#\/c\/(.+)$/); if (!m) return; const id = decodeURIComponent(m[1]); let L = []; try { L = JSON.parse(localStorage.getItem("ml_recientes")) || []; } catch (e) { } L = [id, ...L.filter(x => x !== id)].slice(0, 12); try { localStorage.setItem("ml_recientes", JSON.stringify(L)); } catch (e) { } });
+
+  // ---------- acceso: contraseña, bloqueo automático e invitaciones
+  function panelAcceso(box) {
+    const pf = Auth.perfil(), dueño = Auth.esDueño(), A = (Store.db.accesos || []).slice().sort((a, b) => String(b.creado).localeCompare(String(a.creado)));
+    box.innerHTML = `<div class="grid2" style="align-items:start">
+      <div><div class="small muted">Sesión: <b style="color:var(--ink)">${esc(pf.nombre || "")}</b> · ${esc({ "dueño": "dueño", edicion: "invitado con edición", lectura: "invitado de solo lectura" }[pf.rol] || "—")}${pf.exp ? " · vence " + esc(String(pf.exp).slice(0, 10)) : ""}${dueño ? (Store.permisos && Store.permisos.admin ? ' · <span style="color:var(--ok)">verificado con GitHub (admin del repositorio)</span>' : " · conecta tu token para verificar que eres el dueño del repositorio") : ""}</div>
+        <div class="grid2" style="margin-top:10px"><div><label>Bloqueo automático por inactividad</label><select id="sBl">${[[5, "5 min"], [15, "15 min"], [30, "30 min"], [60, "1 hora"], [240, "4 horas"], [0, "Nunca"]].map(([v, n]) => `<option value="${v}" ${+(pf.bloqueo ?? 30) === v ? "selected" : ""}>${n}</option>`).join("")}</select></div>
+          <div style="display:flex;align-items:flex-end"><button id="sLk">🔒 Bloquear ahora</button></div></div>
+        <details style="margin-top:10px"><summary class="small">Cambiar contraseña</summary><div class="grid3" style="margin-top:8px"><input type="password" id="sP0" placeholder="Actual"><input type="password" id="sP1" placeholder="Nueva (8+)"><button id="sPc">Cambiar</button></div></details>
+        <div class="msg info small" style="margin-top:10px">La contraseña protege la app, la edición y tus claves (cifradas con AES-256 en este dispositivo). El repositorio <b>${esc(Store.cfg.owner)}/${esc(Store.cfg.repo)}</b> ${Store.privado ? "es <b>privado</b>." : "es <b>público</b>: los JSON de la biblioteca siguen siendo legibles en GitHub. Para ocultarlos haría falta un repositorio privado (Pages privado requiere GitHub Pro)."}</div></div>
+      <div>${dueño ? `<div class="row" style="justify-content:space-between"><b>Invitaciones</b><button class="pri sm" id="sInv">✉ Invitar a alguien</button></div>
+        <div class="small muted" style="margin:4px 0 8px">Generas un enlace y un PIN (envíalos por canales distintos). Puedes revocar o dejar que venza. Para edición, crea en GitHub un token fine-grained para esa persona (solo este repositorio, Contents RW) y pégalo en la invitación: viaja cifrado con el PIN.</div>
+        <table class="t"><tr><th>Nombre</th><th>Rol</th><th>Vence</th><th>Estado</th><th></th></tr>${A.map(a => { const venc = a.vence && Date.parse(a.vence + "T23:59:59") < Date.now(); return `<tr><td>${esc(a.nombre)}</td><td class="small">${a.rol === "edicion" ? "edición" : "lectura"}${a.con_token ? " · token" : ""}</td><td class="small">${esc(a.vence || "nunca")}</td><td>${a.estado === "revocado" ? '<span class="tag bad">revocada</span>' : venc ? '<span class="tag warn">vencida</span>' : '<span class="tag ok">activa</span>'}</td><td>${a.estado !== "revocado" && !venc ? `<button class="sm danger" data-rv="${esc(a.id)}">Revocar</button>` : `<button class="sm ghost" data-rm="${esc(a.id)}" title="Quitar del registro">✕</button>`}</td></tr>`; }).join("") || '<tr><td colspan="5" class="muted small">Aún no has invitado a nadie.</td></tr>'}</table>`
+        : `<div class="small muted">Las invitaciones las gestiona el dueño.</div>`}</div></div>`;
+    $("#sBl", box).onchange = async e => { await Auth.guardarPerfil({ bloqueo: +e.target.value }); toast("Bloqueo automático: " + e.target.selectedOptions[0].textContent); };
+    $("#sLk", box).onclick = () => Auth.bloquear();
+    $("#sPc", box).onclick = async () => { try { await Auth.cambiarPassword($("#sP0", box).value, $("#sP1", box).value); toast("Contraseña cambiada"); $("#sP0", box).value = $("#sP1", box).value = ""; } catch (e) { toast(e.message, 5000); } };
+    const iv = $("#sInv", box); if (iv) iv.onclick = dlgInvitar;
+    $$("[data-rv]", box).forEach(b => b.onclick = async () => { const a = A.find(x => x.id === b.dataset.rv); if (!(await confirmar(`¿Revocar el acceso de <b>${esc(a.nombre)}</b>? Pierde el acceso la próxima vez que abra MountLab.${a.con_token ? "<br><br><b>Importante:</b> revoca también en GitHub el token que le diste." : ""}`, "Revocar"))) return;
+      try { await Store.save("accesos", Object.assign({}, a, { estado: "revocado", revocado: hoy() }), `Acceso ${a.id}: revocado`); toast("Invitación revocada"); } catch (e) { toast("Error: " + e.message, 5000); } panelAcceso(box); });
+    $$("[data-rm]", box).forEach(b => b.onclick = async () => { try { await Store.remove("accesos", b.dataset.rm, `Acceso ${b.dataset.rm}: quitado del registro`); } catch (e) { toast(e.message); } panelAcceso(box); });
+  }
+  async function dlgInvitar() {
+    if (Store.mode !== "github") return toast("Para invitar necesitas conectar GitHub (el registro de la invitación se guarda en el repositorio)", 6000);
+    const r = await modal(`<h3>✉ Invitar a alguien</h3>
+      <div class="grid2"><div><label>Nombre</label><input id="iN" placeholder="Ej: Camila (semillero)"></div><div><label>Rol</label><select id="iR"><option value="lectura">Solo lectura</option><option value="edicion">Edición</option></select></div></div>
+      <div class="grid2"><div><label>Vence en</label><select id="iD"><option value="1">1 día</option><option value="7" selected>7 días</option><option value="30">30 días</option><option value="90">90 días</option><option value="0">No vence</option></select></div><div><label>Token de GitHub para esa persona (opcional)</label><input id="iT" type="password" placeholder="github_pat_… (necesario para editar)"></div></div>
+      <div class="small muted">El token viaja cifrado dentro del enlace; solo se abre con el PIN. Sin token, la persona solo puede leer.</div>
+      <div class="row" style="justify-content:flex-end"><button data-close>Cancelar</button><button class="pri" id="iOk">Crear invitación</button></div>`, (b, close) => {
+      $("#iOk", b).onclick = () => { const n = $("#iN", b).value.trim(); if (!n) return toast("Escribe el nombre"); const rol = $("#iR", b).value, t = $("#iT", b).value.trim(); if (rol === "edicion" && !t) return toast("Para edición pega un token de GitHub para esa persona"); close({ nombre: n, rol, dias: +$("#iD", b).value, token: t }); };
+      setTimeout(() => $("#iN", b).focus(), 50);
+    });
+    if (!r) return;
+    try {
+      const inv = await Auth.crearInvitacion(r);
+      await Store.save("accesos", inv.registro, `Acceso nuevo: ${r.nombre} (${r.rol})`);
+      await modal(`<h3>Invitación lista para ${esc(r.nombre)}</h3>
+        <div><label>1 · Enlace (envíalo por un canal)</label><div class="row" style="flex-wrap:nowrap"><input id="xU" readonly value="${esc(inv.url)}"><button class="sm" data-cp="xU">Copiar</button></div></div>
+        <div><label>2 · PIN (envíalo por otro canal, por ejemplo en persona o por llamada)</label><div class="row" style="flex-wrap:nowrap"><input id="xP" readonly value="${esc(inv.pin)}" style="font:600 20px ui-monospace,Consolas,monospace;letter-spacing:.12em"><button class="sm" data-cp="xP">Copiar</button></div></div>
+        <div class="msg warn small">El PIN no se vuelve a mostrar. ${r.rol === "edicion" ? "Quien tenga el enlace y el PIN podrá editar con el token incluido." : "Acceso de solo lectura."} ${r.dias ? `Vence en ${r.dias} día(s).` : "No vence: revócala cuando ya no la necesite."}</div>
+        <div class="row" style="justify-content:flex-end"><button class="pri" data-close>Listo</button></div>`, b => $$("[data-cp]", b).forEach(x => x.onclick = async () => { const i = $("#" + x.dataset.cp, b); i.select(); try { await navigator.clipboard.writeText(i.value); toast("Copiado"); } catch (e) { document.execCommand("copy"); toast("Copiado"); } }));
+    } catch (e) { toast("Error: " + e.message, 6000); }
+    if (location.hash === "#/ajustes") vAjustes();
+  }
+
   // ---------- inicio
   (async function () {
     app.innerHTML = '<div class="panel muted">Cargando biblioteca…</div>';
-    await Store.load(); estadoPill(); if (window.MLLocal) MLLocal.construir(Store.db.componentes); route();
+    $("#fab").onclick = () => abrirAsistente(); $("#btnIA").onclick = () => $("#drawer").classList.contains("open") ? cerrarAsistente() : abrirAsistente();
+    $("#drClose").onclick = cerrarAsistente; $("#drWide").onclick = () => { const w = !$("#drawer").classList.contains("wide"); $("#drawer").classList.toggle("wide", w); document.body.classList.toggle("drawer-wide", w); };
+    $("#btnBuscar").onclick = () => MLAgent.paleta(); $("#btnLock").onclick = () => Auth.bloquear();
+    document.addEventListener("keydown", e => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === "j" || e.key === "J")) { e.preventDefault(); $("#drawer").classList.contains("open") ? cerrarAsistente() : abrirAsistente(); }
+      if (e.key === "Escape" && $("#drawer").classList.contains("open") && $("#modal").classList.contains("hide") && $("#palette").classList.contains("hide") && !(document.activeElement && document.activeElement.closest && document.activeElement.closest(".mo-layout"))) cerrarAsistente();
+    });
+    await Auth.iniciar();
+    await Store.load(); estadoPill();
+    if (!(await Auth.verificarAcceso(Store.db))) return;
+    if (Store.mode === "github") Store.test().then(estadoPill).catch(() => { });
+    if (window.MLLocal) MLLocal.construir(Store.db.componentes);
+    MLAgent.init({
+      ctx: ctxActual, acciones: () => ACCIONES, reglas, confirmar, toast, preguntar, buscarCatalogo, buscarComponente, buscarProyecto,
+      colocar: (id, params, cara) => { if (!edApi()) { if (S.W) irTab("modelo"); return false; } return edApi().colocar(id, params, cara) ? "Pieza colocada" : false; },
+      vistas: () => [["⌂", "Inicio", "#/"], ["▦", "Catálogo", "#/catalogo"], ["📁", "Proyectos", "#/proyectos"], ["📥", "Pendientes", "#/pendientes"], ["⚙", "Ajustes", "#/ajustes"]].map(([ic, n, h]) => ({ ic, n, h })),
+      recientes: recientesVisitados, mini: miniHtml,
+      componentes: (q, n) => { const sc = new Map(); for (const c of Store.db.componentes) { const s = MLAgent.sim(q, [c.nombre, c.id.replace(/_/g, " "), c.categoria, c.referencia, ...(c.etiquetas || []), ...(c.alias || [])].join(" ")); if (s >= 0.55) sc.set(c.id, { c, s }); } MLLocal.asegurar(Store.db.componentes); for (const r of MLLocal.buscar(q, 6)) if (r.s >= 0.6 && !sc.has(r.c.id)) sc.set(r.c.id, { c: r.c, s: r.s * 0.95 }); return [...sc.values()].sort((a, b) => b.s - a.s).slice(0, n); },
+      proyectos: (q, n) => Store.db.proyectos.map(p => ({ p, s: MLAgent.sim(q, p.nombre + " " + p.id.replace(/-/g, " ") + " " + (p.descripcion || "")) })).filter(x => x.s >= 0.55).sort((a, b) => b.s - a.s).slice(0, n),
+      nota: r => { if (!r) return; if ($("#drawer").classList.contains("open") && S.pintaLog) { S.chat.push({ role: "act", content: r.msg, ok: r.ok }); S.pintaLog(); } else toast(r.msg); },
+    });
+    route();
+    try { if (localStorage.getItem("ml_drawer") && matchMedia("(min-width: 1180px)").matches) abrirAsistente(); } catch (e) { }
     if (Store.error && Store.mode !== "github") console.warn(Store.error);
   })();
-  window.ML = { S, route, toast };
+  window.ML = { S, route, toast, ctx: ctxActual, acciones: ACCIONES, abrirAsistente, preguntar };
 })();

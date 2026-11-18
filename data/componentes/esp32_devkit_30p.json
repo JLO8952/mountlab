@@ -491,5 +491,6 @@
    "fecha": "2026-11-16",
    "nota": "Migrado a MountLab unificado: origen de coordenadas movido al centro de la placa."
   }
- ]
+ ],
+ "cad_pendiente": true
 }

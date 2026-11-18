@@ -4,6 +4,7 @@
 Para cada componente genera una VERSIÓN NUEVA (no borra las anteriores):
   <id>_v<N>_huella.dxf   planta con origen al centro: PCB, AGUJEROS, ZONAS, ZONAS_HOLGURA, PINES, EJES, TEXTO
   <id>_v<N>_montaje.step placa con agujeros + volúmenes de zonas + volúmenes de holgura (para detectar choques en SolidWorks)
+  <id>_v<N>_plano.dxf    plano de taller: vistas superior, frontal y lateral (ISO-E), cotas generales, agujeros y cajetín
 
 Uso:
   python cad/regenerar.py                 -> componentes con "cad_pendiente": true
@@ -87,7 +88,7 @@ def dxf(c, ruta):
             rect(hb[0], hb[1], hb[3], hb[4], "ZONAS_HOLGURA")
         msp.add_text(ascii(z.get("nombre") or z["tipo"]), height=0.8, dxfattribs={"layer": "TEXTO"}).set_placement((z["cx"] - z["w"] / 2, z["cy"] + z["h"] / 2 + 0.4))
     for q in (c.get("modelo") or {}).get("cuerpos", []):
-        capa = "PIEZAS_A" if q["z0"] >= m["pcb"][2] - 1e-6 else "PIEZAS_B"
+        capa = "PCB" if q.get("base") else "PIEZAS_A" if q["z0"] >= m["pcb"][2] - 1e-6 else "PIEZAS_B"
         if q["f"] == "cil":
             msp.add_circle((q["cx"], q["cy"]), q["d"] / 2, dxfattribs={"layer": capa})
         else:
@@ -99,6 +100,165 @@ def dxf(c, ruta):
         msp.add_text(ascii(p["n"]), height=0.6, dxfattribs={"layer": "TEXTO"}).set_placement((p["x"] + 0.7, p["y"] + 0.7))
     msp.add_text(ascii(f"{c['id']} v{c.get('version', 1)} - origen al centro (mm)"), height=1.5,
                  dxfattribs={"layer": "TEXTO"}).set_placement((-L / 2, -W / 2 - 3))
+    doc.saveas(ruta)
+
+
+# ---------------------------------------------------------------- plano de taller
+def _cajas(c):
+    """Cuerpos para el plano: la base y las piezas, como (x0, x1, y0, y1, z0, z1, es_cil, cx, cy, d)."""
+    m = c["montaje"]
+    L, W, T = m["pcb"][0], m["pcb"][1], (m["pcb"][2] if len(m["pcb"]) > 2 else 1.6)
+    out = []
+    cuerpos = (c.get("modelo") or {}).get("cuerpos", [])
+    if not (m.get("base_tipo") in ("motor", "servo") and base_cuerpos(c)):
+        red = m.get("forma") == "redonda"
+        out.append({"x0": -L / 2, "x1": L / 2, "y0": -W / 2, "y1": W / 2, "z0": 0.0, "z1": T, "cil": red, "cx": 0, "cy": 0, "d": L, "base": True, "r": m.get("radio") or 0})
+    if not cuerpos:   # sin Modelo 3D: las zonas dan el volumen de lo que va montado sobre/bajo la placa
+        for z in c.get("zonas", []):
+            z0, z1 = (z.get("z") or [T, T + 1])[:2]
+            if z1 - z0 > 0.05 and z.get("w") and z.get("h"):
+                out.append({"x0": z["cx"] - z["w"] / 2, "x1": z["cx"] + z["w"] / 2, "y0": z["cy"] - z["h"] / 2, "y1": z["cy"] + z["h"] / 2, "z0": z0, "z1": z1, "cil": False, "cx": z["cx"], "cy": z["cy"], "base": False})
+    for q in cuerpos:
+        if q["f"] == "cil":
+            r = q["d"] / 2
+            out.append({"x0": q["cx"] - r, "x1": q["cx"] + r, "y0": q["cy"] - r, "y1": q["cy"] + r, "z0": q["z0"], "z1": q["z1"], "cil": True, "cx": q["cx"], "cy": q["cy"], "d": q["d"], "base": bool(q.get("base"))})
+        else:
+            out.append({"x0": q["cx"] - q["w"] / 2, "x1": q["cx"] + q["w"] / 2, "y0": q["cy"] - q["h"] / 2, "y1": q["cy"] + q["h"] / 2, "z0": q["z0"], "z1": q["z1"], "cil": False, "cx": q["cx"], "cy": q["cy"], "base": bool(q.get("base")), "r": q.get("r") or 0, "orejas": bool(q.get("orejas"))})
+    return out
+
+
+def _z_agujero(c, h, cajas):
+    for q in cajas:
+        if q.get("orejas") and q["x0"] <= h["x"] <= q["x1"] and q["y0"] <= h["y"] <= q["y1"]:
+            return q["z0"], q["z1"]
+    T = c["montaje"]["pcb"][2] if len(c["montaje"]["pcb"]) > 2 else 1.6
+    return 0.0, T
+
+
+def plano(c, ruta):
+    """Vistas superior, frontal y lateral (ISO-E, primer diedro) con cotas generales, agujeros y cajetín. 1:1 en mm."""
+    doc = ezdxf.new("R2010", setup=True)
+    doc.units = ezdxf.units.MM
+    capas = {"CONTORNO": (7, "Continuous"), "PIEZAS": (5, "Continuous"), "OCULTAS": (8, "DASHED"), "CENTRO": (1, "CENTER"),
+             "COTAS": (2, "Continuous"), "TEXTO": (7, "Continuous"), "MARCO": (7, "Continuous")}
+    for n, (col, lt) in capas.items():
+        doc.layers.add(n, color=col, linetype=lt)
+    msp = doc.modelspace()
+    m = c["montaje"]
+    cajas = _cajas(c)
+    hs = m.get("agujeros", [])
+    X0, X1 = min(q["x0"] for q in cajas), max(q["x1"] for q in cajas)
+    Y0, Y1 = min(q["y0"] for q in cajas), max(q["y1"] for q in cajas)
+    Z0, Z1 = min(q["z0"] for q in cajas), max(q["z1"] for q in cajas)
+    tam = max(X1 - X0, Y1 - Y0, Z1 - Z0, 10)
+    th = round(max(1.2, min(5.0, tam / 40)), 1)       # alto de texto y flechas
+    g = max(12.0, tam * 0.35) + 4 * th                 # separación entre vistas (deja sitio a las cotas)
+    ov = {"dimtxt": th, "dimasz": th * 0.9, "dimexe": th * 0.6, "dimexo": th * 0.5, "dimgap": th * 0.35, "dimdec": 2, "dimzin": 8, "dimdsep": 46, "dimlunit": 2, "dimlfac": 1, "dimpost": ""}
+    lt_scale = max(0.3, th / 2.5)
+
+    def poly(pts, layer, close=True):
+        msp.add_lwpolyline(pts, close=close, dxfattribs={"layer": layer, "ltscale": lt_scale})
+
+    def rect(x0, y0, x1, y1, layer):
+        poly([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], layer)
+
+    def line(a, b, layer):
+        msp.add_line(a, b, dxfattribs={"layer": layer, "ltscale": lt_scale})
+
+    def texto(t, x, y, h=None, align=None, layer="TEXTO"):
+        e = msp.add_text(ascii(t), height=h or th, dxfattribs={"layer": layer})
+        if align:
+            e.set_placement((x, y), align=align)
+        else:
+            e.set_placement((x, y))
+        return e
+
+    def cota(p1, p2, base, angle=0):
+        try:
+            d = msp.add_linear_dim(base=base, p1=p1, p2=p2, angle=angle, dimstyle="EZDXF", override=ov, dxfattribs={"layer": "COTAS"})
+            d.render()
+        except Exception as e:  # una cota que no se pueda dibujar no detiene el plano
+            print(f"  (cota omitida: {e})")
+
+    from ezdxf.enums import TextEntityAlignment as TA
+
+    # ---- VISTA FRONTAL (X-Z): origen del dibujo = origen de la pieza
+    oyF = 0.0
+    for q in cajas:
+        rect(q["x0"], q["z0"] + oyF, q["x1"], q["z1"] + oyF, "CONTORNO" if q["base"] else "PIEZAS")
+    for h in hs:
+        za, zb = _z_agujero(c, h, cajas)
+        for xx in (h["x"] - h["d"] / 2, h["x"] + h["d"] / 2):
+            line((xx, za + oyF), (xx, zb + oyF), "OCULTAS")
+        line((h["x"], za - th + oyF), (h["x"], zb + th + oyF), "CENTRO")
+    cota((X0, Z0), (X1, Z0), (0, Z0 - 2.5 * th))                         # largo total
+    cota((X1, Z0), (X1, Z1), (X1 + 3 * th, 0), angle=90)                  # alto total
+    T = m["pcb"][2] if len(m["pcb"]) > 2 else 1.6
+    if m.get("base_tipo") not in ("motor", "servo") and abs((Z1 - Z0) - T) > 0.05:
+        cota((X0, 0), (X0, T), (X0 - 3 * th, 0), angle=90)                 # espesor de la placa
+    texto("VISTA FRONTAL", (X0 + X1) / 2, Z1 + 1.6 * th, th * 1.1, TA.BOTTOM_CENTER)
+
+    # ---- VISTA SUPERIOR (X-Y), debajo de la frontal (primer diedro)
+    oyT = Z0 - g - Y1
+    for q in sorted(cajas, key=lambda q: q["z1"]):
+        lay = "CONTORNO" if q["base"] else "PIEZAS"
+        if q["cil"]:
+            msp.add_circle((q["cx"], q["cy"] + oyT), q["d"] / 2, dxfattribs={"layer": lay})
+        else:
+            rect(q["x0"], q["y0"] + oyT, q["x1"], q["y1"] + oyT, lay)
+    e = th * 1.5
+    line((X0 - e, oyT), (X1 + e, oyT), "CENTRO")
+    line((0, Y0 - e + oyT), (0, Y1 + e + oyT), "CENTRO")
+    for h in hs:
+        msp.add_circle((h["x"], h["y"] + oyT), h["d"] / 2, dxfattribs={"layer": "CONTORNO"})
+        r = h["d"] / 2 + th * 0.6
+        line((h["x"] - r, h["y"] + oyT), (h["x"] + r, h["y"] + oyT), "CENTRO")
+        line((h["x"], h["y"] - r + oyT), (h["x"], h["y"] + r + oyT), "CENTRO")
+    cota((X0, Y0 + oyT), (X1, Y0 + oyT), (0, Y0 + oyT - 2.5 * th))
+    cota((X0, Y0 + oyT), (X0, Y1 + oyT), (X0 - 3 * th, 0), angle=90)
+    if hs:
+        xs, ys = sorted({round(h["x"], 3) for h in hs}), sorted({round(h["y"], 3) for h in hs})
+        if len(xs) > 1:   # distancia entre agujeros extremos (y de cada agujero al origen)
+            cota((xs[0], Y1 + oyT), (xs[-1], Y1 + oyT), (0, Y1 + oyT + 2.5 * th))
+        if len(ys) > 1:
+            cota((X1, ys[0] + oyT), (X1, ys[-1] + oyT), (X1 + 3 * th, 0), angle=90)
+        grupos = {}
+        for h in hs:
+            grupos.setdefault(round(h["d"], 2), []).append(h)
+        yy = Y0 + oyT - 6 * th
+        for d, lst in sorted(grupos.items()):
+            h0 = lst[0]
+            line((h0["x"] + d / 2 * 0.7, h0["y"] + oyT - d / 2 * 0.7), (X0, yy + th * 0.4), "COTAS")
+            texto(f"{len(lst)}x  %%c{d:g} pasante" + (f"  ({len(lst)} agujeros)" if len(lst) > 1 else ""), X0, yy, th)
+            yy -= th * 1.8
+    texto("VISTA SUPERIOR (origen en el centro)", (X0 + X1) / 2, Y1 + oyT + (5.5 if hs else 1.6) * th, th * 1.1, TA.BOTTOM_CENTER)
+
+    # ---- VISTA LATERAL IZQUIERDA (Y-Z), a la derecha de la frontal: u = -y
+    oxS = X1 + g + Y1
+    for q in cajas:
+        rect(oxS - q["y1"], q["z0"], oxS - q["y0"], q["z1"], "CONTORNO" if q["base"] else "PIEZAS")
+    for h in hs:
+        za, zb = _z_agujero(c, h, cajas)
+        for yy2 in (h["y"] - h["d"] / 2, h["y"] + h["d"] / 2):
+            line((oxS - yy2, za), (oxS - yy2, zb), "OCULTAS")
+    cota((oxS - Y1, Z0), (oxS - Y0, Z0), (oxS, Z0 - 2.5 * th))
+    cota((oxS - Y0, Z0), (oxS - Y0, Z1), (oxS - Y0 + 3 * th, 0), angle=90)
+    texto("VISTA LATERAL IZQ.", oxS - (Y0 + Y1) / 2, Z1 + 1.6 * th, th * 1.1, TA.BOTTOM_CENTER)
+
+    # ---- cajetín y marco
+    bw, bh = max(90.0, 30 * th), 9 * th
+    bx1 = max(oxS - Y0 + 6 * th, X0 + bw)
+    by0 = oyT + Y0 - 6 * th - (len({round(h['d'], 2) for h in hs}) * 1.8 * th) - bh - 2 * th
+    bx0 = bx1 - bw
+    rect(bx0, by0, bx1, by0 + bh, "MARCO")
+    filas = [f"MountLab  -  {c.get('nombre', c['id'])}", f"ID: {c['id']}    Version: v{c.get('version', 1)}    Fecha: {datetime.date.today().isoformat()}",
+             f"Escala 1:1    Unidades: mm    Origen: centro de la {'base' if m.get('base_tipo') in ('motor', 'servo') else 'placa'}",
+             f"Envolvente: {X1 - X0:.2f} x {Y1 - Y0:.2f} x {Z1 - Z0:.2f} mm    Proyeccion ISO-E (primer diedro)"]
+    for i, f in enumerate(filas):
+        texto(f, bx0 + th, by0 + bh - (i + 1) * 2.1 * th, th * (1.15 if i == 0 else 0.9))
+    fx0, fy0 = min(X0 - 9 * th, bx0) - 4 * th, by0 - 4 * th
+    fx1, fy1 = bx1 + 4 * th, Z1 + 6 * th
+    rect(fx0, fy0, fx1, fy1, "MARCO")
     doc.saveas(ruta)
 
 
@@ -129,20 +289,42 @@ def cuerpo_solido(q):
     return s.translate((q["cx"], q["cy"], q["z0"]))
 
 
+def base_cuerpos(c):
+    return [q for q in (c.get("modelo") or {}).get("cuerpos", []) if q.get("base")]
+
+
+def base_solida(c):
+    """Placa (rect/redondeada/redonda) o, para motores y servos, la unión de sus primitivas; con los agujeros cortados."""
+    m = c["montaje"]
+    T = m["pcb"][2] if len(m["pcb"]) > 2 else 1.6
+    bq = base_cuerpos(c)
+    if m.get("base_tipo") in ("motor", "servo") and bq:
+        sol = None
+        for q in bq:
+            sq = cuerpo_solido(q)
+            sol = sq if sol is None else sol.union(sq)
+        z0, z1 = min(q["z0"] for q in bq) - 1, max(q["z1"] for q in bq) + 1
+    else:
+        sol, z0, z1 = placa_solida(m), -1, T + 1
+    for h in m.get("agujeros", []):
+        sol = sol.cut(cq.Workplane("XY").workplane(offset=z0).center(h["x"], h["y"]).circle(h["d"] / 2).extrude(z1 - z0))
+    return sol
+
+
 def step(c, ruta):
     m = c["montaje"]
     L, W, T = m["pcb"][0], m["pcb"][1], (m["pcb"][2] if len(m["pcb"]) > 2 else 1.6)
-    pcb = placa_solida(m)
-    for h in m.get("agujeros", []):
-        pcb = pcb.cut(cq.Workplane("XY").center(h["x"], h["y"]).circle(h["d"] / 2).extrude(T))
+    pcb = base_solida(c)
     a = cq.Assembly(name=c["id"])
     mod = c.get("modelo") or {}
     col_placa = (mod.get("base") or {}).get("color") or "#14662f"
-    a.add(pcb, name="PCB", color=hex_rgb(col_placa))
+    a.add(pcb, name="BASE" if m.get("base_tipo") in ("motor", "servo") else "PCB", color=hex_rgb(col_placa))
     # piezas del Modelo 3D (cada una con su color), agrupadas por pieza
     nombres = {p.get("id"): p.get("nombre") or p.get("plantilla") for p in mod.get("piezas", [])}
     cont = {}
     for q in mod.get("cuerpos", []):
+        if q.get("base"):
+            continue
         pid = q.get("pieza", "pieza")
         cont[pid] = cont.get(pid, 0) + 1
         nom = ascii(f"{'A' if q['z0'] >= T - 1e-6 else 'B'}_{nombres.get(pid, pid)}_{cont[pid]}").replace(" ", "_")[:60]
@@ -180,28 +362,34 @@ def procesar(ruta_json):
     v = c.get("version", 1)
     carpeta = os.path.join(SALIDA, c["id"])
     os.makedirs(carpeta, exist_ok=True)
-    n_dxf, n_step = f"{c['id']}_v{v}_huella.dxf", f"{c['id']}_v{v}_montaje.step"
+    n_dxf, n_step, n_plano = f"{c['id']}_v{v}_huella.dxf", f"{c['id']}_v{v}_montaje.step", f"{c['id']}_v{v}_plano.dxf"
     dxf(c, os.path.join(carpeta, n_dxf))
     step(c, os.path.join(carpeta, n_step))
+    try:
+        plano(c, os.path.join(carpeta, n_plano))
+    except Exception as e:
+        print(f"  (plano omitido: {e})")
+        n_plano = None
+    pares = [("dxf_huella", n_dxf), ("step_montaje", n_step)] + ([("dxf_plano", n_plano)] if n_plano else [])
     arch = c.setdefault("archivos", {})
     fecha = datetime.date.today().isoformat()
     if REMOTO:
         destino = f"{REMOTO}/{c['id']}"
         rclone("copy", carpeta, destino, "--include", f"*_v{v}_*")
         ids = {x["Name"]: x.get("ID") for x in json.loads(rclone("lsjson", destino))}
-        for k, n in (("dxf_huella", n_dxf), ("step_montaje", n_step)):
+        for k, n in pares:
             arch[k] = {"nombre": n, "version": v, "fecha": fecha, "drive_id": ids.get(n),
                        "url": f"https://drive.google.com/file/d/{ids.get(n)}/view" if ids.get(n) else None,
                        "carpeta": f"MountLab/biblioteca/archivos/{c['id']}"}
-        for n in (n_dxf, n_step):  # en Drive: no se guardan en git
+        for _, n in pares:  # en Drive: no se guardan en git
             os.remove(os.path.join(carpeta, n))
     else:
         repo = os.environ.get("GITHUB_REPOSITORY", "")
-        for k, n in (("dxf_huella", n_dxf), ("step_montaje", n_step)):
+        for k, n in pares:
             arch[k] = {"nombre": n, "version": v, "fecha": fecha, "carpeta": f"archivos/{c['id']} (repositorio)",
                        "url": f"https://github.com/{repo}/raw/main/archivos/{c['id']}/{n}" if repo else f"archivos/{c['id']}/{n}"}
     c.pop("cad_pendiente", None)
-    print(f"✓ {c['id']} v{v}: {n_dxf}, {n_step}" + (f" → {REMOTO}" if REMOTO else " → archivos/"))
+    print(f"✓ {c['id']} v{v}: {n_dxf}, {n_step}" + (f", {n_plano}" if n_plano else "") + (f" → {REMOTO}" if REMOTO else " → archivos/"))
     return c, ruta_json
 
 

@@ -114,17 +114,64 @@
     return { x0, y0, x1, y1 };
   }
 
+  // -------- Fase 4: tipos de base (la "pieza madre" sobre la que se colocan las demás)
+  const BASES = {
+    placa: { n: "Placa (PCB)", ic: "▭", def: { forma: "rect", L: 30, W: 20, d: 30, espesor: 1.6, radio: 0, color: "#166534" } },
+    prisma: { n: "Prisma / caja", ic: "▣", def: { forma: "rect", L: 40, W: 25, d: 25, espesor: 15, radio: 0, color: "#475569" } },
+    cilindro: { n: "Cilindro", ic: "◉", def: { forma: "redonda", L: 25, W: 25, d: 25, espesor: 30, radio: 0, color: "#64748b" } },
+    motor: { n: "Motor DC", ic: "⚙", def: { modelo: "130", color: "#9ca3af" } },
+    servo: { n: "Servo", ic: "⛭", def: { modelo: "SG90", color: "#1d4ed8" } },
+  };
+  const MOTORES = {
+    "130": { n: "Motor DC 130 (Ø20, 3–6 V)", d: 20, plano: 15, largo: 25, eje_d: 2, eje_l: 8, buje_d: 6.2, buje_l: 1.6, reductor: 0 },
+    N20: { n: "Micromotor N20 con reductor", d: 12, plano: 10, largo: 15, eje_d: 3, eje_l: 10, buje_d: 4, buje_l: 1, reductor: 9 },
+    "370": { n: "Motor DC 370 (Ø24.4)", d: 24.4, plano: 24.4, largo: 30.5, eje_d: 2.3, eje_l: 11, buje_d: 6.5, buje_l: 2, reductor: 0 },
+    TT: { n: "Motorreductor TT amarillo", d: 20, plano: 15, largo: 25, eje_d: 5.4, eje_l: 9, buje_d: 7, buje_l: 0, reductor: 37 },
+  };
+  const SERVOS = {
+    SG90: { n: "SG90 (9 g)", L: 22.8, W: 12.2, alto: 22.7, oL: 32.3, oz0: 15.9, oe: 2.5, sx: 5.4, dome_d: 11.8, dome_h: 4, sp_d: 4.8, sp_h: 3.2, ag: [[-13.9, 0], [13.9, 0]], ag_d: 2.2 },
+    MG90S: { n: "MG90S (metálico)", L: 22.8, W: 12.2, alto: 22.5, oL: 32.1, oz0: 15.6, oe: 2.5, sx: 5.4, dome_d: 11.8, dome_h: 4, sp_d: 4.8, sp_h: 3.6, ag: [[-13.85, 0], [13.85, 0]], ag_d: 2.2 },
+    MG996R: { n: "MG996R (estándar)", L: 40.7, W: 19.7, alto: 37, oL: 54.5, oz0: 26.5, oe: 2.5, sx: 10.35, dome_d: 20, dome_h: 3, sp_d: 5.8, sp_h: 4, ag: [[-24.75, -5], [-24.75, 5], [24.75, -5], [24.75, 5]], ag_d: 4.4 },
+  };
+  const tipoBase = b => (b && BASES[b.tipo]) ? b.tipo : "placa";
+  /** Información de la base: envolvente en planta, altura de la cara A y primitivas propias (motor/servo). */
+  function baseInfo(b) {
+    const tipo = tipoBase(b);
+    if (tipo === "motor") {
+      const m = Object.assign({}, MOTORES[b.modelo] || MOTORES["130"], b.medidas || {}), col = b.color || "#9ca3af";
+      const top = r2(m.largo + (m.reductor || 0)), prim = [];
+      prim.push(Object.assign(caja(0, 0, m.d, m.plano, 0, m.largo, col, Math.max(0, Math.min(m.plano, m.d) / 2 - 0.05)), { base: true, pieza: "base" }));
+      if (m.reductor) prim.push(Object.assign(caja(0, 0, m.d, m.plano, m.largo, top, b.modelo === "TT" ? "#facc15" : C.gris), { base: true, pieza: "base" }));
+      if (m.buje_l) prim.push(Object.assign(cil(0, 0, m.buje_d, top, top + m.buje_l, C.metal), { base: true, pieza: "base" }));
+      prim.push(Object.assign(cil(0, 0, m.eje_d, top + (m.buje_l || 0), top + (m.buje_l || 0) + m.eje_l, C.metal), { base: true, pieza: "base" }));
+      [-1, 1].forEach(s => prim.push(Object.assign(caja(s * m.d * 0.28, 0, 1.4, 0.5, -2.5, 0, C.cobre), { base: true, pieza: "base" })));
+      return { tipo, L: m.d, W: m.plano, top, forma: "rect", prim, medidas: m, zonas: [{ tipo: "soldadura", nombre: "Terminales del motor", cx: 0, cy: 0, w: m.d * 0.8, h: 2, z: [-2.5, 0], salida: "-Z", holgura: 8 }] };
+    }
+    if (tipo === "servo") {
+      const m = Object.assign({}, SERVOS[b.modelo] || SERVOS.SG90, b.medidas || {}), col = b.color || "#1d4ed8";
+      const prim = [caja(0, 0, m.L, m.W, 0, m.alto, col), Object.assign(caja(0, 0, m.oL, m.W, m.oz0, m.oz0 + m.oe, col), { orejas: true }),
+        cil(m.sx, 0, m.dome_d, m.alto, m.alto + m.dome_h, col), cil(m.sx, 0, m.sp_d, m.alto + m.dome_h, m.alto + m.dome_h + m.sp_h, C.blanco)].map(q => Object.assign(q, { base: true, pieza: "base" }));
+      return { tipo, L: m.oL, W: m.W, top: m.alto, forma: "rect", prim, medidas: m, agujerosDef: m.ag.map(([x, y]) => ({ x, y, d: m.ag_d })),
+        zonas: [{ tipo: "conector", nombre: "Cable del servo", cx: r2(-m.L / 2), cy: 0, w: 2, h: 4, z: [2, 6], salida: "-X", holgura: 20 }, { tipo: "otra", nombre: "Giro del brazo (horn)", cx: m.sx, cy: 0, w: m.dome_d, h: m.dome_d, z: [m.alto + m.dome_h, m.alto + m.dome_h + m.sp_h], salida: "+Z", holgura: 6 }] };
+    }
+    const red = b.forma === "redonda", L = red ? b.d : b.L, W = red ? b.d : b.W;
+    return { tipo, L, W, top: +b.espesor || 1.6, forma: b.forma || "rect", prim: [], zonas: [] };
+  }
+
   /** Recalcula montaje (placa, alturas), zonas automáticas, pines automáticos y cuerpos a partir de c.modelo. */
   function sincronizar(c) {
     const M = c.modelo; if (!M || !M.base) return c;
-    const b = M.base, esp = +b.espesor || 1.6;
-    const L = b.forma === "redonda" ? b.d : b.L, W = b.forma === "redonda" ? b.d : b.W;
+    const b = M.base, bi = baseInfo(b);
+    if (bi.tipo === "motor" || bi.tipo === "servo") { b.L = r2(bi.L); b.W = r2(bi.W); b.espesor = r2(bi.top); b.forma = "rect"; }
+    const esp = +b.espesor || 1.6, L = bi.L, W = bi.W;
     c.montaje = Object.assign({ origen: "centro", fijacion: "tornillo", agujeros: [], altura_superior: 0, altura_inferior: 0, holgura_inferior_cableado: 0, nota: "" }, c.montaje || {});
-    c.montaje.pcb = [r2(L), r2(W), r2(esp)]; c.montaje.forma = b.forma || "rect";
-    if (b.forma === "redondeada") c.montaje.radio = b.radio || 0; else delete c.montaje.radio;
-    const cuerpos = [], zonas = [], pines = [];
+    c.montaje.pcb = [r2(L), r2(W), r2(esp)]; c.montaje.forma = bi.forma || "rect";
+    if (bi.tipo !== "placa") c.montaje.base_tipo = bi.tipo; else delete c.montaje.base_tipo;
+    if (b.forma === "redondeada" && bi.tipo !== "motor" && bi.tipo !== "servo") c.montaje.radio = b.radio || 0; else delete c.montaje.radio;
+    const cuerpos = bi.prim.map(q => Object.assign({}, q)), zonas = bi.zonas.map(z => Object.assign({}, z, { auto: true, pieza: "base", z: z.z.map(r2) })), pines = [];
     const prevPines = {}; (c.pines || []).filter(p => p.pieza).forEach(p => { prevPines[p.pieza + "#" + p.idx] = p; });
     let top = esp, bot = 0;
+    cuerpos.forEach(q => { top = Math.max(top, q.z1); bot = Math.min(bot, q.z0); });
     for (const pz of M.piezas || []) {
       const cs = cuerposDe(pz, esp); cuerpos.push(...cs);
       cs.forEach(q => { top = Math.max(top, q.z1); bot = Math.min(bot, q.z0); });
@@ -150,7 +197,7 @@
   /** Revisiones: piezas fuera de la placa, encimadas en la misma cara, sobre agujeros. */
   function revisar(c) {
     const M = c.modelo, out = []; if (!M || !M.base) return out;
-    const b = M.base, L = b.forma === "redonda" ? b.d : b.L, W = b.forma === "redonda" ? b.d : b.W;
+    const b = M.base, bi = baseInfo(b), L = bi.L, W = bi.W;
     const hs = (M.piezas || []).map(pz => ({ pz, h: huella(pz) })).filter(x => x.h);
     for (const { pz, h } of hs) {
       const fuera = b.forma === "redonda" ? [[h.x0, h.y0], [h.x1, h.y0], [h.x0, h.y1], [h.x1, h.y1]].some(([x, y]) => Math.hypot(x, y) > b.d / 2 + 0.01) : (h.x0 < -L / 2 - 0.01 || h.x1 > L / 2 + 0.01 || h.y0 < -W / 2 - 0.01 || h.y1 > W / 2 + 0.01);
@@ -182,5 +229,5 @@
     return { version: 1, base, piezas, nota: piezas.length ? "Piezas iniciales creadas a partir de las zonas del componente." : "" };
   }
 
-  window.MLPlant = { LIB, GRUPOS, plantilla, todas, paramsDef, geom, cuerposDe, huella, sincronizar, revisar, desdeMontaje, rotar, C };
+  window.MLPlant = { BASES, MOTORES, SERVOS, baseInfo, tipoBase, LIB, GRUPOS, plantilla, todas, paramsDef, geom, cuerposDe, huella, sincronizar, revisar, desdeMontaje, rotar, C };
 })();

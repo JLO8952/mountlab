@@ -264,5 +264,6 @@
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
   }
- ]
+ ],
+ "cad_pendiente": true
 }

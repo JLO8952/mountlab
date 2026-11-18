@@ -8,6 +8,7 @@ Biblioteca de componentes, catálogo y proyectos de John Fredy Correa. Une **Mou
 | Fichas de componentes (1 JSON por componente) | `data/componentes/` |
 | Proyectos con su BOM | `data/proyectos/` |
 | Datos descargados por aprobar | `data/pendientes/` |
+| Registro de invitaciones (sin secretos) | `data/accesos/` |
 | Tablas (tornillos, insertos, materiales, cables) | `data/tablas/` |
 | Todo junto para la app (lo genera la Action) | `data/db.json` y `data/db.js` (para abrir `index.html` con doble clic) |
 | Fotos e imágenes pequeñas | `img/` |
@@ -24,7 +25,7 @@ Biblioteca de componentes, catálogo y proyectos de John Fredy Correa. Une **Mou
 ## Cómo fluye un cambio
 1. En la web editas agujeros/zonas/pines y pulsas **Guardar** → la app hace un commit del JSON (con tu token).
 2. La GitHub Action **“Datos, CAD y publicación”**:
-   - genera `<id>_v<N>_huella.dxf` y `<id>_v<N>_montaje.step` (versión nueva, no borra las anteriores),
+   - genera `<id>_v<N>_huella.dxf`, `<id>_v<N>_montaje.step` y `<id>_v<N>_plano.dxf` (versión nueva, no borra las anteriores),
    - los sube a Drive con rclone (si existe el secreto `RCLONE_CONFIG`; si no, quedan en `archivos/` del repo),
    - actualiza `data/db.json` y vuelve a publicar la web.
 3. Drive para escritorio los baja a `D:\Mi unidad\MountLab\biblioteca\archivos\<id>\` y los abres en SolidWorks.
@@ -45,9 +46,27 @@ Se dibuja en 2D (vista superior) con formas simples y plantillas; la vista 3D (t
 - Librería paramétrica (`app/plantillas.js`): conectores, chips, pasivos, interfaz, potencia, accesorios y formas libres; **Mis plantillas** en `data/plantillas/`.
 - Al editar se sincronizan solos: `montaje` (placa y alturas), `zonas` automáticas (`auto: true`), `pines` automáticos (`pieza`), y `modelo.cuerpos`, que `cad/regenerar.py` convierte en un STEP con cada pieza y su color (y capas PIEZAS_A/B en el DXF).
 
+- **Fase 3:** en celular y tablet hay botones ☑ Multi (selección múltiple), ⬚ Área y ⊕ Colocar varias; se acerca pellizcando. Con varias piezas: alinear (izq., centro, der., arriba, abajo) y distribuir en X/Y. Las plantillas propias se renombran (✎).
+- **Fase 4 · tipos de base:** placa, prisma/caja, cilindro, **motor DC** (130, N20, 370, TT) y **servo** (SG90, MG90S, MG996R) con sus medidas típicas editables, agujeros de las orejas y zonas automáticas (cable del servo, terminales del motor). La altura de la base reemplaza al espesor; las piezas de la cara A van encima y las de la B debajo. El STEP une las primitivas de la base y corta los agujeros.
+
+## Plano de taller (`<id>_v<N>_plano.dxf`)
+Vista superior, frontal y lateral izquierda (ISO-E, primer diedro) a escala 1:1 en mm, con cotas generales (largo, ancho, alto total, espesor de placa, distancia entre agujeros extremos), llamadas de agujeros (`4x Ø3 pasante`), ejes y cajetín (nombre, id, versión, fecha, escala, origen, envolvente). Capas: CONTORNO, PIEZAS, OCULTAS, CENTRO, COTAS, TEXTO, MARCO.
+
+## Interfaz
+- Tema oscuro, barra lateral (barra inferior en el celular), **Inicio** con indicadores, sugerencias y salud de la biblioteca.
+- **Ctrl+K** (o `/`): buscador global de componentes, proyectos, acciones y botones de la pantalla; también entiende órdenes.
+- **Ctrl+J** o ✦: el asistente está en todas las ventanas, en un panel lateral.
+
 ## Asistente
+- **Agente de la interfaz** (`app/agent.js`): conoce las acciones de la app y todos los botones visibles; aprende tus hábitos (qué pulsas en cada pantalla y qué haces después, en `localStorage`) y **predice** lo siguiente (chips en el panel y burbuja junto a ✦). Entiende órdenes sin internet: “abre el bme280”, “pasa a la cara B”, “coloca un header de 4 pines”, “exporta el BOM”, “busca I2C”. La IA de la nube también puede pedir acciones con bloques `mountlab-accion` (lo que modifica datos pide confirmación).
 - **⚡ Cerebro local** (`app/local.js`, sin internet ni clave): búsqueda TF-IDF tolerante a errores, red neuronal pequeña (trigramas de letras) entrenada en el navegador con la biblioteca, respuestas por plantilla (voltaje, pines, medidas, precios…), comandos `aprende: alias = componente` / `olvida: alias` / `revisa proyecto X`, y un **sistema experto** que revisa cada proyecto (direcciones I2C, niveles 3.3/5 V, consumo, servos, baterías sin protección, GSM, ADC2).
 - **☁ Nube** (Claude, Gemini u OpenAI): investiga en internet y propone fichas para aprobar. En modo **Automático** responde local y solo usa la nube cuando no sabe o le pides investigar.
+
+## Acceso restringido (`app/auth.js`)
+- Contraseña de dueño por dispositivo. El token de GitHub y las claves de IA se guardan **cifrados** (PBKDF2-SHA256 250 000 iteraciones → AES-GCM 256); en claro no queda ninguna clave.
+- Bloqueo manual (🔒) y automático por inactividad (5 min a 4 h, o nunca). Cambiar contraseña en Ajustes. Si se olvida, se borra la bóveda de ese dispositivo y se vuelven a pegar las claves (los datos están en GitHub).
+- **Invitaciones:** Ajustes → Acceso → *Invitar*. Se genera un enlace (`#/invitacion/<código>`) y un PIN de 8 caracteres que se envían por canales distintos. El código lleva cifrados el repositorio, el rol (solo lectura / edición), el vencimiento y, opcionalmente, un token de GitHub para esa persona. El registro sin secretos queda en `data/accesos/<id>.json`; revocarlo o dejarlo vencer le quita el acceso la próxima vez que abra la app (revoca también su token en GitHub).
+- **Límite:** con el repositorio público los JSON siguen siendo legibles en GitHub. Para ocultarlos: repositorio privado (Pages privado requiere GitHub Pro) o publicar la base cifrada.
 
 ## Comandos locales
 ```bash

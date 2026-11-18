@@ -179,5 +179,6 @@
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
   }
- ]
+ ],
+ "cad_pendiente": true
 }

@@ -28,6 +28,7 @@ def main():
         "proyectos": leer("proyectos"),
         "pendientes": leer("pendientes"),
         "plantillas": leer("plantillas"),
+        "accesos": leer("accesos"),   # invitaciones (solo metadatos: nombre, rol, vencimiento, estado; nunca tokens)
         "tablas": tablas,
     }
     with open(os.path.join(D, "db.json"), "w", encoding="utf-8") as fh:

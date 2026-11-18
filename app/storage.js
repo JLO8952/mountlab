@@ -4,7 +4,7 @@
    - Sin token: modo local (los cambios quedan en este navegador y se suben luego con "Subir cambios locales"). */
 (function () {
   const KCFG = "ml_cfg", KOV = "ml_overlay";
-  const KINDS = { componentes: "data/componentes", proyectos: "data/proyectos", pendientes: "data/pendientes", plantillas: "data/plantillas" };
+  const KINDS = { componentes: "data/componentes", proyectos: "data/proyectos", pendientes: "data/pendientes", plantillas: "data/plantillas", accesos: "data/accesos" };
   const ls = {
     get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { console.warn("localStorage", e); } },
@@ -14,10 +14,17 @@
 
   const Store = {
     cfg: Object.assign({ owner: "JLO8952", repo: "mountlab", branch: "main", token: "", aiProv: "anthropic", aiKey: "", aiModel: "claude-sonnet-5-5", gemKey: "", gemModel: "gemini-2.5-flash", oaUrl: "https://api.openai.com/v1", oaKey: "", oaModel: "", drive: "" }, ls.get(KCFG, {})),
-    db: { componentes: [], proyectos: [], pendientes: [], plantillas: [], tablas: {}, generado: null },
+    db: { componentes: [], proyectos: [], pendientes: [], plantillas: [], accesos: [], tablas: {}, generado: null },
     mode: "local", error: null,
 
-    saveCfg(c) { Object.assign(this.cfg, c); ls.set(KCFG, this.cfg); },
+    SECRETOS: ["token", "aiKey", "gemKey", "oaKey"],
+    /** Guarda la configuración. Las claves (token, API keys) nunca quedan en claro: van a la bóveda cifrada (auth.js). */
+    saveCfg(c) {
+      Object.assign(this.cfg, c);
+      const claro = Object.assign({}, this.cfg); this.SECRETOS.forEach(k => delete claro[k]); ls.set(KCFG, claro);
+      if (window.Auth && Auth.abierta()) Auth.guardarSecretos(Object.fromEntries(this.SECRETOS.map(k => [k, this.cfg[k] || ""])));
+    },
+    soloLectura() { return !!(window.Auth && Auth.rol() === "lectura"); },
     hasGit() { return !!(this.cfg.token && this.cfg.owner && this.cfg.repo); },
     api(path) { return `https://api.github.com/repos/${this.cfg.owner}/${this.cfg.repo}` + (path ? `/${path}` : ""); },
     headers(extra) { return Object.assign({ Authorization: `Bearer ${this.cfg.token}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" }, extra || {}); },
@@ -43,13 +50,13 @@
           this.mode = "local";
         }
       }
-      this.db = { componentes: db.componentes || [], proyectos: db.proyectos || [], pendientes: db.pendientes || [], plantillas: db.plantillas || [], tablas: db.tablas || {}, generado: db.generado || null };
+      this.db = { componentes: db.componentes || [], proyectos: db.proyectos || [], pendientes: db.pendientes || [], plantillas: db.plantillas || [], accesos: db.accesos || [], tablas: db.tablas || {}, generado: db.generado || null };
       this.applyOverlay();
       return this.db;
     },
 
     // Cambios guardados aún no reflejados en db.json (o hechos sin conexión)
-    overlay() { return ls.get(KOV, { componentes: {}, proyectos: {}, pendientes: {}, plantillas: {} }); },
+    overlay() { return Object.assign({ componentes: {}, proyectos: {}, pendientes: {}, plantillas: {}, accesos: {} }, ls.get(KOV, {})); },
     applyOverlay() {
       const ov = this.overlay(), gen = this.db.generado ? Date.parse(this.db.generado) : 0;
       let cambio = false;
@@ -91,6 +98,7 @@
 
     /** Guarda un elemento. Devuelve "github" o "local". */
     async save(kind, obj, message) {
+      if (this.soloLectura()) throw new Error("Tu acceso es de solo lectura");
       const arr = this.db[kind], i = arr.findIndex(x => x.id === obj.id);
       if (i >= 0) arr[i] = obj; else arr.push(obj);
       if (this.mode === "github") {
@@ -102,6 +110,7 @@
       this.setOverlay(kind, obj.id, obj, true); return "local";
     },
     async remove(kind, id, message) {
+      if (this.soloLectura()) throw new Error("Tu acceso es de solo lectura");
       const arr = this.db[kind], i = arr.findIndex(x => x.id === id); if (i >= 0) arr.splice(i, 1);
       if (this.mode === "github") { await this.deleteFile(`${KINDS[kind]}/${id}.json`, message); this.setOverlay(kind, id, null, false); return "github"; }
       this.setOverlay(kind, id, null, true); return "local";
@@ -150,7 +159,8 @@
       const r = await fetch(this.api(""), { headers: this.headers() });
       if (r.status === 401) throw new Error("Token inválido o vencido (GitHub 401). Genera uno nuevo.");
       if (!r.ok) throw new Error(r.status === 404 ? "Repositorio no encontrado o el token no tiene acceso a él (revisa Repository access → mountlab)" : `GitHub ${r.status}`);
-      const j = await r.json(); if (j.permissions && j.permissions.push === false) throw new Error("El token no tiene permiso de escritura (Contents: Read and write)");
+      const j = await r.json(); if (j.permissions && j.permissions.push === false && !this.soloLectura()) throw new Error("El token no tiene permiso de escritura (Contents: Read and write)");
+      this.permisos = j.permissions || null; this.privado = !!j.private;
       return j;
     },
   };

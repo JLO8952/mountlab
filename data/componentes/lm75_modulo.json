@@ -162,5 +162,6 @@
    "0x4F"
   ],
   "pines_direccion": "A0-A2"
- }
+ },
+ "cad_pendiente": true
 }
