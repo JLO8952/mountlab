@@ -195,16 +195,16 @@
   "dxf_huella": {
    "nombre": "lm2596_v1_huella.dxf",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/lm2596",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/lm2596 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596/lm2596_v1_huella.dxf"
   },
   "step_montaje": {
    "nombre": "lm2596_v1_montaje.step",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/lm2596",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/lm2596 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596/lm2596_v1_montaje.step"
   },
   "datasheet": {
    "nombre": "lm2596_datasheet.pdf",
@@ -213,6 +213,13 @@
    "carpeta": "archivos/lm2596 (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596/lm2596_datasheet.pdf",
    "kb": 4976
+  },
+  "dxf_plano": {
+   "nombre": "lm2596_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/lm2596 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596/lm2596_v1_plano.dxf"
   }
  },
  "historial": [
@@ -221,6 +228,5 @@
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
   }
- ],
- "cad_pendiente": true
+ ]
 }

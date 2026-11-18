@@ -196,16 +196,16 @@
   "dxf_huella": {
    "nombre": "bno055_v1_huella.dxf",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/bno055",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/bno055 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bno055/bno055_v1_huella.dxf"
   },
   "step_montaje": {
    "nombre": "bno055_v1_montaje.step",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/bno055",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/bno055 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bno055/bno055_v1_montaje.step"
   },
   "datasheet": {
    "nombre": "bno055_datasheet.pdf",
@@ -214,6 +214,13 @@
    "carpeta": "archivos/bno055 (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bno055/bno055_datasheet.pdf",
    "kb": 2005
+  },
+  "dxf_plano": {
+   "nombre": "bno055_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/bno055 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bno055/bno055_v1_plano.dxf"
   }
  },
  "historial": [
@@ -222,6 +229,5 @@
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
   }
- ],
- "cad_pendiente": true
+ ]
 }

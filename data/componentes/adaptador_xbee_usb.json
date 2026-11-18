@@ -144,16 +144,23 @@
   "dxf_huella": {
    "nombre": "adaptador_xbee_usb_v1_huella.dxf",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/adaptador_xbee_usb",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/adaptador_xbee_usb (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/adaptador_xbee_usb/adaptador_xbee_usb_v1_huella.dxf"
   },
   "step_montaje": {
    "nombre": "adaptador_xbee_usb_v1_montaje.step",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/adaptador_xbee_usb",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/adaptador_xbee_usb (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/adaptador_xbee_usb/adaptador_xbee_usb_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "adaptador_xbee_usb_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/adaptador_xbee_usb (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/adaptador_xbee_usb/adaptador_xbee_usb_v1_plano.dxf"
   }
  },
  "historial": [
@@ -162,6 +169,5 @@
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
   }
- ],
- "cad_pendiente": true
+ ]
 }

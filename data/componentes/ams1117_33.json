@@ -146,16 +146,16 @@
   "dxf_huella": {
    "nombre": "ams1117_33_v1_huella.dxf",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/ams1117_33",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/ams1117_33 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/ams1117_33/ams1117_33_v1_huella.dxf"
   },
   "step_montaje": {
    "nombre": "ams1117_33_v1_montaje.step",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/ams1117_33",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/ams1117_33 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/ams1117_33/ams1117_33_v1_montaje.step"
   },
   "datasheet": {
    "nombre": "ams1117_33_datasheet.pdf",
@@ -164,6 +164,13 @@
    "carpeta": "archivos/ams1117_33 (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/ams1117_33/ams1117_33_datasheet.pdf",
    "kb": 93
+  },
+  "dxf_plano": {
+   "nombre": "ams1117_33_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/ams1117_33 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/ams1117_33/ams1117_33_v1_plano.dxf"
   }
  },
  "historial": [
@@ -172,6 +179,5 @@
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
   }
- ],
- "cad_pendiente": true
+ ]
 }

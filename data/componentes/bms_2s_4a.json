@@ -200,16 +200,23 @@
   "dxf_huella": {
    "nombre": "bms_2s_4a_v1_huella.dxf",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/bms_2s_4a",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/bms_2s_4a (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_v1_huella.dxf"
   },
   "step_montaje": {
    "nombre": "bms_2s_4a_v1_montaje.step",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/bms_2s_4a",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/bms_2s_4a (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "bms_2s_4a_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/bms_2s_4a (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_v1_plano.dxf"
   }
  },
  "historial": [
@@ -218,6 +225,5 @@
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
   }
- ],
- "cad_pendiente": true
+ ]
 }

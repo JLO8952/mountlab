@@ -187,16 +187,16 @@
   "dxf_huella": {
    "nombre": "gps_max_m10n_v1_huella.dxf",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/gps_max_m10n",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/gps_max_m10n (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/gps_max_m10n/gps_max_m10n_v1_huella.dxf"
   },
   "step_montaje": {
    "nombre": "gps_max_m10n_v1_montaje.step",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/gps_max_m10n",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/gps_max_m10n (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/gps_max_m10n/gps_max_m10n_v1_montaje.step"
   },
   "datasheet": {
    "nombre": "gps_max_m10n_datasheet.pdf",
@@ -205,6 +205,13 @@
    "carpeta": "archivos/gps_max_m10n (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/gps_max_m10n/gps_max_m10n_datasheet.pdf",
    "kb": 3183
+  },
+  "dxf_plano": {
+   "nombre": "gps_max_m10n_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/gps_max_m10n (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/gps_max_m10n/gps_max_m10n_v1_plano.dxf"
   }
  },
  "historial": [
@@ -213,6 +220,5 @@
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
   }
- ],
- "cad_pendiente": true
+ ]
 }

@@ -148,21 +148,28 @@
   "dxf_huella": {
    "nombre": "tp4056_v1_huella.dxf",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/tp4056",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/tp4056 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/tp4056/tp4056_v1_huella.dxf"
   },
   "step_montaje": {
    "nombre": "tp4056_v1_montaje.step",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/tp4056",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/tp4056 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/tp4056/tp4056_v1_montaje.step"
   },
   "datasheet": {
    "fuente": "https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf",
    "error": "HTTP Error 502: Bad Gateway",
    "fecha": "2026-11-17"
+  },
+  "dxf_plano": {
+   "nombre": "tp4056_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/tp4056 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/tp4056/tp4056_v1_plano.dxf"
   }
  },
  "historial": [
@@ -171,6 +178,5 @@
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
   }
- ],
- "cad_pendiente": true
+ ]
 }

@@ -460,16 +460,16 @@
   "dxf_huella": {
    "nombre": "esp32_devkit_30p_v1_huella.dxf",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/esp32_devkit_30p",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/esp32_devkit_30p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_devkit_30p/esp32_devkit_30p_v1_huella.dxf"
   },
   "step_montaje": {
    "nombre": "esp32_devkit_30p_v1_montaje.step",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/esp32_devkit_30p",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/esp32_devkit_30p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_devkit_30p/esp32_devkit_30p_v1_montaje.step"
   },
   "datasheet": {
    "nombre": "esp32_devkit_30p_datasheet.pdf",
@@ -478,6 +478,13 @@
    "carpeta": "archivos/esp32_devkit_30p (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_devkit_30p/esp32_devkit_30p_datasheet.pdf",
    "kb": 605
+  },
+  "dxf_plano": {
+   "nombre": "esp32_devkit_30p_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/esp32_devkit_30p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_devkit_30p/esp32_devkit_30p_v1_plano.dxf"
   }
  },
  "historial": [
@@ -491,6 +498,5 @@
    "fecha": "2026-11-16",
    "nota": "Migrado a MountLab unificado: origen de coordenadas movido al centro de la placa."
   }
- ],
- "cad_pendiente": true
+ ]
 }

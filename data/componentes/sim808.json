@@ -227,16 +227,23 @@
   "dxf_huella": {
    "nombre": "sim808_v1_huella.dxf",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/sim808",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/sim808 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/sim808/sim808_v1_huella.dxf"
   },
   "step_montaje": {
    "nombre": "sim808_v1_montaje.step",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/sim808",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/sim808 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/sim808/sim808_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "sim808_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/sim808 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/sim808/sim808_v1_plano.dxf"
   }
  },
  "historial": [
@@ -245,6 +252,5 @@
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
   }
- ],
- "cad_pendiente": true
+ ]
 }

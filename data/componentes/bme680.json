@@ -172,16 +172,16 @@
   "dxf_huella": {
    "nombre": "bme680_v1_huella.dxf",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/bme680",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/bme680 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme680/bme680_v1_huella.dxf"
   },
   "step_montaje": {
    "nombre": "bme680_v1_montaje.step",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/bme680",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/bme680 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme680/bme680_v1_montaje.step"
   },
   "datasheet": {
    "nombre": "bme680_datasheet.pdf",
@@ -190,6 +190,13 @@
    "carpeta": "archivos/bme680 (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme680/bme680_datasheet.pdf",
    "kb": 1358
+  },
+  "dxf_plano": {
+   "nombre": "bme680_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/bme680 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme680/bme680_v1_plano.dxf"
   }
  },
  "historial": [
@@ -198,6 +205,5 @@
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
   }
- ],
- "cad_pendiente": true
+ ]
 }

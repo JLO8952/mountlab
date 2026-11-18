@@ -489,7 +489,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461362.1697685183
+2461363.1359722223
   9
 $TDUCREATE
  40
@@ -497,7 +497,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461362.1697685183
+2461363.1359722223
   9
 $TDUUPDATE
  40
@@ -549,7 +549,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-A7
+A9
   9
 $SURFTAB1
  70
@@ -929,11 +929,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{D753D868-FCEC-49C4-A675-8040829220EB}
+{0C27C031-8F01-4878-96AE-D6F3B62F66E8}
   9
 $VERSIONGUID
   2
-{2EE6581D-191E-43EC-BA01-86AA6C556530}
+{220F8114-56A0-4728-8692-BF47935A06D6}
   9
 $EXTNAMES
 290
@@ -1323,9 +1323,9 @@ ISM
   0
 CLASS
   1
-ACDBPLACEHOLDER
+LAYOUT
   2
-AcDbPlaceHolder
+AcDbLayout
   3
 ObjectDBX Classes
  90
@@ -1339,9 +1339,9 @@ ObjectDBX Classes
   0
 CLASS
   1
-LAYOUT
+ACDBPLACEHOLDER
   2
-AcDbLayout
+AcDbPlaceHolder
   3
 ObjectDBX Classes
  90
@@ -2233,7 +2233,7 @@ LAYER
 100
 AcDbSymbolTable
  70
-9
+11
   0
 LAYER
   5
@@ -2444,6 +2444,54 @@ TEXTO
 0
  62
 7
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+91
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+PIEZAS_A
+ 70
+0
+ 62
+5
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+92
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+PIEZAS_B
+ 70
+0
+ 62
+6
   6
 Continuous
 370
@@ -3253,7 +3301,7 @@ ACAD
   0
 APPID
   5
-A4
+A6
 330
 3
 100
@@ -3267,7 +3315,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-A5
+A7
 330
 3
 100
@@ -5379,7 +5427,7 @@ ENTITIES
   0
 LWPOLYLINE
   5
-91
+93
 330
 17
 100
@@ -5411,7 +5459,7 @@ AcDbPolyline
   0
 LINE
   5
-92
+94
 330
 17
 100
@@ -5435,7 +5483,7 @@ AcDbLine
   0
 LINE
   5
-93
+95
 330
 17
 100
@@ -5459,7 +5507,7 @@ AcDbLine
   0
 CIRCLE
   5
-94
+96
 330
 17
 100
@@ -5479,7 +5527,7 @@ AcDbCircle
   0
 LWPOLYLINE
   5
-95
+97
 330
 17
 100
@@ -5511,7 +5559,7 @@ AcDbPolyline
   0
 TEXT
   5
-96
+98
 330
 17
 100
@@ -5541,7 +5589,7 @@ AcDbText
   0
 CIRCLE
   5
-97
+99
 330
 17
 100
@@ -5561,7 +5609,7 @@ AcDbCircle
   0
 TEXT
   5
-98
+9A
 330
 17
 100
@@ -5591,7 +5639,7 @@ AcDbText
   0
 CIRCLE
   5
-99
+9B
 330
 17
 100
@@ -5611,7 +5659,7 @@ AcDbCircle
   0
 TEXT
   5
-9A
+9C
 330
 17
 100
@@ -5641,7 +5689,7 @@ AcDbText
   0
 CIRCLE
   5
-9B
+9D
 330
 17
 100
@@ -5661,7 +5709,7 @@ AcDbCircle
   0
 TEXT
   5
-9C
+9E
 330
 17
 100
@@ -5691,7 +5739,7 @@ AcDbText
   0
 CIRCLE
   5
-9D
+9F
 330
 17
 100
@@ -5711,7 +5759,7 @@ AcDbCircle
   0
 TEXT
   5
-9E
+A0
 330
 17
 100
@@ -5741,7 +5789,7 @@ AcDbText
   0
 CIRCLE
   5
-9F
+A1
 330
 17
 100
@@ -5761,7 +5809,7 @@ AcDbCircle
   0
 TEXT
   5
-A0
+A2
 330
 17
 100
@@ -5791,7 +5839,7 @@ AcDbText
   0
 CIRCLE
   5
-A1
+A3
 330
 17
 100
@@ -5811,7 +5859,7 @@ AcDbCircle
   0
 TEXT
   5
-A2
+A4
 330
 17
 100
@@ -5841,7 +5889,7 @@ AcDbText
   0
 TEXT
   5
-A3
+A5
 330
 17
 100
@@ -6959,7 +7007,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-A6
+A8
   0
 DICTIONARYVAR
   5
@@ -6971,7 +7019,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-17T04:04:28.242029+00:00
+1.4.5 @ 2026-11-18T03:15:48.400718+00:00
   0
 VISUALSTYLE
   5
@@ -7675,7 +7723,7 @@ X-Ray
   0
 DICTIONARYVAR
   5
-A6
+A8
 330
 2D
 100
@@ -7683,7 +7731,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-17T04:04:28.245417+00:00
+1.4.5 @ 2026-11-18T03:15:48.470312+00:00
   0
 ENDSEC
   0

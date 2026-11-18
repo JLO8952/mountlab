@@ -161,16 +161,23 @@
   "dxf_huella": {
    "nombre": "qmc5883_v1_huella.dxf",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/qmc5883",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/qmc5883 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/qmc5883/qmc5883_v1_huella.dxf"
   },
   "step_montaje": {
    "nombre": "qmc5883_v1_montaje.step",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/qmc5883",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/qmc5883 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/qmc5883/qmc5883_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "qmc5883_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/qmc5883 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/qmc5883/qmc5883_v1_plano.dxf"
   }
  },
  "historial": [
@@ -179,6 +186,5 @@
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
   }
- ],
- "cad_pendiente": true
+ ]
 }

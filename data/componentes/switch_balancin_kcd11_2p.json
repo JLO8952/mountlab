@@ -198,6 +198,27 @@
    "fuente": "https://jlcpcb.com/partdetail/SHOUHAN-KCD112P/C5884412",
    "error": "la dirección no entrega un PDF directo (es una página web)",
    "fecha": "2026-11-17"
+  },
+  "dxf_huella": {
+   "nombre": "switch_balancin_kcd11_2p_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/switch_balancin_kcd11_2p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/switch_balancin_kcd11_2p/switch_balancin_kcd11_2p_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "switch_balancin_kcd11_2p_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/switch_balancin_kcd11_2p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/switch_balancin_kcd11_2p/switch_balancin_kcd11_2p_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "switch_balancin_kcd11_2p_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/switch_balancin_kcd11_2p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/switch_balancin_kcd11_2p/switch_balancin_kcd11_2p_v1_plano.dxf"
   }
  },
  "historial": [
@@ -206,6 +227,5 @@
    "fecha": "2026-11-17",
    "nota": "Creado desde la ficha del proveedor enviada por John (2P, SPST ON-OFF, 120 VAC 6 A / 250 VAC 3 A). Dimensiones KCD11 estándar (marco 15 × 10.5, recorte 13.5 × 9); terminales estimados. STEP y DXF generados con CadQuery/ezdxf."
   }
- ],
- "cad_pendiente": true
+ ]
 }

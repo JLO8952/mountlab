@@ -126,21 +126,28 @@
   "dxf_huella": {
    "nombre": "lm75_modulo_v1_huella.dxf",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/lm75_modulo",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/lm75_modulo (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm75_modulo/lm75_modulo_v1_huella.dxf"
   },
   "step_montaje": {
    "nombre": "lm75_modulo_v1_montaje.step",
    "version": 1,
-   "fecha": "2026-11-16",
-   "carpeta": "MountLab/biblioteca/archivos/lm75_modulo",
-   "url": null
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/lm75_modulo (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm75_modulo/lm75_modulo_v1_montaje.step"
   },
   "datasheet": {
    "fuente": "https://www.nxp.com/docs/en/data-sheet/LM75A.pdf",
    "error": "HTTP Error 404: Not Found",
    "fecha": "2026-11-17"
+  },
+  "dxf_plano": {
+   "nombre": "lm75_modulo_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-18",
+   "carpeta": "archivos/lm75_modulo (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm75_modulo/lm75_modulo_v1_plano.dxf"
   }
  },
  "historial": [
@@ -162,6 +169,5 @@
    "0x4F"
   ],
   "pines_direccion": "A0-A2"
- },
- "cad_pendiente": true
+ }
 }
