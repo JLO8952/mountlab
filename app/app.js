@@ -741,9 +741,16 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
     try { const k = "ml_uso_ia", d = hoy(); let u = JSON.parse(localStorage.getItem(k)) || {}; if (u.dia !== d) u = { dia: d, n: 0, tin: 0, tout: 0, mod: {} };
       u.n++; u.mod[modelo] = (u.mod[modelo] || 0) + 1; if (meta) { u.tin += meta.promptTokenCount || 0; u.tout += (meta.candidatesTokenCount || 0) + (meta.thoughtsTokenCount || 0); } localStorage.setItem(k, JSON.stringify(u)); } catch (e) { }
   }
-  async function pedirGemini(modelo, body, key) {
+  /** fetch con límite de tiempo: evita que la app se quede “colgada” si la red no responde. */
+  async function fetchT(url, op, ms) {
+    const ac = new AbortController(), t = setTimeout(() => ac.abort(), ms || 90000);
+    try { return await fetch(url, Object.assign({}, op, { signal: ac.signal })); }
+    catch (e) { if (e.name === "AbortError") throw new Error(`Gemini no respondió en ${Math.round((ms || 90000) / 1000)} s (revisa tu conexión, VPN, antivirus o firewall)`); throw new Error("No se pudo contactar a Gemini (" + e.message + "). ¿Bloqueador, red de la empresa o sin internet?"); }
+    finally { clearTimeout(t); }
+  }
+  async function pedirGemini(modelo, body, key, ms) {
     for (let intento = 0; intento < 2; intento++) {
-      const r = await fetch(`${GEM}/models/${encodeURIComponent(modelo)}:generateContent`, { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": key }, body: JSON.stringify(body) });
+      const r = await fetchT(`${GEM}/models/${encodeURIComponent(modelo)}:generateContent`, { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": key }, body: JSON.stringify(body) }, ms || 120000);
       let j = {}; try { j = await r.json(); } catch (e) { }
       if (r.ok) { usoIA(modelo, j.usageMetadata); return j; }
       const espera = +(((((j.error || {}).details || []).find(d => d.retryDelay) || {}).retryDelay || "").replace("s", "")) || 4;
@@ -792,7 +799,7 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
     return { text: texto, fuentes };
   }
   async function listarGemini(key, detalle) {
-    const r = await fetch(`${GEM}/models?pageSize=200`, { headers: { "x-goog-api-key": key } });
+    const r = await fetchT(`${GEM}/models?pageSize=200`, { headers: { "x-goog-api-key": key } }, 20000);
     let j = {}; try { j = await r.json(); } catch (e) { } if (!r.ok) throw new Error(errGemini(r, j));
     const L = (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes("generateContent") && /gemini/.test(m.name)).map(m => ({ id: m.name.replace(/^models\//, ""), nombre: m.displayName || "", entrada: m.inputTokenLimit || 0 }));
     return detalle ? L : L.map(m => m.id);
@@ -1194,18 +1201,21 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
       if (p === "openai") $("#aBox").innerHTML = `<div><label>URL base (OpenAI, OpenRouter, Groq, DeepSeek…)</label><input id="u3" value="${esc(c.oaUrl)}"></div><div style="margin-top:8px"><label>Clave API</label><input id="k3" type="password" value="${esc(c.oaKey)}" placeholder="sk-…"></div><div style="margin-top:8px"><label>Modelo</label><input id="m3" value="${esc(c.oaModel)}" placeholder="ej. gpt-…"></div>`;
       const gc = $("#gC"); if (gc) gc.onclick = async () => {
         const k = $("#k2").value.trim(); if (!k) return toast("Pega primero la clave de Gemini");
-        gc.disabled = true; $("#aMsg").textContent = "Conectando con Gemini…";
+        gc.disabled = true; const t00 = performance.now(); let paso = "1/2 · verificando la clave y listando modelos";
+        const tic = setInterval(() => { $("#aMsg").textContent = `Conectando con Gemini… ${paso} (${Math.round((performance.now() - t00) / 1000)} s)`; }, 500);
         try {
           const L = await listarGemini(k, true), el = elegirGemini(L); if (!el.rapido) throw new Error("Tu clave no tiene modelos Gemini disponibles");
+          paso = `2/2 · clave válida (${L.length} modelos) · probando ${el.rapido}`;
           $("#dlGem").innerHTML = L.map(m => `<option value="${esc(m.id)}">${esc(m.nombre)}</option>`).join("");
-          const t0 = performance.now(), j = await pedirGemini(el.rapido, { contents: [{ role: "user", parts: [{ text: "Responde solo con la palabra: listo" }] }], generationConfig: { maxOutputTokens: 512 } }, k);
+          const t0 = performance.now(), j = await pedirGemini(el.rapido, { contents: [{ role: "user", parts: [{ text: "Responde solo con la palabra: listo" }] }], generationConfig: { maxOutputTokens: 2048 } }, k, 45000);
           const txt = (((j.candidates || [])[0] || {}).content || {}).parts?.filter(x => x.text && !x.thought).map(x => x.text).join("").trim();
           $("#m2").value = el.rapido; $("#m2p").value = el.potente || "";
+          clearInterval(tic);
           Store.saveCfg({ aiProv: "gemini", gemKey: k, gemModel: el.rapido, gemPro: el.potente || "" }); S.modo = "auto";
           $("#aMsg").innerHTML = `<span style="color:var(--ok)">✓ Gemini conectado en ${Math.round(performance.now() - t0)} ms (“${esc(txt || "ok")}”) · rápido: <b>${esc(el.rapido)}</b>${el.potente ? ` · potente: <b>${esc(el.potente)}</b>` : ""} · ${L.length} modelos</span>`;
           toast("Asistente conectado a Gemini"); if ($("#asHost").childElementCount) vAsistente();
-        } catch (e) { $("#aMsg").innerHTML = `<span style="color:var(--bad)">✗ ${esc(e.message)}</span>`; }
-        gc.disabled = false;
+        } catch (e) { clearInterval(tic); $("#aMsg").innerHTML = `<span style="color:var(--bad)">✗ ${esc(e.message)}</span>`; }
+        clearInterval(tic); gc.disabled = false;
       };
       const gl = $("#gL"); if (gl) gl.onclick = async () => {
         const k = $("#k2").value.trim(); if (!k) return toast("Pega primero la clave");
