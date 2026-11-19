@@ -729,7 +729,8 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
   const GEM = "https://generativelanguage.googleapis.com/v1beta";
   function errGemini(r, j) {
     const e = (j && j.error) || {}, msg = e.message || String(r.status), st = e.status || "";
-    if (r.status === 400 && /API key not valid|API_KEY_INVALID/i.test(msg)) return "La clave de Gemini no es válida: revisa que la copiaste completa (empieza por AIza).";
+    if (r.status === 400 && /API key not valid|API_KEY_INVALID/i.test(msg)) return "La clave de Gemini no es válida: revisa que la copiaste completa (las claves nuevas empiezan por AQ., las antiguas por AIza).";
+    if (r.status === 401) return "Gemini rechazó la clave (401" + (/ACCESS_TOKEN_TYPE|OAuth/i.test(msg) ? ": tipo de clave no aceptado" : "") + "). Si es una clave nueva (AQ.), bórrala y crea otra en AI Studio dentro de un proyecto nuevo; si persiste, crea una clave clásica (AIza) en console.cloud.google.com → Credenciales con la «Generative Language API».";
     if (r.status === 400 && /location is not supported|User location/i.test(msg)) return "Gemini no está disponible desde tu ubicación con esta clave.";
     if (r.status === 403) return "Gemini rechazó la clave (" + msg + "). Revisa que la API esté habilitada en el proyecto de AI Studio.";
     if (r.status === 404) return "Ese modelo no existe o ya no está disponible: pulsa “Conectar y probar” en Ajustes para elegir uno vigente.";
@@ -1193,7 +1194,7 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
       if (p === "anthropic") $("#aBox").innerHTML = `<div><label>Clave API de Anthropic (console.anthropic.com)</label><input id="k1" type="password" value="${esc(c.aiKey)}" placeholder="sk-ant-…"></div><div style="margin-top:8px"><label>Modelo</label><input id="m1" value="${esc(c.aiModel)}"></div>`;
       if (p === "gemini") { let u = {}; try { u = JSON.parse(localStorage.getItem("ml_uso_ia")) || {}; } catch (e) { } const hoyU = u.dia === hoy() ? u : null;
         $("#aBox").innerHTML = `${c.gemKey ? "" : `<ol class="small" style="padding-left:18px;margin:0 0 10px;line-height:1.6"><li>Abre <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> con tu cuenta de Google.</li><li>Pulsa <b>Create API key</b> (crear clave) y cópiala.</li><li>Pégala aquí y pulsa <b>Conectar y probar</b>: elijo solo los mejores modelos disponibles para tu clave.</li></ol>`}
-        <div><label>Clave API de Gemini</label><input id="k2" type="password" value="${esc(c.gemKey)}" placeholder="AIza…" autocomplete="off"></div>
+        <div><label>Clave API de Gemini</label><input id="k2" type="password" value="${esc(c.gemKey)}" placeholder="AQ.… o AIza…" autocomplete="off"></div>
         <div class="grid2" style="margin-top:8px"><div><label>Modelo rápido (chat, búsquedas)</label><input id="m2" list="dlGem" value="${esc(c.gemModel)}"></div><div><label>Modelo potente (datasheets, circuitos)</label><input id="m2p" list="dlGem" value="${esc(c.gemPro || "")}" placeholder="(igual al rápido)"></div></div><datalist id="dlGem"></datalist>
         <div class="row" style="margin-top:8px"><button class="pri sm" id="gC">⚡ Conectar y probar</button><button class="sm" id="gL">Ver modelos</button></div>
         ${hoyU ? `<div class="small muted" style="margin-top:6px">Hoy: <b style="color:var(--ink)">${hoyU.n}</b> consultas · ${Math.round((hoyU.tin + hoyU.tout) / 1000)} k tokens (${Object.entries(hoyU.mod).map(([m, n]) => `${esc(m)} ×${n}`).join(", ")})</div>` : ""}
