@@ -26,8 +26,8 @@
   "entradas": "USB-A macho",
   "salidas": "Header 5 pines 2.54 mm en ángulo: 5V, 3V3, TXD, RXD, GND",
   "dimensiones": "PCB ≈49 × 22 × 1.6 mm; con USB-A y pines ≈ 77 mm de largo (medido de foto, verificar con calibrador)",
-  "datasheet": "https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT232BL_BQ.pdf",
-  "notas": "El FT232BL original está descontinuado por FTDI y este chip tiene fecha 2308 (2023): casi seguro es un clon. Con algunos drivers de FTDI los clones dejan de funcionar; si pasa, usar una versión antigua del driver o cambiar a CH340/CP2102. Conectar TX→RX y RX→TX. Antes de conectar un módulo de 3.3 V, poner el jumper en 3V3. Los pines no traen RTS/DTR, así que no hace auto-reset para Arduino."
+  "datasheet": "https://www.piekarz.pl/pdf/11534",
+  "notas": "El FT232BL original está descontinuado por FTDI y este chip tiene fecha 2308 (2023): casi seguro es un clon. Con algunos drivers de FTDI los clones dejan de funcionar; si pasa, usar una versión antigua del driver o cambiar a CH340/CP2102. Conectar TX→RX y RX→TX. Antes de conectar un módulo de 3.3 V, poner el jumper en 3V3. Los pines no traen RTS/DTR, así que no hace auto-reset para Arduino. Datasheet oficial: DS_FT232BL_BQ v2.2 en ftdichip.com (la web de FTDI bloquea la descarga automática; se usa una copia del mismo documento)."
  },
  "especificaciones": [
   {
