@@ -188,9 +188,33 @@
  ],
  "archivos": {
   "datasheet": {
-   "nombre": "HC-12 User Manual v1.18 (HC Tech, inglés)",
-   "url": "https://www.rigpix.com/rfboards/huicheng_hc12_manual_v1.18.pdf",
-   "carpeta": "enlace externo"
+   "nombre": "hc12_si4463_433_datasheet.pdf",
+   "fuente": "https://www.rigpix.com/rfboards/huicheng_hc12_manual_v1.18.pdf",
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/hc12_si4463_433 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/hc12_si4463_433/hc12_si4463_433_datasheet.pdf",
+   "kb": 282
+  },
+  "dxf_huella": {
+   "nombre": "hc12_si4463_433_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/hc12_si4463_433 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/hc12_si4463_433/hc12_si4463_433_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "hc12_si4463_433_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/hc12_si4463_433 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/hc12_si4463_433/hc12_si4463_433_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "hc12_si4463_433_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/hc12_si4463_433 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/hc12_si4463_433/hc12_si4463_433_v1_plano.dxf"
   }
  },
  "modelo": {
@@ -666,6 +690,5 @@
    "nota": "Creado desde la foto de John (versión sin blindaje, con resorte e IPEX). Datos del manual HC-12; medidas oficiales 27.8 × 14.4 × 4 mm, posición interna de chips aproximada. Precios estimados."
   }
  ],
- "modificado": "2026-11-19T20:13:27.358Z",
- "cad_pendiente": true
+ "modificado": "2026-11-19T20:13:27.358Z"
 }

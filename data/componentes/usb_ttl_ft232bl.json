@@ -308,9 +308,30 @@
  ],
  "archivos": {
   "datasheet": {
-   "nombre": "FT232BL/BQ (FTDI, DS_FT232BL_BQ v2.2)",
-   "url": "https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT232BL_BQ.pdf",
-   "carpeta": "enlace externo"
+   "fuente": "https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT232BL_BQ.pdf",
+   "error": "HTTP Error 403: Forbidden",
+   "fecha": "2026-11-19"
+  },
+  "dxf_huella": {
+   "nombre": "usb_ttl_ft232bl_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/usb_ttl_ft232bl (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/usb_ttl_ft232bl/usb_ttl_ft232bl_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "usb_ttl_ft232bl_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/usb_ttl_ft232bl (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/usb_ttl_ft232bl/usb_ttl_ft232bl_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "usb_ttl_ft232bl_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/usb_ttl_ft232bl (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/usb_ttl_ft232bl/usb_ttl_ft232bl_v1_plano.dxf"
   }
  },
  "modelo": {
@@ -1249,6 +1270,5 @@
    "nota": "Creado desde las fotos de John (placa dorada FT232BL, chip marcado 2308). Medidas de la foto escaladas con el paso 2.54 mm del header; modelo 3D con plantillas. Precios estimados."
   }
  ],
- "modificado": "2026-11-19T20:13:27.357Z",
- "cad_pendiente": true
+ "modificado": "2026-11-19T20:13:27.357Z"
 }
