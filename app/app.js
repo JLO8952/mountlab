@@ -726,7 +726,7 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
     });
   }
   // ---- Gemini: errores entendibles, reintento en 429/503 y respaldo al modelo rápido
-  const GEM = "https://generativelanguage.googleapis.com/v1beta";
+  const GEM = "https://generativelanguage.googleapis.com/v1beta", AGOT = {};   // AGOT: modelo → hasta cuándo saltarlo (sin cupo)
   function errGemini(r, j) {
     const e = (j && j.error) || {}, msg = e.message || String(r.status), st = e.status || "";
     if (r.status === 400 && /API key not valid|API_KEY_INVALID/i.test(msg)) return "La clave de Gemini no es válida: revisa que la copiaste completa (las claves nuevas empiezan por AQ., las antiguas por AIza).";
@@ -749,13 +749,13 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
     catch (e) { if (e.name === "AbortError") throw new Error(`Gemini no respondió en ${Math.round((ms || 90000) / 1000)} s (revisa tu conexión, VPN, antivirus o firewall)`); throw new Error("No se pudo contactar a Gemini (" + e.message + "). ¿Bloqueador, red de la empresa o sin internet?"); }
     finally { clearTimeout(t); }
   }
-  async function pedirGemini(modelo, body, key, ms) {
+  async function pedirGemini(modelo, body, key, ms, sinEspera) {
     for (let intento = 0; intento < 2; intento++) {
       const r = await fetchT(`${GEM}/models/${encodeURIComponent(modelo)}:generateContent`, { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": key }, body: JSON.stringify(body) }, ms || 120000);
       let j = {}; try { j = await r.json(); } catch (e) { }
       if (r.ok) { usoIA(modelo, j.usageMetadata); return j; }
       const espera = +(((((j.error || {}).details || []).find(d => d.retryDelay) || {}).retryDelay || "").replace("s", "")) || 4;
-      if ((r.status === 429 || r.status === 503) && intento === 0 && espera <= 20) { toast(`Gemini pidió esperar ${Math.ceil(espera)} s… reintentando`, 4000); await new Promise(res => setTimeout(res, espera * 1000)); continue; }
+      if (!sinEspera && (r.status === 429 || r.status === 503) && intento === 0 && espera <= 20) { toast(`Gemini pidió esperar ${Math.ceil(espera)} s… reintentando`, 4000); await new Promise(res => setTimeout(res, espera * 1000)); continue; }
       const err = new Error(errGemini(r, j)); err.status = r.status; throw err;
     }
   }
@@ -768,9 +768,20 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
       const body = { systemInstruction: { parts: [{ text: system }] }, contents: msgs.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: m.content })), generationConfig: { maxOutputTokens: 16384 } };
       if (buscar) body.tools = [{ google_search: {} }];
       const rapido = c.gemModel || "gemini-2.5-flash", modelo = opts.potente && c.gemPro ? c.gemPro : rapido;
-      let j, usado = modelo;
-      try { j = await pedirGemini(modelo, body, c.gemKey); }
-      catch (e) { if (modelo !== rapido && [429, 503, 404].includes(e.status)) { toast("El modelo potente no respondió; uso el rápido (" + rapido + ")", 5000); usado = rapido; j = await pedirGemini(rapido, body, c.gemKey); } else throw e; }
+      // cascada: cada modelo tiene su propio cupo gratuito → si uno da 429/503/404 se pasa al siguiente
+      const cola = [...new Set([modelo, rapido, ...(c.gemAlt || []), "gemini-2.5-flash", "gemini-2.5-flash-lite"])].filter(Boolean);
+      let j, usado = null, ultimo = null;
+      const intentar = async (sinWeb) => {
+        for (const m of cola) {
+          if (AGOT[m] > Date.now()) continue;
+          const b = sinWeb ? Object.assign({}, body, { tools: undefined }) : body;
+          try { j = await pedirGemini(m, b, c.gemKey, undefined, true); usado = m; return true; }
+          catch (e) { ultimo = e; if (![429, 503, 404].includes(e.status)) throw e; if (e.status !== 503) AGOT[m] = Date.now() + (e.status === 404 ? 36e5 : 6e4); }
+        }
+        return false;
+      };
+      if (!(await intentar(false)) && !(buscar && await intentar(true))) throw ultimo || new Error("Gemini no respondió");
+      if (usado !== modelo) toast(`${modelo} sin cupo ahora; respondió ${usado}`, 5000);
       const cand = (j.candidates || [])[0]; if (!cand) throw new Error("Gemini no devolvió respuesta" + (j.promptFeedback && j.promptFeedback.blockReason ? " (bloqueada: " + j.promptFeedback.blockReason + ")" : ""));
       for (const ch of ((cand.groundingMetadata || {}).groundingChunks || [])) if (ch.web) addF(ch.web.uri, ch.web.title);
       const text = ((cand.content || {}).parts || []).filter(p => p.text && !p.thought).map(p => p.text).join("\n");
@@ -1039,6 +1050,10 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
         S.chat.push({ role: "user", content: q }); const r = await MLAgent.ejecutar(it.a, it.args);
         S.chat.push({ role: "act", content: r.msg, ok: r.ok }); pintaLog(); return;
       }
+      if (S.modo !== "nube" && /^\s*(hola|holi|buen[oa]s?( d[ií]as| tardes| noches)?|hey|qu[eé] tal|gracias|muchas gracias|ok|listo|vale|perfecto)[\s!.,¡¿?]*$/i.test(q)) {
+        const g = /gracias/i.test(q) ? "¡Con gusto! ¿Qué más hacemos?" : /^(ok|listo|vale|perfecto)/i.test(q) ? "👍" : "¡Hola! Pregúntame por tus componentes, pídeme que busque un datasheet en internet, adjunta una foto o un PDF, o dame una orden (\"abre termo-01\", \"código de colores\"…).";
+        S.chat.push({ role: "user", content: q }, { role: "assistant", content: g, local: true, via: "saludo" }); pintaLog(); return;
+      }
       if (S.modo !== "nube") {
         const r = MLLocal.responder(q, Store.db);
         const directo = S.modo === "local" || !nubeLista() || ["comando", "sistema experto"].includes(r.via) || (!PIDE_NUBE.test(q) && r.confianza >= 0.6 && !r.sinRespuesta);
@@ -1224,6 +1239,8 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
             } catch (e) { fallos.push(`${m}: ${e.message}`); }
           }
           clearInterval(tic);
+          const alt = [...new Set([...el.flash.filter(x => !/preview/.test(x)), ...L.map(x => x.id).filter(x => /^gemini-\d[\d.]*-flash-lite$/.test(x))])].filter(x => x !== (ok && ok.m)).slice(0, 4);
+          Store.saveCfg({ gemAlt: alt });
           if (ok) {
             $("#m2").value = ok.m; Store.saveCfg({ gemModel: ok.m });
             $("#aMsg").innerHTML = `<span style="color:var(--ok)">✓ Gemini conectado en ${ok.ms} ms (“${esc(ok.txt || "ok")}”) · rápido: <b>${esc(ok.m)}</b>${el.potente ? ` · potente: <b>${esc(el.potente)}</b>` : ""} · ${L.length} modelos</span>`;
