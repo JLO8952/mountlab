@@ -807,7 +807,7 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
   }
   /** Elige el mejor modelo rápido (Flash estable más nuevo) y el potente (Pro más nuevo) de la lista. */
   function elegirGemini(L) {
-    const ids = L.map(m => m.id || m).filter(id => /^gemini-\d/.test(id) && !/tts|image|audio|live|embedding|robotics|computer|native|exp|learnlm|customtools|-\d{3}$|-\d{2}-\d{4}$/i.test(id));
+    const ids = L.map(m => m.id || m).filter(id => /^gemini-\d/.test(id) && !/tts|image|audio|live|embedding|robotics|computer|native|exp|learnlm|customtools|research|deep|nano|agent|veo|imagen|-\d{3}$|-\d{2}-\d{4}$/i.test(id));
     const ver = id => { const m = id.match(/gemini-(\d+)(?:\.(\d+))?/); return m ? +m[1] * 100 + +(m[2] || 0) : 0; };
     const orden = (a, b) => ver(b) - ver(a) || (/preview/.test(a) - /preview/.test(b)) || (/latest/.test(b) - /latest/.test(a));
     const flash = ids.filter(id => /flash/.test(id) && !/lite/.test(id)).sort(orden), pro = ids.filter(id => /-pro/.test(id)).sort(orden);
@@ -1208,12 +1208,29 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
           const L = await listarGemini(k, true), el = elegirGemini(L); if (!el.rapido) throw new Error("Tu clave no tiene modelos Gemini disponibles");
           paso = `2/2 · clave válida (${L.length} modelos) · probando ${el.rapido}`;
           $("#dlGem").innerHTML = L.map(m => `<option value="${esc(m.id)}">${esc(m.nombre)}</option>`).join("");
-          const t0 = performance.now(), j = await pedirGemini(el.rapido, { contents: [{ role: "user", parts: [{ text: "Responde solo con la palabra: listo" }] }], generationConfig: { maxOutputTokens: 2048 } }, k, 45000);
-          const txt = (((j.candidates || [])[0] || {}).content || {}).parts?.filter(x => x.text && !x.thought).map(x => x.text).join("").trim();
-          $("#m2").value = el.rapido; $("#m2p").value = el.potente || "";
-          clearInterval(tic);
+          // la clave ya es válida: se guarda aunque la prueba de texto tarde
           Store.saveCfg({ aiProv: "gemini", gemKey: k, gemModel: el.rapido, gemPro: el.potente || "" }); S.modo = "auto";
-          $("#aMsg").innerHTML = `<span style="color:var(--ok)">✓ Gemini conectado en ${Math.round(performance.now() - t0)} ms (“${esc(txt || "ok")}”) · rápido: <b>${esc(el.rapido)}</b>${el.potente ? ` · potente: <b>${esc(el.potente)}</b>` : ""} · ${L.length} modelos</span>`;
+          $("#m2").value = el.rapido; $("#m2p").value = el.potente || "";
+          const candidatos = [...new Set([el.rapido, ...el.flash.filter(x => !/preview/.test(x)), "gemini-2.5-flash", ...el.flash])].slice(0, 3);
+          let ok = null, fallos = [];
+          for (const m of candidatos) {
+            paso = `2/2 · clave válida (${L.length} modelos) · probando ${m}`;
+            const t0 = performance.now(), cuerpo = { contents: [{ role: "user", parts: [{ text: "Responde solo con la palabra: listo" }] }], generationConfig: { maxOutputTokens: 256 } };
+            if (/flash/.test(m)) cuerpo.generationConfig.thinkingConfig = { thinkingBudget: 0 };
+            try {
+              let j; try { j = await pedirGemini(m, cuerpo, k, 25000); } catch (e) { if (e.status === 400 && cuerpo.generationConfig.thinkingConfig) { delete cuerpo.generationConfig.thinkingConfig; j = await pedirGemini(m, cuerpo, k, 25000); } else throw e; }
+              const txt = (((j.candidates || [])[0] || {}).content || {}).parts?.filter(x => x.text && !x.thought).map(x => x.text).join("").trim();
+              ok = { m, ms: Math.round(performance.now() - t0), txt }; break;
+            } catch (e) { fallos.push(`${m}: ${e.message}`); }
+          }
+          clearInterval(tic);
+          if (ok) {
+            $("#m2").value = ok.m; Store.saveCfg({ gemModel: ok.m });
+            $("#aMsg").innerHTML = `<span style="color:var(--ok)">✓ Gemini conectado en ${ok.ms} ms (“${esc(ok.txt || "ok")}”) · rápido: <b>${esc(ok.m)}</b>${el.potente ? ` · potente: <b>${esc(el.potente)}</b>` : ""} · ${L.length} modelos</span>`;
+          } else {
+            $("#aMsg").innerHTML = `<span style="color:var(--warn,#e6b450)">⚠ La clave es válida y quedó guardada (${L.length} modelos), pero ningún modelo respondió a la prueba:<br>${fallos.map(esc).join("<br>")}</span>`;
+            gc.disabled = false; return;
+          }
           toast("Asistente conectado a Gemini"); if ($("#asHost").childElementCount) vAsistente();
         } catch (e) { clearInterval(tic); $("#aMsg").innerHTML = `<span style="color:var(--bad)">✗ ${esc(e.message)}</span>`; }
         clearInterval(tic); gc.disabled = false;
