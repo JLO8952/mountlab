@@ -36,6 +36,8 @@ def main():
         if not url.startswith("http"):
             continue
         ya = (c.get("archivos") or {}).get("datasheet") or {}
+        if ya.get("subido"):
+            continue  # John subió el PDF desde el chat: esa copia manda
         if ya.get("fuente") == url:
             continue  # ya hay copia de esta misma URL (o ya se intentó)
         nombre = f"{c['id']}_datasheet.pdf"

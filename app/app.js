@@ -11,7 +11,7 @@
   const FIJ = { tornillo: "Tornillos en agujeros", guia_deslizante: "Guía deslizante (ranura)", pocket: "Alojamiento (pocket)", clip: "Clip / pestaña", adhesivo: "Adhesivo / cinta", abrazadera: "Abrazadera", na: "No aplica" };
   const ESTP = { idea: "Idea", diseno: "Diseño", prototipo: "Prototipo", "en curso": "En curso", terminado: "Terminado" };
   const app = $("#app");
-  const S = { f: { q: "", tipo: "", cat: "", tag: "", estado: "", vista: "tarjetas" }, W: null, orig: null, tab: "ficha", ed: null, chat: [] };
+  const S = { f: { q: "", tipo: "", cat: "", tag: "", estado: "", vista: "tarjetas" }, W: null, orig: null, tab: "ficha", ed: null, chat: [], adj: {} };
 
   // ---------- utilidades UI
   let tt; function toast(m, ms) { const t = $("#toast"); t.textContent = m; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), ms || 2600); }
@@ -172,7 +172,7 @@
     let c = comp(id);
     if (!c && S.nuevo && S.nuevo.id === id) c = S.nuevo;
     if (!c) { app.innerHTML = `<div class="panel">No existe el elemento <b>${esc(id)}</b>. <a href="#/catalogo">Volver al catálogo</a></div>`; return; }
-    if (!S.W || S.W.id !== id) { S.W = clone(c); S.orig = S.nuevo && S.nuevo.id === id ? "{}" : JSON.stringify(c); S.tab = S.tab || "ficha"; }
+    if (!S.W || S.W.id !== id) { S.W = clone(c); S.orig = S.nuevo && S.nuevo.id === id ? "{}" : JSON.stringify(c); S.tab = S.tabSig || S.tab || "ficha"; } S.tabSig = null;
     const W = S.W;
     const enProy = Store.db.proyectos.filter(p => (p.bom || []).some(b => b.id === W.id));
     app.innerHTML = `<div class="det-head">
@@ -672,11 +672,22 @@
   function iaNombre() { const c = Store.cfg; return (IAS[c.aiProv] || IAS.anthropic) + " · " + (c.aiProv === "gemini" ? c.gemModel : c.aiProv === "openai" ? c.oaModel : c.aiModel); }
   const iaBusca = () => (Store.cfg.aiProv || "anthropic") !== "openai";
   /** Devuelve { text, fuentes:[{titulo,url}] }. Con buscar=true usa la búsqueda web del proveedor. */
+  /** Contenido de un mensaje → formato de cada proveedor. Partes: {type:"text"} | {type:"img", mime, b64} | {type:"pdf", b64, texto}. */
+  function partes(m, prov) {
+    if (!Array.isArray(m.content)) return prov === "gemini" ? [{ text: m.content }] : m.content;
+    const txtPdf = p => ({ type: "text", text: `Contenido del PDF “${p.nombre}” (texto extraído):\n${(p.texto || "").slice(0, 80000)}` });
+    return m.content.map(p => {
+      if (prov === "gemini") return p.type === "text" ? { text: p.text } : p.type === "img" ? { inline_data: { mime_type: p.mime, data: p.b64 } } : p.b64.length < 26e6 ? { inline_data: { mime_type: "application/pdf", data: p.b64 } } : { text: txtPdf(p).text };
+      if (prov === "openai") return p.type === "text" ? p : p.type === "img" ? { type: "image_url", image_url: { url: `data:${p.mime};base64,${p.b64}` } } : txtPdf(p);
+      return p.type === "text" ? p : p.type === "img" ? { type: "image", source: { type: "base64", media_type: p.mime, data: p.b64 } } : p.b64.length < 30e6 ? { type: "document", source: { type: "base64", media_type: "application/pdf", data: p.b64 } } : txtPdf(p);
+    });
+  }
   async function llamarIA(system, msgs, buscar) {
     const c = Store.cfg, prov = c.aiProv || "anthropic", fuentes = [];
+    msgs = msgs.map(m => ({ role: m.role, content: partes(m, prov) }));
     const addF = (url, titulo) => { if (url && !fuentes.some(f => f.url === url)) fuentes.push({ url, titulo: titulo || url }); };
     if (prov === "gemini") {
-      const body = { systemInstruction: { parts: [{ text: system }] }, contents: msgs.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] })), generationConfig: { maxOutputTokens: 8192 } };
+      const body = { systemInstruction: { parts: [{ text: system }] }, contents: msgs.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: m.content })), generationConfig: { maxOutputTokens: 8192 } };
       if (buscar) body.tools = [{ google_search: {} }];
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(c.gemModel || "gemini-2.5-flash")}:generateContent`, { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": c.gemKey }, body: JSON.stringify(body) });
       const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
@@ -719,7 +730,7 @@
       ficha: { descripcion: "", funcionamiento: "", voltaje: "", corriente: "", interfaz: "", entradas: "", salidas: "", dimensiones: "", datasheet: "", notas: "" },
       especificaciones: [], imagen: null, precios: [], busquedas: {}, montaje: null, zonas: [], pines: [], archivos: {}, historial: [] };
   }
-  const GEO = ["montaje", "zonas", "pines"];
+  const GEO = ["montaje", "zonas", "pines", "modelo"];
   /** Aplica los campos elegidos de una propuesta; devuelve el componente nuevo (sin guardar). */
   function aplicarCambios(base, id, cambios, claves, fuente) {
     const c = base ? clone(base) : compVacio(id, cambios.nombre);
@@ -748,11 +759,15 @@
     while ((m = re.exec(text))) { try { const p = JSON.parse(m[1]); if (p && p.componente && p.cambios) props.push(p); } catch (e) { props.push({ error: "No pude leer la propuesta: " + e.message }); } }
     return { limpio: text.replace(re, "").trim(), props };
   }
-  const corto = v => { if (v == null) return '<span class="muted">(vacío)</span>'; if (typeof v === "string") return /^https?:/.test(v) ? (/\.(png|jpe?g|webp|gif)(\?|$)/i.test(v) ? `<img src="${esc(v)}" style="max-height:70px;max-width:120px">` : `<a href="${esc(v)}" target="_blank" rel="noopener">${esc(v.slice(0, 60))}…</a>`) : esc(v.length > 160 ? v.slice(0, 160) + "…" : v);
+  const corto = v => { if (v == null) return '<span class="muted">(vacío)</span>';
+    if (typeof v === "string" && v.startsWith("data:image")) return `<img src="${v}" style="max-height:80px;max-width:140px;border-radius:6px">`;
+    if (v && typeof v === "object" && v.base) { const b = v.base; return esc(`${(MLPlant.BASES[b.tipo || "placa"] || {}).n || "Placa"} ${b.forma === "redonda" ? "Ø" + b.d : b.L + " × " + b.W} × ${b.espesor} mm`) + ((v.piezas || []).length ? ` · ${v.piezas.length} pieza(s): ${esc(v.piezas.map(q => q.plantilla).join(", ").slice(0, 80))}` : ""); }
+    if (v && typeof v === "object" && Array.isArray(v.pcb)) return esc(`Placa ${v.pcb.join(" × ")} mm`) + ((v.agujeros || []).length ? ` · ${v.agujeros.length} agujero(s) Ø${v.agujeros[0].d}` : " · sin agujeros");
+    if (typeof v === "string") return /^https?:/.test(v) ? (/\.(png|jpe?g|webp|gif)(\?|$)/i.test(v) ? `<img src="${esc(v)}" style="max-height:70px;max-width:120px">` : `<a href="${esc(v)}" target="_blank" rel="noopener">${esc(v.slice(0, 60))}…</a>`) : esc(v.length > 160 ? v.slice(0, 160) + "…" : v);
     const s = JSON.stringify(v); return s.length < 90 ? `<code>${esc(s)}</code>` : `<details><summary>${Array.isArray(v) ? v.length + " elementos" : "objeto"}</summary><pre style="white-space:pre-wrap;font-size:11px;margin:4px 0">${esc(JSON.stringify(v, null, 1))}</pre></details>`; };
   function htmlPropuesta(p, i, estado) {
     if (p.error) return `<div class="msg warn">${esc(p.error)}</div>`;
-    const base = comp(p.componente), crear = !base;
+    const base = p._nuevo ? null : comp(p.componente), crear = !base;
     const filas = Object.entries(p.cambios).map(([k, v]) => {
       const f = (p.fuentes || {})[k], cf = (p.confianza || {})[k];
       return `<tr><td><input type="checkbox" data-pk="${i}" data-k="${esc(k)}" ${cf === "baja" ? "" : "checked"} style="width:auto" ${estado ? "disabled" : ""}></td><td><b>${esc(k)}</b>${cf ? ` <span class="tag ${cf === "alta" ? "ok" : cf === "media" ? "warn" : "bad"}">${esc(cf)}</span>` : ""}${GEO.includes(k.split(".")[0]) ? ' <span class="tag warn">verificar</span>' : ""}</td>
@@ -765,18 +780,48 @@
       <div style="overflow:auto"><table class="t" style="margin-top:6px"><tr><th></th><th>Campo</th>${crear ? "" : "<th>Actual</th>"}<th>Propuesto</th><th>Fuente</th></tr>${filas}</table></div>
       ${estado ? "" : `<div class="row" style="margin-top:8px"><button class="pri sm" data-pa="${i}">Aprobar seleccionados</button><button class="sm" data-pp="${i}">Enviar a Pendientes</button><button class="sm danger" data-pd="${i}">Descartar</button></div>`}</div>`;
   }
-  async function guardarPropuesta(p, claves, fuenteTxt) {
+  /** Normaliza un modelo propuesto (ids, nombres, parámetros por defecto; descarta plantillas desconocidas). */
+  function modeloLimpio(mo) {
+    if (!mo || !mo.base) return null;
+    const tipo = MLPlant.BASES[mo.base.tipo] ? mo.base.tipo : "placa", b = Object.assign({ tipo }, clone(MLPlant.BASES[tipo].def), mo.base);
+    if (b.forma === "redonda" && !b.d) b.d = b.L || 20; if (!b.L) b.L = b.d || 20; if (!b.W) b.W = b.forma === "redonda" ? b.L : 20;
+    const cuenta = {}, piezas = (mo.piezas || []).filter(q => q && MLPlant.plantilla(q.plantilla)).map((q, i) => { const t = MLPlant.plantilla(q.plantilla); cuenta[t.id] = (cuenta[t.id] || 0) + 1;
+      return { id: "p" + (i + 1), plantilla: t.id, nombre: q.nombre || `${t.n.split(" (")[0]} ${cuenta[t.id]}`, cara: q.cara === "B" ? "B" : "A", x: +q.x || 0, y: +q.y || 0, rot: +q.rot || 0, z: +q.z || 0, params: Object.assign(MLPlant.paramsDef(t), q.params || {}) }; });
+    return { version: 1, base: b, piezas };
+  }
+  async function guardarPropuesta(p, claves, fuenteTxt, adjIds) {
     const base = comp(p.componente);
     if (!base && !p.cambios.nombre) throw new Error("La propuesta no trae nombre para el componente nuevo");
-    const c = aplicarCambios(base, p.componente, p.cambios, claves, fuenteTxt);
+    const c = aplicarCambios(base, p.componente, p.cambios, claves.filter(k => k !== "imagen" || !String(p.cambios.imagen).startsWith("data:")), fuenteTxt);
     if (!base) { if (!claves.includes("categoria") && p.cambios.categoria) c.categoria = p.cambios.categoria; if (!claves.includes("nombre")) c.nombre = p.cambios.nombre; }
+    const adj = (adjIds || []).map(id => S.adj[id]).filter(Boolean), extra = [];
+    // modelo 3D: el propuesto o uno a partir del montaje → montaje, zonas y pines sincronizados → DXF/STEP/plano en GitHub
+    if (claves.includes("modelo")) c.modelo = modeloLimpio(p.cambios.modelo);
+    if (!c.modelo && c.montaje && c.montaje.pcb && claves.includes("montaje")) c.modelo = MLPlant.desdeMontaje(c);
+    if (c.modelo) { MLPlant.sincronizar(c); c.cad_pendiente = true; extra.push("modelo 3D"); }
+    // foto subida en el chat
+    const foto = claves.includes("imagen") && String(p.cambios.imagen).startsWith("data:") ? p.cambios.imagen : null;
+    if (foto) { c.imagen = { src: foto, origen: "foto subida en el chat" }; if (Store.mode === "github") c.imagen.src = await Store.uploadImage(c.id, foto); extra.push("foto"); }
+    // copia del datasheet subido
+    const pdf = adj.find(a => a.kind === "pdf");
+    if (pdf && Store.mode === "github") {
+      const nombre = `${c.id}_datasheet.pdf`, ruta = `archivos/${c.id}/${nombre}`;
+      try { await Store.putFile(ruta, pdf.b64, `${c.id}: datasheet subido desde el chat (${pdf.nombre})`);
+        c.archivos = Object.assign({}, c.archivos, { datasheet: { nombre, fecha: hoy(), subido: true, fuente: "subido desde el chat: " + pdf.nombre, carpeta: `archivos/${c.id} (repositorio)`, url: `https://github.com/${Store.cfg.owner}/${Store.cfg.repo}/raw/${Store.cfg.branch}/${ruta}` } }); extra.push("datasheet PDF"); }
+      catch (e) { toast("No se pudo guardar el PDF: " + e.message, 6000); }
+    }
     const m = await Store.save("componentes", c, `${c.id} v${c.version || 1}: ${base ? "actualizado" : "creado"} con el asistente (${claves.join(", ")})`);
-    return { c, m };
+    return { c, m, extra: extra.join(", ") };
   }
   async function propuestaAPendientes(p, claves, fuenteTxt) {
     const cambios = Object.fromEntries(claves.map(k => [k, p.cambios[k]]));
     const pend = { id: `${p.componente}_${Date.now().toString(36)}`, componente: p.componente, fuente: fuenteTxt, fecha: hoy(), resumen: p.resumen || "", cambios, fuentes: p.fuentes || {}, confianza: p.confianza || {} };
     return Store.save("pendientes", pend, `Pendiente: propuesta del asistente para ${p.componente}`);
+  }
+  const idDe = s => String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 40);
+  function chipAdj(a, i) {
+    const ic = a.thumb ? `<img src="${a.thumb}" alt="">` : `<span>${a.kind === "pdf" ? "📄" : a.kind === "imagen" ? "🖼" : "📝"}</span>`;
+    return `<span class="adj ${a.cargando ? "cargando" : ""}" title="${esc(a.nombre)}">${ic}<span class="n">${esc(a.nombre)}${a.cargando ? " · leyendo…" : a.paginas ? ` · ${a.paginas} pág.` : ""}</span>${i != null && !a.cargando ? `<button class="x" data-qx="${i}" title="Quitar">✕</button>` : ""}</span>`;
   }
   // ---- panel del asistente (en todas las ventanas)
   function abrirAsistente(ancho) {
@@ -805,19 +850,23 @@
         <div class="small muted" style="margin-top:6px">Comandos: <code>aprende: termo = lm75_modulo</code> · <code>olvida: termo</code> · <code>revisa proyecto termo-01</code> · órdenes de la app (“exporta el BOM”, “toma la imagen del modelo”)</div>
         ${sinResp.length ? `<div style="margin-top:8px"><b>Sin respuesta</b> (enséñale a qué componente se refieren):${sinResp.slice(-10).reverse().map(x => `<div class="row" style="justify-content:space-between;margin-top:3px"><span>“${esc(x)}”</span><button class="sm" data-ens="${esc(x)}">Enseñar</button></div>`).join("")}<button class="sm" id="cbL" style="margin-top:6px">Limpiar lista</button></div>` : ""}</div></details>
       <div class="log" id="log"></div>
-      <div class="in"><textarea id="q" rows="2" placeholder="Pregunta o da una orden… (Enter envía)" ${sinKey ? "disabled" : ""}></textarea><button class="pri" id="send" ${sinKey ? "disabled" : ""}>➤</button></div>`;
+      <div id="adjBox" class="adj-box"></div>
+      <div class="in"><div class="in-tools"><button class="sm ghost" id="qF" title="Adjuntar foto o datasheet (PDF) · también puedes arrastrarlo o pegarlo">📎</button><button class="sm ghost" id="qCam" title="Tomar foto con la cámara">📷</button></div>
+        <textarea id="q" rows="2" placeholder="Pregunta, da una orden o adjunta un datasheet… (Enter envía)" ${sinKey ? "disabled" : ""}></textarea><button class="pri" id="send" ${sinKey ? "disabled" : ""}>➤</button>
+        <input type="file" id="qFile" accept="image/*,application/pdf,.pdf,.txt" multiple hidden><input type="file" id="qFoto" accept="image/*" capture="environment" hidden></div>`;
     const log = $("#log");
     const fmt = t => esc(t).replace(/\[\[([a-z0-9_]+)\]\]/g, (m, id) => comp(id) ? `<a class="cref" href="#/c/${id}">${esc(comp(id).nombre)}</a>` : m).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
     const ejemplos = ["¿Qué voltaje usa el bme28o?", "pines del lm75", "¿Qué sensores I2C tengo?", "abre el proyecto cansat", "busca I2C", ...(nubeLista() ? ["Agrega el sensor MPU6050 (GY-521): datasheet, pines, medidas y precios en Colombia", "Completa el datasheet del TP4056"] : [])];
     const pintaLog = () => {
       if (!S.chat.length) { log.innerHTML = `<div class="muted small" style="text-align:center;margin-top:20px">Pregúntale por tus componentes, dale <b>órdenes</b> para manejar la app (“abre el bme280”, “exporta el BOM”, “pasa a la cara B”) o pídele que <b>agregue o complete</b> uno: investiga y te muestra una <b>propuesta</b> que tú apruebas.</div><div class="row" style="justify-content:center;margin-top:8px">${ejemplos.map(e => `<button class="sm ex">${esc(e)}</button>`).join("")}</div>`; $$(".ex").forEach(b => b.onclick = () => { if (!sinKey) { $("#q").value = b.textContent; enviar(); } }); return; }
-      log.innerHTML = S.chat.map((m, mi) => m.role === "user" ? `<div class="bub u">${esc(m.content)}</div>` : m.role === "act" ? `<div class="bub act">${m.ok === false ? "⚠" : "⚡"} ${esc(m.content)}</div>` :
+      log.innerHTML = S.chat.map((m, mi) => m.role === "user" ? `<div class="bub u">${(m.adj || []).length ? `<div class="adj-row">${m.adj.map(a => chipAdj(a)).join("")}</div>` : ""}${esc(m.content)}</div>` : m.role === "act" ? `<div class="bub act">${m.ok === false ? "⚠" : "⚡"} ${esc(m.content)}</div>` :
         `<div class="bub a" style="max-width:100%">${m.local ? `<div class="small muted" style="margin-bottom:4px">⚡ local · ${esc(m.via)}${m.conf ? " · " + Math.round(m.conf * 100) + "%" : ""}</div>` : ""}${fmt(m.vista ?? m.content)}
           ${m.local && (m.ids || []).length ? `<div class="row" style="margin-top:6px;gap:4px">${m.ids.map(id => comp(id) ? `<button class="sm" data-sug="${esc(comp(id).nombre)}">${esc(comp(id).nombre)}</button>` : "").join("")}</div>` : ""}
           ${m.accion && !m.accionHecha ? `<div class="row" style="margin-top:6px"><button class="pri sm" data-acc="${mi}">Confirmar</button><button class="sm" data-accx="${mi}">Cancelar</button></div>` : m.accionHecha ? `<div class="small" style="margin-top:4px">${esc(m.accionHecha)}</div>` : ""}
           ${m.local && nubeLista() && !m.subida ? `<div style="margin-top:6px"><button class="sm" data-nube="${mi}">☁ Preguntar a la nube${S.buscar ? " (con búsqueda)" : ""}</button></div>` : ""}
           ${(m.acciones || []).map((a, ai) => `<div class="row" style="margin-top:6px;gap:6px"><span class="tag vio">⚡ ${esc(a.n)}</span>${a.estado ? `<span class="small muted">${esc(a.estado)}</span>` : `<button class="pri sm" data-ax="${mi}:${ai}">Hacer</button><button class="sm" data-axn="${mi}:${ai}">No</button>`}</div>`).join("")}
           ${(m.props || []).map((p, pi) => htmlPropuesta(p, mi + ":" + pi, (m.estados || {})[pi])).join("")}
+          ${(m.creados || []).map(x => `<div class="bub act" style="margin-top:8px">✓ ${esc(x.nombre)} quedó en la biblioteca · <a href="#/c/${encodeURIComponent(x.id)}">Abrir ficha</a>${x.modelo ? ` · <a href="#/c/${encodeURIComponent(x.id)}" data-tabm="modelo">Ver modelo 3D</a> · <a href="#/c/${encodeURIComponent(x.id)}" data-tabm="archivos">DXF / STEP / plano</a>` : ""}</div>`).join("")}
           ${(m.fuentes || []).length ? `<details style="margin-top:6px"><summary class="small">Fuentes consultadas (${m.fuentes.length})</summary><ul class="small" style="margin:4px 0;padding-left:18px">${m.fuentes.slice(0, 15).map(f => `<li><a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.titulo)}</a></li>`).join("")}</ul></details>` : ""}</div>`).join("");
       log.scrollTop = log.scrollHeight;
       const cl = id => { const [mi, pi] = id.split(":").map(Number); return { m: S.chat[mi], p: S.chat[mi].props[pi], pi }; };
@@ -827,7 +876,9 @@
       $$("[data-pa]", log).forEach(b => b.onclick = async () => {
         const { m, p, pi } = cl(b.dataset.pa), ks = claves(b.dataset.pa); if (!ks.length) return toast("Marca al menos un campo");
         b.disabled = true; b.textContent = "Guardando…";
-        try { const r = await guardarPropuesta(p, ks, fuenteTxt()); marca(m, pi, `Aprobado · ${r.m === "github" ? "guardado en GitHub" : "guardado local"}${r.c.cad_pendiente ? " · generando DXF/STEP" : ""}`); estadoPill(); toast("Guardado: " + r.c.nombre); }
+        if (!comp(p.componente)) p._nuevo = true;
+        try { const r = await guardarPropuesta(p, ks, m.local ? "datasheet subido (lectura local)" : fuenteTxt(), m.adjIds); marca(m, pi, `Aprobado · ${r.m === "github" ? "guardado en GitHub" : "guardado local"}${r.extra ? " · " + r.extra : ""}${r.c.cad_pendiente ? " · generando DXF, STEP y plano" : ""}`); estadoPill(); toast("Guardado: " + r.c.nombre);
+          m.creados = [...(m.creados || []), { id: r.c.id, nombre: r.c.nombre, modelo: !!r.c.modelo }]; pintaLog(); }
         catch (e) { toast("Error: " + e.message, 6000); b.disabled = false; b.textContent = "Aprobar seleccionados"; }
       });
       $$("[data-pp]", log).forEach(b => b.onclick = async () => {
@@ -836,6 +887,7 @@
       });
       $$("[data-pd]", log).forEach(b => b.onclick = () => { const { m, pi } = cl(b.dataset.pd); marca(m, pi, "Descartado"); });
       $$("[data-sug]", log).forEach(b => b.onclick = () => { $("#q").value = b.dataset.sug; enviar(); });
+      $$("[data-tabm]", log).forEach(b => b.onclick = () => { S.tabSig = b.dataset.tabm; });
       $$("[data-nube]", log).forEach(b => b.onclick = () => { const mi = +b.dataset.nube; S.chat[mi].subida = true; nube(S.chat[mi - 1].content); });
       $$("[data-ax]", log).forEach(b => b.onclick = async () => { const [mi, ai] = b.dataset.ax.split(":").map(Number), a = S.chat[mi].acciones[ai]; const r = await ejecutarAccionIA(a, true); a.estado = r.ok ? "✓ " + r.msg : "⚠ " + r.msg; pintaLog(); });
       $$("[data-axn]", log).forEach(b => b.onclick = () => { const [mi, ai] = b.dataset.axn.split(":").map(Number); S.chat[mi].acciones[ai].estado = "Descartada"; pintaLog(); });
@@ -862,13 +914,34 @@
     const cl2 = $("#cbL"); if (cl2) cl2.onclick = () => { localStorage.removeItem("ml_sinresp"); vAsistente(); };
     pintaLog();
     $("#q").onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); enviar(); } };
+    S.pend = S.pend || [];
+    const pintaAdj = () => { const b = $("#adjBox"); if (!b) return; b.innerHTML = S.pend.map((a, i) => chipAdj(a, i)).join(""); $$("[data-qx]", b).forEach(x => x.onclick = () => { S.pend.splice(+x.dataset.qx, 1); pintaAdj(); }); };
+    S.agregarArchivos = async files => {
+      for (const f of [...files]) {
+        if (f.size > 40e6) { toast(`“${f.name}” pesa ${(f.size / 1e6).toFixed(0)} MB: el máximo es 40 MB`, 5000); continue; }
+        const tmp = { id: "tmp", nombre: f.name, kind: /pdf/i.test(f.type + f.name) ? "pdf" : "imagen", cargando: true }; S.pend.push(tmp); pintaAdj();
+        try { const a = await MLArchivos.leer(f); S.adj[a.id] = a; S.pend.splice(S.pend.indexOf(tmp), 1, a); }
+        catch (e) { S.pend.splice(S.pend.indexOf(tmp), 1); toast(e.message, 5000); }
+        pintaAdj();
+      }
+      $("#q").focus();
+    };
+    $("#qF").onclick = () => $("#qFile").click(); $("#qCam").onclick = () => $("#qFoto").click();
+    $("#qFile").onchange = e => { S.agregarArchivos(e.target.files); e.target.value = ""; };
+    $("#qFoto").onchange = e => { S.agregarArchivos(e.target.files); e.target.value = ""; };
+    $("#q").onpaste = e => { const fs = [...(e.clipboardData || {}).files || []]; if (fs.length) { e.preventDefault(); S.agregarArchivos(fs); } };
+    pintaAdj();
     $("#send").onclick = enviar;
     $("#qB").onchange = e => { S.buscar = e.target.checked; };
     $("#qC").onclick = () => { S.chat = []; pintaLog(); };
     const PIDE_NUBE = /\b(agrega\w*|añad\w*|anad\w*|crea\w*|busca\w*|complet\w*|actualiz\w*|investig\w*|internet|recomiend\w*|recomend\w*|necesito|disen\w*|diseñ\w*|compar\w*|alternativ\w*|por que|porque|explica\w*)\b/i;
     S.pintaLog = pintaLog;
     async function enviar() {
-      const q = $("#q").value.trim(); if (!q) return; $("#q").value = "";
+      if ((S.pend || []).some(a => a.cargando)) return toast("Espera: todavía estoy leyendo el archivo…");
+      let q = $("#q").value.trim(); const adj = (S.pend || []).splice(0); pintaAdj();
+      if (!q && !adj.length) return; $("#q").value = "";
+      if (adj.length && matchMedia("(min-width: 1180px)").matches) { $("#drawer").classList.add("wide"); document.body.classList.add("drawer-wide"); }
+      if (adj.length) return conArchivos(q || "Revisa este archivo e identifica el componente; propón agregarlo a la biblioteca con toda su información técnica.", adj);
       // 1) ¿es una orden para la app? (agente local, sin internet)
       const it = window.MLAgent && !/^(aprende|olvida|revisa proyecto)\b/i.test(q) ? MLAgent.intencion(q) : null;
       if (it) {
@@ -888,9 +961,42 @@
       }
       return nube(q);
     }
-    async function nube(q) {
+    async function conArchivos(q, adj) {
+      const meta = adj.map(a => ({ id: a.id, nombre: a.nombre, kind: a.kind, thumb: a.thumb, paginas: a.paginas }));
+      if (nubeLista() && S.modo !== "local") return nube(q, adj, meta);
+      S.chat.push({ role: "user", content: q, adj: meta });
+      const props = [], notas = [], cats = [...new Set(Store.db.componentes.map(c => c.categoria))];
+      const pdfs = adj.filter(a => a.kind === "pdf" || a.kind === "texto"), fotos = adj.filter(a => a.kind === "imagen");
+      for (const a of pdfs) {
+        if (!(a.texto || "").trim()) { notas.push(`“${a.nombre}” no tiene texto seleccionable (parece escaneado): sin IA en la nube no puedo leerlo.`); continue; }
+        const p = MLArchivos.analizar(a, { categorias: cats, idDe: idDe });
+        const rf = norm(p.cambios.referencia || "").replace(/[^a-z0-9]/g, "");
+        const ya = rf.length >= 4 ? (Store.db.componentes.find(c => c.referencia && norm(c.referencia).replace(/[^a-z0-9]/g, "") === rf) || comp(p.componente) || Store.db.componentes.find(c => (norm(c.id) + " " + norm(c.nombre)).replace(/[^a-z0-9 ]/g, "").split(" ").includes(rf))) : comp(p.componente);
+        if (ya) { p.componente = ya.id; delete p.cambios.nombre;
+          const vacio = v => v == null || v === "" || (Array.isArray(v) && !v.length) || (typeof v === "object" && !Array.isArray(v) && !Object.keys(v).length);
+          for (const k of Object.keys(p.cambios)) if (!["especificaciones", "etiquetas"].includes(k) && !vacio(getPath(ya, k))) delete p.cambios[k];   // no piso lo que ya tienes
+          if (ya.montaje && ya.montaje.pcb) { delete p.cambios.montaje; delete p.cambios.modelo; }
+          notas.push(Object.keys(p.cambios).length ? `Ya tienes ${ya.nombre} en la biblioteca: te propongo completar solo lo que le falta.` : `Ya tienes ${ya.nombre} en la biblioteca y el PDF no agrega datos nuevos.`); }
+        else if (comp(p.componente)) p.componente = p.componente + "_" + Date.now().toString(36).slice(-3);
+        if (fotos.length && !ya) { p.cambios["imagen"] = fotos[0].foto; p.confianza.imagen = "alta"; }
+        props.push(p);
+      }
+      if (!pdfs.length && fotos.length) {
+        const r = MLLocal.buscar(q, 1)[0], cand = r && r.s >= 0.65 ? r.c : null;
+        if (cand) props.push({ componente: cand.id, resumen: `Foto para ${cand.nombre} (lo reconocí por tu mensaje).`, cambios: { imagen: fotos[0].foto }, confianza: { imagen: "alta" }, fuentes: {} });
+        else { const nom = q.length < 60 && !/revisa|identifica|analiza/i.test(q) ? q : fotos[0].nombre.replace(/\.[a-z]+$/i, "").replace(/[_-]+/g, " ");
+          props.push({ componente: idDe(nom) || "componente_nuevo", resumen: "Sin IA en la nube no puedo reconocer la foto: corrige el nombre (escríbelo en tu mensaje) y completa la ficha después.", cambios: { nombre: nom, categoria: "Otros", imagen: fotos[0].foto }, confianza: { nombre: "baja", imagen: "alta" }, fuentes: {} }); }
+      }
+      const p0 = props[0];
+      const txt = [p0 && p0.origen === "local" ? `Leí el datasheet en tu navegador (sin internet). ${p0.resumen}` : "", ...notas,
+        p0 && p0.cambios.modelo ? `Con las medidas armé un modelo 3D básico (${p0.cambios.modelo.base.tipo === "prisma" ? "el encapsulado como prisma" : "la placa"}); al aprobar, GitHub genera el DXF de huella, el STEP y el plano con cotas. El PDF queda guardado como copia del datasheet.` : (pdfs.length ? "No encontré medidas confiables en el PDF: al crearlo podrás dibujar la placa en la pestaña Modelo 3D." : ""),
+        !nubeLista() ? "Con una clave de Claude o Gemini (Ajustes) además leería tablas y planos, reconocería fotos y buscaría en internet medidas del módulo, agujeros y precios en Colombia." : ""].filter(Boolean).join("\n\n");
+      S.chat.push({ role: "assistant", content: txt, vista: txt, local: true, via: "lectura de archivo", props: props.filter(p => Object.keys(p.cambios).length), adjIds: adj.map(a => a.id) });
+      pintaLog();
+    }
+    async function nube(q, adj, meta) {
       const buscar = S.buscar && iaBusca();
-      S.chat.push({ role: "user", content: q }); S.chat.push({ role: "assistant", content: buscar ? "🔎 Investigando…" : "…" }); pintaLog();
+      S.chat.push({ role: "user", content: q, adj: meta }); S.chat.push({ role: "assistant", content: adj ? "📄 Leyendo el archivo" + (buscar ? " e investigando…" : "…") : buscar ? "🔎 Investigando…" : "…", adjIds: adj ? adj.map(a => a.id) : undefined }); pintaLog();
       $("#send").disabled = true;
       const proys = Store.db.proyectos.map(p => `${p.id} "${p.nombre}" (${p.estado}): ` + (p.bom || []).map(b => `${b.id}×${b.cantidad}`).join(", ")).join("\n");
       const system = `Eres el asistente de MountLab, la biblioteca de componentes de John (estudiante de ingeniería biomédica/mecatrónica en Colombia; diseña dispositivos con ESP32, KiCad y SolidWorks). Responde en español, breve y técnico.
@@ -931,12 +1037,21 @@ ACCIONES DE LA APP — si John te pide hacer algo en la interfaz (abrir, cambiar
 \`\`\`
 Acciones disponibles ahora (id: descripción [args]):
 ${accionesParaIA()}
-Usa solo ids de esta lista. Las de navegación se ejecutan solas; las que modifican datos le piden confirmación a John.`;
+Usa solo ids de esta lista. Las de navegación se ejecutan solas; las que modifican datos le piden confirmación a John.${adj ? `
+
+ARCHIVOS ADJUNTOS — John adjuntó ${adj.map(a => `“${a.nombre}” (${a.kind === "pdf" ? "datasheet PDF" + (a.paginas ? ", " + a.paginas + " págs." : "") : a.kind === "imagen" ? "foto" : "texto"})`).join(", ")}.
+1. Revisa primero el archivo: identifica el componente (referencia exacta, fabricante, si es chip suelto o módulo/breakout) y extrae TODA la información técnica (voltajes, corrientes, interfaz y dirección I2C, tabla de pines, medidas del encapsulado o del módulo, agujeros de montaje, temperatura, notas de diseño).
+2. ${buscar ? "Luego busca en internet SOLO lo que el archivo no trae: medidas y agujeros del módulo comercial, precios en Colombia, URL directa del datasheet oficial e imagen." : "No tienes búsqueda web: usa solo lo que trae el archivo."}
+3. Si ya existe en la biblioteca, propón ACTUALIZARLO; si no, propón CREARLO. Incluye montaje y además el campo "modelo" (modelo 3D paramétrico) con este formato:
+"modelo":{"base":{"tipo":"placa|prisma|cilindro","forma":"rect|redondeada|redonda","L":largo,"W":ancho,"d":diametro,"espesor":espesor_o_altura,"radio":0,"color":"#166534"},"piezas":[{"plantilla":"id","cara":"A|B","x":0,"y":0,"rot":0,"params":{}}]}
+Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1f2937") y "montaje.pcb" = [largo, ancho, alto]. Para un módulo usa "placa" y coloca sus piezas principales con estas plantillas (ids): ${MLPlant.todas().map(t => t.id).join(", ")}. Coordenadas en mm desde el centro de la placa.
+4. En el resumen di qué datos salieron del archivo y cuáles de internet.` : ""}`;
       const last = S.chat[S.chat.length - 1];
       try {
         const hist = S.chat.slice(0, -1).filter(m => m.role !== "act").slice(-12).map(m => ({ role: m.role, content: m.content })).filter((m, i, A) => !(m.role === "assistant" && i === 0));
         while (hist.length > 1 && hist[0].role !== "user") hist.shift();
         for (let i = hist.length - 1; i > 0; i--) if (hist[i].role === hist[i - 1].role) hist[i - 1].content += "\n" + hist.splice(i, 1)[0].content;
+        if (adj && hist.length) { const u = hist[hist.length - 1]; u.content = [...adj.map(a => a.kind === "imagen" ? { type: "img", mime: a.mime, b64: a.b64 } : a.kind === "pdf" ? { type: "pdf", b64: a.b64, texto: a.texto, nombre: a.nombre } : { type: "text", text: `Archivo ${a.nombre}:\n${(a.texto || "").slice(0, 60000)}` }), { type: "text", text: u.content }]; }
         const r = await llamarIA(system, hist, buscar);
         const { limpio, props } = extraerPropuestas(r.text);
         const { limpio: limpio2, acciones } = extraerAcciones(limpio);
@@ -1209,6 +1324,10 @@ Usa solo ids de esta lista. Las de navegación se ejecutan solas; las que modifi
       if ((e.ctrlKey || e.metaKey) && (e.key === "j" || e.key === "J")) { e.preventDefault(); $("#drawer").classList.contains("open") ? cerrarAsistente() : abrirAsistente(); }
       if (e.key === "Escape" && $("#drawer").classList.contains("open") && $("#modal").classList.contains("hide") && $("#palette").classList.contains("hide") && !(document.activeElement && document.activeElement.closest && document.activeElement.closest(".mo-layout"))) cerrarAsistente();
     });
+    // soltar una foto o un PDF en cualquier parte → al asistente
+    document.addEventListener("dragover", e => { if ([...(e.dataTransfer || {}).types || []].includes("Files")) { e.preventDefault(); document.body.classList.add("soltando"); } });
+    document.addEventListener("dragleave", e => { if (!e.relatedTarget) document.body.classList.remove("soltando"); });
+    document.addEventListener("drop", e => { document.body.classList.remove("soltando"); const fs = (e.dataTransfer || {}).files; if (!fs || !fs.length || e.defaultPrevented) return; e.preventDefault(); if (!Auth.abierta()) return; abrirAsistente(); S.agregarArchivos && S.agregarArchivos(fs); });
     await Auth.iniciar();
     await Store.load(); estadoPill();
     if (!(await Auth.verificarAcceso(Store.db))) return;
