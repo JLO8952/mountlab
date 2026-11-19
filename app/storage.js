@@ -13,7 +13,7 @@
   function b64bytes(u8) { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); }
 
   const Store = {
-    cfg: Object.assign({ owner: "JLO8952", repo: "mountlab", branch: "main", token: "", aiProv: "gemini", aiKey: "", aiModel: "claude-sonnet-5-5", gemKey: "", gemModel: "gemini-2.5-flash", gemPro: "", oaUrl: "https://api.openai.com/v1", oaKey: "", oaModel: "", drive: "" }, ls.get(KCFG, {})),
+    cfg: Object.assign({ owner: "JLO8952", repo: "mountlab", branch: "main", token: "", aiProv: "gemini", aiKey: "", aiModel: "claude-haiku-5-5", aiPro: "claude-sonnet-5-5", gemKey: "", gemModel: "gemini-2.5-flash", gemPro: "", oaUrl: "https://api.openai.com/v1", oaKey: "", oaModel: "", drive: "" }, ls.get(KCFG, {})),
     db: { componentes: [], proyectos: [], pendientes: [], plantillas: [], accesos: [], tablas: {}, generado: null },
     mode: "local", error: null,
 

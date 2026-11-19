@@ -712,7 +712,7 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
   const IAS = { anthropic: "Claude (Anthropic)", gemini: "Google Gemini", openai: "OpenAI / compatible" };
   const nubeLista = () => iaLista();
   function iaLista() { const c = Store.cfg; return c.aiProv === "gemini" ? !!c.gemKey : c.aiProv === "openai" ? !!(c.oaKey && c.oaModel) : !!c.aiKey; }
-  function iaNombre() { const c = Store.cfg; return (IAS[c.aiProv || "gemini"] || IAS.gemini) + " · " + ((c.aiProv || "gemini") === "gemini" ? c.gemModel + (c.gemPro ? " / " + c.gemPro : "") : c.aiProv === "openai" ? c.oaModel : c.aiModel); }
+  function iaNombre() { const c = Store.cfg; return (IAS[c.aiProv || "gemini"] || IAS.gemini) + " · " + ((c.aiProv || "gemini") === "gemini" ? c.gemModel + (c.gemPro ? " / " + c.gemPro : "") : c.aiProv === "openai" ? c.oaModel : c.aiModel + (c.aiPro ? " / " + c.aiPro : "")); }
   const iaBusca = () => (Store.cfg.aiProv || "gemini") !== "openai";
   /** Devuelve { text, fuentes:[{titulo,url}] }. Con buscar=true usa la búsqueda web del proveedor. */
   /** Contenido de un mensaje → formato de cada proveedor. Partes: {type:"text"} | {type:"img", mime, b64} | {type:"pdf", b64, texto}. */
@@ -727,6 +727,16 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
   }
   // ---- Gemini: errores entendibles, reintento en 429/503 y respaldo al modelo rápido
   const GEM = "https://generativelanguage.googleapis.com/v1beta", AGOT = {};   // AGOT: modelo → hasta cuándo saltarlo (sin cupo)
+  function errClaude(st, j) {
+    const m = ((j && j.error) || {}).message || String(st);
+    if (st === 401) return "La clave de Claude no es válida (revisa que la copiaste completa, empieza por sk-ant-).";
+    if (st === 403) return "Claude rechazó la clave (" + m + ").";
+    if (st === 400 && /credit balance|billing|purchase credits/i.test(m)) return "Tu cuenta de la API de Claude no tiene saldo: compra créditos en platform.claude.com → Billing (la suscripción Pro de claude.ai no los incluye).";
+    if (st === 404) return "Ese modelo de Claude no existe: pulsa “Conectar y probar” para elegir uno vigente.";
+    if (st === 429) return "Se alcanzó el límite de la API de Claude; espera un momento.";
+    if (st === 529 || st >= 500) return "Claude está saturado en este momento (" + st + "). Intenta de nuevo en unos segundos.";
+    return m;
+  }
   function errGemini(r, j) {
     const e = (j && j.error) || {}, msg = e.message || String(r.status), st = e.status || "";
     if (r.status === 400 && /API key not valid|API_KEY_INVALID/i.test(msg)) return "La clave de Gemini no es válida: revisa que la copiaste completa (las claves nuevas empiezan por AQ., las antiguas por AIza).";
@@ -746,7 +756,7 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
   async function fetchT(url, op, ms) {
     const ac = new AbortController(), t = setTimeout(() => ac.abort(), ms || 90000);
     try { return await fetch(url, Object.assign({}, op, { signal: ac.signal })); }
-    catch (e) { if (e.name === "AbortError") throw new Error(`Gemini no respondió en ${Math.round((ms || 90000) / 1000)} s (revisa tu conexión, VPN, antivirus o firewall)`); throw new Error("No se pudo contactar a Gemini (" + e.message + "). ¿Bloqueador, red de la empresa o sin internet?"); }
+    catch (e) { const ia = /anthropic/.test(url) ? "Claude" : "Gemini"; if (e.name === "AbortError") throw new Error(`${ia} no respondió en ${Math.round((ms || 90000) / 1000)} s (revisa tu conexión, VPN, antivirus o firewall)`); throw new Error("No se pudo contactar a " + ia + " (" + e.message + "). ¿Bloqueador, red de la empresa o sin internet?"); }
     finally { clearTimeout(t); }
   }
   async function pedirGemini(modelo, body, key, ms, sinEspera) {
@@ -797,10 +807,10 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
     }
     let conv = msgs.slice(), texto = "";
     for (let paso = 0; paso < 4; paso++) {
-      const body = { model: c.aiModel || "claude-sonnet-5-5", max_tokens: 8000, system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }], messages: conv };
+      const body = { model: (opts.potente && c.aiPro) ? c.aiPro : (c.aiModel || "claude-haiku-5-5"), max_tokens: 8000, system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }], messages: conv };
       if (buscar) body.tools = [{ type: "web_search_20250305", name: "web_search", max_uses: 6 }];
-      const r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "content-type": "application/json", "x-api-key": c.aiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" }, body: JSON.stringify(body) });
-      const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
+      const r = await fetchT("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "content-type": "application/json", "x-api-key": c.aiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" }, body: JSON.stringify(body) }, 180000);
+      const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(errClaude(r.status, j));
       for (const b of j.content || []) {
         if (b.type === "text") { texto += b.text; for (const ci of b.citations || []) addF(ci.url, ci.title); }
         if (b.type === "web_search_tool_result" && b.content && b.content.type === "web_search_tool_result_error") texto += `\n(La búsqueda web falló: ${b.content.error_code}${b.content.error_code === "invalid_tool_input" ? "" : ". Revisa que la búsqueda web esté habilitada en console.anthropic.com"})\n`;
@@ -808,7 +818,7 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
       if (j.stop_reason !== "pause_turn") break;
       conv = conv.concat([{ role: "assistant", content: j.content }]);   // la búsqueda pidió continuar
     }
-    return { text: texto, fuentes };
+    return { text: texto, fuentes, modelo: (opts.potente && c.aiPro) ? c.aiPro : (c.aiModel || "claude-haiku-5-5") };
   }
   async function listarGemini(key, detalle) {
     const r = await fetchT(`${GEM}/models?pageSize=200`, { headers: { "x-goog-api-key": key } }, 20000);
@@ -1208,7 +1218,31 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
     const sy = $("#gSync"); if (sy) sy.onclick = async () => { try { const k = await Store.syncLocal(i => toast(`Subiendo ${i}…`)); toast(`${k} cambio(s) subidos`); } catch (e) { toast(e.message, 5000); } estadoPill(); vAjustes(); };
     const aBox = () => {
       const p = $("#aP").value;
-      if (p === "anthropic") $("#aBox").innerHTML = `<div><label>Clave API de Anthropic (console.anthropic.com)</label><input id="k1" type="password" value="${esc(c.aiKey)}" placeholder="sk-ant-…"></div><div style="margin-top:8px"><label>Modelo</label><input id="m1" value="${esc(c.aiModel)}"></div>`;
+      if (p === "anthropic") {
+        $("#aBox").innerHTML = `${c.aiKey ? "" : `<ol class="small" style="margin:0 0 8px;padding-left:18px;line-height:1.7"><li>Entra a <a href="https://platform.claude.com/settings/keys" target="_blank" rel="noopener">platform.claude.com</a> (Claude Console) con tu cuenta.</li><li>En <b>Billing</b> compra créditos (la API es prepago; tu plan de Claude.ai no la incluye, salvo Max/Team con créditos mensuales).</li><li>En <b>API keys</b> → <b>Create key</b>, cópiala, pégala aquí y pulsa <b>Conectar y probar</b>.</li></ol>`}
+          <div><label>Clave API de Claude</label><input id="k1" type="password" value="${esc(c.aiKey)}" placeholder="sk-ant-…" autocomplete="off"></div>
+          <div class="grid2" style="margin-top:8px"><div><label>Modelo rápido (chat, búsquedas)</label><input id="m1" list="dlCl" value="${esc(c.aiModel || "claude-haiku-5-5")}"></div><div><label>Modelo potente (datasheets, circuitos)</label><input id="m1p" list="dlCl" value="${esc(c.aiPro || "claude-sonnet-5-5")}"></div></div><datalist id="dlCl"></datalist>
+          <div class="row" style="margin-top:8px"><button class="pri sm" id="cC">⚡ Conectar y probar</button></div>
+          <div class="small muted" style="margin-top:6px">Rápido = Haiku (el más económico); potente = Sonnet. La búsqueda web de Claude cobra aparte por búsqueda.</div>`;
+        $("#cC").onclick = async () => {
+          const k = $("#k1").value.trim(); if (!k) return toast("Pega primero la clave de Claude");
+          const b = $("#cC"); b.disabled = true; $("#aMsg").textContent = "Conectando con Claude…";
+          try {
+            const H = { "x-api-key": k, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" };
+            let ids = []; try { const r = await fetchT("https://api.anthropic.com/v1/models?limit=100", { headers: H }, 20000); const j = await r.json().catch(() => ({})); if (!r.ok) throw Object.assign(new Error(errClaude(r.status, j)), { duro: r.status === 401 || r.status === 403 }); ids = (j.data || []).map(m => m.id); } catch (e) { if (e.duro) throw e; }
+            const ver = id => { const m = id.match(/(\d+)-(\d+)(?:-|$)/); return m ? +m[1] * 100 + +m[2] : 0; }, mejor = f => ids.filter(f).sort((a, b) => ver(b) - ver(a))[0];
+            const rap = mejor(x => /haiku/.test(x)) || $("#m1").value.trim() || "claude-haiku-5-5", pot = mejor(x => /sonnet/.test(x)) || $("#m1p").value.trim() || "claude-sonnet-5-5";
+            if (ids.length) $("#dlCl").innerHTML = ids.map(i => `<option value="${esc(i)}">`).join("");
+            const t0 = performance.now(), r = await fetchT("https://api.anthropic.com/v1/messages", { method: "POST", headers: Object.assign({ "content-type": "application/json" }, H), body: JSON.stringify({ model: rap, max_tokens: 16, messages: [{ role: "user", content: "Responde solo con la palabra: listo" }] }) }, 30000);
+            const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(errClaude(r.status, j));
+            const txt = (j.content || []).filter(x => x.type === "text").map(x => x.text).join("").trim();
+            $("#m1").value = rap; $("#m1p").value = pot; Store.saveCfg({ aiProv: "anthropic", aiKey: k, aiModel: rap, aiPro: pot }); S.modo = "auto";
+            $("#aMsg").innerHTML = `<span style="color:var(--ok)">✓ Claude conectado en ${Math.round(performance.now() - t0)} ms (“${esc(txt || "ok")}”) · rápido: <b>${esc(rap)}</b> · potente: <b>${esc(pot)}</b></span>`;
+            toast("Asistente conectado a Claude"); if ($("#asHost").childElementCount) vAsistente();
+          } catch (e) { $("#aMsg").innerHTML = `<span style="color:var(--bad)">✗ ${esc(e.message)}</span>`; }
+          b.disabled = false;
+        };
+      }
       if (p === "gemini") { let u = {}; try { u = JSON.parse(localStorage.getItem("ml_uso_ia")) || {}; } catch (e) { } const hoyU = u.dia === hoy() ? u : null;
         $("#aBox").innerHTML = `${c.gemKey ? "" : `<ol class="small" style="padding-left:18px;margin:0 0 10px;line-height:1.6"><li>Abre <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> con tu cuenta de Google.</li><li>Pulsa <b>Create API key</b> (crear clave) y cópiala.</li><li>Pégala aquí y pulsa <b>Conectar y probar</b>: elijo solo los mejores modelos disponibles para tu clave.</li></ol>`}
         <div><label>Clave API de Gemini</label><input id="k2" type="password" value="${esc(c.gemKey)}" placeholder="AQ.… o AIza…" autocomplete="off"></div>
@@ -1267,7 +1301,7 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
     $("#aP").onchange = aBox; aBox();
     $("#aS").onclick = () => {
       const p = $("#aP").value, v = id => ($("#" + id) ? $("#" + id).value.trim() : undefined), o = { aiProv: p };
-      if (p === "anthropic") Object.assign(o, { aiKey: v("k1"), aiModel: v("m1") || "claude-sonnet-5-5" });
+      if (p === "anthropic") Object.assign(o, { aiKey: v("k1"), aiModel: v("m1") || "claude-haiku-5-5", aiPro: v("m1p") || "" });
       if (p === "gemini") Object.assign(o, { gemKey: v("k2"), gemModel: v("m2") || "gemini-2.5-flash", gemPro: v("m2p") || "" });
       if (p === "openai") Object.assign(o, { oaUrl: v("u3") || "https://api.openai.com/v1", oaKey: v("k3"), oaModel: v("m3") });
       Store.saveCfg(o); $("#aMsg").textContent = "✓ Guardado: " + iaNombre(); toast("Asistente: " + iaNombre());
