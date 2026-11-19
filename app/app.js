@@ -662,7 +662,7 @@ PARTES VIRTUALES:
 ${virt}
 ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs nuevas para lo que agregues): " + JSON.stringify({ inst: actual.inst.map(i => ({ ref: i.ref, id: i.id })), cables: actual.cables }) : ""}`;
     toast("✦ Diseñando el circuito…", 4000);
-    const r = await llamarIA(system, [{ role: "user", content: objetivo }], false);
+    const r = await llamarIA(system, [{ role: "user", content: objetivo }], false, { potente: true });
     const m = r.text.match(/```mountlab-circuito\s*([\s\S]*?)```/); if (!m) { await modal(`<h3>Respuesta del asistente</h3><div style="white-space:pre-wrap" class="small">${esc(r.text)}</div><div class="row" style="justify-content:flex-end"><button data-close>Cerrar</button></div>`); return; }
     let j; try { j = JSON.parse(m[1]); } catch (e) { toast("La propuesta no es JSON válido: " + e.message, 6000); return; }
     const expl = r.text.replace(m[0], "").trim();
@@ -712,8 +712,8 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
   const IAS = { anthropic: "Claude (Anthropic)", gemini: "Google Gemini", openai: "OpenAI / compatible" };
   const nubeLista = () => iaLista();
   function iaLista() { const c = Store.cfg; return c.aiProv === "gemini" ? !!c.gemKey : c.aiProv === "openai" ? !!(c.oaKey && c.oaModel) : !!c.aiKey; }
-  function iaNombre() { const c = Store.cfg; return (IAS[c.aiProv] || IAS.anthropic) + " · " + (c.aiProv === "gemini" ? c.gemModel : c.aiProv === "openai" ? c.oaModel : c.aiModel); }
-  const iaBusca = () => (Store.cfg.aiProv || "anthropic") !== "openai";
+  function iaNombre() { const c = Store.cfg; return (IAS[c.aiProv || "gemini"] || IAS.gemini) + " · " + ((c.aiProv || "gemini") === "gemini" ? c.gemModel + (c.gemPro ? " / " + c.gemPro : "") : c.aiProv === "openai" ? c.oaModel : c.aiModel); }
+  const iaBusca = () => (Store.cfg.aiProv || "gemini") !== "openai";
   /** Devuelve { text, fuentes:[{titulo,url}] }. Con buscar=true usa la búsqueda web del proveedor. */
   /** Contenido de un mensaje → formato de cada proveedor. Partes: {type:"text"} | {type:"img", mime, b64} | {type:"pdf", b64, texto}. */
   function partes(m, prov) {
@@ -725,18 +725,48 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
       return p.type === "text" ? p : p.type === "img" ? { type: "image", source: { type: "base64", media_type: p.mime, data: p.b64 } } : p.b64.length < 30e6 ? { type: "document", source: { type: "base64", media_type: "application/pdf", data: p.b64 } } : txtPdf(p);
     });
   }
-  async function llamarIA(system, msgs, buscar) {
-    const c = Store.cfg, prov = c.aiProv || "anthropic", fuentes = [];
+  // ---- Gemini: errores entendibles, reintento en 429/503 y respaldo al modelo rápido
+  const GEM = "https://generativelanguage.googleapis.com/v1beta";
+  function errGemini(r, j) {
+    const e = (j && j.error) || {}, msg = e.message || String(r.status), st = e.status || "";
+    if (r.status === 400 && /API key not valid|API_KEY_INVALID/i.test(msg)) return "La clave de Gemini no es válida: revisa que la copiaste completa (empieza por AIza).";
+    if (r.status === 400 && /location is not supported|User location/i.test(msg)) return "Gemini no está disponible desde tu ubicación con esta clave.";
+    if (r.status === 403) return "Gemini rechazó la clave (" + msg + "). Revisa que la API esté habilitada en el proyecto de AI Studio.";
+    if (r.status === 404) return "Ese modelo no existe o ya no está disponible: pulsa “Conectar y probar” en Ajustes para elegir uno vigente.";
+    if (r.status === 429 || st === "RESOURCE_EXHAUSTED") return "Se alcanzó el límite de Gemini (nivel gratuito: consultas por minuto o por día). Espera un momento o usa el modelo rápido.";
+    if (r.status >= 500) return "Gemini está saturado en este momento (" + r.status + "). Intenta de nuevo en unos segundos.";
+    return msg;
+  }
+  function usoIA(modelo, meta) {
+    try { const k = "ml_uso_ia", d = hoy(); let u = JSON.parse(localStorage.getItem(k)) || {}; if (u.dia !== d) u = { dia: d, n: 0, tin: 0, tout: 0, mod: {} };
+      u.n++; u.mod[modelo] = (u.mod[modelo] || 0) + 1; if (meta) { u.tin += meta.promptTokenCount || 0; u.tout += (meta.candidatesTokenCount || 0) + (meta.thoughtsTokenCount || 0); } localStorage.setItem(k, JSON.stringify(u)); } catch (e) { }
+  }
+  async function pedirGemini(modelo, body, key) {
+    for (let intento = 0; intento < 2; intento++) {
+      const r = await fetch(`${GEM}/models/${encodeURIComponent(modelo)}:generateContent`, { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": key }, body: JSON.stringify(body) });
+      let j = {}; try { j = await r.json(); } catch (e) { }
+      if (r.ok) { usoIA(modelo, j.usageMetadata); return j; }
+      const espera = +(((((j.error || {}).details || []).find(d => d.retryDelay) || {}).retryDelay || "").replace("s", "")) || 4;
+      if ((r.status === 429 || r.status === 503) && intento === 0 && espera <= 20) { toast(`Gemini pidió esperar ${Math.ceil(espera)} s… reintentando`, 4000); await new Promise(res => setTimeout(res, espera * 1000)); continue; }
+      const err = new Error(errGemini(r, j)); err.status = r.status; throw err;
+    }
+  }
+  async function llamarIA(system, msgs, buscar, opts) {
+    opts = opts || {};
+    const c = Store.cfg, prov = c.aiProv || "gemini", fuentes = [];
     msgs = msgs.map(m => ({ role: m.role, content: partes(m, prov) }));
     const addF = (url, titulo) => { if (url && !fuentes.some(f => f.url === url)) fuentes.push({ url, titulo: titulo || url }); };
     if (prov === "gemini") {
-      const body = { systemInstruction: { parts: [{ text: system }] }, contents: msgs.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: m.content })), generationConfig: { maxOutputTokens: 8192 } };
+      const body = { systemInstruction: { parts: [{ text: system }] }, contents: msgs.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: m.content })), generationConfig: { maxOutputTokens: 16384 } };
       if (buscar) body.tools = [{ google_search: {} }];
-      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(c.gemModel || "gemini-2.5-flash")}:generateContent`, { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": c.gemKey }, body: JSON.stringify(body) });
-      const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
-      const cand = (j.candidates || [])[0]; if (!cand) throw new Error("Gemini no devolvió respuesta" + (j.promptFeedback ? " (" + JSON.stringify(j.promptFeedback) + ")" : ""));
+      const rapido = c.gemModel || "gemini-2.5-flash", modelo = opts.potente && c.gemPro ? c.gemPro : rapido;
+      let j, usado = modelo;
+      try { j = await pedirGemini(modelo, body, c.gemKey); }
+      catch (e) { if (modelo !== rapido && [429, 503, 404].includes(e.status)) { toast("El modelo potente no respondió; uso el rápido (" + rapido + ")", 5000); usado = rapido; j = await pedirGemini(rapido, body, c.gemKey); } else throw e; }
+      const cand = (j.candidates || [])[0]; if (!cand) throw new Error("Gemini no devolvió respuesta" + (j.promptFeedback && j.promptFeedback.blockReason ? " (bloqueada: " + j.promptFeedback.blockReason + ")" : ""));
       for (const ch of ((cand.groundingMetadata || {}).groundingChunks || [])) if (ch.web) addF(ch.web.uri, ch.web.title);
-      return { text: ((cand.content || {}).parts || []).filter(p => p.text && !p.thought).map(p => p.text).join("\n") || "(respuesta vacía: " + (cand.finishReason || "") + ")", fuentes };
+      const text = ((cand.content || {}).parts || []).filter(p => p.text && !p.thought).map(p => p.text).join("\n");
+      return { text: text || "(respuesta vacía: " + (cand.finishReason || "") + ")", fuentes, modelo: usado };
     }
     if (prov === "openai") {
       const r = await fetch(String(c.oaUrl || "https://api.openai.com/v1").replace(/\/$/, "") + "/chat/completions", {
@@ -761,10 +791,20 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
     }
     return { text: texto, fuentes };
   }
-  async function listarGemini(key) {
-    const r = await fetch("https://generativelanguage.googleapis.com/v1beta/models?pageSize=200", { headers: { "x-goog-api-key": key } });
-    const j = await r.json(); if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
-    return (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes("generateContent") && /gemini/.test(m.name)).map(m => m.name.replace(/^models\//, ""));
+  async function listarGemini(key, detalle) {
+    const r = await fetch(`${GEM}/models?pageSize=200`, { headers: { "x-goog-api-key": key } });
+    let j = {}; try { j = await r.json(); } catch (e) { } if (!r.ok) throw new Error(errGemini(r, j));
+    const L = (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes("generateContent") && /gemini/.test(m.name)).map(m => ({ id: m.name.replace(/^models\//, ""), nombre: m.displayName || "", entrada: m.inputTokenLimit || 0 }));
+    return detalle ? L : L.map(m => m.id);
+  }
+  /** Elige el mejor modelo rápido (Flash estable más nuevo) y el potente (Pro más nuevo) de la lista. */
+  function elegirGemini(L) {
+    const ids = L.map(m => m.id || m).filter(id => /^gemini-\d/.test(id) && !/tts|image|audio|live|embedding|robotics|computer|native|exp|learnlm|customtools|-\d{3}$|-\d{2}-\d{4}$/i.test(id));
+    const ver = id => { const m = id.match(/gemini-(\d+)(?:\.(\d+))?/); return m ? +m[1] * 100 + +(m[2] || 0) : 0; };
+    const orden = (a, b) => ver(b) - ver(a) || (/preview/.test(a) - /preview/.test(b)) || (/latest/.test(b) - /latest/.test(a));
+    const flash = ids.filter(id => /flash/.test(id) && !/lite/.test(id)).sort(orden), pro = ids.filter(id => /-pro/.test(id)).sort(orden);
+    const estable = L => L.find(id => !/preview/.test(id)) || L[0];
+    return { rapido: estable(flash) || ids[0], potente: estable(pro) || null, flash, pro };
   }
 
   // ---- propuestas (crear / actualizar componentes): nada se guarda sin aprobar
@@ -903,7 +943,7 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
     const pintaLog = () => {
       if (!S.chat.length) { log.innerHTML = `<div class="muted small" style="text-align:center;margin-top:20px">Pregúntale por tus componentes, dale <b>órdenes</b> para manejar la app (“abre el bme280”, “exporta el BOM”, “pasa a la cara B”) o pídele que <b>agregue o complete</b> uno: investiga y te muestra una <b>propuesta</b> que tú apruebas.</div><div class="row" style="justify-content:center;margin-top:8px">${ejemplos.map(e => `<button class="sm ex">${esc(e)}</button>`).join("")}</div>`; $$(".ex").forEach(b => b.onclick = () => { if (!sinKey) { $("#q").value = b.textContent; enviar(); } }); return; }
       log.innerHTML = S.chat.map((m, mi) => m.role === "user" ? `<div class="bub u">${(m.adj || []).length ? `<div class="adj-row">${m.adj.map(a => chipAdj(a)).join("")}</div>` : ""}${esc(m.content)}</div>` : m.role === "act" ? `<div class="bub act">${m.ok === false ? "⚠" : "⚡"} ${esc(m.content)}</div>` :
-        `<div class="bub a" style="max-width:100%">${m.local ? `<div class="small muted" style="margin-bottom:4px">⚡ local · ${esc(m.via)}${m.conf ? " · " + Math.round(m.conf * 100) + "%" : ""}</div>` : ""}${fmt(m.vista ?? m.content)}
+        `<div class="bub a" style="max-width:100%">${m.modelo ? `<div class="small muted" style="margin-bottom:4px">☁ ${esc(m.modelo)}</div>` : ""}${m.local ? `<div class="small muted" style="margin-bottom:4px">⚡ local · ${esc(m.via)}${m.conf ? " · " + Math.round(m.conf * 100) + "%" : ""}</div>` : ""}${fmt(m.vista ?? m.content)}
           ${m.local && (m.ids || []).length ? `<div class="row" style="margin-top:6px;gap:4px">${m.ids.map(id => comp(id) ? `<button class="sm" data-sug="${esc(comp(id).nombre)}">${esc(comp(id).nombre)}</button>` : "").join("")}</div>` : ""}
           ${m.accion && !m.accionHecha ? `<div class="row" style="margin-top:6px"><button class="pri sm" data-acc="${mi}">Confirmar</button><button class="sm" data-accx="${mi}">Cancelar</button></div>` : m.accionHecha ? `<div class="small" style="margin-top:4px">${esc(m.accionHecha)}</div>` : ""}
           ${m.local && nubeLista() && !m.subida ? `<div style="margin-top:6px"><button class="sm" data-nube="${mi}">☁ Preguntar a la nube${S.buscar ? " (con búsqueda)" : ""}</button></div>` : ""}
@@ -1095,10 +1135,10 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
         while (hist.length > 1 && hist[0].role !== "user") hist.shift();
         for (let i = hist.length - 1; i > 0; i--) if (hist[i].role === hist[i - 1].role) hist[i - 1].content += "\n" + hist.splice(i, 1)[0].content;
         if (adj && hist.length) { const u = hist[hist.length - 1]; u.content = [...adj.map(a => a.kind === "imagen" ? { type: "img", mime: a.mime, b64: a.b64 } : a.kind === "pdf" ? { type: "pdf", b64: a.b64, texto: a.texto, nombre: a.nombre } : { type: "text", text: `Archivo ${a.nombre}:\n${(a.texto || "").slice(0, 60000)}` }), { type: "text", text: u.content }]; }
-        const r = await llamarIA(system, hist, buscar);
+        const r = await llamarIA(system, hist, buscar, { potente: !!adj });
         const { limpio, props } = extraerPropuestas(r.text);
         const { limpio: limpio2, acciones } = extraerAcciones(limpio);
-        Object.assign(last, { content: r.text, vista: limpio2 || (props.length ? "Esta es mi propuesta:" : acciones.length ? "Listo:" : r.text), props, fuentes: r.fuentes, acciones });
+        Object.assign(last, { modelo: r.modelo, content: r.text, vista: limpio2 || (props.length ? "Esta es mi propuesta:" : acciones.length ? "Listo:" : r.text), props, fuentes: r.fuentes, acciones });
         for (const a of acciones) if (!a.peligro && !a.estado) { const x = await ejecutarAccionIA(a); a.estado = x.ok ? "✓ " + x.msg : "⚠ " + x.msg; }
       } catch (e) { Object.assign(last, { content: "No pude responder: " + e.message, vista: null }); }
       $("#send").disabled = false; pintaLog();
@@ -1144,20 +1184,39 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
     const aBox = () => {
       const p = $("#aP").value;
       if (p === "anthropic") $("#aBox").innerHTML = `<div><label>Clave API de Anthropic (console.anthropic.com)</label><input id="k1" type="password" value="${esc(c.aiKey)}" placeholder="sk-ant-…"></div><div style="margin-top:8px"><label>Modelo</label><input id="m1" value="${esc(c.aiModel)}"></div>`;
-      if (p === "gemini") $("#aBox").innerHTML = `<div><label>Clave API de Gemini (aistudio.google.com → Get API key)</label><input id="k2" type="password" value="${esc(c.gemKey)}" placeholder="AIza…"></div>
-        <div style="margin-top:8px"><label>Modelo</label><div class="row" style="flex-wrap:nowrap"><input id="m2" list="dlGem" value="${esc(c.gemModel)}"><datalist id="dlGem"></datalist><button class="sm" id="gL">Ver modelos</button></div></div>
-        <div class="small muted" style="margin-top:6px">Google tiene un nivel gratuito con límite de peticiones por minuto y por día; en ese nivel puede usar tus preguntas para mejorar sus modelos.</div>`;
+      if (p === "gemini") { let u = {}; try { u = JSON.parse(localStorage.getItem("ml_uso_ia")) || {}; } catch (e) { } const hoyU = u.dia === hoy() ? u : null;
+        $("#aBox").innerHTML = `${c.gemKey ? "" : `<ol class="small" style="padding-left:18px;margin:0 0 10px;line-height:1.6"><li>Abre <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> con tu cuenta de Google.</li><li>Pulsa <b>Create API key</b> (crear clave) y cópiala.</li><li>Pégala aquí y pulsa <b>Conectar y probar</b>: elijo solo los mejores modelos disponibles para tu clave.</li></ol>`}
+        <div><label>Clave API de Gemini</label><input id="k2" type="password" value="${esc(c.gemKey)}" placeholder="AIza…" autocomplete="off"></div>
+        <div class="grid2" style="margin-top:8px"><div><label>Modelo rápido (chat, búsquedas)</label><input id="m2" list="dlGem" value="${esc(c.gemModel)}"></div><div><label>Modelo potente (datasheets, circuitos)</label><input id="m2p" list="dlGem" value="${esc(c.gemPro || "")}" placeholder="(igual al rápido)"></div></div><datalist id="dlGem"></datalist>
+        <div class="row" style="margin-top:8px"><button class="pri sm" id="gC">⚡ Conectar y probar</button><button class="sm" id="gL">Ver modelos</button></div>
+        ${hoyU ? `<div class="small muted" style="margin-top:6px">Hoy: <b style="color:var(--ink)">${hoyU.n}</b> consultas · ${Math.round((hoyU.tin + hoyU.tout) / 1000)} k tokens (${Object.entries(hoyU.mod).map(([m, n]) => `${esc(m)} ×${n}`).join(", ")})</div>` : ""}
+        <details class="small" style="margin-top:8px"><summary>¿Y mi plan Google AI Pro?</summary><div class="muted" style="margin-top:4px;line-height:1.5">El plan Pro mejora la app de Gemini y los límites dentro de AI Studio, pero <b>no paga la API</b>: la clave funciona en el <b>nivel gratuito</b> (sin tarjeta) con límites de consultas por minuto y por día, y en ese nivel Google puede usar las consultas para mejorar sus modelos (no pegues datos privados). Si un día necesitas más, se activa la facturación por uso en el proyecto de AI Studio y la misma clave sigue funcionando.</div></details>`; }
       if (p === "openai") $("#aBox").innerHTML = `<div><label>URL base (OpenAI, OpenRouter, Groq, DeepSeek…)</label><input id="u3" value="${esc(c.oaUrl)}"></div><div style="margin-top:8px"><label>Clave API</label><input id="k3" type="password" value="${esc(c.oaKey)}" placeholder="sk-…"></div><div style="margin-top:8px"><label>Modelo</label><input id="m3" value="${esc(c.oaModel)}" placeholder="ej. gpt-…"></div>`;
+      const gc = $("#gC"); if (gc) gc.onclick = async () => {
+        const k = $("#k2").value.trim(); if (!k) return toast("Pega primero la clave de Gemini");
+        gc.disabled = true; $("#aMsg").textContent = "Conectando con Gemini…";
+        try {
+          const L = await listarGemini(k, true), el = elegirGemini(L); if (!el.rapido) throw new Error("Tu clave no tiene modelos Gemini disponibles");
+          $("#dlGem").innerHTML = L.map(m => `<option value="${esc(m.id)}">${esc(m.nombre)}</option>`).join("");
+          const t0 = performance.now(), j = await pedirGemini(el.rapido, { contents: [{ role: "user", parts: [{ text: "Responde solo con la palabra: listo" }] }], generationConfig: { maxOutputTokens: 512 } }, k);
+          const txt = (((j.candidates || [])[0] || {}).content || {}).parts?.filter(x => x.text && !x.thought).map(x => x.text).join("").trim();
+          $("#m2").value = el.rapido; $("#m2p").value = el.potente || "";
+          Store.saveCfg({ aiProv: "gemini", gemKey: k, gemModel: el.rapido, gemPro: el.potente || "" }); S.modo = "auto";
+          $("#aMsg").innerHTML = `<span style="color:var(--ok)">✓ Gemini conectado en ${Math.round(performance.now() - t0)} ms (“${esc(txt || "ok")}”) · rápido: <b>${esc(el.rapido)}</b>${el.potente ? ` · potente: <b>${esc(el.potente)}</b>` : ""} · ${L.length} modelos</span>`;
+          toast("Asistente conectado a Gemini"); if ($("#asHost").childElementCount) vAsistente();
+        } catch (e) { $("#aMsg").innerHTML = `<span style="color:var(--bad)">✗ ${esc(e.message)}</span>`; }
+        gc.disabled = false;
+      };
       const gl = $("#gL"); if (gl) gl.onclick = async () => {
         const k = $("#k2").value.trim(); if (!k) return toast("Pega primero la clave");
-        try { const ms = await listarGemini(k); $("#dlGem").innerHTML = ms.map(m => `<option value="${esc(m)}">`).join(""); $("#aMsg").textContent = ms.length + " modelos disponibles: haz clic en el campo Modelo para elegir"; } catch (e) { $("#aMsg").textContent = "✗ " + e.message; }
+        try { const ms = await listarGemini(k, true); $("#dlGem").innerHTML = ms.map(m => `<option value="${esc(m.id)}">${esc(m.nombre)}</option>`).join(""); $("#aMsg").textContent = ms.length + " modelos disponibles: haz clic en un campo de modelo para elegir"; } catch (e) { $("#aMsg").textContent = "✗ " + e.message; }
       };
     };
     $("#aP").onchange = aBox; aBox();
     $("#aS").onclick = () => {
       const p = $("#aP").value, v = id => ($("#" + id) ? $("#" + id).value.trim() : undefined), o = { aiProv: p };
       if (p === "anthropic") Object.assign(o, { aiKey: v("k1"), aiModel: v("m1") || "claude-sonnet-5-5" });
-      if (p === "gemini") Object.assign(o, { gemKey: v("k2"), gemModel: v("m2") || "gemini-2.5-flash" });
+      if (p === "gemini") Object.assign(o, { gemKey: v("k2"), gemModel: v("m2") || "gemini-2.5-flash", gemPro: v("m2p") || "" });
       if (p === "openai") Object.assign(o, { oaUrl: v("u3") || "https://api.openai.com/v1", oaKey: v("k3"), oaModel: v("m3") });
       Store.saveCfg(o); $("#aMsg").textContent = "✓ Guardado: " + iaNombre(); toast("Asistente: " + iaNombre());
     };

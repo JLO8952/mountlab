@@ -72,6 +72,13 @@ Vista superior, frontal y lateral izquierda (ISO-E, primer diedro) a escala 1:1 
 - **Ctrl+K** (o `/`): buscador global de componentes, proyectos, acciones y botones de la pantalla; también entiende órdenes.
 - **Ctrl+J** o ✦: el asistente está en todas las ventanas, en un panel lateral.
 
+## Inteligencia artificial: Google Gemini (proveedor principal)
+- **Ajustes → Asistente IA → Google Gemini**: pega la clave de [aistudio.google.com/apikey](https://aistudio.google.com/apikey) y pulsa **⚡ Conectar y probar**. La app lista los modelos de tu clave, elige el mejor *Flash* (rápido) y el mejor *Pro* (potente) y hace una prueba.
+- **Rápido** (Flash): chat, búsquedas web con `google_search` (fuentes citadas), acciones del agente. **Potente** (Pro): análisis de fotos/datasheets adjuntos y "Diseñar con IA" del diagrama. Si el Pro da límite (429/503/404) se reintenta y luego cae al Flash.
+- La clave vive solo en el navegador (bóveda cifrada); nunca se sube al repositorio. Contador de uso diario en `localStorage` (`ml_uso_ia`).
+- **Plan Google AI Pro ≠ API**: la suscripción no paga la API. La clave de AI Studio funciona en el *nivel gratuito* (con límites por minuto/día; Google puede usar esas consultas para mejorar sus modelos). Para quitar límites y ese uso de datos, activa facturación en el proyecto de la clave.
+- Claude (Anthropic) y OpenAI siguen disponibles como alternativas en el mismo selector.
+
 ## Asistente
 - **Agente de la interfaz** (`app/agent.js`): conoce las acciones de la app y todos los botones visibles; aprende tus hábitos (qué pulsas en cada pantalla y qué haces después, en `localStorage`) y **predice** lo siguiente (chips en el panel y burbuja junto a ✦). Entiende órdenes sin internet: “abre el bme280”, “pasa a la cara B”, “coloca un header de 4 pines”, “exporta el BOM”, “busca I2C”. La IA de la nube también puede pedir acciones con bloques `mountlab-accion` (lo que modifica datos pide confirmación).
 - **Archivos en el chat** (`app/archivos.js`): 📎 adjuntar, 📷 cámara del celular, arrastrar o pegar una **foto** o un **datasheet PDF**. El PDF se lee en el navegador (pdf.js en `app/vendor/pdfjs`). Sin internet, el lector local saca referencia, fabricante, voltaje, corriente, interfaz, dirección I2C, temperatura, encapsulado, medidas (también de tablas A/B/C Mín/Típ/Máx) y pines. Con Claude o Gemini, la IA lee el PDF o la foto completos y busca en la web lo que falte. En ambos casos sale una **propuesta**; al aprobarla se crea el componente con su ficha, la foto, la copia del PDF (`archivos/<id>/<id>_datasheet.pdf`) y un **modelo 3D** (placa o prisma con las medidas), y GitHub genera DXF de huella, STEP y plano. Si el componente ya existe, solo completa lo que le falta.
