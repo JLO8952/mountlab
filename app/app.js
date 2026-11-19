@@ -1599,6 +1599,7 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
       <div><div class="small muted">Sesión: <b style="color:var(--ink)">${esc(pf.nombre || "")}</b> · ${esc({ "dueño": "dueño", edicion: "invitado con edición", lectura: "invitado de solo lectura" }[pf.rol] || "—")}${pf.exp ? " · vence " + esc(String(pf.exp).slice(0, 10)) : ""}${dueño ? (Store.permisos && Store.permisos.admin ? ' · <span style="color:var(--ok)">verificado con GitHub (admin del repositorio)</span>' : " · conecta tu token para verificar que eres el dueño del repositorio") : ""}</div>
         <div class="grid2" style="margin-top:10px"><div><label>Bloqueo automático por inactividad</label><select id="sBl">${[[5, "5 min"], [15, "15 min"], [30, "30 min"], [60, "1 hora"], [240, "4 horas"], [0, "Nunca"]].map(([v, n]) => `<option value="${v}" ${+(pf.bloqueo ?? 30) === v ? "selected" : ""}>${n}</option>`).join("")}</select></div>
           <div style="display:flex;align-items:flex-end"><button id="sLk">🔒 Bloquear ahora</button></div></div>
+        ${dueño ? '<button class="pri" id="sTr" style="margin-top:10px">📱 Llevar mis claves a otro dispositivo</button>' : ""}
         <details style="margin-top:10px"><summary class="small">Cambiar contraseña</summary><div class="grid3" style="margin-top:8px"><input type="password" id="sP0" placeholder="Actual"><input type="password" id="sP1" placeholder="Nueva (8+)"><button id="sPc">Cambiar</button></div></details>
         <div class="msg info small" style="margin-top:10px">La contraseña protege la app, la edición y tus claves (cifradas con AES-256 en este dispositivo). El repositorio <b>${esc(Store.cfg.owner)}/${esc(Store.cfg.repo)}</b> ${Store.privado ? "es <b>privado</b>." : "es <b>público</b>: los JSON de la biblioteca siguen siendo legibles en GitHub. Para ocultarlos haría falta un repositorio privado (Pages privado requiere GitHub Pro)."}</div></div>
       <div>${dueño ? `<div class="row" style="justify-content:space-between"><b>Invitaciones</b><button class="pri sm" id="sInv">✉ Invitar a alguien</button></div>
@@ -1609,9 +1610,29 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
     $("#sLk", box).onclick = () => Auth.bloquear();
     $("#sPc", box).onclick = async () => { try { await Auth.cambiarPassword($("#sP0", box).value, $("#sP1", box).value); toast("Contraseña cambiada"); $("#sP0", box).value = $("#sP1", box).value = ""; } catch (e) { toast(e.message, 5000); } };
     const iv = $("#sInv", box); if (iv) iv.onclick = dlgInvitar;
+    const tr = $("#sTr", box); if (tr) tr.onclick = dlgTraspaso;
     $$("[data-rv]", box).forEach(b => b.onclick = async () => { const a = A.find(x => x.id === b.dataset.rv); if (!(await confirmar(`¿Revocar el acceso de <b>${esc(a.nombre)}</b>? Pierde el acceso la próxima vez que abra MountLab.${a.con_token ? "<br><br><b>Importante:</b> revoca también en GitHub el token que le diste." : ""}`, "Revocar"))) return;
       try { await Store.save("accesos", Object.assign({}, a, { estado: "revocado", revocado: hoy() }), `Acceso ${a.id}: revocado`); toast("Invitación revocada"); } catch (e) { toast("Error: " + e.message, 5000); } panelAcceso(box); });
     $$("[data-rm]", box).forEach(b => b.onclick = async () => { try { await Store.remove("accesos", b.dataset.rm, `Acceso ${b.dataset.rm}: quitado del registro`); } catch (e) { toast(e.message); } panelAcceso(box); });
+  }
+  async function dlgTraspaso() {
+    let t; try { t = await Auth.crearTraspaso(); } catch (e) { return toast(e.message, 5000); }
+    const nom = { token: "token de GitHub", gemKey: "clave de Gemini", aiKey: "clave de Claude", oaKey: "clave OpenAI/compatible" };
+    let qr = ""; try { const q = qrcode(0, "L"); q.addData(t.url); q.make(); qr = q.createSvgTag({ cellSize: 3, margin: 2, scalable: true }); } catch (e) { }
+    await modal(`<h3>📱 Llevar mis claves a otro dispositivo</h3>
+      <div class="small muted">Lleva <b>${t.claves.map(k => nom[k] || k).join(", ") || "tu configuración"}</b> y tus modelos. El enlace va cifrado: sin el PIN no sirve. Vence a las <b>${new Date(t.exp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</b> (30 min).</div>
+      <div class="grid2" style="align-items:center;margin-top:10px">
+        <div style="background:#fff;border-radius:10px;padding:6px;max-width:240px">${qr || '<div class="small" style="color:#000">QR no disponible: usa el enlace</div>'}</div>
+        <div><ol class="small" style="padding-left:18px;margin:0;line-height:1.7">
+          <li>En el celular, <b>escanea el QR</b> con la cámara (o envíate el enlace).</li>
+          <li>Escribe este PIN:</li></ol>
+          <div style="font:700 28px var(--mono,monospace);letter-spacing:3px;margin:6px 0 10px">${esc(t.pin)}</div>
+          <div class="row"><button class="sm" id="tCp">Copiar enlace</button>${navigator.share ? '<button class="sm" id="tSh">Compartir…</button>' : ""}</div>
+          <div class="small muted" style="margin-top:8px">No envíes el PIN por el mismo medio que el enlace.</div></div></div>
+      <div class="row" style="justify-content:flex-end;margin-top:10px"><button data-close class="pri">Listo</button></div>`, (b) => {
+      $("#tCp", b).onclick = async () => { try { await navigator.clipboard.writeText(t.url); toast("Enlace copiado (sin el PIN)"); } catch (e) { prompt("Copia el enlace:", t.url); } };
+      const sh = $("#tSh", b); if (sh) sh.onclick = () => navigator.share({ title: "MountLab: traer mis claves", url: t.url }).catch(() => { });
+    });
   }
   async function dlgInvitar() {
     if (Store.mode !== "github") return toast("Para invitar necesitas conectar GitHub (el registro de la invitación se guarda en el repositorio)", 6000);

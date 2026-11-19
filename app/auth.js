@@ -185,6 +185,37 @@
     });
   }
 
+  // -------------------- traspaso del dueño a otro dispositivo (celular)
+  function pantallaTraer(codigo) {
+    const hayV = !!vault();
+    mostrar(`<h2>📱 Traer tus claves a este dispositivo</h2>
+      <p class="muted" style="margin:0">Escribe el PIN que aparece en la pantalla del otro dispositivo (Ajustes → Llevar a otro dispositivo).</p>
+      <div><label>PIN (8 caracteres)</label><input id="lkPin" placeholder="XXXX-XXXX" autocomplete="one-time-code" autocapitalize="characters"></div>
+      ${hayV ? '<div><label>Contraseña de MountLab en ESTE dispositivo</label><input type="password" id="lkP" autocomplete="current-password"></div>'
+        : '<div><label>Crea una contraseña para este dispositivo (8+)</label><input type="password" id="lkP" autocomplete="new-password"></div><div><label>Repítela</label><input type="password" id="lkP2" autocomplete="new-password"></div>'}
+      <div class="msg warn small lk-err hide"></div>
+      <button class="pri" id="lkOk" style="justify-content:center">Traer claves</button>
+      <div class="small muted"><a href="#" id="lkVol">Cancelar</a></div>`, L => {
+      const go = async () => {
+        const b = L.querySelector("#lkOk"), p = L.querySelector("#lkP").value;
+        if (!hayV) { if (p.length < 8) return err(L, "Usa al menos 8 caracteres."); if (p !== L.querySelector("#lkP2").value) return err(L, "Las contraseñas no coinciden."); }
+        ocupado(b, "Descifrando…");
+        try {
+          const t = await decodificarInv(codigo, L.querySelector("#lkPin").value);
+          if (t.tipo !== "traspaso") throw new Error("Este enlace no es un traspaso de claves");
+          if (t.exp && Date.parse(t.exp) < Date.now()) throw new Error("El enlace venció: genera uno nuevo en el otro dispositivo");
+          history.replaceState(null, "", "#/");
+          if (hayV) { await desbloquear(p); DATA.secretos = Object.assign({}, DATA.secretos, t.secretos); if (t.repo) DATA.perfil.repo = t.repo; await persistir(); aplicar(); }
+          else await crear(p, { modo: "dueño", rol: "dueño", nombre: t.nombre || "John", bloqueo: 30, repo: t.repo || null }, t.secretos || {});
+          if (t.cfg) { Object.assign(Store.cfg, t.cfg, t.repo || {}); try { Store.saveCfg({}); } catch (e) { } }
+          setTimeout(() => window.toast && toast("✓ Claves traídas: GitHub e IA listas en este dispositivo", 5000), 800);
+        } catch (e) { ocupado(b); err(L, e.message === "PIN incorrecto" ? "PIN incorrecto" : e.message); }
+      };
+      L.querySelector("#lkOk").onclick = go;
+      L.querySelector("#lkVol").onclick = e => { e.preventDefault(); history.replaceState(null, "", "#/"); vault() ? pantallaDesbloquear() : pantallaCrear(); };
+    });
+  }
+
   // -------------------- API pública
   const Auth = {
     disponible: hayCripto,
@@ -199,6 +230,8 @@
         resolver = res;
         const m = location.hash.match(/^#\/invitacion\/([A-Za-z0-9_-]+)/);
         if (m) return pantallaCodigo(m[1]);
+        const mt = location.hash.match(/^#\/traer\/([A-Za-z0-9_-]+)/);
+        if (mt) return pantallaTraer(mt[1]);
         const V = vault(), s = ses.get();
         if (V && s && s.k) {
           try { const key = await importar(s.k); const data = await descifrar(key, V.iv, V.ct); const min = +((data.perfil || {}).bloqueo || 30);
@@ -228,6 +261,14 @@
       const pin = pinNuevo(), codigo = await codificarInv({ v: 1, id, nombre, rol, exp, repo, token: token || "" }, pin);
       const base = location.href.split("#")[0];
       return { codigo, pin, url: `${base}#/invitacion/${codigo}`, registro: { id, nombre, rol, creado: new Date().toISOString().slice(0, 10), vence: exp ? exp.slice(0, 10) : null, estado: "activo", con_token: !!token } };
+    },
+    /** Enlace + PIN para llevar las claves del dueño a otro dispositivo (vence en 30 min). */
+    async crearTraspaso() {
+      if (!this.esDueño()) throw new Error("Solo el dueño puede llevar sus claves");
+      const c = Store.cfg, cfg = {}; ["aiProv", "gemModel", "gemPro", "aiModel", "oaUrl", "oaModel", "drive"].forEach(k => { if (c[k] != null) cfg[k] = c[k]; });
+      const repo = { owner: c.owner, repo: c.repo, branch: c.branch }, exp = new Date(Date.now() + 30 * 60000).toISOString();
+      const pin = pinNuevo(), codigo = await codificarInv({ v: 1, tipo: "traspaso", exp, nombre: (DATA.perfil || {}).nombre, repo, cfg, secretos: DATA.secretos || {} }, pin);
+      return { pin, url: `${location.href.split("#")[0]}#/traer/${codigo}`, exp, claves: Object.keys(DATA.secretos || {}).filter(k => DATA.secretos[k]) };
     },
     /** Tras cargar la base: un invitado revocado o vencido pierde el acceso en este dispositivo. */
     async verificarAcceso(db) {

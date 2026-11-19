@@ -77,6 +77,7 @@ Vista superior, frontal y lateral izquierda (ISO-E, primer diedro) a escala 1:1 
 - **Rápido** (Flash): chat, búsquedas web con `google_search` (fuentes citadas), acciones del agente. **Potente** (Pro): análisis de fotos/datasheets adjuntos y "Diseñar con IA" del diagrama. Si el Pro da límite (429/503/404) se reintenta y luego cae al Flash.
 - La clave vive solo en el navegador (bóveda cifrada); nunca se sube al repositorio. Contador de uso diario en `localStorage` (`ml_uso_ia`).
 - **Plan Google AI Pro ≠ API**: la suscripción no paga la API. La clave de AI Studio funciona en el *nivel gratuito* (con límites por minuto/día; Google puede usar esas consultas para mejorar sus modelos). Para quitar límites y ese uso de datos, activa facturación en el proyecto de la clave.
+- **Llevar las claves al celular**: Ajustes → Acceso y seguridad → «📱 Llevar mis claves a otro dispositivo» muestra un QR/enlace (cifrado, vence en 30 min) y un PIN. En el celular se escanea, se escribe el PIN y una contraseña para ese dispositivo (`#/traer/<código>`, `Auth.crearTraspaso`).
 - Claude (Anthropic) y OpenAI siguen disponibles como alternativas en el mismo selector.
 
 ## Asistente
