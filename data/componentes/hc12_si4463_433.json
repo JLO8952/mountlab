@@ -1,0 +1,671 @@
+{
+ "id": "hc12_si4463_433",
+ "nombre": "Módulo RF HC-12 433 MHz (Si4463, UART, 1 km)",
+ "tipo": "electronico",
+ "categoria": "Comunicación RF",
+ "etiquetas": [
+  "HC-12",
+  "Si4463",
+  "433 MHz",
+  "UART",
+  "transceptor",
+  "AT",
+  "largo alcance"
+ ],
+ "fabricante": "HC Tech (Guangzhou HC Information Technology) / clones",
+ "referencia": "HC-12",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Transceptor inalámbrico serial de 433 MHz: Si4463 (Silicon Labs) controlado por un STM8S003F3. Reemplaza un cable serial: lo que entra por RXD en un módulo sale por TXD del otro. 100 canales, potencia ajustable hasta 20 dBm (100 mW). Antena de resorte soldada o externa por conector IPEX.",
+  "funcionamiento": "Comunicación semidúplex transparente entre dos o más HC-12 en el mismo canal y modo. Con SET a GND entra en modo de comandos AT (9600 baud): AT+B (baudios), AT+C (canal 001–100), AT+FU1..FU4 (modo), AT+P1..P8 (potencia), AT+RX (ver configuración), AT+DEFAULT. La configuración queda guardada en flash.",
+  "voltaje": "3.2–5.5 V (usar 3.3–4.5 V si se transmite mucho tiempo); E/S UART compatibles 3.3/5 V",
+  "corriente": "TX máx. ≈100 mA (20 dBm); reposo ≈16 mA (FU3); modo de bajo consumo FU2 ≈80 µA; sleep ≈22 µA",
+  "interfaz": "UART TTL (1200–115200 baud, por defecto 9600 8N1) + comandos AT",
+  "entradas": "RXD, SET",
+  "salidas": "TXD, antena 433 MHz (resorte o IPEX)",
+  "dimensiones": "27.8 × 14.4 × 4 mm (sin antena de resorte; el resorte agrega ≈15 mm)",
+  "datasheet": "https://www.rigpix.com/rfboards/huicheng_hc12_manual_v1.18.pdf",
+  "notas": "Montaje de John: va pegado a un adaptador USB-TTL FT232BL como programador para modo AT: VCC←5V (rojo), GND←GND (negro), RXD←TXD (verde), TXD→RXD (blanco) y SET al pin GND con un Dupont removible (puesto = modo AT; quitado = enlace transparente). La antena de resorte y la del IPEX no se usan a la vez. Alejar la antena de metales y de la placa del circuito. HC-12 y HC-11 no son compatibles entre sí."
+ },
+ "especificaciones": [
+  {
+   "param": "Chip RF",
+   "valor": "Silicon Labs Si4463 + MCU STM8S003F3"
+  },
+  {
+   "param": "Frecuencia",
+   "valor": "433.4–473.0 MHz, 100 canales de 400 kHz (CH001 = 433.4 MHz)"
+  },
+  {
+   "param": "Potencia TX",
+   "valor": "−1 a +20 dBm en 8 niveles (100 mW máx.)"
+  },
+  {
+   "param": "Sensibilidad",
+   "valor": "Hasta −117 dBm (5000 bps en el aire, FU4)"
+  },
+  {
+   "param": "Alcance",
+   "valor": "≈1000 m en campo abierto (FU3, 5000 bps en el aire); hasta ≈1800 m en FU4"
+  },
+  {
+   "param": "Modos",
+   "valor": "FU1, FU2 (bajo consumo), FU3 (por defecto), FU4 (largo alcance, 1200 baud)"
+  },
+  {
+   "param": "Configuración de fábrica",
+   "valor": "FU3, 9600 baud, canal 001, potencia 20 dBm"
+  },
+  {
+   "param": "Pines",
+   "valor": "VCC, GND, RXD, TXD, SET (paso 2.54 mm, agujeros tipo estampilla) + ANT/GND"
+  },
+  {
+   "param": "Antena",
+   "valor": "Resorte de 433 MHz soldado o conector IPEX (U.FL)"
+  },
+  {
+   "param": "Temperatura",
+   "valor": "−40 a +85 °C"
+  }
+ ],
+ "imagen": {
+  "src": "img/hc12_si4463_433.png",
+  "origen": "foto de John (montado sobre el adaptador FT232BL)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 9000,
+   "url": "https://es.aliexpress.com/w/wholesale-HC-12-SI4463.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 25000,
+   "url": "https://www.amazon.com/s?k=HC-12+SI4463+433MHz",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 22000,
+   "url": "https://listado.mercadolibre.com.co/modulo-hc-12-433mhz",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=HC-12+user+manual+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=HC-12+SI4463+module"
+ },
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 5,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas oficiales 27.8 × 14.4 × 4 mm; posición de chips y pads de la foto (aproximada). Sin agujeros: se suelda por los pads o con header de 2.54 mm.",
+  "pcb": [
+   27.8,
+   14.4,
+   1
+  ],
+  "forma": "rect"
+ },
+ "zonas": [
+  {
+   "tipo": "conector",
+   "nombre": "Pads UART VCC-GND-RXD-TXD-SET",
+   "cx": 13,
+   "cy": 0,
+   "w": 1.8,
+   "h": 12.7,
+   "z": [
+    1,
+    1.1
+   ],
+   "salida": "+X",
+   "holgura": 15,
+   "regla": "Espacio para soldar cables o header"
+  },
+  {
+   "tipo": "antena",
+   "nombre": "Antena de resorte",
+   "cx": -20.8,
+   "cy": -2.5,
+   "w": 15,
+   "h": 5,
+   "z": [
+    1,
+    6
+   ],
+   "salida": "-X",
+   "holgura": 10,
+   "regla": "Sin metal alrededor; carcasa plástica"
+  }
+ ],
+ "pines": [
+  {
+   "n": "SET",
+   "func": "Modo comandos AT: a GND = AT; al aire (pull-up interno) = transmisión",
+   "x": 12.9,
+   "y": 5.08,
+   "conector": "Pad tipo estampilla, paso 2.54 mm"
+  },
+  {
+   "n": "TXD",
+   "func": "Salida UART (va al RX del microcontrolador)",
+   "x": 12.9,
+   "y": 2.54,
+   "conector": "Pad tipo estampilla, paso 2.54 mm"
+  },
+  {
+   "n": "RXD",
+   "func": "Entrada UART (va al TX del microcontrolador)",
+   "x": 12.9,
+   "y": 0,
+   "conector": "Pad tipo estampilla, paso 2.54 mm"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": 12.9,
+   "y": -2.54,
+   "conector": "Pad tipo estampilla, paso 2.54 mm"
+  },
+  {
+   "n": "VCC",
+   "func": "Alimentación 3.2–5.5 V",
+   "x": 12.9,
+   "y": -5.08,
+   "conector": "Pad tipo estampilla, paso 2.54 mm"
+  }
+ ],
+ "archivos": {
+  "datasheet": {
+   "nombre": "HC-12 User Manual v1.18 (HC Tech, inglés)",
+   "url": "https://www.rigpix.com/rfboards/huicheng_hc12_manual_v1.18.pdf",
+   "carpeta": "enlace externo"
+  }
+ },
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 27.8,
+   "W": 14.4,
+   "d": 27.8,
+   "espesor": 1,
+   "radio": 0,
+   "color": "#1e3a8a"
+  },
+  "piezas": [
+   {
+    "id": "rf",
+    "plantilla": "qfn",
+    "nombre": "Si4463",
+    "cara": "A",
+    "x": -1,
+    "y": -0.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "lado": 4
+    }
+   },
+   {
+    "id": "mcu",
+    "plantilla": "tssop",
+    "nombre": "STM8S003F3",
+    "cara": "A",
+    "x": 6.5,
+    "y": 0,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "n": 16
+    }
+   },
+   {
+    "id": "xt",
+    "plantilla": "f_caja",
+    "nombre": "Cristal 30 MHz",
+    "cara": "A",
+    "x": -1,
+    "y": 4.3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3.2,
+     "h": 2.5,
+     "alto": 0.8,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "sot",
+    "plantilla": "f_caja",
+    "nombre": "Regulador / switch RF (SOT-23)",
+    "cara": "A",
+    "x": -6.5,
+    "y": 3.8,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 2.9,
+     "h": 1.6,
+     "alto": 1.1,
+     "r": 0,
+     "color": "#1f2937"
+    }
+   },
+   {
+    "id": "ipex",
+    "plantilla": "f_caja",
+    "nombre": "Conector IPEX (U.FL)",
+    "cara": "A",
+    "x": -11.4,
+    "y": -4.6,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3,
+     "h": 3,
+     "alto": 1.25,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "res",
+    "plantilla": "f_caja",
+    "nombre": "Antena de resorte 433 MHz (≈Ø5 × 15)",
+    "cara": "A",
+    "x": -20.8,
+    "y": -2.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 15,
+     "h": 5,
+     "alto": 5,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "p0",
+    "plantilla": "f_caja",
+    "nombre": "Pad SET",
+    "cara": "A",
+    "x": 13.2,
+    "y": 5.08,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1.4,
+     "h": 1.6,
+     "alto": 0.05,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "p1",
+    "plantilla": "f_caja",
+    "nombre": "Pad TXD",
+    "cara": "A",
+    "x": 13.2,
+    "y": 2.54,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1.4,
+     "h": 1.6,
+     "alto": 0.05,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "p2",
+    "plantilla": "f_caja",
+    "nombre": "Pad RXD",
+    "cara": "A",
+    "x": 13.2,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1.4,
+     "h": 1.6,
+     "alto": 0.05,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "p3",
+    "plantilla": "f_caja",
+    "nombre": "Pad GND",
+    "cara": "A",
+    "x": 13.2,
+    "y": -2.54,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1.4,
+     "h": 1.6,
+     "alto": 0.05,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "p4",
+    "plantilla": "f_caja",
+    "nombre": "Pad VCC",
+    "cara": "A",
+    "x": 13.2,
+    "y": -5.08,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1.4,
+     "h": 1.6,
+     "alto": 0.05,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "c1",
+    "plantilla": "smd",
+    "nombre": "Pasivos RF",
+    "cara": "A",
+    "x": -8,
+    "y": -1.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0603"
+    }
+   },
+   {
+    "id": "c2",
+    "plantilla": "smd",
+    "nombre": "C2",
+    "cara": "A",
+    "x": 2.8,
+    "y": -4.6,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0603"
+    }
+   },
+   {
+    "id": "c3",
+    "plantilla": "smd",
+    "nombre": "C3",
+    "cara": "A",
+    "x": 10.5,
+    "y": -4.8,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0603"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -1,
+    "cy": -0.5,
+    "z0": 1,
+    "z1": 1.9,
+    "color": "#1f2937",
+    "pieza": "rf",
+    "w": 4,
+    "h": 4
+   },
+   {
+    "f": "caja",
+    "cx": 6.5,
+    "cy": 0,
+    "z0": 1,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "mcu",
+    "w": 4.4,
+    "h": 5.8
+   },
+   {
+    "f": "caja",
+    "cx": 6.5,
+    "cy": 0,
+    "z0": 1,
+    "z1": 1.25,
+    "color": "#cbd5e1",
+    "pieza": "mcu",
+    "w": 6.4,
+    "h": 5.3999999999999995
+   },
+   {
+    "f": "caja",
+    "cx": -1,
+    "cy": 4.3,
+    "z0": 1,
+    "z1": 1.8,
+    "color": "#cbd5e1",
+    "pieza": "xt",
+    "w": 3.2,
+    "h": 2.5
+   },
+   {
+    "f": "caja",
+    "cx": -6.5,
+    "cy": 3.8,
+    "z0": 1,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "sot",
+    "w": 2.9,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": -11.4,
+    "cy": -4.6,
+    "z0": 1,
+    "z1": 2.25,
+    "color": "#d4a017",
+    "pieza": "ipex",
+    "w": 3,
+    "h": 3
+   },
+   {
+    "f": "caja",
+    "cx": -20.8,
+    "cy": -2.5,
+    "z0": 1,
+    "z1": 6,
+    "color": "#cbd5e1",
+    "pieza": "res",
+    "w": 15,
+    "h": 5
+   },
+   {
+    "f": "caja",
+    "cx": 13.2,
+    "cy": 5.08,
+    "z0": 1,
+    "z1": 1.05,
+    "color": "#d4a017",
+    "pieza": "p0",
+    "w": 1.4,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": 13.2,
+    "cy": 2.54,
+    "z0": 1,
+    "z1": 1.05,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 1.4,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": 13.2,
+    "cy": 0,
+    "z0": 1,
+    "z1": 1.05,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 1.4,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": 13.2,
+    "cy": -2.54,
+    "z0": 1,
+    "z1": 1.05,
+    "color": "#d4a017",
+    "pieza": "p3",
+    "w": 1.4,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": 13.2,
+    "cy": -5.08,
+    "z0": 1,
+    "z1": 1.05,
+    "color": "#d4a017",
+    "pieza": "p4",
+    "w": 1.4,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": -8,
+    "cy": -1.5,
+    "z0": 1,
+    "z1": 1.45,
+    "color": "#1f2937",
+    "pieza": "c1",
+    "w": 0.96,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": -8.64,
+    "cy": -1.5,
+    "z0": 1,
+    "z1": 1.45,
+    "color": "#cbd5e1",
+    "pieza": "c1",
+    "w": 0.32000000000000006,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": -7.36,
+    "cy": -1.5,
+    "z0": 1,
+    "z1": 1.45,
+    "color": "#cbd5e1",
+    "pieza": "c1",
+    "w": 0.32000000000000006,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": 2.8,
+    "cy": -4.6,
+    "z0": 1,
+    "z1": 1.45,
+    "color": "#1f2937",
+    "pieza": "c2",
+    "w": 0.96,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": 2.16,
+    "cy": -4.6,
+    "z0": 1,
+    "z1": 1.45,
+    "color": "#cbd5e1",
+    "pieza": "c2",
+    "w": 0.32000000000000006,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": 3.44,
+    "cy": -4.6,
+    "z0": 1,
+    "z1": 1.45,
+    "color": "#cbd5e1",
+    "pieza": "c2",
+    "w": 0.32000000000000006,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": 10.5,
+    "cy": -4.8,
+    "z0": 1,
+    "z1": 1.45,
+    "color": "#1f2937",
+    "pieza": "c3",
+    "w": 0.96,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": 9.86,
+    "cy": -4.8,
+    "z0": 1,
+    "z1": 1.45,
+    "color": "#cbd5e1",
+    "pieza": "c3",
+    "w": 0.32000000000000006,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": 11.14,
+    "cy": -4.8,
+    "z0": 1,
+    "z1": 1.45,
+    "color": "#cbd5e1",
+    "pieza": "c3",
+    "w": 0.32000000000000006,
+    "h": 0.8
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado desde la foto de John (versión sin blindaje, con resorte e IPEX). Datos del manual HC-12; medidas oficiales 27.8 × 14.4 × 4 mm, posición interna de chips aproximada. Precios estimados."
+  }
+ ],
+ "modificado": "2026-11-19T20:13:27.358Z",
+ "cad_pendiente": true
+}

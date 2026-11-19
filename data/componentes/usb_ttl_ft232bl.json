@@ -1,0 +1,1254 @@
+{
+ "id": "usb_ttl_ft232bl",
+ "nombre": "Adaptador USB a TTL FT232BL (5 V / 3.3 V, USB-A)",
+ "tipo": "electronico",
+ "categoria": "Comunicación",
+ "etiquetas": [
+  "USB-serial",
+  "UART",
+  "TTL",
+  "FTDI",
+  "FT232",
+  "programador",
+  "USB-A"
+ ],
+ "fabricante": "Genérico (placa dorada con FT232BL)",
+ "referencia": "FT232BL USB-TTL",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Convertidor USB a serial TTL en forma de memoria USB, con chip FTDI FT232BL, cristal de 6 MHz, EEPROM 93C46 y selector por jumper del nivel lógico 5 V / 3.3 V. Header de 5 pines: 5V, 3V3, TXD, RXD, GND. LEDs de encendido, TX y RX.",
+  "funcionamiento": "El PC ve un puerto COM virtual (driver VCP de FTDI). Lo que se escribe en el puerto sale por TXD y lo que llega por RXD se lee en el PC. El jumper S1 conecta la alimentación de las E/S del chip (VCCIO) a 5 V o a 3V3 para fijar el nivel de las señales. Sirve para programar/depurar microcontroladores y para configurar módulos con comandos AT (HC-12, HC-05, ESP8266…).",
+  "voltaje": "Entrada USB 5 V; niveles TTL 5 V o 3.3 V según jumper; salida 3V3 solo para cargas pequeñas",
+  "corriente": "Hasta ≈500 mA del USB por el pin 5V (limitado por fusible F1); el pin 3V3 solo da unos mA",
+  "interfaz": "USB 2.0 Full-Speed ↔ UART (300 baud a 3 Mbaud)",
+  "entradas": "USB-A macho",
+  "salidas": "Header 5 pines 2.54 mm en ángulo: 5V, 3V3, TXD, RXD, GND",
+  "dimensiones": "PCB ≈49 × 22 × 1.6 mm; con USB-A y pines ≈ 77 mm de largo (medido de foto, verificar con calibrador)",
+  "datasheet": "https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT232BL_BQ.pdf",
+  "notas": "El FT232BL original está descontinuado por FTDI y este chip tiene fecha 2308 (2023): casi seguro es un clon. Con algunos drivers de FTDI los clones dejan de funcionar; si pasa, usar una versión antigua del driver o cambiar a CH340/CP2102. Conectar TX→RX y RX→TX. Antes de conectar un módulo de 3.3 V, poner el jumper en 3V3. Los pines no traen RTS/DTR, así que no hace auto-reset para Arduino."
+ },
+ "especificaciones": [
+  {
+   "param": "Chip",
+   "valor": "FTDI FT232BL (LQFP-32, 7 × 7 mm) — probable clon"
+  },
+  {
+   "param": "Cristal",
+   "valor": "6.000 MHz (HC-49S)"
+  },
+  {
+   "param": "EEPROM",
+   "valor": "93C46 (SOIC-8) para VID/PID y número de serie"
+  },
+  {
+   "param": "Velocidad",
+   "valor": "300 baud a 3 Mbaud"
+  },
+  {
+   "param": "Buffers",
+   "valor": "128 bytes RX / 384 bytes TX (FT232B)"
+  },
+  {
+   "param": "Nivel lógico",
+   "valor": "5 V o 3.3 V con jumper (3V3 · S1 · 5V)"
+  },
+  {
+   "param": "LEDs",
+   "valor": "LD1 y LD2 (TX/RX), LD3 encendido"
+  },
+  {
+   "param": "Protección",
+   "valor": "Fusible F1 en VBUS, capacitor de tantalio 10 µF/16 V"
+  },
+  {
+   "param": "Drivers",
+   "valor": "FTDI VCP (Windows, Linux y macOS: incluidos)"
+  }
+ ],
+ "imagen": {
+  "src": "img/usb_ttl_ft232bl.png",
+  "origen": "foto de John"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 9000,
+   "url": "https://es.aliexpress.com/w/wholesale-FT232BL-USB-TTL.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 30000,
+   "url": "https://www.amazon.com/s?k=FT232BL+USB+TTL+adapter",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 18000,
+   "url": "https://listado.mercadolibre.com.co/modulo-ft232-usb-ttl",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=FT232BL+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=FT232BL+USB+TTL+adapter+gold"
+ },
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 8.5,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas tomadas de la foto (escala por el paso 2.54 mm del header). Sin agujeros de fijación: alojar en guía o canal. Verificar con calibrador.",
+  "pcb": [
+   49,
+   22,
+   1.6
+  ],
+  "forma": "rect"
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Pines 5V-3V3-TXD-RXD-GND",
+   "cx": -27,
+   "cy": 0,
+   "w": 6,
+   "h": 12.7,
+   "z": [
+    1.6,
+    4.1
+   ],
+   "salida": "-X",
+   "holgura": 22,
+   "regla": "Dejar espacio para conectores Dupont"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LEDs TX / RX",
+   "cx": -9.5,
+   "cy": -0.5,
+   "w": 8.5,
+   "h": 1.6,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "regla": "Ventana o tapa translúcida si se quieren ver"
+  },
+  {
+   "tipo": "boton",
+   "nombre": "Jumper 5 V / 3.3 V",
+   "cx": -15.5,
+   "cy": -0.6,
+   "w": 7.6,
+   "h": 2.6,
+   "z": [
+    1.6,
+    10.1
+   ],
+   "salida": "+Z",
+   "holgura": 5,
+   "regla": "Accesible para cambiar el nivel lógico"
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header jumper 3V3-S1-5V",
+   "cx": -15.5,
+   "cy": -0.6,
+   "w": 7.62,
+   "h": 2.54,
+   "z": [
+    1.6,
+    10.1
+   ],
+   "salida": "+Z",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "jmp"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LD1 (TX)",
+   "cx": -9.5,
+   "cy": -3.8,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "ld1"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LD2 (RX)",
+   "cx": -9.5,
+   "cy": 2.7,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "ld2"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LD3 (encendido)",
+   "cx": 12.9,
+   "cy": 3.9,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "ld3"
+  },
+  {
+   "tipo": "usb",
+   "nombre": "USB-A macho",
+   "cx": 32.5,
+   "cy": 0,
+   "w": 19,
+   "h": 12,
+   "z": [
+    1.6,
+    6.1
+   ],
+   "salida": "+X",
+   "holgura": 20,
+   "regla": "Debe sobresalir de la carcasa para conectar al PC"
+  }
+ ],
+ "pines": [
+  {
+   "n": "5V",
+   "func": "Salida 5 V del USB (VBUS, protegida por fusible F1)",
+   "x": -21,
+   "y": -5.08,
+   "conector": "Header 5 pines 2.54 mm (ángulo)"
+  },
+  {
+   "n": "3V3",
+   "func": "Salida 3.3 V (regulador interno, pocos mA)",
+   "x": -21,
+   "y": -2.54,
+   "conector": "Header 5 pines 2.54 mm (ángulo)"
+  },
+  {
+   "n": "TXD",
+   "func": "Transmite (va al RX del otro equipo)",
+   "x": -21,
+   "y": 0,
+   "conector": "Header 5 pines 2.54 mm (ángulo)"
+  },
+  {
+   "n": "RXD",
+   "func": "Recibe (va al TX del otro equipo)",
+   "x": -21,
+   "y": 2.54,
+   "conector": "Header 5 pines 2.54 mm (ángulo)"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": -21,
+   "y": 5.08,
+   "conector": "Header 5 pines 2.54 mm (ángulo)"
+  },
+  {
+   "n": "J-3V3",
+   "func": "Jumper: lado 3.3 V",
+   "x": -18.04,
+   "y": -0.6,
+   "conector": "Header jumper 3V3-S1-5V",
+   "pieza": "jmp",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "J-S1",
+   "func": "Jumper: común (VCCIO del chip)",
+   "x": -15.5,
+   "y": -0.6,
+   "conector": "Header jumper 3V3-S1-5V",
+   "pieza": "jmp",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "J-5V",
+   "func": "Jumper: lado 5 V",
+   "x": -12.96,
+   "y": -0.6,
+   "conector": "Header jumper 3V3-S1-5V",
+   "pieza": "jmp",
+   "idx": 2,
+   "cara": "A"
+  }
+ ],
+ "archivos": {
+  "datasheet": {
+   "nombre": "FT232BL/BQ (FTDI, DS_FT232BL_BQ v2.2)",
+   "url": "https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT232BL_BQ.pdf",
+   "carpeta": "enlace externo"
+  }
+ },
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 49,
+   "W": 22,
+   "d": 49,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#111827"
+  },
+  "piezas": [
+   {
+    "id": "hdr",
+    "plantilla": "f_caja",
+    "nombre": "Header 5 pines (cuerpo)",
+    "cara": "A",
+    "x": -21,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 2.5,
+     "h": 12.7,
+     "alto": 2.5,
+     "r": 0,
+     "color": "#facc15"
+    }
+   },
+   {
+    "id": "hdrp",
+    "plantilla": "f_caja",
+    "nombre": "Pines en ángulo (salen del borde)",
+    "cara": "A",
+    "x": -26.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0.95,
+    "params": {
+     "w": 9,
+     "h": 11,
+     "alto": 0.64,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "jmp",
+    "plantilla": "header_macho",
+    "nombre": "Header jumper 3V3-S1-5V",
+    "cara": "A",
+    "x": -15.5,
+    "y": -0.6,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 3,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 8.5
+    }
+   },
+   {
+    "id": "jcap",
+    "plantilla": "f_caja",
+    "nombre": "Jumper (S1-5V)",
+    "cara": "A",
+    "x": -15.5,
+    "y": 0.67,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 5,
+     "h": 2.5,
+     "alto": 6,
+     "r": 0,
+     "color": "#facc15"
+    }
+   },
+   {
+    "id": "ld1",
+    "plantilla": "led_smd",
+    "nombre": "LD1 (TX)",
+    "cara": "A",
+    "x": -9.5,
+    "y": -3.8,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "ld2",
+    "plantilla": "led_smd",
+    "nombre": "LD2 (RX)",
+    "cara": "A",
+    "x": -9.5,
+    "y": 2.7,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "r4",
+    "plantilla": "smd",
+    "nombre": "R4",
+    "cara": "A",
+    "x": -9.5,
+    "y": -1.6,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "r5",
+    "plantilla": "smd",
+    "nombre": "R5",
+    "cara": "A",
+    "x": -9.5,
+    "y": 0.6,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "eep",
+    "plantilla": "soic",
+    "nombre": "EEPROM 93C46",
+    "cara": "A",
+    "x": -4.2,
+    "y": 3.9,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 8,
+     "ancho": 3.9
+    }
+   },
+   {
+    "id": "ftdi",
+    "plantilla": "tqfp",
+    "nombre": "FT232BL",
+    "cara": "A",
+    "x": 6,
+    "y": 2.3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "lado": 7
+    }
+   },
+   {
+    "id": "xtal",
+    "plantilla": "cristal",
+    "nombre": "Cristal 6 MHz",
+    "cara": "A",
+    "x": 2.8,
+    "y": -7.4,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "c3",
+    "plantilla": "smd",
+    "nombre": "C3",
+    "cara": "A",
+    "x": -3.3,
+    "y": -7.2,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "c4",
+    "plantilla": "smd",
+    "nombre": "C4",
+    "cara": "A",
+    "x": 10.3,
+    "y": -6.9,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "r8",
+    "plantilla": "smd",
+    "nombre": "R8",
+    "cara": "A",
+    "x": -3,
+    "y": -3.8,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "r9",
+    "plantilla": "smd",
+    "nombre": "R9",
+    "cara": "A",
+    "x": -3,
+    "y": -1.6,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "tant",
+    "plantilla": "f_caja",
+    "nombre": "Tántalo 10 µF 16 V",
+    "cara": "A",
+    "x": 15.2,
+    "y": 6.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 2.8,
+     "h": 3.5,
+     "alto": 1.9,
+     "r": 0,
+     "color": "#1f2937"
+    }
+   },
+   {
+    "id": "ld3",
+    "plantilla": "led_smd",
+    "nombre": "LD3 (encendido)",
+    "cara": "A",
+    "x": 12.9,
+    "y": 3.9,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "r7",
+    "plantilla": "smd",
+    "nombre": "R7",
+    "cara": "A",
+    "x": 15.5,
+    "y": -6.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "r3",
+    "plantilla": "smd",
+    "nombre": "R3",
+    "cara": "A",
+    "x": 15.5,
+    "y": -4.2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "r2",
+    "plantilla": "smd",
+    "nombre": "R2",
+    "cara": "A",
+    "x": 15.5,
+    "y": -1.8,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "r1",
+    "plantilla": "smd",
+    "nombre": "R1",
+    "cara": "A",
+    "x": 15.5,
+    "y": 0.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "f1",
+    "plantilla": "smd",
+    "nombre": "F1 (fusible)",
+    "cara": "A",
+    "x": 15.5,
+    "y": 2.4,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "1206"
+    }
+   },
+   {
+    "id": "r6",
+    "plantilla": "smd",
+    "nombre": "R6",
+    "cara": "A",
+    "x": 16.6,
+    "y": 4.2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "usb",
+    "plantilla": "f_caja",
+    "nombre": "USB-A macho (sale 14 mm)",
+    "cara": "A",
+    "x": 32.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 19,
+     "h": 12,
+     "alto": 4.5,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -21,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#facc15",
+    "pieza": "hdr",
+    "w": 2.5,
+    "h": 12.7
+   },
+   {
+    "f": "caja",
+    "cx": -26.5,
+    "cy": 0,
+    "z0": 2.55,
+    "z1": 3.19,
+    "color": "#d4a017",
+    "pieza": "hdrp",
+    "w": 9,
+    "h": 11
+   },
+   {
+    "f": "caja",
+    "cx": -15.5,
+    "cy": -0.6,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#1f2937",
+    "pieza": "jmp",
+    "w": 7.62,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -18.04,
+    "cy": -0.6,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "jmp",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -15.5,
+    "cy": -0.6,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "jmp",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -12.96,
+    "cy": -0.6,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "jmp",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -15.5,
+    "cy": 0.67,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#facc15",
+    "pieza": "jcap",
+    "w": 5,
+    "h": 2.5
+   },
+   {
+    "f": "caja",
+    "cx": -9.5,
+    "cy": -3.8,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "ld1",
+    "w": 2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -9.5,
+    "cy": 2.7,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "ld2",
+    "w": 2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -9.5,
+    "cy": -1.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "r4",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -10.3,
+    "cy": -1.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r4",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -8.7,
+    "cy": -1.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r4",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -9.5,
+    "cy": 0.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "r5",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -10.3,
+    "cy": 0.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r5",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -8.7,
+    "cy": 0.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r5",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -4.2,
+    "cy": 3.9,
+    "z0": 1.6,
+    "z1": 3.2,
+    "color": "#1f2937",
+    "pieza": "eep",
+    "w": 5.48,
+    "h": 3.9
+   },
+   {
+    "f": "caja",
+    "cx": -4.2,
+    "cy": 3.9,
+    "z0": 1.6,
+    "z1": 1.9,
+    "color": "#cbd5e1",
+    "pieza": "eep",
+    "w": 5.08,
+    "h": 5.9
+   },
+   {
+    "f": "caja",
+    "cx": 6,
+    "cy": 2.3,
+    "z0": 1.6,
+    "z1": 2.8,
+    "color": "#1f2937",
+    "pieza": "ftdi",
+    "w": 7,
+    "h": 7
+   },
+   {
+    "f": "caja",
+    "cx": 6,
+    "cy": 2.3,
+    "z0": 1.6,
+    "z1": 1.8,
+    "color": "#cbd5e1",
+    "pieza": "ftdi",
+    "w": 9,
+    "h": 9
+   },
+   {
+    "f": "caja",
+    "cx": 2.8,
+    "cy": -7.4,
+    "z0": 1.6,
+    "z1": 5.1,
+    "color": "#cbd5e1",
+    "pieza": "xtal",
+    "w": 11,
+    "h": 4.6,
+    "r": 2.2
+   },
+   {
+    "f": "caja",
+    "cx": -3.3,
+    "cy": -7.2,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "c3",
+    "w": 1.25,
+    "h": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": -3.3,
+    "cy": -8,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c3",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": -3.3,
+    "cy": -6.4,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c3",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": 10.3,
+    "cy": -6.9,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "c4",
+    "w": 1.25,
+    "h": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": 10.3,
+    "cy": -7.7,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c4",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": 10.3,
+    "cy": -6.1,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c4",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": -3,
+    "cy": -3.8,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "r8",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -3.8,
+    "cy": -3.8,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r8",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -2.2,
+    "cy": -3.8,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r8",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -3,
+    "cy": -1.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "r9",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -3.8,
+    "cy": -1.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r9",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -2.2,
+    "cy": -1.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r9",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 15.2,
+    "cy": 6.7,
+    "z0": 1.6,
+    "z1": 3.5,
+    "color": "#1f2937",
+    "pieza": "tant",
+    "w": 2.8,
+    "h": 3.5
+   },
+   {
+    "f": "caja",
+    "cx": 12.9,
+    "cy": 3.9,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "ld3",
+    "w": 2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 15.5,
+    "cy": -6.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "r7",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 14.7,
+    "cy": -6.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r7",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 16.3,
+    "cy": -6.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r7",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 15.5,
+    "cy": -4.2,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "r3",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 14.7,
+    "cy": -4.2,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r3",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 16.3,
+    "cy": -4.2,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r3",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 15.5,
+    "cy": -1.8,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "r2",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 14.7,
+    "cy": -1.8,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r2",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 16.3,
+    "cy": -1.8,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r2",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 15.5,
+    "cy": 0.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "r1",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 14.7,
+    "cy": 0.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r1",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 16.3,
+    "cy": 0.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r1",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 15.5,
+    "cy": 2.4,
+    "z0": 1.6,
+    "z1": 2.15,
+    "color": "#1f2937",
+    "pieza": "f1",
+    "w": 1.92,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": 14.22,
+    "cy": 2.4,
+    "z0": 1.6,
+    "z1": 2.15,
+    "color": "#cbd5e1",
+    "pieza": "f1",
+    "w": 0.6400000000000001,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": 16.78,
+    "cy": 2.4,
+    "z0": 1.6,
+    "z1": 2.15,
+    "color": "#cbd5e1",
+    "pieza": "f1",
+    "w": 0.6400000000000001,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": 16.6,
+    "cy": 4.2,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "r6",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 15.8,
+    "cy": 4.2,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r6",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 17.4,
+    "cy": 4.2,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r6",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 32.5,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 6.1,
+    "color": "#d4a017",
+    "pieza": "usb",
+    "w": 19,
+    "h": 12
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado desde las fotos de John (placa dorada FT232BL, chip marcado 2308). Medidas de la foto escaladas con el paso 2.54 mm del header; modelo 3D con plantillas. Precios estimados."
+  }
+ ],
+ "modificado": "2026-11-19T20:13:27.357Z",
+ "cad_pendiente": true
+}
