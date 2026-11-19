@@ -756,7 +756,7 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
       if (r.ok) { usoIA(modelo, j.usageMetadata); return j; }
       const espera = +(((((j.error || {}).details || []).find(d => d.retryDelay) || {}).retryDelay || "").replace("s", "")) || 4;
       if (!sinEspera && (r.status === 429 || r.status === 503) && intento === 0 && espera <= 20) { toast(`Gemini pidió esperar ${Math.ceil(espera)} s… reintentando`, 4000); await new Promise(res => setTimeout(res, espera * 1000)); continue; }
-      const err = new Error(errGemini(r, j)); err.status = r.status; throw err;
+      const err = new Error(errGemini(r, j)); err.status = r.status; err.cero = r.status === 429 && /limit:\s*0\b/.test(((j.error || {}).message) || ""); if (err.cero) err.message = `El modelo ${modelo} no está incluido en el nivel gratuito de tu proyecto (cupo 0).`; throw err;
     }
   }
   async function llamarIA(system, msgs, buscar, opts) {
@@ -769,18 +769,18 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
       if (buscar) body.tools = [{ google_search: {} }];
       const rapido = c.gemModel || "gemini-2.5-flash", modelo = opts.potente && c.gemPro ? c.gemPro : rapido;
       // cascada: cada modelo tiene su propio cupo gratuito → si uno da 429/503/404 se pasa al siguiente
-      const cola = [...new Set([modelo, rapido, ...(c.gemAlt || []), "gemini-2.5-flash", "gemini-2.5-flash-lite"])].filter(Boolean);
+      const cola = [...new Set([modelo, rapido, ...(c.gemAlt || [])])].filter(Boolean);
       let j, usado = null, ultimo = null;
       const intentar = async (sinWeb) => {
         for (const m of cola) {
           if (AGOT[m] > Date.now()) continue;
           const b = sinWeb ? Object.assign({}, body, { tools: undefined }) : body;
           try { j = await pedirGemini(m, b, c.gemKey, undefined, true); usado = m; return true; }
-          catch (e) { ultimo = e; if (![429, 503, 404].includes(e.status)) throw e; if (e.status !== 503) AGOT[m] = Date.now() + (e.status === 404 ? 36e5 : 6e4); }
+          catch (e) { ultimo = e; if (![429, 503, 404].includes(e.status)) throw e; if (e.status !== 503) AGOT[m] = Date.now() + (e.status === 404 || e.cero ? 6 * 36e5 : 6e4); }
         }
         return false;
       };
-      if (!(await intentar(false)) && !(buscar && await intentar(true))) throw ultimo || new Error("Gemini no respondió");
+      if (!(await intentar(false)) && !(buscar && await intentar(true))) throw new Error(`Ningún modelo de Gemini tuvo cupo ahora (probé ${cola.length}: ${cola.join(", ")}). Último error: ${ultimo ? ultimo.message : "?"} — en el nivel gratuito el cupo se repone cada minuto y a medianoche (hora del Pacífico). Pulsa “Conectar y probar” si cambiaste de clave.`);
       if (usado !== modelo) toast(`${modelo} sin cupo ahora; respondió ${usado}`, 5000);
       const cand = (j.candidates || [])[0]; if (!cand) throw new Error("Gemini no devolvió respuesta" + (j.promptFeedback && j.promptFeedback.blockReason ? " (bloqueada: " + j.promptFeedback.blockReason + ")" : ""));
       for (const ch of ((cand.groundingMetadata || {}).groundingChunks || [])) if (ch.web) addF(ch.web.uri, ch.web.title);
@@ -821,9 +821,11 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
     const ids = L.map(m => m.id || m).filter(id => /^gemini-\d/.test(id) && !/tts|image|audio|live|embedding|robotics|computer|native|exp|learnlm|customtools|research|deep|nano|agent|veo|imagen|-\d{3}$|-\d{2}-\d{4}$/i.test(id));
     const ver = id => { const m = id.match(/gemini-(\d+)(?:\.(\d+))?/); return m ? +m[1] * 100 + +(m[2] || 0) : 0; };
     const orden = (a, b) => ver(b) - ver(a) || (/preview/.test(a) - /preview/.test(b)) || (/latest/.test(b) - /latest/.test(a));
-    const flash = ids.filter(id => /flash/.test(id) && !/lite/.test(id)).sort(orden), pro = ids.filter(id => /-pro/.test(id)).sort(orden);
+    // nivel gratuito 2026: los Flash/Flash-Lite ≥ 3 son gratis; Pro y los 2.5 (en proyectos nuevos) no → se prefieren los ≥ 3
+    const nuevo = id => ver(id) >= 300, ord2 = (a, b) => (nuevo(b) - nuevo(a)) || orden(a, b);
+    const flash = ids.filter(id => /flash/.test(id) && !/lite/.test(id)).sort(ord2), lite = ids.filter(id => /flash-lite/.test(id)).sort(ord2), pro = ids.filter(id => /-pro/.test(id)).sort(orden);
     const estable = L => L.find(id => !/preview/.test(id)) || L[0];
-    return { rapido: estable(flash) || ids[0], potente: estable(pro) || null, flash, pro };
+    return { rapido: estable(flash) || estable(lite) || ids[0], potente: estable(pro) || null, flash, lite, pro };
   }
 
   // ---- propuestas (crear / actualizar componentes): nada se guarda sin aprobar
@@ -1226,7 +1228,7 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
           // la clave ya es válida: se guarda aunque la prueba de texto tarde
           Store.saveCfg({ aiProv: "gemini", gemKey: k, gemModel: el.rapido, gemPro: el.potente || "" }); S.modo = "auto";
           $("#m2").value = el.rapido; $("#m2p").value = el.potente || "";
-          const candidatos = [...new Set([el.rapido, ...el.flash.filter(x => !/preview/.test(x)), "gemini-2.5-flash", ...el.flash])].slice(0, 3);
+          const candidatos = [...new Set([el.rapido, ...el.flash.filter(x => !/preview/.test(x)), ...el.lite.filter(x => !/preview/.test(x))])].slice(0, 3);
           let ok = null, fallos = [];
           for (const m of candidatos) {
             paso = `2/2 · clave válida (${L.length} modelos) · probando ${m}`;
@@ -1239,7 +1241,12 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
             } catch (e) { fallos.push(`${m}: ${e.message}`); }
           }
           clearInterval(tic);
-          const alt = [...new Set([...el.flash.filter(x => !/preview/.test(x)), ...L.map(x => x.id).filter(x => /^gemini-\d[\d.]*-flash-lite$/.test(x))])].filter(x => x !== (ok && ok.m)).slice(0, 4);
+          const alt = [...new Set([...el.flash.filter(x => !/preview/.test(x)), ...el.lite.filter(x => !/preview/.test(x)), ...el.flash, ...el.lite])].filter(x => x !== (ok && ok.m)).filter((x, i, A) => !/gemini-[12]\./.test(x) || !A.some(y => !/gemini-[12]\./.test(y))).slice(0, 6);
+          // ¿el Pro tiene cupo en tu proyecto? (en el nivel gratuito normalmente no) → si no, el potente es el mejor Flash
+          let potente = el.potente;
+          if (ok && potente) { paso = "probando el modelo potente " + potente; try { await pedirGemini(potente, { contents: [{ role: "user", parts: [{ text: "ok" }] }], generationConfig: { maxOutputTokens: 16 } }, k, 20000, true); } catch (e) { if (e.status !== 503) potente = el.flash.find(x => x !== ok.m && !/preview/.test(x)) || ok.m; } }
+          if (!potente && ok) potente = el.flash.find(x => !/preview/.test(x)) || ok.m;
+          el.potente = potente; $("#m2p").value = potente || ""; Store.saveCfg({ gemPro: potente || "" });
           Store.saveCfg({ gemAlt: alt });
           if (ok) {
             $("#m2").value = ok.m; Store.saveCfg({ gemModel: ok.m });
