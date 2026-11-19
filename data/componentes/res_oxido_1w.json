@@ -110,7 +110,29 @@
    "y": 0
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "res_oxido_1w_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/res_oxido_1w (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/res_oxido_1w/res_oxido_1w_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "res_oxido_1w_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/res_oxido_1w (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/res_oxido_1w/res_oxido_1w_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "res_oxido_1w_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/res_oxido_1w (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/res_oxido_1w/res_oxido_1w_v1_plano.dxf"
+  }
+ },
  "modelo": {
   "version": 1,
   "base": {
@@ -241,6 +263,5 @@
    "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
   }
  ],
- "modificado": "2026-11-19T02:55:28.730Z",
- "cad_pendiente": true
+ "modificado": "2026-11-19T02:55:28.730Z"
 }

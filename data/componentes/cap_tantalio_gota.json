@@ -118,7 +118,29 @@
    "y": 0
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "cap_tantalio_gota_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/cap_tantalio_gota (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/cap_tantalio_gota/cap_tantalio_gota_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "cap_tantalio_gota_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/cap_tantalio_gota (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/cap_tantalio_gota/cap_tantalio_gota_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "cap_tantalio_gota_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/cap_tantalio_gota (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/cap_tantalio_gota/cap_tantalio_gota_v1_plano.dxf"
+  }
+ },
  "modelo": {
   "version": 1,
   "base": {
@@ -193,6 +215,5 @@
    "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
   }
  ],
- "modificado": "2026-11-19T02:55:28.737Z",
- "cad_pendiente": true
+ "modificado": "2026-11-19T02:55:28.737Z"
 }
