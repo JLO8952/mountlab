@@ -58,6 +58,15 @@ Vista superior, frontal y lateral izquierda (ISO-E, primer diedro) a escala 1:1 
 - La vista tiene: buscador de valores y códigos (`4k7`, `100n`, `104`, `473J`, `2A104J`, `01C`, `4702`) con bandas de color, códigos SMD/EIA-96, serie E y familias que lo tienen; lector de código de colores de 4/5/6 bandas; calculadoras (LED, divisor, RC); series E3–E96; tablas (tamaños SMD, electrolíticos, dieléctricos, tantalio, EIA-96) y una guía rápida.
 - En el BOM, las familias llevan un campo **Valor** (se normaliza: “4k7” → 4.7 kΩ) y sale en el CSV. Tabla de referencia: `data/tablas/pasivos.json`.
 
+## Diagrama de conexiones (pestaña "Diagrama" de cada proyecto, `app/circuito.js`)
+- Lienzo 2D: bloques con los pines reales de cada ficha (los grupos como “21, 22” se separan en GPIO21/GPIO22 y cada pin se clasifica: alimentación, tierra, I2C, SPI, UART, analógico, PWM, GPIO, reservado). Fuentes virtuales (USB, LiPo, 18650, pack 2S, fuente de laboratorio, adaptador 12 V), tierra, LED y pulsador.
+- Cables con clic pin → pin (o arrastrando), etiquetas de red con doble clic, colores por tipo de red, deshacer/rehacer, ordenar, zoom y pellizco. Lo que colocas entra solo al BOM (con su valor).
+- Panel: redes, conexiones por componente, lista de cables con calibre sugerido, **energía** (voltaje de cada red, consumo típico y pico, reguladores LDO/buck/cargador con su pérdida, capacidad de cada fuente y autonomía de baterías), **verificación** (sobre/subvoltaje, cortos, dos fuentes en una red, SDA/SCL cruzados, TX–TX, direcciones I2C repetidas, niveles 5 V → 3.3 V, pines de flash/arranque/solo entrada/ADC2 del ESP32, LED sin resistencia, potencia de resistencias, servos alimentados del 3V3) y **sugerencias** (alimentación, tierra, I2C, UART cruzado, SPI, ADC1, PWM) que se aceptan una a una o todas.
+- ✦ Diseñar con IA (Claude/Gemini): describe el objetivo y propone el circuito con tu biblioteca para aprobarlo. El agente entiende “agrega una batería 18650”, “conecta el BME280 al ESP32 por I2C”.
+- **Informe PDF** (imprimir desde el navegador): resumen, diagrama vectorial, BOM con referencias, redes, conexiones por componente, cables, presupuesto de energía y verificación. Exportar SVG, PNG, CSV de conexiones y netlist de texto.
+- Vista real: huella a escala de cada módulo con cables tipo dupont (los pines sin posición se reparten por los bordes).
+- Es un cálculo DC estático con los consumos de las fichas, no una simulación.
+
 ## Interfaz
 - Tema oscuro, barra lateral (barra inferior en el celular), **Inicio** con indicadores, sugerencias y salud de la biblioteca.
 - **Ctrl+K** (o `/`): buscador global de componentes, proyectos, acciones y botones de la pantalla; también entiende órdenes.

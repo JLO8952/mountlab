@@ -108,6 +108,7 @@
   function intencion(q) {
     const ctx = API.ctx(), n = norm(q).trim().replace(/[¿?¡!.]+/g, "").trim(); if (!n) return null;
     let m;
+    if (API.intencionExtra) { const x = API.intencionExtra(q); if (x) return x; }
     // buscar en el catálogo
     if ((m = n.match(/^(?:busca|buscar|filtra|filtrar|encuentra)\s+(?:en el catalogo\s+)?(?:por\s+)?(.+)$/)) && !/internet|web|datasheet|precio/.test(n))
       return { a: { id: "buscar_catalogo", n: `Buscar “${m[1]}” en el catálogo`, run: () => API.buscarCatalogo(m[1]) }, s: 0.95 };

@@ -56,6 +56,7 @@
     }
     lastHash = h;
     if (S.ed) { S.ed.destroy(); S.ed = null; }
+    if (S.circ) { S.circ.destroy(); S.circ = null; }
     if (!h.startsWith("#/c/")) { S.W = null; S.orig = null; }
     const [, r, id] = h.split("/");
     $$("#nav a").forEach(a => a.classList.toggle("act", a.dataset.r === ({ "": "inicio", asistente: "inicio", invitacion: "inicio", c: "catalogo", p: "proyectos", pasivos: "pasivos" }[r] ?? r)));
@@ -579,10 +580,16 @@
     const o = Store.db.proyectos.find(p => p.id === id);
     if (!o) { app.innerHTML = `<div class="panel">No existe el proyecto. <a href="#/proyectos">Volver</a></div>`; return; }
     const P = clone(o), O = JSON.stringify(o); P.bom = P.bom || [];
+    if (S.proyId !== id) { S.proyId = id; S.ptabP = S.ptabSig || "resumen"; } S.ptabSig = null;
+    const cabecera = () => { const sucio = JSON.stringify(P) !== O, d = $("#pDirty"), b = $("#pSv"); if (d) d.innerHTML = sucio ? '<span class="dirty">Cambios sin guardar</span>' : ""; if (b) b.disabled = !sucio; };
+    S.proySucio = () => JSON.stringify(P) !== O;
     const pinta = () => {
-      const t = totalesBom(P), sucio = JSON.stringify(P) !== O;
+      const t = totalesBom(P), sucio = JSON.stringify(P) !== O, diag = S.ptabP === "diagrama";
+      if (S.circ) { S.circ.destroy(); S.circ = null; }
       app.innerHTML = `<div class="det-head"><div><div class="small"><a href="#/proyectos">← Proyectos</a></div><input id="pNm" value="${esc(P.nombre)}" style="font-size:20px;font-weight:700;border:none;padding:4px 0;background:none"></div>
-        <div class="row">${sucio ? '<span class="dirty">Cambios sin guardar</span>' : ""}<button class="pri" id="pSv" ${sucio ? "" : "disabled"}>Guardar</button><button id="pCsv">Exportar BOM (CSV)</button><button id="pDup">Duplicar</button><button class="danger" id="pDel">Eliminar</button></div></div>
+        <div class="row"><span id="pDirty">${sucio ? '<span class="dirty">Cambios sin guardar</span>' : ""}</span><button class="pri" id="pSv" ${sucio ? "" : "disabled"}>Guardar</button><button id="pCsv">Exportar BOM (CSV)</button><button id="pDup">Duplicar</button><button class="danger" id="pDel">Eliminar</button></div></div>
+        <div class="tabs"><button data-pt2="resumen" class="${diag ? "" : "on"}">Resumen y BOM</button><button data-pt2="diagrama" class="${diag ? "on" : ""}">⚡ Diagrama de conexiones${P.circuito && (P.circuito.inst || []).length ? ` <span class="tag">${P.circuito.inst.length}</span>` : ""}</button></div>
+        ${diag ? '<div id="circHost"></div>' : `
         <div class="grid2" style="grid-template-columns:2fr 1fr;align-items:start">
           <div class="side">
             <div class="panel"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Lista de materiales (BOM)</h3><div class="picker" style="width:320px"><input id="pk" placeholder="+ Añadir componente: buscar…"><div class="res hide" id="pkR"></div></div></div>
@@ -601,17 +608,19 @@
               ${t.sinPrecio ? `<div class="small muted" style="margin-top:6px">${t.sinPrecio} referencia(s) sin precio.</div>` : ""}</div>
             <div class="panel"><h3>🧪 Revisión técnica</h3>${(() => { const al = window.MLLocal ? MLLocal.revisar(P, Store.db) : []; return al.length ? al.map(a => `<div class="small" style="margin-bottom:6px" title="${esc(a.por)}">${a.nivel === "rojo" ? "🔴" : a.nivel === "amarillo" ? "🟡" : "🔵"} ${fmtTexto(a.msg)}</div>`).join("") + '<div class="small muted">Sistema experto con reglas fijas (pasa el mouse para ver el porqué). Orienta, no reemplaza tu criterio.</div>' : '<div class="small muted">Sin observaciones.</div>'; })()}</div>
             <div class="panel"><h3>Historial</h3>${(P.historial || []).slice().reverse().slice(0, 12).map(h => `<div class="small" style="margin-bottom:4px"><span class="muted">${esc(h.fecha)}</span> · ${esc(h.nota)}</div>`).join("")}</div>
-          </div></div>`;
+          </div></div>`}`;
+      $$("[data-pt2]").forEach(b => b.onclick = () => { S.ptabP = b.dataset.pt2; pinta(); if (window.MLAgent) MLAgent.refrescar(); });
+      if (diag) S.circ = MLCircuito.montar($("#circHost"), P, { onChange: cabecera, toast, ia: circuitoIA });
       const set = () => { pinta(); };
       $("#pNm").oninput = e => { P.nombre = e.target.value; };
-      $("#pNm").onchange = set;
-      $("#pEs").onchange = e => { P.estado = e.target.value; set(); };
-      $("#pDs").onchange = e => { P.descripcion = e.target.value; set(); };
-      $("#pDoc").onchange = e => { P.documentacion = e.target.value; set(); };
+      $("#pNm").onchange = () => diag ? cabecera() : set();
+      if (!diag) $("#pEs").onchange = e => { P.estado = e.target.value; set(); };
+      if (!diag) $("#pDs").onchange = e => { P.descripcion = e.target.value; set(); };
+      if (!diag) $("#pDoc").onchange = e => { P.documentacion = e.target.value; set(); };
       $$("[data-b]").forEach(i => i.onchange = () => { const b = P.bom[+i.dataset.b]; b[i.dataset.k] = i.dataset.k === "cantidad" ? Math.max(0, +i.value) : i.dataset.k === "valor" ? valorBonito(comp(b.id), i.value) : i.value; if (i.dataset.k === "valor") i.value = b.valor; set(); });
       $$("[data-bx]").forEach(x => x.onclick = () => { const b = P.bom.splice(+x.dataset.bx, 1)[0]; P.historial.push({ fecha: hoy(), nota: "Quitado " + b.id }); set(); });
       const pk = $("#pk"), res = $("#pkR");
-      pk.oninput = () => {
+      if (pk) pk.oninput = () => {
         const q = pk.value.trim().toLowerCase(); if (!q) { res.classList.add("hide"); return; }
         const L = Store.db.componentes.filter(c => (c.nombre + " " + c.id + " " + c.categoria + " " + (c.etiquetas || []).join(" ")).toLowerCase().includes(q)).slice(0, 12);
         res.innerHTML = L.map(c => `<div data-id="${esc(c.id)}"><span>${esc(c.nombre)}</span><span class="muted small">${esc(c.categoria)}</span></div>`).join("") || '<div class="muted">Sin resultados</div>';
@@ -631,6 +640,38 @@
       $("#pDel").onclick = async () => { if (!(await confirmar(`¿Eliminar el proyecto <b>${esc(P.nombre)}</b>? Los componentes no se borran.`, "Eliminar"))) return; try { await Store.remove("proyectos", P.id, `Eliminar proyecto ${P.id}`); } catch (e) { toast(e.message); } estadoPill(); location.hash = "#/proyectos"; };
     };
     pinta();
+  }
+
+  /** Pide a la IA un circuito completo con componentes de la biblioteca y lo muestra para aprobar. */
+  async function circuitoIA(objetivo, api) {
+    if (!nubeLista()) { toast("Para diseñar con IA agrega una clave de Claude o Gemini en Ajustes. Mientras tanto usa ✦ Sugerir conexiones (local).", 6000); return; }
+    const elec = Store.db.componentes.filter(c => !["Herrajes", "Materiales", "Cableado", "Prototipado"].includes(c.categoria) && c.tipo === "electronico");
+    const lista = elec.map(c => { const pf = MLCircuito.perfil(c), rol = pf.rol === "resistencia" || pf.rol === "capacitor" ? "pasivo2" : pf.rol; const pins = MLCircuito.pinesDe(c, rol).map(p => p.n).join(","); return `${c.id} | ${c.nombre} | ${(c.ficha || {}).voltaje || ""} | pines: ${pins}`; }).join("\n");
+    const virt = Object.entries(MLCircuito.VIRT).map(([id, v]) => `${id} | ${v.nombre} | pines: ${v.pines.map(p => p[0]).join(",")}`).join("\n");
+    const actual = S.circ ? S.circ.circuito() : null;
+    const system = `Eres el asistente de MountLab. Diseñas circuitos para John (ingeniería biomédica/mecatrónica, Colombia) usando SOLO componentes de su biblioteca y las partes virtuales.
+Responde en español: primero 4–8 líneas explicando el circuito (alimentación, buses, pines elegidos y por qué, cuidados), luego UN bloque:
+\`\`\`mountlab-circuito
+{"componentes":[{"ref":"U1","id":"esp32_38p"},{"ref":"R1","id":"res_metal_14w","valor":"4k7"},{"ref":"BT1","id":"@18650","p":{"mAh":3000}}],
+ "conexiones":[["U1.GPIO21","U2.SDA"],["U2.GND","U1.GND"]]}
+\`\`\`
+Reglas: usa los nombres de pin EXACTOS de la lista; tierra común; I2C del ESP32 en GPIO21/22; UART cruzado TX→RX; sensores analógicos en ADC1 (GPIO32–39); no uses GPIO6–11; evita GPIO0/2/12/15 si puedes; servos y motores con fuente aparte (no del 3V3 del ESP32); respeta voltajes (3.3 V vs 5 V) y agrega reguladores, resistencias de LED o pull-ups si hacen falta. Pasivos: elige la familia (res_*/cap_*) y pon "valor".
+BIBLIOTECA (id | nombre | voltaje | pines):
+${lista}
+PARTES VIRTUALES:
+${virt}
+${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs nuevas para lo que agregues): " + JSON.stringify({ inst: actual.inst.map(i => ({ ref: i.ref, id: i.id })), cables: actual.cables }) : ""}`;
+    toast("✦ Diseñando el circuito…", 4000);
+    const r = await llamarIA(system, [{ role: "user", content: objetivo }], false);
+    const m = r.text.match(/```mountlab-circuito\s*([\s\S]*?)```/); if (!m) { await modal(`<h3>Respuesta del asistente</h3><div style="white-space:pre-wrap" class="small">${esc(r.text)}</div><div class="row" style="justify-content:flex-end"><button data-close>Cerrar</button></div>`); return; }
+    let j; try { j = JSON.parse(m[1]); } catch (e) { toast("La propuesta no es JSON válido: " + e.message, 6000); return; }
+    const expl = r.text.replace(m[0], "").trim();
+    const ok = await modal(`<h3>✦ Circuito propuesto</h3><div class="small" style="white-space:pre-wrap">${esc(expl)}</div>
+      <div class="grid2"><div><b class="small">Componentes (${(j.componentes || []).length})</b><ul class="small" style="margin:4px 0;padding-left:18px">${(j.componentes || []).map(c => `<li><b>${esc(c.ref)}</b> ${esc((comp(c.id) || MLCircuito.VIRT[c.id] || {}).nombre || c.id + " (no está en la biblioteca)")}${c.valor ? " · " + esc(c.valor) : ""}</li>`).join("")}</ul></div>
+        <div><b class="small">Conexiones (${(j.conexiones || []).length})</b><div class="small" style="max-height:220px;overflow:auto">${(j.conexiones || []).map(([a, b]) => `<div><code>${esc(a)}</code> → <code>${esc(b)}</code></div>`).join("")}</div></div></div>
+      <div class="row" style="justify-content:flex-end"><button data-close>Descartar</button><button class="pri" id="mOk">Aplicar al diagrama</button></div>`, (b, c) => $("#mOk", b).onclick = () => c(true));
+    if (!ok) return;
+    const res = api.aplicarPropuesta(j); toast(`Circuito aplicado: ${res.ok} conexiones${res.mal.length ? ` · ${res.mal.length} no se pudieron ubicar` : ""}`, 6000);
   }
 
   // =====================================================================  PENDIENTES
@@ -1314,7 +1355,7 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
           <div class="panel"><h3>Acciones rápidas</h3><div class="quick">
             <button data-q="nuevo"><span class="qi">＋</span><b>Nuevo componente</b><small>Ficha, modelo 3D y montaje</small></button>
             <button data-q="ia"><span class="qi">✦</span><b>Preguntar al asistente</b><small>Local o con IA en la nube</small></button>
-            <button data-q="proy"><span class="qi">📁</span><b>Nuevo proyecto</b><small>Con lista de materiales</small></button>
+            <button data-q="circ"><span class="qi">⚡</span><b>Nuevo circuito</b><small>Diagrama, energía e informe</small></button>
             <button data-q="cat"><span class="qi">▦</span><b>Explorar catálogo</b><small>Filtros y búsqueda difusa</small></button>
           </div></div>
           <div class="panel"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Modificados recientemente</h3><a class="small" href="#/catalogo">Ver todo →</a></div>
@@ -1334,7 +1375,7 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
     $$("[data-p]", app).forEach(k => k.onclick = () => location.hash = "#/p/" + encodeURIComponent(k.dataset.p));
     $$("[data-pr]", app).forEach(k => k.onclick = async () => { const r = await MLAgent.ejecutar(pred[+k.dataset.pr].a); toast(r.msg); });
     $("#hBus").onclick = () => MLAgent.paleta(); $("#hNew").onclick = () => nuevoComponente();
-    $$("[data-q]", app).forEach(b => b.onclick = async () => { const q = b.dataset.q; if (q === "nuevo") nuevoComponente(); if (q === "ia") abrirAsistente(); if (q === "cat") location.hash = "#/catalogo"; if (q === "proy") { const pr = await crearProyecto(false); if (pr) location.hash = "#/p/" + encodeURIComponent(pr.id); } });
+    $$("[data-q]", app).forEach(b => b.onclick = async () => { const q = b.dataset.q; if (q === "nuevo") nuevoComponente(); if (q === "ia") abrirAsistente(); if (q === "cat") location.hash = "#/catalogo"; if (q === "proy" || q === "circ") { const pr = await crearProyecto(false); if (pr) { if (q === "circ") S.ptabSig = "diagrama"; location.hash = "#/p/" + encodeURIComponent(pr.id); } } });
     const hd = $("#hDs"); if (hd) hd.onclick = () => preguntar("Busca y completa el datasheet (URL directa al PDF) de los componentes electrónicos que no lo tienen: " + cs.filter(c => c.tipo === "electronico" && !(c.ficha || {}).datasheet).slice(0, 5).map(c => c.id).join(", "));
   }
 
@@ -1344,7 +1385,7 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
     const o = { vista: v || "inicio", id: id ? decodeURIComponent(id) : null, tab: v === "componente" ? S.tab : null };
     const nom = { pasivos: "Anexo de pasivos", inicio: "Inicio", catalogo: "Catálogo", proyectos: "Proyectos", pendientes: "Pendientes", ajustes: "Ajustes" };
     if (v === "componente") o.titulo = `Componente · ${S.W ? S.W.nombre : o.id} · ${({ ficha: "Ficha", modelo: "Modelo 3D", montaje: "Montaje", zonas: "Zonas", pines: "Pines", archivos: "Archivos CAD", versiones: "Versiones", json: "JSON" })[S.tab] || S.tab}`;
-    else if (v === "proyecto") { const p = Store.db.proyectos.find(x => x.id === o.id); o.titulo = "Proyecto · " + (p ? p.nombre : o.id); }
+    else if (v === "proyecto") { const p = Store.db.proyectos.find(x => x.id === o.id); o.tab = S.ptabP || "resumen"; o.titulo = "Proyecto · " + (p ? p.nombre : o.id) + (o.tab === "diagrama" ? " · Diagrama" : ""); }
     else o.titulo = nom[o.vista] || o.vista;
     return o;
   }
@@ -1398,6 +1439,14 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
     { id: "seleccionar_todo", n: "Seleccionar todas las piezas de esta cara", ic: "☑", grupo: "Modelo 3D", when: c => c.tab === "modelo" && edApi()?.tiene(), run: () => edApi().todo() },
     { id: "colocar", n: "Colocar una pieza de la librería", ic: "⊕", grupo: "Modelo 3D", args: '{"plantilla":"id (header_macho, usb_c, micro_usb, jst_xh, pulsador, led_smd, wroom, electrolitico, separador, f_caja…)","params":{"n":8},"cara":"A|B"}', when: c => c.tab === "modelo" && edApi()?.tiene(), run: a => edApi().colocar(a.plantilla, a.params, a.cara) ? "Pieza colocada en el centro: arrástrala a su lugar" : false },
     // proyecto
+    { id: "ver_diagrama", n: "Abrir el diagrama de conexiones", ic: "⚡", k: "circuito esquema conexiones montaje cables", grupo: "Proyecto", when: c => c.vista === "proyecto" && c.tab !== "diagrama", run: () => { S.ptabP = "diagrama"; vProyecto(ctxActual().id); } },
+    { id: "nuevo_circuito", n: "Nuevo circuito (proyecto con diagrama)", ic: "⚡", k: "diagrama esquema conexiones montaje", global: true, run: async () => { const p = await crearProyecto(false); if (p) { S.ptabSig = "diagrama"; location.hash = "#/p/" + encodeURIComponent(p.id); } } },
+    { id: "sugerir_conexiones", n: "Sugerir conexiones", ic: "✦", k: "conectar automatico cables sugerencias", grupo: "Diagrama", when: c => c.tab === "diagrama" && S.circ, run: () => { const n = S.circ.sugerir(); return n ? `${n} conexiones sugeridas (en morado)` : "No encontré conexiones que sugerir"; } },
+    { id: "aceptar_sugerencias", n: "Aceptar todas las conexiones sugeridas", ic: "✓", k: "conectar todo", grupo: "Diagrama", when: c => c.tab === "diagrama" && S.circ, run: () => { if (!S.circ.sugerir()) return "No hay sugerencias"; return `${S.circ.aceptarTodas()} conexiones agregadas`; } },
+    { id: "ordenar_diagrama", n: "Ordenar el diagrama", ic: "▦", k: "acomodar organizar bloques", grupo: "Diagrama", when: c => c.tab === "diagrama" && S.circ, run: () => S.circ.ordenar() },
+    { id: "informe_circuito", n: "Informe PDF del circuito", ic: "🖨", k: "imprimir reporte documento pdf", grupo: "Diagrama", when: c => c.tab === "diagrama" && S.circ, run: () => S.circ.informe() },
+    { id: "energia_circuito", n: "Ver voltajes y corrientes (energía)", ic: "🔋", k: "consumo corriente voltaje bateria autonomia presupuesto", grupo: "Diagrama", when: c => c.tab === "diagrama" && S.circ, run: () => S.circ.verTab("energia") },
+    { id: "verificar_circuito", n: "Verificar el circuito", ic: "🧪", k: "errores revisar erc cortos", grupo: "Diagrama", when: c => c.tab === "diagrama" && S.circ, run: () => S.circ.verTab("verif") },
     { id: "exportar_bom", n: "Exportar BOM (CSV)", ic: "⬇", k: "lista materiales excel csv", grupo: "Proyecto", when: c => c.vista === "proyecto", run: () => clic("#pCsv") },
     { id: "revisar_proyecto", n: "Revisar el proyecto (sistema experto)", ic: "🧪", k: "revision tecnica voltajes i2c consumo", grupo: "Proyecto", when: c => c.vista === "proyecto", run: () => { abrirAsistente(); const t = $("#q"); t.value = "revisa proyecto " + ctxActual().id; $("#send").click(); } },
     { id: "guardar_proyecto", n: "Guardar el proyecto", ic: "💾", grupo: "Proyecto", when: c => c.vista === "proyecto" && $("#pSv") && !$("#pSv").disabled, run: () => clic("#pSv") },
@@ -1413,12 +1462,37 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
       if (W.estado !== "verificado" && W.montaje && W.montaje.pcb && c.tab !== "modelo") R.push({ accion: "verificar", peso: 0.25, motivo: "Medidas sin verificar" });
       if (c.tab === "archivos" && W.montaje) R.push({ accion: "descargar_dxf", peso: 0.35, motivo: "Descarga inmediata desde el navegador" });
     }
+    if (c.vista === "proyecto" && c.tab === "diagrama" && S.circ) { const k = S.circ.calcular(), C2 = S.circ.circuito(); if (C2.inst.length > 1) R.push({ accion: "sugerir_conexiones", peso: C2.cables.length < C2.inst.length ? 0.7 : 0.3, motivo: "Propone alimentación, tierra y buses" }); if (k.avisos.length) R.push({ accion: "verificar_circuito", peso: 0.6, motivo: `${k.avisos.length} aviso(s) del circuito` }); if (C2.cables.length > 2) R.push({ accion: "informe_circuito", peso: 0.35, motivo: "Documento con diagrama, tablas y energía" }); }
+    if (c.vista === "proyecto" && c.tab !== "diagrama") R.push({ accion: "ver_diagrama", peso: 0.45, motivo: "Arma las conexiones del proyecto" });
     if (c.vista === "proyecto") { R.push({ accion: "revisar_proyecto", peso: 0.4, motivo: "Detecta choques de voltaje, I2C y consumo" }); R.push({ accion: "exportar_bom", peso: 0.3, motivo: "Para comprar o cotizar" }); }
     if (np && c.vista !== "pendientes") R.push({ accion: "ir_pendientes", peso: c.vista === "inicio" ? 0.65 : 0.35, motivo: `${np} propuesta(s) esperan tu aprobación` });
     if (nl && Store.mode === "github") R.push({ accion: "subir_locales", peso: 0.8, motivo: `${nl} cambio(s) solo en este navegador` });
     if (Store.mode !== "github" && Auth.esDueño() && c.vista !== "ajustes") R.push({ accion: "ir_ajustes", peso: 0.5, motivo: "Conecta GitHub para guardar tus cambios" });
     if (c.vista === "catalogo" || c.vista === "inicio") R.push({ accion: "nuevo_componente", peso: 0.2, motivo: "" });
     return R;
+  }
+  /** Órdenes en lenguaje natural para el diagrama: "conecta el bme280 al esp32", "agrega una batería 18650". */
+  function intencionCircuito(q) {
+    if (!S.circ || ctxActual().tab !== "diagrama") return null;
+    const norm = t => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const n = norm(q).replace(/[¿?¡!.]/g, "").trim(); let m;
+    if ((m = n.match(/^(?:conecta|une|conectar|cablea)\s+(?:el |la |los )?(.+?)\s+(?:al|a la|a|con el|con la|con|y el|y la|y)\s+(?:el |la )?(.+?)(?:\s+(?:por|via|usando)\s+(i2c|spi|uart|serial))?$/))) {
+      const A = S.circ.buscarInst(m[1]), B = S.circ.buscarInst(m[2]); if (!A || !B || A.s < 0.5 || B.s < 0.5) return null;
+      return { s: 0.95, a: { id: "conectar_par", n: `Conectar ${A.it.ref} con ${B.it.ref}${m[3] ? " por " + m[3].toUpperCase() : ""}`, run: () => {
+        const bus = m[3] ? { i2c: "I2C", spi: "SPI", uart: "UART", serial: "UART" }[m[3]] : null;
+        const L = S.circ.conectarPar(A.it.ref, B.it.ref, bus); return L ? `${L} conexiones entre ${A.it.ref} y ${B.it.ref}` : `No encontré conexiones entre ${A.it.ref} y ${B.it.ref}`; } } };
+    }
+    if ((m = n.match(/^(?:agrega|anade|añade|pon|coloca|inserta|mete)\s+(?:un|una|el|la|otro|otra)?\s*(.+)$/))) {
+      const t = m[1], V = MLCircuito.VIRT, virt = /usb/.test(t) ? "@usb" : /18650/.test(t) ? "@18650" : /lipo/.test(t) ? "@lipo" : /2s|7\.4/.test(t) ? "@2s" : /fuente de lab|laboratorio/.test(t) ? "@lab" : /adaptador|12 ?v/.test(t) ? "@dc12" : /^tierra|^gnd/.test(t) ? "@gnd" : /^led/.test(t) ? "@led" : /pulsador|boton/.test(t) ? "@boton" : null;
+      let id = virt, nombre = virt && V[virt].nombre, valor = null;
+      if (!id) { const pv = (t.match(/(?:de|con)\s+([0-9][0-9.,]*\s*[kmunp]?[a-zΩ]*)$/i) || [])[1]; const base = pv ? t.replace(/\s+(de|con)\s+[0-9].*$/, "") : t;
+        if (/resistencia/.test(base)) id = "res_carbon_14w"; else if (/capacitor|condensador/.test(base)) id = /electrol/.test(base) ? "cap_electrolitico_radial" : "cap_multicapa_tht";
+        else { const r = buscarComponente(base); if (r && r.s >= 0.6) id = r.c.id; }
+        if (id) { nombre = comp(id).nombre; valor = pv ? valorBonito(comp(id), pv) : null; } }
+      if (!id) return null;
+      return { s: 0.9, a: { id: "colocar_comp", n: `Agregar ${nombre}${valor ? " " + valor : ""} al diagrama`, run: () => { const it = S.circ.colocar(id, 40 + Math.random() * 200, 40 + Math.random() * 200, valor ? { valor } : {}); return it ? `${it.ref} agregado` : false; } } };
+    }
+    return null;
   }
   function accionesParaIA() { const c = ctxActual(); return ACCIONES.filter(a => !a.when || a.when(c)).map(a => `${a.id}: ${a.n}${a.args ? " " + a.args : ""}${a.peligro ? " (pide confirmación)" : ""}`).join("\n"); }
   function extraerAcciones(text) {
@@ -1497,6 +1571,7 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
     MLAgent.init({
       ctx: ctxActual, acciones: () => ACCIONES, reglas, confirmar, toast, preguntar, buscarCatalogo, buscarComponente, buscarProyecto,
       colocar: (id, params, cara) => { if (!edApi()) { if (S.W) irTab("modelo"); return false; } return edApi().colocar(id, params, cara) ? "Pieza colocada" : false; },
+      intencionExtra: q => intencionCircuito(q),
       extra: q => MLPas.leer(q).filter(o => !/número/.test(o.como) || /^\d+(\.\d+)?\s*(Ω|ohm)/i.test(q)).slice(0, 3).map(o => ({ ic: o.tipo === "R" ? "Ω" : "⊣⊢", n: (o.tipo === "R" ? MLPas.fmtR(o.valor) : MLPas.fmtC(o.valor)) + " — códigos y familias", sub: o.como, run: () => { S.pvQ = q; S.ptab = "valor"; location.hash === "#/pasivos" ? vPasivos("valor") : location.hash = "#/pasivos"; } })),
       vistas: () => [["⌂", "Inicio", "#/"], ["▦", "Catálogo", "#/catalogo"], ["Ω", "Anexo de pasivos", "#/pasivos"], ["📁", "Proyectos", "#/proyectos"], ["📥", "Pendientes", "#/pendientes"], ["⚙", "Ajustes", "#/ajustes"]].map(([ic, n, h]) => ({ ic, n, h })),
       recientes: recientesVisitados, mini: miniHtml,
@@ -1508,5 +1583,5 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
     try { if (localStorage.getItem("ml_drawer") && matchMedia("(min-width: 1180px)").matches) abrirAsistente(); } catch (e) { }
     if (Store.error && Store.mode !== "github") console.warn(Store.error);
   })();
-  window.ML = { S, route, toast, ctx: ctxActual, acciones: ACCIONES, abrirAsistente, preguntar };
+  window.ML = { S, route, toast, ctx: ctxActual, acciones: ACCIONES, abrirAsistente, preguntar, valorBonito };
 })();

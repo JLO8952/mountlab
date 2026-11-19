@@ -257,6 +257,20 @@ body.drawer-open #fab,body.drawer-open #fabTip{display:none}
 .mo-item span{flex:1;line-height:1.2}
 .mo-lib .tabs{margin:6px 0}.mo-lib .tabs button{padding:6px 9px;font-size:12.5px}
 
+/* diagrama de conexiones */
+.ci-layout{display:grid;grid-template-columns:220px minmax(0,1fr) 380px;gap:12px;align-items:start}
+.ci-lib{padding:10px;position:sticky;top:78px}.ci-libl{max-height:calc(100vh - 210px);overflow:auto;display:flex;flex-direction:column;gap:5px;margin-top:8px}
+.ci-lib .mo-item{cursor:grab}.grp-t{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);margin:8px 2px 2px}
+.ci-centro{display:flex;flex-direction:column;gap:8px;min-width:0}
+.ci-canvas{height:calc(100vh - 250px);min-height:420px}
+.ci-canvas svg{cursor:default}
+.ci-panel{padding:12px;max-height:calc(100vh - 170px);overflow:auto}
+.ci-panel .tabs button{padding:6px 9px;font-size:12.5px}
+.ci-panel table.t td,.ci-panel table.t th{padding:4px 5px}
+@media (max-width:1400px){ .ci-layout{grid-template-columns:200px minmax(0,1fr)} .ci-panel{grid-column:1/-1;max-height:none} }
+@media (max-width:860px){ .ci-layout{grid-template-columns:1fr} .ci-lib{position:static}.ci-libl{max-height:130px;flex-direction:row;flex-wrap:wrap} .ci-lib .mo-item{flex:1 1 140px} .ci-canvas{height:60vh;min-height:320px} }
+body.drawer-open .ci-layout{grid-template-columns:200px minmax(0,1fr)} body.drawer-open .ci-panel{grid-column:1/-1;max-height:none}
+
 /* solo lectura: se ocultan los controles de edición */
 body.rol-lectura :is(#bSave,#bUndo,#bDup,#bVar,#bProj,#bDel,#bNew,#hNew,#pSv,#pDel,#pDup,#pNew,[data-q="nuevo"],[data-q="proy"],[data-ok],[data-no],[data-all],#jsA,#bCad){display:none!important}
 
