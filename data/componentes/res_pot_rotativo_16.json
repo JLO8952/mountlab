@@ -1,0 +1,290 @@
+{
+ "id": "res_pot_rotativo_16",
+ "nombre": "Potenciómetro rotativo 16 mm (lineal B / logarítmico A)",
+ "tipo": "electronico",
+ "categoria": "Resistencias",
+ "etiquetas": [
+  "resistencia",
+  "THT",
+  "potenciómetro",
+  "variable",
+  "eje 6 mm",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "RV16 / WH148",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Pista de carbón, eje estriado 6 mm, rosca M7. Ajuste de volumen (A, log), control de velocidad o referencia para ADC (B, lineal). Taladro de panel Ø7.5 mm.",
+  "funcionamiento": "Ley de Ohm: V = I·R. Potencia disipada P = I²·R = V²/R; elegir una potencia nominal ≥ 2 × la calculada.",
+  "voltaje": "200 V",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "Cuerpo Ø16 × 7 mm · eje 15 mm · patas a 5 mm",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Pista de carbón, eje estriado 6 mm, rosca M7"
+  },
+  {
+   "param": "Potencia",
+   "valor": "0.125–0.2 W"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±20 %"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "200 V"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "1 kΩ – 1 MΩ"
+  },
+  {
+   "param": "Marcado",
+   "valor": "B10K = 10 kΩ lineal"
+  }
+ ],
+ "valores": {
+  "magnitud": "resistencia",
+  "unidad": "Ω",
+  "lista": [
+   1000,
+   2000,
+   5000,
+   10000,
+   20000,
+   50000,
+   100000,
+   250000,
+   500000,
+   1000000
+  ],
+  "tolerancias": [
+   "±20 %"
+  ],
+  "curvas": [
+   "B (lineal)",
+   "A (logarítmica)",
+   "C (log. inversa)"
+  ]
+ },
+ "imagen": {
+  "src": "img/res_pot_rotativo_16.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 15,
+  "altura_inferior": 6,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   16,
+   16,
+   7
+  ],
+  "forma": "redonda",
+  "base_tipo": "cilindro"
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "1",
+   "func": "Extremo (CCW)",
+   "x": -5,
+   "y": -8.5
+  },
+  {
+   "conector": "",
+   "n": "2",
+   "func": "Cursor",
+   "x": 0,
+   "y": -8.5
+  },
+  {
+   "conector": "",
+   "n": "3",
+   "func": "Extremo (CW)",
+   "x": 5,
+   "y": -8.5
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "cilindro",
+   "forma": "redonda",
+   "L": 16,
+   "W": 16,
+   "d": 16,
+   "espesor": 7,
+   "radio": 0,
+   "color": "#9ca3af"
+  },
+  "piezas": [
+   {
+    "id": "b",
+    "plantilla": "f_cil",
+    "nombre": "Buje M7",
+    "cara": "A",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 7,
+     "alto": 7,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "e",
+    "plantilla": "f_cil",
+    "nombre": "Eje",
+    "cara": "A",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 7,
+    "params": {
+     "d": 6,
+     "alto": 8,
+     "color": "#e5e7eb"
+    }
+   },
+   {
+    "id": "t1",
+    "plantilla": "f_caja",
+    "nombre": "Pata 1",
+    "cara": "B",
+    "x": -5,
+    "y": -8.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1.2,
+     "h": 0.4,
+     "alto": 6,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t2",
+    "plantilla": "f_caja",
+    "nombre": "Pata 2",
+    "cara": "B",
+    "x": 0,
+    "y": -8.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1.2,
+     "h": 0.4,
+     "alto": 6,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t3",
+    "plantilla": "f_caja",
+    "nombre": "Pata 3",
+    "cara": "B",
+    "x": 5,
+    "y": -8.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1.2,
+     "h": 0.4,
+     "alto": 6,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": 0,
+    "cy": 0,
+    "z0": 7,
+    "z1": 14,
+    "color": "#cbd5e1",
+    "pieza": "b",
+    "d": 7
+   },
+   {
+    "f": "cil",
+    "cx": 0,
+    "cy": 0,
+    "z0": 14,
+    "z1": 22,
+    "color": "#e5e7eb",
+    "pieza": "e",
+    "d": 6
+   },
+   {
+    "f": "caja",
+    "cx": -5,
+    "cy": -8.5,
+    "z0": -6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t1",
+    "w": 1.2,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -8.5,
+    "z0": -6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t2",
+    "w": 1.2,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": 5,
+    "cy": -8.5,
+    "z0": -6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t3",
+    "w": 1.2,
+    "h": 0.4
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.734Z",
+ "cad_pendiente": true
+}

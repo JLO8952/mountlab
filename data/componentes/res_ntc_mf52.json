@@ -1,0 +1,198 @@
+{
+ "id": "res_ntc_mf52",
+ "nombre": "Termistor NTC MF52 (gota de epoxi)",
+ "tipo": "electronico",
+ "categoria": "Resistencias",
+ "etiquetas": [
+  "resistencia",
+  "THT",
+  "NTC",
+  "temperatura",
+  "sensor",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "MF52-103 3950",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Termistor de coeficiente negativo. Medir temperatura con divisor + ADC (Steinhart-Hart), limitación de arranque (NTC de potencia: otra familia).",
+  "funcionamiento": "Ley de Ohm: V = I·R. Potencia disipada P = I²·R = V²/R; elegir una potencia nominal ≥ 2 × la calculada.",
+  "voltaje": "—",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "Gota Ø3 mm · patas de 0.4 mm",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Termistor de coeficiente negativo"
+  },
+  {
+   "param": "Potencia",
+   "valor": "≤ 50 mW"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±1 % / ±5 % (R25)"
+  },
+  {
+   "param": "Coef. de temperatura",
+   "valor": "B25/50 = 3950 K típico"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "1 kΩ – 100 kΩ"
+  },
+  {
+   "param": "Marcado",
+   "valor": "103 = 10 kΩ a 25 °C"
+  }
+ ],
+ "valores": {
+  "magnitud": "resistencia",
+  "unidad": "Ω",
+  "lista": [
+   1000,
+   2200,
+   4700,
+   10000,
+   20000,
+   47000,
+   50000,
+   100000
+  ],
+  "tolerancias": [
+   "±1 %",
+   "±5 %"
+  ],
+  "beta": [
+   "3435 K",
+   "3950 K",
+   "4100 K"
+  ]
+ },
+ "imagen": {
+  "src": "img/res_ntc_mf52.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 3.5,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   3,
+   3,
+   4
+  ],
+  "forma": "redonda",
+  "base_tipo": "cilindro"
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "1",
+   "func": "Terminal",
+   "x": -1.27,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "2",
+   "func": "Terminal",
+   "x": 1.27,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "cilindro",
+   "forma": "redonda",
+   "L": 3,
+   "W": 3,
+   "d": 3,
+   "espesor": 4,
+   "radio": 0,
+   "color": "#4b5563"
+  },
+  "piezas": [
+   {
+    "id": "t1",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 1",
+    "cara": "B",
+    "x": -1.27,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t2",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 2",
+    "cara": "B",
+    "x": 1.27,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -1.27,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t1",
+    "d": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 1.27,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t2",
+    "d": 0.6
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.735Z",
+ "cad_pendiente": true
+}

@@ -1,0 +1,201 @@
+{
+ "id": "res_smd_0805",
+ "nombre": "Resistencia SMD 0805 (chip de película gruesa)",
+ "tipo": "electronico",
+ "categoria": "Resistencias",
+ "etiquetas": [
+  "resistencia",
+  "SMD",
+  "0805",
+  "1/8 W",
+  "1 %",
+  "5 %",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "RC0805 / 0805",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Película gruesa (thick film) sobre alúmina. El más cómodo para soldar a mano.",
+  "funcionamiento": "Ley de Ohm: V = I·R. Potencia disipada P = I²·R = V²/R; elegir una potencia nominal ≥ 2 × la calculada.",
+  "voltaje": "150 V",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "2 × 1.25 × 0.5 mm (métrico 2012)",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Película gruesa (thick film) sobre alúmina"
+  },
+  {
+   "param": "Potencia",
+   "valor": "1/8 W (70 °C)"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±1 % (E96) o ±5 % (E24)"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "150 V"
+  },
+  {
+   "param": "Coef. de temperatura",
+   "valor": "±100…±200 ppm/°C"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "1 Ω – 10 MΩ (serie E96)"
+  },
+  {
+   "param": "Marcado",
+   "valor": "3 dígitos (5 %), 4 dígitos o EIA-96 (1 %)"
+  }
+ ],
+ "valores": {
+  "magnitud": "resistencia",
+  "unidad": "Ω",
+  "serie": "E96",
+  "min": 1,
+  "max": 10000000,
+  "tolerancias": [
+   "±1 %",
+   "±5 %"
+  ],
+  "extra": [
+   0
+  ],
+  "comunes": "0 Ω (puente) y E24 al 5 %"
+ },
+ "imagen": {
+  "src": "img/res_smd_0805.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura",
+  "agujeros": [],
+  "altura_superior": 0.02,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   2,
+   1.25,
+   0.5
+  ],
+  "forma": "rect",
+  "base_tipo": "prisma"
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "1",
+   "func": "Terminal",
+   "x": -0.78,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "2",
+   "func": "Terminal",
+   "x": 0.78,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 2,
+   "W": 1.25,
+   "d": 2,
+   "espesor": 0.5,
+   "radio": 0,
+   "color": "#1f2937"
+  },
+  "piezas": [
+   {
+    "id": "e1",
+    "plantilla": "f_caja",
+    "nombre": "Terminación 1",
+    "cara": "A",
+    "x": -0.78,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.44,
+     "h": 1.25,
+     "alto": 0.02,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "e2",
+    "plantilla": "f_caja",
+    "nombre": "Terminación 2",
+    "cara": "A",
+    "x": 0.78,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.44,
+     "h": 1.25,
+     "alto": 0.02,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -0.78,
+    "cy": 0,
+    "z0": 0.5,
+    "z1": 0.52,
+    "color": "#cbd5e1",
+    "pieza": "e1",
+    "w": 0.44,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 0.78,
+    "cy": 0,
+    "z0": 0.5,
+    "z1": 0.52,
+    "color": "#cbd5e1",
+    "pieza": "e2",
+    "w": 0.44,
+    "h": 1.25
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.732Z",
+ "cad_pendiente": true
+}

@@ -1,0 +1,208 @@
+{
+ "id": "res_shunt_2512",
+ "nombre": "Resistencia shunt SMD 2512 para medir corriente (mΩ)",
+ "tipo": "electronico",
+ "categoria": "Resistencias",
+ "etiquetas": [
+  "resistencia",
+  "SMD",
+  "2512",
+  "shunt",
+  "medición de corriente",
+  "1 %",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "LR2512 / WSL2512",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Lámina metálica (metal strip). Sensado de corriente con INA219/INA226/ACS o amplificador diferencial. Rutear las pistas de medida tipo Kelvin.",
+  "funcionamiento": "Ley de Ohm: V = I·R. Potencia disipada P = I²·R = V²/R; elegir una potencia nominal ≥ 2 × la calculada.",
+  "voltaje": "—",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "6.35 × 3.2 × 0.6 mm",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Lámina metálica (metal strip)"
+  },
+  {
+   "param": "Potencia",
+   "valor": "1–3 W"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±1 %"
+  },
+  {
+   "param": "Coef. de temperatura",
+   "valor": "±50…±75 ppm/°C"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "0.001 Ω – 1 Ω"
+  },
+  {
+   "param": "Marcado",
+   "valor": "R005 = 5 mΩ, R100 = 100 mΩ"
+  }
+ ],
+ "valores": {
+  "magnitud": "resistencia",
+  "unidad": "Ω",
+  "lista": [
+   0.001,
+   0.002,
+   0.003,
+   0.005,
+   0.01,
+   0.015,
+   0.02,
+   0.025,
+   0.03,
+   0.05,
+   0.1,
+   0.15,
+   0.2,
+   0.25,
+   0.33,
+   0.5,
+   1
+  ],
+  "tolerancias": [
+   "±1 %"
+  ]
+ },
+ "imagen": {
+  "src": "img/res_shunt_2512.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura",
+  "agujeros": [],
+  "altura_superior": 0.02,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   6.35,
+   3.2,
+   0.6
+  ],
+  "forma": "rect",
+  "base_tipo": "prisma"
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "1",
+   "func": "Terminal",
+   "x": -2.92,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "2",
+   "func": "Terminal",
+   "x": 2.93,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 6.35,
+   "W": 3.2,
+   "d": 6.35,
+   "espesor": 0.6,
+   "radio": 0,
+   "color": "#94a3b8"
+  },
+  "piezas": [
+   {
+    "id": "e1",
+    "plantilla": "f_caja",
+    "nombre": "Terminación 1",
+    "cara": "A",
+    "x": -2.92,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 3.2,
+     "alto": 0.02,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "e2",
+    "plantilla": "f_caja",
+    "nombre": "Terminación 2",
+    "cara": "A",
+    "x": 2.93,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 3.2,
+     "alto": 0.02,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -2.92,
+    "cy": 0,
+    "z0": 0.6,
+    "z1": 0.62,
+    "color": "#cbd5e1",
+    "pieza": "e1",
+    "w": 0.5,
+    "h": 3.2
+   },
+   {
+    "f": "caja",
+    "cx": 2.93,
+    "cy": 0,
+    "z0": 0.6,
+    "z1": 0.62,
+    "color": "#cbd5e1",
+    "pieza": "e2",
+    "w": 0.5,
+    "h": 3.2
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.733Z",
+ "cad_pendiente": true
+}

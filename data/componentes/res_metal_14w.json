@@ -1,0 +1,250 @@
+{
+ "id": "res_metal_14w",
+ "nombre": "Resistencia de película metálica 1/4 W 1 % (axial)",
+ "tipo": "electronico",
+ "categoria": "Resistencias",
+ "etiquetas": [
+  "resistencia",
+  "THT",
+  "axial",
+  "1/4 W",
+  "1 %",
+  "precisión",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "MFR-25",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Película metálica. Instrumentación, divisores para ADC, filtros, ganancia de amplificadores. Menos ruido que carbón.",
+  "funcionamiento": "Ley de Ohm: V = I·R. Potencia disipada P = I²·R = V²/R; elegir una potencia nominal ≥ 2 × la calculada.",
+  "voltaje": "250 V",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "Cuerpo 6.3 × Ø2.4 mm · paso 10.16 mm",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Película metálica"
+  },
+  {
+   "param": "Potencia",
+   "valor": "0.25 W (70 °C)"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±1 % (también 0.1 %)"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "250 V"
+  },
+  {
+   "param": "Coef. de temperatura",
+   "valor": "±50…±100 ppm/°C"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "1 Ω – 10 MΩ (serie E96)"
+  },
+  {
+   "param": "Marcado",
+   "valor": "5 bandas"
+  }
+ ],
+ "valores": {
+  "magnitud": "resistencia",
+  "unidad": "Ω",
+  "serie": "E96",
+  "min": 1,
+  "max": 10000000,
+  "tolerancias": [
+   "±1 %",
+   "±0.5 %",
+   "±0.1 %"
+  ],
+  "comunes": "E24 en stock"
+ },
+ "imagen": {
+  "src": "img/res_metal_14w.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 4.7,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   6.3,
+   2.4,
+   2.4
+  ],
+  "forma": "redondeada",
+  "base_tipo": "prisma",
+  "radio": 0.96
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "1",
+   "func": "Terminal",
+   "x": -5.08,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "2",
+   "func": "Terminal",
+   "x": 5.08,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "redondeada",
+   "L": 6.3,
+   "W": 2.4,
+   "d": 6.3,
+   "espesor": 2.4,
+   "radio": 0.96,
+   "color": "#60a5fa"
+  },
+  "piezas": [
+   {
+    "id": "t1",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 1",
+    "cara": "B",
+    "x": -5.08,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 4.7,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t2",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 2",
+    "cara": "B",
+    "x": 5.08,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 4.7,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "h1",
+    "plantilla": "f_caja",
+    "nombre": "Alambre 1",
+    "cara": "B",
+    "x": -4.115,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 2.5300000000000002,
+     "h": 0.6,
+     "alto": 0.6,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "h2",
+    "plantilla": "f_caja",
+    "nombre": "Alambre 2",
+    "cara": "B",
+    "x": 4.115,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 2.5300000000000002,
+     "h": 0.6,
+     "alto": 0.6,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -5.08,
+    "cy": 0,
+    "z0": -4.7,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t1",
+    "d": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 5.08,
+    "cy": 0,
+    "z0": -4.7,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t2",
+    "d": 0.6
+   },
+   {
+    "f": "caja",
+    "cx": -4.115,
+    "cy": 0,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "h1",
+    "w": 2.5300000000000002,
+    "h": 0.6
+   },
+   {
+    "f": "caja",
+    "cx": 4.115,
+    "cy": 0,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "h2",
+    "w": 2.5300000000000002,
+    "h": 0.6
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.729Z",
+ "cad_pendiente": true
+}

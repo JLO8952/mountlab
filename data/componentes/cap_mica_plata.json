@@ -1,0 +1,196 @@
+{
+ "id": "cap_mica_plata",
+ "nombre": "Capacitor de mica plateada",
+ "tipo": "electronico",
+ "categoria": "Capacitores",
+ "etiquetas": [
+  "capacitor",
+  "THT",
+  "mica",
+  "RF",
+  "precisión",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "CM / Silver mica",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Mica con electrodos de plata. RF, osciladores LC, filtros de precisión.",
+  "funcionamiento": "Almacena carga: Q = C·V; corriente i = C·dV/dt; reactancia Xc = 1 / (2π f C). Elegir voltaje nominal con margen.",
+  "voltaje": "500 V",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "≈ 10 × 4 × 9 mm · paso 5 mm",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Mica con electrodos de plata"
+  },
+  {
+   "param": "Voltaje",
+   "valor": "100–500 V"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±1 / ±5 %"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "500 V"
+  },
+  {
+   "param": "Estabilidad",
+   "valor": "±50 ppm/°C, muy bajo envejecimiento"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "1 pF – 10 nF (serie E12)"
+  },
+  {
+   "param": "Marcado",
+   "valor": "Impreso en pF"
+  }
+ ],
+ "valores": {
+  "magnitud": "capacitancia",
+  "unidad": "F",
+  "serie": "E12",
+  "min": 1e-12,
+  "max": 1e-08,
+  "tolerancias": [
+   "±1 %",
+   "±5 %"
+  ],
+  "voltajes": [
+   "100 V",
+   "300 V",
+   "500 V"
+  ]
+ },
+ "imagen": {
+  "src": "img/cap_mica_plata.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 3.5,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   10,
+   4,
+   9
+  ],
+  "forma": "redondeada",
+  "base_tipo": "prisma",
+  "radio": 1.5
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "1",
+   "func": "Terminal",
+   "x": -2.54,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "2",
+   "func": "Terminal",
+   "x": 2.54,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "redondeada",
+   "L": 10,
+   "W": 4,
+   "d": 10,
+   "espesor": 9,
+   "radio": 1.5,
+   "color": "#92400e"
+  },
+  "piezas": [
+   {
+    "id": "t1",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 1",
+    "cara": "B",
+    "x": -2.54,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t2",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 2",
+    "cara": "B",
+    "x": 2.54,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -2.54,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t1",
+    "d": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 2.54,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t2",
+    "d": 0.6
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.741Z",
+ "cad_pendiente": true
+}

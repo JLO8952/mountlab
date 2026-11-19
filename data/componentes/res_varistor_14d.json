@@ -1,0 +1,190 @@
+{
+ "id": "res_varistor_14d",
+ "nombre": "Varistor de óxido metálico (MOV) disco 14 mm",
+ "tipo": "electronico",
+ "categoria": "Resistencias",
+ "etiquetas": [
+  "resistencia",
+  "THT",
+  "varistor",
+  "MOV",
+  "protección",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "14D471K",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Óxido de zinc. Protección contra sobretensiones en la entrada de 120/220 VAC (en paralelo, después del fusible).",
+  "funcionamiento": "Ley de Ohm: V = I·R. Potencia disipada P = I²·R = V²/R; elegir una potencia nominal ≥ 2 × la calculada.",
+  "voltaje": "300 VAC (471)",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "Disco Ø16 × 6 mm · paso 7.5 mm",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Óxido de zinc"
+  },
+  {
+   "param": "Potencia",
+   "valor": "0.6 W · 4.5 kA (8/20 µs)"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±10 %"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "300 VAC (471)"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "ver valores"
+  },
+  {
+   "param": "Marcado",
+   "valor": "14D471K: Ø14, 470 V, ±10 %"
+  }
+ ],
+ "valores": {
+  "magnitud": "resistencia",
+  "unidad": "Ω",
+  "lista": [],
+  "codigos": [
+   "07D471K",
+   "10D471K",
+   "14D471K",
+   "14D391K",
+   "14D221K",
+   "20D471K"
+  ],
+  "notas": "471 = 470 V de umbral (≈ 300 VAC) · 391 = 390 V (≈ 250 VAC) · 221 = 220 V (≈ 140 VAC)"
+ },
+ "imagen": {
+  "src": "img/res_varistor_14d.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 3.5,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   16,
+   6,
+   17
+  ],
+  "forma": "redondeada",
+  "base_tipo": "prisma",
+  "radio": 2.4
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "1",
+   "func": "Terminal",
+   "x": -3.75,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "2",
+   "func": "Terminal",
+   "x": 3.75,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "redondeada",
+   "L": 16,
+   "W": 6,
+   "d": 16,
+   "espesor": 17,
+   "radio": 2.4,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "t1",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 1",
+    "cara": "B",
+    "x": -3.75,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t2",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 2",
+    "cara": "B",
+    "x": 3.75,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -3.75,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t1",
+    "d": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 3.75,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t2",
+    "d": 0.6
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.735Z",
+ "cad_pendiente": true
+}

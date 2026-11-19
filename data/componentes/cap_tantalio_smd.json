@@ -1,0 +1,206 @@
+{
+ "id": "cap_tantalio_smd",
+ "nombre": "Capacitor de tantalio SMD (casos A–E)",
+ "tipo": "electronico",
+ "categoria": "Capacitores",
+ "etiquetas": [
+  "capacitor",
+  "SMD",
+  "tantalio",
+  "polarizado",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "TAJ / T491",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Tantalio sólido moldeado. Desacople y LDO que exigen ESR > 0. La FRANJA marca el POSITIVO (al revés que el electrolítico).",
+  "funcionamiento": "Almacena carga: Q = C·V; corriente i = C·dV/dt; reactancia Xc = 1 / (2π f C). Elegir voltaje nominal con margen.",
+  "voltaje": "4–50 V",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "Caso B 3.5 × 2.8 × 1.9 mm (A 3.2×1.6, C 6.0×3.2, D 7.3×4.3)",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Tantalio sólido moldeado"
+  },
+  {
+   "param": "Voltaje",
+   "valor": "4–50 V"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±10 / ±20 %"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "4–50 V"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "100 nF – 1000 µF (serie E6)"
+  },
+  {
+   "param": "Marcado",
+   "valor": "Impreso: 106 16 (10 µF 16 V) o código letra"
+  }
+ ],
+ "valores": {
+  "magnitud": "capacitancia",
+  "unidad": "F",
+  "serie": "E6",
+  "min": 1e-07,
+  "max": 0.001,
+  "tolerancias": [
+   "±10 %",
+   "±20 %"
+  ],
+  "voltajes": [
+   "4 V",
+   "6.3 V",
+   "10 V",
+   "16 V",
+   "25 V",
+   "35 V"
+  ],
+  "casos": [
+   "A",
+   "B",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ "imagen": {
+  "src": "img/cap_tantalio_smd.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura",
+  "agujeros": [],
+  "altura_superior": 0.02,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   3.5,
+   2.8,
+   1.9
+  ],
+  "forma": "rect",
+  "base_tipo": "prisma"
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "+",
+   "func": "Ánodo (marcado)",
+   "x": -1.5,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "−",
+   "func": "Cátodo",
+   "x": 1.5,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 3.5,
+   "W": 2.8,
+   "d": 3.5,
+   "espesor": 1.9,
+   "radio": 0,
+   "color": "#eab308"
+  },
+  "piezas": [
+   {
+    "id": "e1",
+    "plantilla": "f_caja",
+    "nombre": "Terminación 1",
+    "cara": "A",
+    "x": -1.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 2.8,
+     "alto": 0.02,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "e2",
+    "plantilla": "f_caja",
+    "nombre": "Terminación 2",
+    "cara": "A",
+    "x": 1.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 2.8,
+     "alto": 0.02,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -1.5,
+    "cy": 0,
+    "z0": 1.9,
+    "z1": 1.92,
+    "color": "#cbd5e1",
+    "pieza": "e1",
+    "w": 0.5,
+    "h": 2.8
+   },
+   {
+    "f": "caja",
+    "cx": 1.5,
+    "cy": 0,
+    "z0": 1.9,
+    "z1": 1.92,
+    "color": "#cbd5e1",
+    "pieza": "e2",
+    "w": 0.5,
+    "h": 2.8
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.738Z",
+ "cad_pendiente": true
+}

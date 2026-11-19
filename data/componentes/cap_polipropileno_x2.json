@@ -1,0 +1,196 @@
+{
+ "id": "cap_polipropileno_x2",
+ "nombre": "Capacitor de polipropileno X2 (seguridad, línea 220 VAC)",
+ "tipo": "electronico",
+ "categoria": "Capacitores",
+ "etiquetas": [
+  "capacitor",
+  "THT",
+  "película",
+  "polipropileno",
+  "X2",
+  "seguridad",
+  "AC",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "MKP X2 310VAC",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Polipropileno metalizado clase X2. Entre fase y neutro en filtros EMI, fuentes sin transformador (capacitivas). Siempre con resistencia de descarga de 1 MΩ en paralelo.",
+  "funcionamiento": "Almacena carga: Q = C·V; corriente i = C·dV/dt; reactancia Xc = 1 / (2π f C). Elegir voltaje nominal con margen.",
+  "voltaje": "310 VAC",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "Caja 18 × 8.5 × 14.5 mm · paso 15 mm (según valor)",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Polipropileno metalizado clase X2"
+  },
+  {
+   "param": "Voltaje",
+   "valor": "275–310 VAC"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±10 %"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "310 VAC"
+  },
+  {
+   "param": "Estabilidad",
+   "valor": "Autorregenerable"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "10 nF – 4.7 µF (serie E6)"
+  },
+  {
+   "param": "Marcado",
+   "valor": "474K = 470 nF ±10 %"
+  }
+ ],
+ "valores": {
+  "magnitud": "capacitancia",
+  "unidad": "F",
+  "serie": "E6",
+  "min": 1e-08,
+  "max": 4.7e-06,
+  "tolerancias": [
+   "±10 %"
+  ],
+  "voltajes": [
+   "275 VAC",
+   "310 VAC"
+  ]
+ },
+ "imagen": {
+  "src": "img/cap_polipropileno_x2.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 3.5,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   18,
+   8.5,
+   14.5
+  ],
+  "forma": "redondeada",
+  "base_tipo": "prisma",
+  "radio": 0.6
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "1",
+   "func": "Terminal",
+   "x": -7.5,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "2",
+   "func": "Terminal",
+   "x": 7.5,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "redondeada",
+   "L": 18,
+   "W": 8.5,
+   "d": 18,
+   "espesor": 14.5,
+   "radio": 0.6,
+   "color": "#facc15"
+  },
+  "piezas": [
+   {
+    "id": "t1",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 1",
+    "cara": "B",
+    "x": -7.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t2",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 2",
+    "cara": "B",
+    "x": 7.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -7.5,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t1",
+    "d": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 7.5,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t2",
+    "d": 0.6
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.738Z",
+ "cad_pendiente": true
+}

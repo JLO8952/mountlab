@@ -169,6 +169,7 @@
       } else {
         const it = intencion(q);
         if (it && it.s >= 0.85 && !it.a.ui && !acciones(ctx).some(a => a.id === it.a.id)) g("Orden", [{ ic: "⚡", n: it.a.n, sub: "orden", run: () => ejecutar(it.a) }]);
+        if (API.extra) g("Valor", API.extra(q));
         g("Componentes", API.componentes(q, 7).map(r => ({ ic: API.mini(r.c), n: r.c.nombre, sub: r.c.categoria, run: () => { location.hash = "#/c/" + encodeURIComponent(r.c.id); } })));
         g("Acciones", buscar(q, ctx, 7).map(r => ({ ic: r.a.ic || "•", n: r.a.n, sub: r.a.ui ? "en pantalla" : (r.a.grupo || ""), run: () => ejecutar(r.a) })));
         g("Proyectos", API.proyectos(q, 4).map(r => ({ ic: "📁", n: r.p.nombre, sub: r.p.estado || "", run: () => { location.hash = "#/p/" + encodeURIComponent(r.p.id); } })));

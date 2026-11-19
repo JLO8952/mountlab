@@ -52,6 +52,12 @@ Se dibuja en 2D (vista superior) con formas simples y plantillas; la vista 3D (t
 ## Plano de taller (`<id>_v<N>_plano.dxf`)
 Vista superior, frontal y lateral izquierda (ISO-E, primer diedro) a escala 1:1 en mm, con cotas generales (largo, ancho, alto total, espesor de placa, distancia entre agujeros extremos), llamadas de agujeros (`4x Ø3 pasante`), ejes y cajetín (nombre, id, versión, fecha, escala, origen, envolvente). Capas: CONTORNO, PIEZAS, OCULTAS, CENTRO, COTAS, TEXTO, MARCO.
 
+## Anexo de pasivos (`#/pasivos`)
+- **45 familias** generadas por `tools/pasivos.mjs` (`node tools/pasivos.mjs`; `--forzar` para regenerarlas): 25 de resistencias (carbón y película metálica 1/4–1/2 W, óxido metálico 1–3 W, cemento 5/10 W, aluminio 25 W, SMD 0402–2512, shunt de mΩ, red SIP-9, potenciómetro, trimmers, NTC, LDR, varistor, polyfuse) y 20 de capacitores (disco, multicapa THT, MLCC 0402–1210, electrolítico radial y SMD, polímero, tantalio THT/SMD, poliéster, X2, Y1, mica, trimmer, supercapacitores, CBB61).
+- Cada familia trae ficha, especificaciones, **valores comerciales** (`valores`: serie E o lista, tolerancias, voltajes…), pines con posición, montaje y modelo 3D con medidas típicas (imagen = render del modelo). La Action genera su DXF, STEP y plano.
+- La vista tiene: buscador de valores y códigos (`4k7`, `100n`, `104`, `473J`, `2A104J`, `01C`, `4702`) con bandas de color, códigos SMD/EIA-96, serie E y familias que lo tienen; lector de código de colores de 4/5/6 bandas; calculadoras (LED, divisor, RC); series E3–E96; tablas (tamaños SMD, electrolíticos, dieléctricos, tantalio, EIA-96) y una guía rápida.
+- En el BOM, las familias llevan un campo **Valor** (se normaliza: “4k7” → 4.7 kΩ) y sale en el CSV. Tabla de referencia: `data/tablas/pasivos.json`.
+
 ## Interfaz
 - Tema oscuro, barra lateral (barra inferior en el celular), **Inicio** con indicadores, sugerencias y salud de la biblioteca.
 - **Ctrl+K** (o `/`): buscador global de componentes, proyectos, acciones y botones de la pantalla; también entiende órdenes.

@@ -1,0 +1,198 @@
+{
+ "id": "cap_tantalio_gota",
+ "nombre": "Capacitor de tantalio en gota (THT)",
+ "tipo": "electronico",
+ "categoria": "Capacitores",
+ "etiquetas": [
+  "capacitor",
+  "THT",
+  "tantalio",
+  "polarizado",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "TAP / CA42",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Tantalio sólido (MnO₂). Desacople estable de pocos µF. Usar 2 × de margen de voltaje (derating 50 %). El '+' está marcado en el cuerpo.",
+  "funcionamiento": "Almacena carga: Q = C·V; corriente i = C·dV/dt; reactancia Xc = 1 / (2π f C). Elegir voltaje nominal con margen.",
+  "voltaje": "4–50 V",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "5 × 3 × 7 mm · paso 2.54 mm",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Tantalio sólido (MnO₂)"
+  },
+  {
+   "param": "Voltaje",
+   "valor": "4–50 V"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±10 / ±20 %"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "4–50 V"
+  },
+  {
+   "param": "Estabilidad",
+   "valor": "Estable; falla en corto si se invierte o se excede el voltaje"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "100 nF – 470 µF (serie E6)"
+  },
+  {
+   "param": "Marcado",
+   "valor": "106 = 10 µF (en pF: 10×10⁶)"
+  }
+ ],
+ "valores": {
+  "magnitud": "capacitancia",
+  "unidad": "F",
+  "serie": "E6",
+  "min": 1e-07,
+  "max": 0.00047,
+  "tolerancias": [
+   "±10 %",
+   "±20 %"
+  ],
+  "voltajes": [
+   "6.3 V",
+   "10 V",
+   "16 V",
+   "25 V",
+   "35 V",
+   "50 V"
+  ]
+ },
+ "imagen": {
+  "src": "img/cap_tantalio_gota.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 3.5,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   5,
+   3,
+   7
+  ],
+  "forma": "redondeada",
+  "base_tipo": "prisma",
+  "radio": 1.2
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "+",
+   "func": "Positivo (pata larga)",
+   "x": -1.27,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "−",
+   "func": "Negativo (franja)",
+   "x": 1.27,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "redondeada",
+   "L": 5,
+   "W": 3,
+   "d": 5,
+   "espesor": 7,
+   "radio": 1.2,
+   "color": "#eab308"
+  },
+  "piezas": [
+   {
+    "id": "t1",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 1",
+    "cara": "B",
+    "x": -1.27,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t2",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 2",
+    "cara": "B",
+    "x": 1.27,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -1.27,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t1",
+    "d": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 1.27,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t2",
+    "d": 0.6
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.737Z",
+ "cad_pendiente": true
+}

@@ -1,0 +1,191 @@
+{
+ "id": "cap_ceramico_y1",
+ "nombre": "Capacitor cerámico Y1 (seguridad, línea a tierra)",
+ "tipo": "electronico",
+ "categoria": "Capacitores",
+ "etiquetas": [
+  "capacitor",
+  "THT",
+  "cerámico",
+  "Y1",
+  "seguridad",
+  "AC",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "Y1 400VAC",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Cerámica de seguridad clase Y1. Entre fase/neutro y tierra o a través de la barrera de aislamiento de fuentes conmutadas (falla en abierto).",
+  "funcionamiento": "Almacena carga: Q = C·V; corriente i = C·dV/dt; reactancia Xc = 1 / (2π f C). Elegir voltaje nominal con margen.",
+  "voltaje": "400 VAC",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "Disco Ø10 × 5 mm · paso 10 mm",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Cerámica de seguridad clase Y1"
+  },
+  {
+   "param": "Voltaje",
+   "valor": "400–500 VAC"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±20 %"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "400 VAC"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "100 pF – 4.7 nF (serie E6)"
+  },
+  {
+   "param": "Marcado",
+   "valor": "222M = 2.2 nF"
+  }
+ ],
+ "valores": {
+  "magnitud": "capacitancia",
+  "unidad": "F",
+  "serie": "E6",
+  "min": 1e-10,
+  "max": 4.7e-09,
+  "tolerancias": [
+   "±20 %"
+  ],
+  "voltajes": [
+   "400 VAC",
+   "500 VAC"
+  ]
+ },
+ "imagen": {
+  "src": "img/cap_ceramico_y1.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 3.5,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   10,
+   5,
+   12
+  ],
+  "forma": "redondeada",
+  "base_tipo": "prisma",
+  "radio": 2
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "1",
+   "func": "Terminal",
+   "x": -5,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "2",
+   "func": "Terminal",
+   "x": 5,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "redondeada",
+   "L": 10,
+   "W": 5,
+   "d": 10,
+   "espesor": 12,
+   "radio": 2,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "t1",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 1",
+    "cara": "B",
+    "x": -5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t2",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 2",
+    "cara": "B",
+    "x": 5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -5,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t1",
+    "d": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 5,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t2",
+    "d": 0.6
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.739Z",
+ "cad_pendiente": true
+}

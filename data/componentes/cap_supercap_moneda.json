@@ -1,0 +1,193 @@
+{
+ "id": "cap_supercap_moneda",
+ "nombre": "Supercapacitor tipo moneda 5.5 V",
+ "tipo": "electronico",
+ "categoria": "Capacitores",
+ "etiquetas": [
+  "capacitor",
+  "THT",
+  "supercapacitor",
+  "respaldo",
+  "polarizado",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "5R5 1F (H)",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Doble capa eléctrica (EDLC), 2 celdas en serie. Respaldo de RTC y memoria (no para picos de corriente).",
+  "funcionamiento": "Almacena carga: Q = C·V; corriente i = C·dV/dt; reactancia Xc = 1 / (2π f C). Elegir voltaje nominal con margen.",
+  "voltaje": "5.5 V",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "Ø21.5 × 7.5 mm (H horizontal) · paso 5 mm",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Doble capa eléctrica (EDLC), 2 celdas en serie"
+  },
+  {
+   "param": "Voltaje",
+   "valor": "5.5 V"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "−20/+80 %"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "5.5 V"
+  },
+  {
+   "param": "Estabilidad",
+   "valor": "ESR alto (≈ 30–100 Ω)"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "0.1 F – 1.5 F"
+  },
+  {
+   "param": "Marcado",
+   "valor": "5R5 105 = 5.5 V 1 F"
+  }
+ ],
+ "valores": {
+  "magnitud": "capacitancia",
+  "unidad": "F",
+  "lista": [
+   0.1,
+   0.22,
+   0.47,
+   1,
+   1.5
+  ],
+  "voltajes": [
+   "5.5 V"
+  ]
+ },
+ "imagen": {
+  "src": "img/cap_supercap_moneda.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 3.5,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   21.5,
+   21.5,
+   7.5
+  ],
+  "forma": "redonda",
+  "base_tipo": "cilindro"
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "+",
+   "func": "Positivo (pata larga)",
+   "x": -2.5,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "−",
+   "func": "Negativo (franja)",
+   "x": 2.5,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "cilindro",
+   "forma": "redonda",
+   "L": 21.5,
+   "W": 21.5,
+   "d": 21.5,
+   "espesor": 7.5,
+   "radio": 0,
+   "color": "#cbd5e1"
+  },
+  "piezas": [
+   {
+    "id": "t1",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 1",
+    "cara": "B",
+    "x": -2.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t2",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 2",
+    "cara": "B",
+    "x": 2.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -2.5,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t1",
+    "d": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 2.5,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t2",
+    "d": 0.6
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.742Z",
+ "cad_pendiente": true
+}

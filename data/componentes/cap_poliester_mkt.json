@@ -1,0 +1,198 @@
+{
+ "id": "cap_poliester_mkt",
+ "nombre": "Capacitor de película de poliéster (MKT / mylar)",
+ "tipo": "electronico",
+ "categoria": "Capacitores",
+ "etiquetas": [
+  "capacitor",
+  "THT",
+  "película",
+  "poliéster",
+  "no polarizado",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "MKT / 2A104J",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Poliéster metalizado (PET). Filtros de audio, temporizadores 555, acople, snubbers de baja potencia.",
+  "funcionamiento": "Almacena carga: Q = C·V; corriente i = C·dV/dt; reactancia Xc = 1 / (2π f C). Elegir voltaje nominal con margen.",
+  "voltaje": "63–630 V",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "Caja 7.2 × 4.5 × 9 mm · paso 5 mm (también 'chiclet' verde)",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Poliéster metalizado (PET)"
+  },
+  {
+   "param": "Voltaje",
+   "valor": "63–630 V"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±5 % (J) / ±10 % (K)"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "63–630 V"
+  },
+  {
+   "param": "Estabilidad",
+   "valor": "Estable, autorregenerable"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "1 nF – 10 µF (serie E6)"
+  },
+  {
+   "param": "Marcado",
+   "valor": "2A104J = 100 V, 100 nF, ±5 %"
+  }
+ ],
+ "valores": {
+  "magnitud": "capacitancia",
+  "unidad": "F",
+  "serie": "E6",
+  "min": 1e-09,
+  "max": 1e-05,
+  "tolerancias": [
+   "±5 % (J)",
+   "±10 % (K)"
+  ],
+  "voltajes": [
+   "63 V",
+   "100 V",
+   "250 V",
+   "400 V",
+   "630 V"
+  ]
+ },
+ "imagen": {
+  "src": "img/cap_poliester_mkt.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 3.5,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   7.2,
+   4.5,
+   9
+  ],
+  "forma": "redondeada",
+  "base_tipo": "prisma",
+  "radio": 0.6
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "1",
+   "func": "Terminal",
+   "x": -2.5,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "2",
+   "func": "Terminal",
+   "x": 2.5,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "redondeada",
+   "L": 7.2,
+   "W": 4.5,
+   "d": 7.2,
+   "espesor": 9,
+   "radio": 0.6,
+   "color": "#dc2626"
+  },
+  "piezas": [
+   {
+    "id": "t1",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 1",
+    "cara": "B",
+    "x": -2.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t2",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 2",
+    "cara": "B",
+    "x": 2.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -2.5,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t1",
+    "d": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 2.5,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t2",
+    "d": 0.6
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.738Z",
+ "cad_pendiente": true
+}

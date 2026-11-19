@@ -58,11 +58,12 @@
     if (S.ed) { S.ed.destroy(); S.ed = null; }
     if (!h.startsWith("#/c/")) { S.W = null; S.orig = null; }
     const [, r, id] = h.split("/");
-    $$("#nav a").forEach(a => a.classList.toggle("act", a.dataset.r === ({ "": "inicio", asistente: "inicio", invitacion: "inicio", c: "catalogo", p: "proyectos" }[r] ?? r)));
+    $$("#nav a").forEach(a => a.classList.toggle("act", a.dataset.r === ({ "": "inicio", asistente: "inicio", invitacion: "inicio", c: "catalogo", p: "proyectos", pasivos: "pasivos" }[r] ?? r)));
     window.scrollTo(0, 0);
     if (r !== "asistente" && $("#drawer").classList.contains("wide")) { $("#drawer").classList.remove("wide"); document.body.classList.remove("drawer-wide"); }
     if (r === "asistente") { abrirAsistente(true); history.replaceState(null, "", "#/"); lastHash = "#/"; return vInicio(); }
     if (r === "catalogo") return vCatalogo();
+    if (r === "pasivos") return vPasivos();
     if (r === "c" && id) return vComponente(decodeURIComponent(id));
     if (r === "proyectos") return vProyectos();
     if (r === "p" && id) return vProyecto(decodeURIComponent(id));
@@ -105,7 +106,7 @@
       <section>
         <div class="row" style="justify-content:space-between;margin-bottom:12px">
           <div class="stats" id="stats" style="margin:0"></div>
-          <div class="row"><button class="sm ${f.vista === "tarjetas" ? "on" : ""}" data-v="tarjetas">Tarjetas</button><button class="sm ${f.vista === "tabla" ? "on" : ""}" data-v="tabla">Tabla</button><button class="pri" id="bNew">+ Nuevo</button></div>
+          <div class="row"><button class="sm ${f.vista === "tarjetas" ? "on" : ""}" data-v="tarjetas">Tarjetas</button><button class="sm ${f.vista === "tabla" ? "on" : ""}" data-v="tabla">Tabla</button><a class="btn" href="#/pasivos" title="Resistencias y capacitores: valores, códigos y calculadoras">Ω Pasivos</a><button class="pri" id="bNew">+ Nuevo</button></div>
         </div>
         <div id="lst"></div>
       </section></div>`;
@@ -247,17 +248,17 @@
     } catch (e) { toast("Quedó guardado localmente. Error al subir: " + e.message, 6000); }
     S.nuevo = null; S.orig = JSON.stringify(W); estadoPill(); vComponente(W.id);
   }
-  async function aProyecto(id) {
-    const ps = Store.db.proyectos;
+  async function aProyecto(id, valor) {
+    const ps = Store.db.proyectos, cc = comp(id), fam = cc && cc.valores;
     const r = await modal(`<h3>Añadir a proyecto</h3>
       <div><label>Proyecto</label><select id="aP">${ps.map(p => `<option value="${esc(p.id)}">${esc(p.nombre)}</option>`).join("")}<option value="__nuevo">+ Nuevo proyecto…</option></select></div>
-      <div class="grid2"><div><label>Cantidad</label><input id="aC" type="number" min="1" value="1"></div><div><label>Nota</label><input id="aN"></div></div>
+      <div class="grid${fam ? 3 : 2}">${fam ? `<div><label>Valor (${esc(cc.valores.unidad)})</label><input id="aV" placeholder="${cc.valores.magnitud === "resistencia" ? "ej. 4k7" : "ej. 100n"}" value="${esc(valor || "")}"></div>` : ""}<div><label>Cantidad</label><input id="aC" type="number" min="1" value="1"></div><div><label>Nota</label><input id="aN"></div></div>
       <div class="row" style="justify-content:flex-end"><button data-close>Cancelar</button><button class="pri" id="aOk">Añadir</button></div>`, (b, close) => {
-      $("#aOk", b).onclick = () => close({ p: $("#aP", b).value, n: +$("#aC", b).value || 1, nota: $("#aN", b).value });
+      $("#aOk", b).onclick = () => close({ p: $("#aP", b).value, n: +$("#aC", b).value || 1, nota: $("#aN", b).value, v: fam ? valorBonito(cc, $("#aV", b).value) : "" });
     });
     if (!r) return;
     let p = r.p === "__nuevo" ? await crearProyecto(true) : clone(ps.find(x => x.id === r.p)); if (!p) return;
-    const ex = p.bom.find(b => b.id === id); if (ex) ex.cantidad += r.n; else p.bom.push({ id, cantidad: r.n, nota: r.nota });
+    const ex = p.bom.find(b => b.id === id && (b.valor || "") === (r.v || "")); if (ex) ex.cantidad += r.n; else p.bom.push(Object.assign({ id, cantidad: r.n, nota: r.nota }, r.v ? { valor: r.v } : {}));
     p.historial = p.historial || []; p.historial.push({ fecha: hoy(), nota: `Añadido ${id} × ${r.n}` });
     try { await Store.save("proyectos", p, `Proyecto ${p.id}: añadir ${id}`); toast("Añadido a " + p.nombre); } catch (e) { toast("Error: " + e.message, 5000); }
     estadoPill();
@@ -317,6 +318,7 @@
             <td><div class="row" style="flex-wrap:nowrap"><input data-pr="${i}" data-k="url" value="${esc(p.url || "")}">${p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">↗</a>` : ""}</div></td><td><input data-pr="${i}" data-k="fecha" value="${esc(p.fecha || "")}" style="width:90px"></td><td><button class="sm" data-prx="${i}">✕</button></td></tr>`).join("")}</table>
           ${(W.precios || []).some(p => p.estimado) ? '<div class="small muted" style="margin-top:6px">Algunos precios son estimados (nov-2026). Al editarlos se marcan como reales.</div>' : ""}</div>
       </div></div>`;
+    if (W.valores) { body.insertAdjacentHTML("beforeend", panelValores(W)); $$("[data-vv]", body).forEach(c => c.onclick = () => { S.pvQ = c.dataset.vv; S.ptab = "valor"; location.hash = "#/pasivos"; }); }
     $$("[data-f]", body).forEach(i => i.oninput = () => { F[i.dataset.f] = i.value; ch(); });
     $$("[data-r]", body).forEach(i => i.oninput = i.onchange = () => { W[i.dataset.r] = i.value; ch(); });
     $("#tags").oninput = e => { W.etiquetas = e.target.value.split(",").map(s => s.trim()).filter(Boolean); ch(); };
@@ -586,7 +588,7 @@
             <div class="panel"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Lista de materiales (BOM)</h3><div class="picker" style="width:320px"><input id="pk" placeholder="+ Añadir componente: buscar…"><div class="res hide" id="pkR"></div></div></div>
               <div style="overflow:auto;margin-top:8px"><table class="t"><tr><th></th><th>Componente</th><th class="num">Cant.</th><th>Nota</th><th class="num">Unitario</th><th class="num">Subtotal</th><th></th></tr>
               ${P.bom.map((b, i) => { const c = comp(b.id), pm = c && precioMin(c); return `<tr><td style="width:44px"><div style="width:40px;height:30px;display:flex;align-items:center;justify-content:center;overflow:hidden">${c ? imgHtml(c).replace("<svg ", '<svg style="max-width:40px;max-height:30px" ').replace("<img ", '<img style="max-width:40px;max-height:30px" ') : ""}</div></td>
-                <td>${c ? `<a href="#/c/${esc(c.id)}">${esc(c.nombre)}</a><div class="small muted">${esc(c.categoria)}</div>` : `<span class="tag bad">${esc(b.id)} no existe</span>`}</td>
+                <td>${c ? `<a href="#/c/${esc(c.id)}">${esc(c.nombre)}</a><div class="small muted">${esc(c.categoria)}</div>${c.valores ? `<input data-b="${i}" data-k="valor" value="${esc(b.valor || "")}" placeholder="Valor: ${c.valores.magnitud === "resistencia" ? "ej. 4k7" : "ej. 100n"}" style="margin-top:4px;max-width:160px;padding:4px 7px">` : ""}` : `<span class="tag bad">${esc(b.id)} no existe</span>`}</td>
                 <td class="num" style="width:80px"><input type="number" min="0" data-b="${i}" data-k="cantidad" value="${b.cantidad}" style="text-align:right"></td>
                 <td><input data-b="${i}" data-k="nota" value="${esc(b.nota || "")}"></td><td class="num small">${pm ? cop(pm.precio_cop) + `<div class="muted">${esc(pm.proveedor)}</div>` : "—"}</td><td class="num">${pm ? cop(pm.precio_cop * b.cantidad) : "—"}</td><td><button class="sm" data-bx="${i}">✕</button></td></tr>`; }).join("") || '<tr><td colspan="7" class="muted">Busca y añade componentes arriba.</td></tr>'}
               </table></div></div>
@@ -606,7 +608,7 @@
       $("#pEs").onchange = e => { P.estado = e.target.value; set(); };
       $("#pDs").onchange = e => { P.descripcion = e.target.value; set(); };
       $("#pDoc").onchange = e => { P.documentacion = e.target.value; set(); };
-      $$("[data-b]").forEach(i => i.onchange = () => { const b = P.bom[+i.dataset.b]; b[i.dataset.k] = i.dataset.k === "cantidad" ? Math.max(0, +i.value) : i.value; set(); });
+      $$("[data-b]").forEach(i => i.onchange = () => { const b = P.bom[+i.dataset.b]; b[i.dataset.k] = i.dataset.k === "cantidad" ? Math.max(0, +i.value) : i.dataset.k === "valor" ? valorBonito(comp(b.id), i.value) : i.value; if (i.dataset.k === "valor") i.value = b.valor; set(); });
       $$("[data-bx]").forEach(x => x.onclick = () => { const b = P.bom.splice(+x.dataset.bx, 1)[0]; P.historial.push({ fecha: hoy(), nota: "Quitado " + b.id }); set(); });
       const pk = $("#pk"), res = $("#pkR");
       pk.oninput = () => {
@@ -621,8 +623,8 @@
         estadoPill(); vProyecto(P.id);
       };
       $("#pCsv").onclick = () => {
-        const rows = [["Item", "Id", "Componente", "Categoría", "Cantidad", "Unidad", "Proveedor", "Precio unitario COP", "Subtotal COP", "Enlace", "Nota"]];
-        P.bom.forEach((b, i) => { const c = comp(b.id) || {}, pm = precioMin(c); rows.push([i + 1, b.id, c.nombre || "", c.categoria || "", b.cantidad, c.unidad || "", pm ? pm.proveedor : "", pm ? pm.precio_cop : "", pm ? pm.precio_cop * b.cantidad : "", pm ? pm.url : "", b.nota || ""]); });
+        const rows = [["Item", "Id", "Componente", "Valor", "Categoría", "Cantidad", "Unidad", "Proveedor", "Precio unitario COP", "Subtotal COP", "Enlace", "Nota"]];
+        P.bom.forEach((b, i) => { const c = comp(b.id) || {}, pm = precioMin(c); rows.push([i + 1, b.id, c.nombre || "", b.valor || "", c.categoria || "", b.cantidad, c.unidad || "", pm ? pm.proveedor : "", pm ? pm.precio_cop : "", pm ? pm.precio_cop * b.cantidad : "", pm ? pm.url : "", b.nota || ""]); });
         download(`BOM_${P.id}.csv`, "\ufeff" + rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(";")).join("\r\n"), "text/csv");
       };
       $("#pDup").onclick = async () => { const n = clone(P); n.id = P.id + "-copia"; n.nombre = P.nombre + " (copia)"; n.creado = hoy(); n.historial = [{ fecha: hoy(), nota: "Copia de " + P.id }]; try { await Store.save("proyectos", n, `Proyecto ${n.id}: copia de ${P.id}`); } catch (e) { toast(e.message); } location.hash = "#/p/" + n.id; };
@@ -1134,6 +1136,162 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
     };
   }
 
+  // =====================================================================  ANEXO DE PASIVOS
+  /** "4k7" → "4.7 kΩ" (o "100 nF") según la familia; si no se entiende, deja el texto. */
+  function valorBonito(c, txt) {
+    txt = String(txt || "").trim(); if (!txt || !c || !c.valores) return txt;
+    const tipo = c.valores.magnitud === "resistencia" ? "R" : "C", L = MLPas.leer(txt).filter(o => o.tipo === tipo);
+    const o = L.find(x => /RKM|resistencia|capacitancia|notación|número/.test(x.como)) || L[0];
+    return o ? (tipo === "R" ? MLPas.fmtR(o.valor) : MLPas.fmtC(o.valor)) : txt;
+  }
+  const familias = () => Store.db.componentes.filter(c => c.valores);
+  function cubre(c, tipo, v) {
+    const val = c.valores; if (!val || (tipo === "R") !== (val.magnitud === "resistencia")) return false;
+    if (val.lista) return val.lista.some(x => Math.abs(x - v) <= v * 1e-6);
+    if (v < val.min * 0.999 || v > val.max * 1.001) return (val.extra || []).includes(v);
+    return MLPas.series(v).includes(val.serie) || ((val.serie === "E96" || val.serie === "E48") && MLPas.series(v).includes("E24"));
+  }
+  const GRUPOS_PAS = {
+    R: [["Agujero pasante (axiales)", c => c.etiquetas.includes("axial") || c.etiquetas.includes("chasis")], ["SMD", c => c.etiquetas.includes("SMD")], ["Variables, redes y especiales", () => true]],
+    C: [["Cerámicos", c => c.etiquetas.includes("cerámico") && !c.etiquetas.includes("seguridad")], ["Electrolíticos y polímero", c => c.etiquetas.includes("electrolítico") || c.etiquetas.includes("polímero")], ["Tantalio", c => c.etiquetas.includes("tantalio")], ["Película y seguridad (AC)", c => c.etiquetas.includes("película") || c.etiquetas.includes("seguridad")], ["Supercapacitores y otros", () => true]],
+  };
+  function vPasivos(tab) {
+    S.ptab = tab || S.ptab || "familias";
+    const F = familias(), nR = F.filter(c => c.valores.magnitud === "resistencia").length, nC = F.length - nR;
+    const tabs = [["familias", "Familias"], ["valor", "Valor y códigos"], ["colores", "Código de colores"], ["calc", "Calculadoras"], ["series", "Series E"], ["tablas", "Tablas"], ["guia", "Guía rápida"]];
+    app.innerHTML = `<div class="hero"><div><div class="small"><a href="#/catalogo">← Catálogo</a></div><h1>Ω Anexo de <span>pasivos</span></h1><div class="muted">${nR} familias de resistencias · ${nC} de capacitores · todos los valores comerciales, códigos y medidas típicas</div></div>
+        <div style="flex:1;max-width:420px"><input id="pvQ" placeholder="Valor o código: 4k7, 100n, 104, 473J, 01C, 2A104J…" value="${esc(S.pvQ || "")}" style="font-size:16px;padding:12px 14px"></div></div>
+      <div class="tabs">${tabs.map(([k, n]) => `<button data-pt="${k}" class="${S.ptab === k ? "on" : ""}">${n}</button>`).join("")}</div><div id="pvB"></div>`;
+    $$("[data-pt]").forEach(b => b.onclick = () => vPasivos(b.dataset.pt));
+    const q = $("#pvQ"); q.onkeydown = e => { if (e.key === "Enter") { S.pvQ = q.value.trim(); vPasivos("valor"); } };
+    const B = $("#pvB");
+    if (S.ptab === "familias") {
+      const tarjeta = c => `<div class="card" data-id="${esc(c.id)}"><div class="im" style="height:110px">${imgHtml(c)}</div><div class="bd"><div class="nm">${esc(c.nombre)}</div>
+        <div class="small muted">${esc(((c.especificaciones || []).find(e => /Potencia|Voltaje/.test(e.param)) || {}).valor || "")} · ${esc(((c.especificaciones || []).find(e => e.param === "Tolerancia") || {}).valor || "")}</div>
+        <div class="small">${esc(((c.especificaciones || []).find(e => e.param === "Rango de valores") || {}).valor || "")}</div></div></div>`;
+      const bloque = (t, tipo) => { const L = F.filter(c => (c.valores.magnitud === "resistencia") === (tipo === "R")), usados = new Set(); return `<h2 style="margin:18px 0 6px">${t}</h2>` + GRUPOS_PAS[tipo].map(([g, f]) => { const G = L.filter(c => !usados.has(c.id) && f(c)); G.forEach(c => usados.add(c.id)); return G.length ? `<h3 class="muted" style="margin:14px 0 8px">${esc(g)} <span class="tag">${G.length}</span></h3><div class="cards">${G.map(tarjeta).join("")}</div>` : ""; }).join(""); };
+      B.innerHTML = bloque("Resistencias", "R") + bloque("Capacitores", "C") + (F.length ? "" : '<div class="panel muted">Aún no están las familias: espera a que GitHub publique la base.</div>');
+      $$(".card[data-id]", B).forEach(d => d.onclick = () => location.hash = "#/c/" + encodeURIComponent(d.dataset.id));
+    }
+    if (S.ptab === "valor") {
+      const L = MLPas.leer(S.pvQ || "");
+      B.innerHTML = !S.pvQ ? `<div class="panel muted">Escribe arriba un valor o el código impreso en la pieza y pulsa Enter. Ejemplos: ${["4k7", "220R", "100n", "104", "473J", "2A104J", "01C", "4702", "R010", "4u7"].map(x => `<button class="sm" data-ej="${x}">${x}</button>`).join(" ")}</div>`
+        : L.length ? L.map(o => o.tipo === "R" ? tarjetaR(o) : tarjetaC(o)).join("") : `<div class="panel">No entendí “${esc(S.pvQ)}”. Prueba con 4k7, 10K, 2R2, 100n, 22pF, 104…</div>`;
+      $$("[data-ej]", B).forEach(b => b.onclick = () => { S.pvQ = b.dataset.ej; vPasivos("valor"); });
+      $$("[data-fam]", B).forEach(b => b.onclick = () => location.hash = "#/c/" + encodeURIComponent(b.dataset.fam));
+      $$("[data-bom]", B).forEach(b => b.onclick = () => { const [id, v] = b.dataset.bom.split("|"); aProyecto(id, v); });
+    }
+    if (S.ptab === "colores") {
+      S.cb = S.cb || { n: 4, d: [4, 7, 0], m: 2, t: "5", tc: 100 };
+      const sel = (id, opts, v) => `<select id="${id}" style="width:auto">${opts.map(([val, n, hex]) => `<option value="${val}" ${String(val) === String(v) ? "selected" : ""} style="background:${hex || "#111"};color:${["Blanco", "Amarillo", "Plateado", "Dorado", "Naranja"].includes(n) ? "#111" : "#fff"}">${n}</option>`).join("")}</select>`;
+      const dig = MLPas.COL.map(([n, h], i) => [i, n, h]), mul = [[-2, "Plateado ×0.01", "#c0c0c0"], [-1, "Dorado ×0.1", "#d4a017"], ...MLPas.COL.map(([n, h], i) => [i, `${n} ×10^${i}`, h])];
+      const tol = Object.entries(MLPas.TOL).map(([k, [n]]) => [k, `${n} ${MLPas.TOL[k][1]}`, ""]);
+      const c = S.cb, nd = c.n >= 5 ? 3 : 2, sig = +c.d.slice(0, nd).join(""), v = sig * Math.pow(10, c.m);
+      const bandasSel = [...c.d.slice(0, nd).map(d => MLPas.COL[d]), c.m === -1 ? MLPas.ORO : c.m === -2 ? MLPas.PLATA : MLPas.COL[c.m], (() => { const t = MLPas.TOL[c.t]; return t[0] === "Dorado" ? MLPas.ORO : t[0] === "Plateado" ? MLPas.PLATA : MLPas.COL.find(x => x[0] === t[0]); })(), ...(c.n === 6 ? [MLPas.COL.find(x => x[0] === ({ 100: "Marrón", 50: "Rojo", 15: "Naranja", 25: "Amarillo", 10: "Azul", 5: "Violeta" })[c.tc])] : [])];
+      B.innerHTML = `<div class="grid2" style="align-items:start"><div class="panel"><h3>Lee las bandas</h3>
+          <div class="row" style="margin-bottom:10px">${[4, 5, 6].map(n => `<button class="sm ${c.n === n ? "on" : ""}" data-nb="${n}">${n} bandas</button>`).join("")}</div>
+          <div class="row" style="gap:6px">${Array.from({ length: nd }, (_, i) => `<div><label>${i + 1}ª cifra</label>${sel("cbD" + i, dig.slice(i === 0 ? 1 : 0), c.d[i])}</div>`).join("")}<div><label>Multiplicador</label>${sel("cbM", mul, c.m)}</div><div><label>Tolerancia</label>${sel("cbT", tol, c.t)}</div>${c.n === 6 ? `<div><label>Coef. térmico</label>${sel("cbTC", [[100, "Marrón 100 ppm"], [50, "Rojo 50 ppm"], [15, "Naranja 15 ppm"], [25, "Amarillo 25 ppm"], [10, "Azul 10 ppm"], [5, "Violeta 5 ppm"]], c.tc)}</div>` : ""}</div>
+          <div style="margin:16px 0;text-align:center">${MLPas.svgResistencia(bandasSel, 320, 80)}</div>
+          <div style="text-align:center"><b style="font-size:28px">${MLPas.fmtR(v)}</b> <span class="muted">${MLPas.TOL[c.t][1]}${c.n === 6 ? " · " + c.tc + " ppm/°C" : ""}</span><div class="small muted">RKM: ${MLPas.rkm(v)} · ${MLPas.series(v).length ? "series " + MLPas.series(v).join(", ") : "no es un valor normalizado"}</div></div>
+          <div class="row" style="justify-content:center;margin-top:10px"><button class="sm" id="cbVer">Ver todos los códigos de ${MLPas.fmtR(v)} →</button></div></div>
+        <div class="panel"><h3>Tabla de colores (IEC 60062)</h3><table class="t"><tr><th>Color</th><th class="num">Cifra</th><th class="num">Multiplicador</th><th>Tolerancia</th><th class="num">ppm/°C</th></tr>
+          ${(Store.db.tablas.pasivos ? Store.db.tablas.pasivos.colores : []).map(k => `<tr><td><span class="sw" style="background:${k.hex || "transparent"};border:1px solid var(--line2)"></span> ${esc(k.color)}</td><td class="num">${k.digito ?? "—"}</td><td class="num">${k.mult != null ? "×" + (k.mult >= 1e3 ? MLPas.fmtR(k.mult).replace(" Ω", "").replace("Ω", "") : k.mult) : "—"}</td><td>${esc(k.tol || "")}</td><td class="num">${k.tc ?? ""}</td></tr>`).join("")}</table>
+          <div class="small muted" style="margin-top:8px">Se lee desde la banda más cercana a un extremo; la de tolerancia suele estar separada. Truco: “<b>N</b>i <b>M</b>e <b>R</b>ompas <b>N</b>ada <b>A</b>mor <b>V</b>erde <b>A</b>zul <b>V</b>ioleta <b>G</b>ris <b>B</b>lanco”.</div></div></div>`;
+      $$("[data-nb]", B).forEach(b => b.onclick = () => { const n2 = +b.dataset.nb; while (c.d.length < 3) c.d.push(0);
+        if (c.n < 5 && n2 >= 5 && c.m > -2) { c.d = [c.d[0], c.d[1], 0]; c.m--; } else if (c.n >= 5 && n2 < 5 && c.d[2] === 0 && c.m < 9) c.m++;
+        c.n = n2; vPasivos("colores"); });
+      Array.from({ length: nd }, (_, i) => $("#cbD" + i).onchange = e => { c.d[i] = +e.target.value; vPasivos("colores"); });
+      $("#cbM").onchange = e => { c.m = +e.target.value; vPasivos("colores"); }; $("#cbT").onchange = e => { c.t = e.target.value; vPasivos("colores"); };
+      if ($("#cbTC")) $("#cbTC").onchange = e => { c.tc = +e.target.value; vPasivos("colores"); };
+      $("#cbVer").onclick = () => { S.pvQ = MLPas.rkm(v); vPasivos("valor"); };
+    }
+    if (S.ptab === "calc") {
+      const k = S.calc = S.calc || { vcc: 5, vf: 2, if: 15, vin: 12, vout: 3.3, r2: 10000, r: 10000, c: 1e-7 };
+      const e24 = x => MLPas.cercano(x, "E24"), e96 = x => MLPas.cercano(x, "E96");
+      const rLed = (k.vcc - k.vf) / (k.if / 1000), rL = rLed > 0 ? Math.max(...MLPas.lista({ serie: "E24", min: 1, max: 1e7 }).filter(x => x <= rLed * 1.0001).slice(-1), 0) : 0;
+      const rLsig = rLed > 0 ? MLPas.lista({ serie: "E24", min: 1, max: 1e7 }).find(x => x >= rLed - 1e-9) : 0, pLed = rLsig ? Math.pow((k.vcc - k.vf), 2) / rLsig : 0;
+      const r1 = k.vout > 0 && k.vin > k.vout ? k.r2 * (k.vin / k.vout - 1) : 0, r1e = r1 ? e24(r1) : 0, voutReal = r1e ? k.vin * k.r2 / (r1e + k.r2) : 0, r1f = r1 ? e96(r1) : 0;
+      const tau = k.r * k.c, fc = 1 / (2 * Math.PI * tau);
+      const num = (id, v, n, u) => `<div><label>${n}</label><div class="row" style="flex-wrap:nowrap;gap:4px"><input type="number" step="any" data-k="${id}" value="${v}"><span class="small muted">${u}</span></div></div>`;
+      const potFam = p => p <= 0.125 ? "1/8 W (SMD 0805) o más" : p <= 0.25 ? "1/4 W" : p <= 0.5 ? "1/2 W" : p <= 1 ? "1 W" : p <= 2 ? "2 W" : p <= 5 ? "5 W cerámica" : "≥ 10 W";
+      B.innerHTML = `<div class="grid3" style="align-items:start">
+        <div class="panel"><h3>💡 Resistencia para LED</h3><div class="grid3">${num("vcc", k.vcc, "Alimentación", "V")}${num("vf", k.vf, "Vf del LED", "V")}${num("if", k.if, "Corriente", "mA")}</div>
+          <div style="margin-top:10px">R = (Vcc − Vf) / I = <b>${MLPas.fmtR(+rLed.toFixed(2))}</b><br>Usa <b>${rLsig ? MLPas.fmtR(rLsig) : "—"}</b> (E24, siguiente valor) → ${rLsig ? (((k.vcc - k.vf) / rLsig) * 1000).toFixed(1) + " mA" : ""}<br>Potencia ${(pLed * 1000).toFixed(0)} mW → mínimo <b>${potFam(pLed * 2)}</b> (con margen 2×)</div>
+          <div class="small muted" style="margin-top:6px">Vf típico: rojo 1.8–2 V · amarillo 2.1 V · verde 2.2–3.2 V · azul/blanco 3–3.3 V.</div>${rLsig ? `<button class="sm" style="margin-top:8px" data-ir="${esc(MLPas.rkm(rLsig))}">Códigos de ${MLPas.fmtR(rLsig)} →</button>` : ""}</div>
+        <div class="panel"><h3>➗ Divisor de voltaje</h3><div class="grid3">${num("vin", k.vin, "Vin", "V")}${num("vout", k.vout, "Vout deseado", "V")}${num("r2", k.r2, "R2 (abajo)", "Ω")}</div>
+          <div style="margin-top:10px">R1 = R2 · (Vin/Vout − 1) = <b>${MLPas.fmtR(+r1.toFixed(1))}</b><br>E24: <b>${r1e ? MLPas.fmtR(r1e) : "—"}</b> → Vout ${voutReal.toFixed(3)} V<br>E96 (1 %): <b>${r1f ? MLPas.fmtR(r1f) : "—"}</b> → ${r1f ? (k.vin * k.r2 / (r1f + k.r2)).toFixed(3) : "—"} V<br>Corriente ${r1e ? ((k.vin / (r1e + k.r2)) * 1000).toFixed(2) : "—"} mA</div>
+          <div class="small muted" style="margin-top:6px">Para el ADC del ESP32 (máx. 3.3 V, ideal ≤ 2.5 V) usa R de 10–100 kΩ y un capacitor de 100 nF a tierra.</div></div>
+        <div class="panel"><h3>⏱ Filtro / tiempo RC</h3><div class="grid2">${num("r", k.r, "R", "Ω")}${num("c", k.c, "C", "F")}</div>
+          <div style="margin-top:10px">τ = R·C = <b>${tau >= 1 ? tau.toFixed(3) + " s" : tau >= 1e-3 ? (tau * 1e3).toFixed(3) + " ms" : (tau * 1e6).toFixed(3) + " µs"}</b><br>Corte (−3 dB) f = 1/(2πRC) = <b>${fc >= 1e3 ? (fc / 1e3).toFixed(2) + " kHz" : fc.toFixed(2) + " Hz"}</b><br>Carga al 99 %: ${(5 * tau >= 1 ? (5 * tau).toFixed(2) + " s" : (5 * tau * 1e3).toFixed(2) + " ms")} (5τ)</div>
+          <div class="small muted" style="margin-top:6px">C se escribe en faradios: 100 nF = 1e-7 · 10 µF = 1e-5.</div></div></div>`;
+      $$("[data-k]", B).forEach(i => i.onchange = () => { k[i.dataset.k] = +i.value; vPasivos("calc"); });
+      $$("[data-ir]", B).forEach(b => b.onclick = () => { S.pvQ = b.dataset.ir; vPasivos("valor"); });
+    }
+    if (S.ptab === "series") {
+      const T = (Store.db.tablas.pasivos || {}).series || {};
+      B.innerHTML = `<div class="panel"><p class="muted" style="margin-top:0">Los valores comerciales siguen las series E (IEC 60063): cada serie reparte la década en pasos iguales en escala logarítmica. Multiplica por 1, 10, 100, 1 k… (ej. 4.7 → 4.7 Ω, 47 Ω, 470 Ω, 4.7 kΩ…).</p>
+        ${MLPas.ORDEN.map(k => `<div style="margin:12px 0"><b>${k}</b> <span class="tag">${(T[k] || {}).tolerancia || ""}</span> <span class="small muted">${MLPas.S[k].length} valores por década</span><div class="chips" style="margin-top:6px">${MLPas.S[k].map(v => `<span class="chip" data-v="${v}">${(+v).toFixed(k === "E48" || k === "E96" ? 2 : 1)}</span>`).join("")}</div></div>`).join("")}</div>`;
+      $$("[data-v]", B).forEach(c => c.onclick = () => { S.pvQ = MLPas.rkm(+c.dataset.v * 1000); vPasivos("valor"); });
+    }
+    if (S.ptab === "tablas") {
+      const T = Store.db.tablas.pasivos || {};
+      B.innerHTML = `<div class="grid2" style="align-items:start">
+        <div class="panel"><h3>Tamaños SMD (resistencias y MLCC)</h3><table class="t"><tr><th>Imperial</th><th>Métrico</th><th class="num">L × W × H (mm)</th><th class="num">Potencia R</th></tr>${(T.smd || []).map(r => `<tr><td><b>${r.tam}</b></td><td>${r.metrico}</td><td class="num">${r.L} × ${r.W} × ${r.H}</td><td class="num">${r.potencia_W} W</td></tr>`).join("")}</table><div class="small muted" style="margin-top:6px">En MLCC la altura crece con la capacidad (hasta ≈ W).</div></div>
+        <div class="panel"><h3>Electrolíticos radiales: tamaño típico</h3><div style="max-height:360px;overflow:auto"><table class="t"><tr><th>Capacidad</th><th>Voltaje</th><th>Ø × L (mm)</th><th class="num">Paso</th></tr>${((T.electroliticos || {}).tamaños || []).map(([c, v, t]) => `<tr><td>${c}</td><td>${v}</td><td>${t}</td><td class="num">${((T.electroliticos || {}).paso_mm || {})[t.split("×")[0]] ?? "—"} mm</td></tr>`).join("")}</table></div><div class="small muted">${esc((T.electroliticos || {}).nota || "")}</div></div>
+        <div class="panel"><h3>Dieléctricos cerámicos</h3><table class="t"><tr><th>Clase</th><th>Estabilidad</th><th>Uso</th></tr>${(T.dielectricos || []).map(d => `<tr><td><b>${esc(d.clase)}</b><div class="small muted">${esc(d.tipo)}</div></td><td class="small">${esc(d.estabilidad)}</td><td class="small">${esc(d.uso)}</td></tr>`).join("")}</table></div>
+        <div class="panel"><h3>Tantalio SMD: casos</h3><table class="t"><tr><th>Caso</th><th>EIA</th><th class="num">L × W × H (mm)</th></tr>${(T.tantalio_smd || []).map(r => `<tr><td><b>${r.caso}</b></td><td>${r.eia}</td><td class="num">${r.L} × ${r.W} × ${r.H}</td></tr>`).join("")}</table>
+          <h3 style="margin-top:14px">Código EIA-96 (SMD 1 %)</h3><div class="small muted">2 cifras = valor de la tabla E96 · letra = multiplicador (${Object.entries((T.eia96 || {}).letras || {}).map(([l, f]) => `${l}=${f}`).join(" · ")})</div>
+          <div class="chips" style="margin-top:6px;max-height:160px;overflow:auto">${((T.eia96 || {}).codigos || []).map(c => `<span class="chip">${c.codigo} = ${c.valor}</span>`).join("")}</div></div></div>`;
+    }
+    if (S.ptab === "guia") {
+      B.innerHTML = `<div class="grid2" style="align-items:start">
+        <div class="panel"><h3>¿Qué resistencia uso?</h3><ul class="small" style="padding-left:18px;line-height:1.7">
+          <li><b>Uso general</b> (pull-up, LED, base de transistor): carbón 1/4 W 5 % o SMD 0805.</li>
+          <li><b>Precisión</b> (divisores para ADC, ganancia de amplificadores, instrumentación biomédica): película metálica 1 % (E96), mejor 0.1 % y 25 ppm/°C para puentes y referencias.</li>
+          <li><b>Potencia</b>: calcula P = I²R y usa ≥ 2× (1 W, 2 W, 5 W cerámica, 25 W aluminio con disipador). Sepárala de la placa.</li>
+          <li><b>Medir corriente</b>: shunt de mΩ 2512 + INA219/INA226; rutea las líneas de medida tipo Kelvin.</li>
+          <li><b>Ajustes</b>: trimmer multivuelta para calibración fina; potenciómetro B (lineal) para control, A (log) para audio.</li>
+          <li><b>Protección</b>: varistor en la entrada AC, polyfuse en USB, NTC de arranque en fuentes.</li></ul></div>
+        <div class="panel"><h3>¿Qué capacitor uso?</h3><ul class="small" style="padding-left:18px;line-height:1.7">
+          <li><b>Desacople</b>: 100 nF cerámico X7R pegado a cada pin de VCC + 10 µF por riel. En el ESP32: 10–22 µF + 100 nF junto al módulo.</li>
+          <li><b>Osciladores, filtros, temporización</b>: cerámico C0G/NP0 o película (estables con voltaje y temperatura).</li>
+          <li><b>Filtrado de fuente</b>: electrolítico 105 °C con voltaje ≥ 1.5–2× el de trabajo; polímero si el regulador es conmutado (bajo ESR).</li>
+          <li><b>Audio y señales</b>: película (poliéster/polipropileno) para acople.</li>
+          <li><b>Red eléctrica</b>: solo X2 (fase-neutro) e Y1/Y2 (a tierra); nunca un cerámico común.</li>
+          <li><b>Respaldo de energía</b>: supercapacitor (moneda para RTC; cilíndrico para picos de GSM).</li>
+          <li><b>Ojo con MLCC X5R/X7R</b>: con 5 V aplicados un 10 µF 0603 de 6.3 V puede quedar en 3 µF (DC-bias): elige mayor tamaño o voltaje.</li></ul></div></div>`;
+    }
+  }
+  function tarjetaR(o) {
+    const v = o.valor, b4 = MLPas.bandas(v, 4), b5 = MLPas.bandas(v, 5), cod = MLPas.smd(v), ser = MLPas.series(v), fams = familias().filter(c => cubre(c, "R", v));
+    return `<div class="panel" style="margin-bottom:12px"><div class="row" style="justify-content:space-between"><div><span class="tag cat">Resistencia</span> <span class="small muted">leído como ${esc(o.como)}</span><h2 style="margin-top:6px">${MLPas.fmtR(v)} <span class="muted" style="font-size:15px">RKM ${MLPas.rkm(v)}</span></h2></div>
+        <div class="small">${ser.length ? `Valor normalizado en ${ser.map(s => `<span class="tag ok">${s}</span>`).join(" ")}` : `<span class="tag warn">No es normalizado</span> más cercano: E12 ${MLPas.fmtR(MLPas.cercano(v, "E12"))} · E24 ${MLPas.fmtR(MLPas.cercano(v, "E24"))} · E96 ${MLPas.fmtR(MLPas.cercano(v, "E96"))}`}</div></div>
+      <div class="grid3" style="margin-top:10px;align-items:start">
+        <div><b class="small">4 bandas (5 %)</b>${b4 ? `<div>${MLPas.svgResistencia(b4.bandas)}</div><div class="small">${b4.bandas.map(x => x[0]).join(" · ")}${b4.aproximado != null ? `<br><span style="color:var(--warn)">≈ ${MLPas.fmtR(b4.aproximado)} (no cabe en 2 cifras)</span>` : ""}</div>` : '<div class="small muted">Fuera de rango</div>'}</div>
+        <div><b class="small">5 bandas (1 %)</b>${b5 ? `<div>${MLPas.svgResistencia(b5.bandas)}</div><div class="small">${b5.bandas.map(x => x[0]).join(" · ")}</div>` : '<div class="small muted">Fuera de rango</div>'}</div>
+        <div><b class="small">Código SMD</b><table class="t small" style="margin-top:4px"><tr><td>3 dígitos (5 %)</td><td><b>${esc(cod.tres || "—")}</b></td></tr><tr><td>4 dígitos (1 %)</td><td><b>${esc(cod.cuatro || "—")}</b></td></tr><tr><td>EIA-96 (0603 1 %)</td><td><b>${esc(cod.eia96 || "—")}</b></td></tr></table></div></div>
+      <div style="margin-top:10px"><b class="small">Familias de tu biblioteca que lo tienen (${fams.length})</b><div class="row" style="margin-top:6px;gap:6px">${fams.map(c => `<span class="row" style="gap:2px"><button class="sm" data-fam="${esc(c.id)}">${esc(c.nombre.replace(/^Resistencia (de )?/, ""))}</button><button class="sm ghost" title="Añadir a un proyecto con este valor" data-bom="${esc(c.id)}|${esc(MLPas.fmtR(v))}">＋BOM</button></span>`).join("") || '<span class="small muted">Ninguna (valor fuera de las series cargadas)</span>'}</div></div></div>`;
+  }
+  function tarjetaC(o) {
+    const v = o.valor, ser = MLPas.series(v), fams = familias().filter(c => cubre(c, "C", v)), cc = MLPas.codC(v);
+    return `<div class="panel" style="margin-bottom:12px"><div class="row" style="justify-content:space-between"><div><span class="tag vio">Capacitor</span> <span class="small muted">leído como ${esc(o.como)}</span><h2 style="margin-top:6px">${MLPas.fmtC(v)} <span class="muted" style="font-size:15px">${MLPas.rkmC(v)} · ${+(v * 1e12).toPrecision(4)} pF</span></h2></div>
+        <div class="small">${ser.length ? `Serie ${ser.map(s => `<span class="tag ok">${s}</span>`).join(" ")}` : `<span class="tag warn">No es normalizado</span> más cercano E6 ${MLPas.fmtC(MLPas.cercano(v, "E6"))} · E12 ${MLPas.fmtC(MLPas.cercano(v, "E12"))}`}</div></div>
+      <div class="grid3" style="margin-top:10px"><div><b class="small">Código impreso</b><div style="font:700 26px ui-monospace,Consolas,monospace;margin-top:4px">${esc(cc || "—")}</div><div class="small muted">3 cifras en pF + letra de tolerancia (J ±5 %, K ±10 %, M ±20 %)</div></div>
+        <div><b class="small">Equivalencias</b><div class="small" style="margin-top:4px">${+(v * 1e12).toPrecision(4)} pF = ${+(v * 1e9).toPrecision(4)} nF = ${+(v * 1e6).toPrecision(4)} µF</div></div>
+        <div><b class="small">Tipo recomendado</b><div class="small" style="margin-top:4px">${v < 1e-9 ? "Cerámico C0G/NP0 o mica (RF, cristales)" : v <= 1e-6 ? "Cerámico X7R (desacople) o película (señal/audio)" : v <= 1e-4 ? "MLCC X5R grande, tantalio o electrolítico" : v < 0.05 ? "Electrolítico o polímero" : "Supercapacitor"}</div></div></div>
+      <div style="margin-top:10px"><b class="small">Familias de tu biblioteca que lo tienen (${fams.length})</b><div class="row" style="margin-top:6px;gap:6px">${fams.map(c => `<span class="row" style="gap:2px"><button class="sm" data-fam="${esc(c.id)}">${esc(c.nombre.replace(/^Capacitor (de )?/, ""))}</button><button class="sm ghost" title="Añadir a un proyecto con este valor" data-bom="${esc(c.id)}|${esc(MLPas.fmtC(v))}">＋BOM</button></span>`).join("") || '<span class="small muted">Ninguna</span>'}</div></div></div>`;
+  }
+  /** Panel de valores comerciales en la ficha de una familia. */
+  function panelValores(c) {
+    const val = c.valores, L = MLPas.lista(val), R = val.magnitud === "resistencia", fm = R ? MLPas.fmtR : MLPas.fmtC;
+    const dec = {}; L.forEach(v => { const k = v === 0 ? "0" : Math.floor(Math.log10(v) + 1e-9); (dec[k] = dec[k] || []).push(v); });
+    const extra = Object.entries(val).filter(([k]) => !["magnitud", "unidad", "serie", "min", "max", "lista", "extra"].includes(k));
+    return `<div class="panel" style="margin-top:12px"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Valores comerciales ${val.serie ? `<span class="tag ok">${esc(val.serie)}</span>` : ""} <span class="tag">${L.length}</span></h3><a href="#/pasivos" class="small">Ω Anexo de pasivos →</a></div>
+      ${extra.map(([k, v]) => `<div class="small" style="margin-top:6px"><b>${esc(k[0].toUpperCase() + k.slice(1))}:</b> ${esc(Array.isArray(v) ? v.join(" · ") : v)}</div>`).join("")}
+      ${L.length ? `<div style="max-height:260px;overflow:auto;margin-top:8px">${Object.keys(dec).sort((a, b) => +a - +b).map(k => `<div class="chips" style="margin:4px 0">${dec[k].map(v => `<span class="chip" data-vv="${esc(R ? MLPas.rkm(v) : MLPas.rkmC(v))}" title="Ver códigos">${esc(fm(v))}</span>`).join("")}</div>`).join("")}</div>` : ""}
+      <div class="small muted" style="margin-top:6px">Clic en un valor para ver sus códigos. Al añadir esta familia a un proyecto puedes indicar el valor exacto.</div></div>`;
+  }
+
   // =====================================================================  INICIO
   function vInicio() {
     const cs = Store.db.componentes, ps = Store.db.proyectos, n = cs.length || 1;
@@ -1184,7 +1342,7 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
   function ctxActual() {
     const [, r, id] = (location.hash || "#/").split("/"), v = { "": "inicio", c: "componente", p: "proyecto" }[r || ""] ?? r;
     const o = { vista: v || "inicio", id: id ? decodeURIComponent(id) : null, tab: v === "componente" ? S.tab : null };
-    const nom = { inicio: "Inicio", catalogo: "Catálogo", proyectos: "Proyectos", pendientes: "Pendientes", ajustes: "Ajustes" };
+    const nom = { pasivos: "Anexo de pasivos", inicio: "Inicio", catalogo: "Catálogo", proyectos: "Proyectos", pendientes: "Pendientes", ajustes: "Ajustes" };
     if (v === "componente") o.titulo = `Componente · ${S.W ? S.W.nombre : o.id} · ${({ ficha: "Ficha", modelo: "Modelo 3D", montaje: "Montaje", zonas: "Zonas", pines: "Pines", archivos: "Archivos CAD", versiones: "Versiones", json: "JSON" })[S.tab] || S.tab}`;
     else if (v === "proyecto") { const p = Store.db.proyectos.find(x => x.id === o.id); o.titulo = "Proyecto · " + (p ? p.nombre : o.id); }
     else o.titulo = nom[o.vista] || o.vista;
@@ -1202,6 +1360,9 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
     { id: "ir_catalogo", n: "Ir al catálogo", ic: "▦", k: "biblioteca componentes lista", global: true, run: () => { location.hash = "#/catalogo"; } },
     { id: "ir_proyectos", n: "Ir a proyectos", ic: "📁", k: "proyectos bom", global: true, run: () => { location.hash = "#/proyectos"; } },
     { id: "ir_pendientes", n: "Revisar pendientes por aprobar", ic: "📥", k: "pendientes aprobar bandeja propuestas", global: true, run: () => { location.hash = "#/pendientes"; } },
+    { id: "ir_pasivos", n: "Abrir el anexo de pasivos", ic: "Ω", k: "resistencias capacitores condensadores codigo colores bandas series e smd valores", global: true, run: () => { location.hash = "#/pasivos"; } },
+    { id: "codigo_colores", n: "Código de colores de resistencias", ic: "🎨", k: "bandas colores resistencia leer", global: true, run: () => { S.ptab = "colores"; location.hash === "#/pasivos" ? vPasivos("colores") : location.hash = "#/pasivos"; } },
+    { id: "calculadoras", n: "Calculadoras (LED, divisor, RC)", ic: "🧮", k: "calcular resistencia led divisor voltaje filtro rc constante tiempo", global: true, run: () => { S.ptab = "calc"; location.hash === "#/pasivos" ? vPasivos("calc") : location.hash = "#/pasivos"; } },
     { id: "ir_ajustes", n: "Abrir ajustes", ic: "⚙", k: "configuracion token github clave ia drive", global: true, run: () => { location.hash = "#/ajustes"; } },
     { id: "abrir_componente", n: "Abrir un componente", ic: "▭", k: "ver ficha", global: true, args: '{"id":"id_del_componente"}', run: a => { const c = comp(a.id) || (a.q && buscarComponente(a.q)?.c); if (!c) return false; location.hash = "#/c/" + encodeURIComponent(c.id); return "Abierto " + c.nombre; } },
     { id: "abrir_proyecto", n: "Abrir un proyecto", ic: "📁", global: true, args: '{"id":"id_del_proyecto"}', run: a => { const p = Store.db.proyectos.find(x => x.id === a.id) || (a.q && buscarProyecto(a.q)?.p); if (!p) return false; location.hash = "#/p/" + encodeURIComponent(p.id); return "Abierto " + p.nombre; } },
@@ -1336,7 +1497,8 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
     MLAgent.init({
       ctx: ctxActual, acciones: () => ACCIONES, reglas, confirmar, toast, preguntar, buscarCatalogo, buscarComponente, buscarProyecto,
       colocar: (id, params, cara) => { if (!edApi()) { if (S.W) irTab("modelo"); return false; } return edApi().colocar(id, params, cara) ? "Pieza colocada" : false; },
-      vistas: () => [["⌂", "Inicio", "#/"], ["▦", "Catálogo", "#/catalogo"], ["📁", "Proyectos", "#/proyectos"], ["📥", "Pendientes", "#/pendientes"], ["⚙", "Ajustes", "#/ajustes"]].map(([ic, n, h]) => ({ ic, n, h })),
+      extra: q => MLPas.leer(q).filter(o => !/número/.test(o.como) || /^\d+(\.\d+)?\s*(Ω|ohm)/i.test(q)).slice(0, 3).map(o => ({ ic: o.tipo === "R" ? "Ω" : "⊣⊢", n: (o.tipo === "R" ? MLPas.fmtR(o.valor) : MLPas.fmtC(o.valor)) + " — códigos y familias", sub: o.como, run: () => { S.pvQ = q; S.ptab = "valor"; location.hash === "#/pasivos" ? vPasivos("valor") : location.hash = "#/pasivos"; } })),
+      vistas: () => [["⌂", "Inicio", "#/"], ["▦", "Catálogo", "#/catalogo"], ["Ω", "Anexo de pasivos", "#/pasivos"], ["📁", "Proyectos", "#/proyectos"], ["📥", "Pendientes", "#/pendientes"], ["⚙", "Ajustes", "#/ajustes"]].map(([ic, n, h]) => ({ ic, n, h })),
       recientes: recientesVisitados, mini: miniHtml,
       componentes: (q, n) => { const sc = new Map(); for (const c of Store.db.componentes) { const s = MLAgent.sim(q, [c.nombre, c.id.replace(/_/g, " "), c.categoria, c.referencia, ...(c.etiquetas || []), ...(c.alias || [])].join(" ")); if (s >= 0.55) sc.set(c.id, { c, s }); } MLLocal.asegurar(Store.db.componentes); for (const r of MLLocal.buscar(q, 6)) if (r.s >= 0.6 && !sc.has(r.c.id)) sc.set(r.c.id, { c: r.c, s: r.s * 0.95 }); return [...sc.values()].sort((a, b) => b.s - a.s).slice(0, n); },
       proyectos: (q, n) => Store.db.proyectos.map(p => ({ p, s: MLAgent.sim(q, p.nombre + " " + p.id.replace(/-/g, " ") + " " + (p.descripcion || "")) })).filter(x => x.s >= 0.55).sort((a, b) => b.s - a.s).slice(0, n),

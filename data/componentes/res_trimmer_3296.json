@@ -1,0 +1,261 @@
+{
+ "id": "res_trimmer_3296",
+ "nombre": "Trimmer multivuelta 3296W (25 vueltas)",
+ "tipo": "electronico",
+ "categoria": "Resistencias",
+ "etiquetas": [
+  "resistencia",
+  "THT",
+  "trimmer",
+  "multivuelta",
+  "ajuste fino",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "3296W",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Cermet, 25 vueltas, ajuste superior. Calibración fina (referencias, offset, ganancia, contraste).",
+  "funcionamiento": "Ley de Ohm: V = I·R. Potencia disipada P = I²·R = V²/R; elegir una potencia nominal ≥ 2 × la calculada.",
+  "voltaje": "200 V",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "9.5 × 4.8 × 10 mm · patas en línea a 2.54 mm",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Cermet, 25 vueltas, ajuste superior"
+  },
+  {
+   "param": "Potencia",
+   "valor": "0.5 W"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±10 %"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "200 V"
+  },
+  {
+   "param": "Coef. de temperatura",
+   "valor": "±100 ppm/°C"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "10 Ω – 1 MΩ"
+  },
+  {
+   "param": "Marcado",
+   "valor": "103 = 10 kΩ"
+  }
+ ],
+ "valores": {
+  "magnitud": "resistencia",
+  "unidad": "Ω",
+  "lista": [
+   10,
+   20,
+   50,
+   100,
+   200,
+   500,
+   1000,
+   2000,
+   5000,
+   10000,
+   20000,
+   50000,
+   100000,
+   200000,
+   500000,
+   1000000
+  ],
+  "tolerancias": [
+   "±10 %"
+  ]
+ },
+ "imagen": {
+  "src": "img/res_trimmer_3296.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 1,
+  "altura_inferior": 3.5,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   9.5,
+   4.8,
+   10
+  ],
+  "forma": "rect",
+  "base_tipo": "prisma"
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "1",
+   "func": "Extremo",
+   "x": -2.54,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "2",
+   "func": "Cursor",
+   "x": 0,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "3",
+   "func": "Extremo",
+   "x": 2.54,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 9.5,
+   "W": 4.8,
+   "d": 9.5,
+   "espesor": 10,
+   "radio": 0,
+   "color": "#2563eb"
+  },
+  "piezas": [
+   {
+    "id": "s",
+    "plantilla": "f_cil",
+    "nombre": "Tornillo de ajuste",
+    "cara": "A",
+    "x": -3.3,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 2.2,
+     "alto": 1,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "t1",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 1",
+    "cara": "B",
+    "x": -2.54,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t2",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 2",
+    "cara": "B",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t3",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 3",
+    "cara": "B",
+    "x": 2.54,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -3.3,
+    "cy": 0,
+    "z0": 10,
+    "z1": 11,
+    "color": "#d4a017",
+    "pieza": "s",
+    "d": 2.2
+   },
+   {
+    "f": "cil",
+    "cx": -2.54,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t1",
+    "d": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 0,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t2",
+    "d": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 2.54,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t3",
+    "d": 0.6
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.734Z",
+ "cad_pendiente": true
+}

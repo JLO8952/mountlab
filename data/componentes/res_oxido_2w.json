@@ -1,0 +1,246 @@
+{
+ "id": "res_oxido_2w",
+ "nombre": "Resistencia de óxido metálico 2 W (axial)",
+ "tipo": "electronico",
+ "categoria": "Resistencias",
+ "etiquetas": [
+  "resistencia",
+  "THT",
+  "axial",
+  "2 W",
+  "potencia",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "MOR-2W",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Óxido metálico. Igual que 1 W con más disipación.",
+  "funcionamiento": "Ley de Ohm: V = I·R. Potencia disipada P = I²·R = V²/R; elegir una potencia nominal ≥ 2 × la calculada.",
+  "voltaje": "500 V",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "Cuerpo 15 × Ø5 mm · paso 20.32 mm",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Óxido metálico"
+  },
+  {
+   "param": "Potencia",
+   "valor": "2 W (70 °C)"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±5 %"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "500 V"
+  },
+  {
+   "param": "Coef. de temperatura",
+   "valor": "±350 ppm/°C"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "0.1 Ω – 1 MΩ (serie E24)"
+  },
+  {
+   "param": "Marcado",
+   "valor": "4 bandas"
+  }
+ ],
+ "valores": {
+  "magnitud": "resistencia",
+  "unidad": "Ω",
+  "serie": "E24",
+  "min": 0.1,
+  "max": 1000000,
+  "tolerancias": [
+   "±5 %"
+  ]
+ },
+ "imagen": {
+  "src": "img/res_oxido_2w.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 6,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   15,
+   5,
+   5
+  ],
+  "forma": "redondeada",
+  "base_tipo": "prisma",
+  "radio": 2
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "1",
+   "func": "Terminal",
+   "x": -10.16,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "2",
+   "func": "Terminal",
+   "x": 10.16,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "redondeada",
+   "L": 15,
+   "W": 5,
+   "d": 15,
+   "espesor": 5,
+   "radio": 2,
+   "color": "#9ca3af"
+  },
+  "piezas": [
+   {
+    "id": "t1",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 1",
+    "cara": "B",
+    "x": -10.16,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 6,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t2",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 2",
+    "cara": "B",
+    "x": 10.16,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 6,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "h1",
+    "plantilla": "f_caja",
+    "nombre": "Alambre 1",
+    "cara": "B",
+    "x": -8.83,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3.2600000000000002,
+     "h": 0.6,
+     "alto": 0.6,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "h2",
+    "plantilla": "f_caja",
+    "nombre": "Alambre 2",
+    "cara": "B",
+    "x": 8.83,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3.2600000000000002,
+     "h": 0.6,
+     "alto": 0.6,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -10.16,
+    "cy": 0,
+    "z0": -6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t1",
+    "d": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 10.16,
+    "cy": 0,
+    "z0": -6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t2",
+    "d": 0.6
+   },
+   {
+    "f": "caja",
+    "cx": -8.83,
+    "cy": 0,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "h1",
+    "w": 3.2600000000000002,
+    "h": 0.6
+   },
+   {
+    "f": "caja",
+    "cx": 8.83,
+    "cy": 0,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "h2",
+    "w": 3.2600000000000002,
+    "h": 0.6
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.730Z",
+ "cad_pendiente": true
+}

@@ -1,0 +1,199 @@
+{
+ "id": "cap_electrolitico_smd",
+ "nombre": "Capacitor electrolítico de aluminio SMD (V-chip)",
+ "tipo": "electronico",
+ "categoria": "Capacitores",
+ "etiquetas": [
+  "capacitor",
+  "SMD",
+  "electrolítico",
+  "polarizado",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "Serie VT / VZ",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Aluminio, base plástica cuadrada. Filtrado en placas SMD (reguladores, módulos).",
+  "funcionamiento": "Almacena carga: Q = C·V; corriente i = C·dV/dt; reactancia Xc = 1 / (2π f C). Elegir voltaje nominal con margen.",
+  "voltaje": "6.3–50 V",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "Ø6.3 × 5.4 mm sobre base 6.6 × 6.6 mm (también Ø4, Ø5, Ø8, Ø10)",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Aluminio, base plástica cuadrada"
+  },
+  {
+   "param": "Voltaje",
+   "valor": "6.3–50 V"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±20 %"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "6.3–50 V"
+  },
+  {
+   "param": "Estabilidad",
+   "valor": "105 °C"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "1 µF – 1000 µF (serie E6)"
+  },
+  {
+   "param": "Marcado",
+   "valor": "Impreso: 100 / 16V"
+  }
+ ],
+ "valores": {
+  "magnitud": "capacitancia",
+  "unidad": "F",
+  "serie": "E6",
+  "min": 1e-06,
+  "max": 0.001,
+  "tolerancias": [
+   "±20 %"
+  ],
+  "voltajes": [
+   "6.3 V",
+   "10 V",
+   "16 V",
+   "25 V",
+   "35 V",
+   "50 V"
+  ]
+ },
+ "imagen": {
+  "src": "img/cap_electrolitico_smd.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura",
+  "agujeros": [],
+  "altura_superior": 4.65,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   6.6,
+   6.6,
+   0.8
+  ],
+  "forma": "rect",
+  "base_tipo": "prisma"
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "+",
+   "func": "Positivo",
+   "x": 2.6,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "−",
+   "func": "Negativo (marca negra)",
+   "x": -2.6,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 6.6,
+   "W": 6.6,
+   "d": 6.6,
+   "espesor": 0.8,
+   "radio": 0,
+   "color": "#1f2937"
+  },
+  "piezas": [
+   {
+    "id": "c",
+    "plantilla": "f_cil",
+    "nombre": "Lata de aluminio",
+    "cara": "A",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 6.3,
+     "alto": 4.6,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m",
+    "plantilla": "f_caja",
+    "nombre": "Marca negativo",
+    "cara": "A",
+    "x": -2.2,
+    "y": 0,
+    "rot": 0,
+    "z": 4.6,
+    "params": {
+     "w": 1.6,
+     "h": 5,
+     "alto": 0.05,
+     "r": 0,
+     "color": "#1f2937"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": 0,
+    "cy": 0,
+    "z0": 0.8,
+    "z1": 5.4,
+    "color": "#cbd5e1",
+    "pieza": "c",
+    "d": 6.3
+   },
+   {
+    "f": "caja",
+    "cx": -2.2,
+    "cy": 0,
+    "z0": 5.4,
+    "z1": 5.45,
+    "color": "#1f2937",
+    "pieza": "m",
+    "w": 1.6,
+    "h": 5
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.737Z",
+ "cad_pendiente": true
+}

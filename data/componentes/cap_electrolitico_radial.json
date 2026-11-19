@@ -1,0 +1,204 @@
+{
+ "id": "cap_electrolitico_radial",
+ "nombre": "Capacitor electrolítico de aluminio radial",
+ "tipo": "electronico",
+ "categoria": "Capacitores",
+ "etiquetas": [
+  "capacitor",
+  "THT",
+  "electrolítico",
+  "polarizado",
+  "filtrado",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "Serie general 105 °C",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Aluminio con electrolito líquido. Filtrado de fuentes, reserva de energía, desacople de baja frecuencia. Polarizado: la franja marca el negativo. Usar voltaje ≥ 1.5–2 × el de trabajo.",
+  "funcionamiento": "Almacena carga: Q = C·V; corriente i = C·dV/dt; reactancia Xc = 1 / (2π f C). Elegir voltaje nominal con margen.",
+  "voltaje": "6.3–450 V",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "Ø5–18 mm × 11–40 mm (ver tabla de tamaños) · modelo: Ø6.3 × 11, paso 2.5",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Aluminio con electrolito líquido"
+  },
+  {
+   "param": "Voltaje",
+   "valor": "6.3–450 V"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±20 %"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "6.3–450 V"
+  },
+  {
+   "param": "Estabilidad",
+   "valor": "Vida 2000–10000 h a 105 °C"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "100 nF – 10000 µF (serie E6)"
+  },
+  {
+   "param": "Marcado",
+   "valor": "Impreso: 100µF 25V"
+  }
+ ],
+ "valores": {
+  "magnitud": "capacitancia",
+  "unidad": "F",
+  "serie": "E6",
+  "min": 1e-07,
+  "max": 0.01,
+  "tolerancias": [
+   "±20 %"
+  ],
+  "voltajes": [
+   "6.3 V",
+   "10 V",
+   "16 V",
+   "25 V",
+   "35 V",
+   "50 V",
+   "63 V",
+   "100 V",
+   "160 V",
+   "250 V",
+   "400 V",
+   "450 V"
+  ],
+  "tamaños": "tabla"
+ },
+ "imagen": {
+  "src": "img/cap_electrolitico_radial.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 3.5,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   6.3,
+   6.3,
+   11
+  ],
+  "forma": "redonda",
+  "base_tipo": "cilindro"
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "+",
+   "func": "Positivo (pata larga)",
+   "x": -1.25,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "−",
+   "func": "Negativo (franja)",
+   "x": 1.25,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "cilindro",
+   "forma": "redonda",
+   "L": 6.3,
+   "W": 6.3,
+   "d": 6.3,
+   "espesor": 11,
+   "radio": 0,
+   "color": "#1e3a8a"
+  },
+  "piezas": [
+   {
+    "id": "t1",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 1",
+    "cara": "B",
+    "x": -1.25,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "t2",
+    "plantilla": "f_cil",
+    "nombre": "Terminal 2",
+    "cara": "B",
+    "x": 1.25,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 0.6,
+     "alto": 3.5,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -1.25,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t1",
+    "d": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 1.25,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "t2",
+    "d": 0.6
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.737Z",
+ "cad_pendiente": true
+}

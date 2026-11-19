@@ -1,0 +1,197 @@
+{
+ "id": "cap_cbb61_motor",
+ "nombre": "Capacitor de marcha para motor CBB61 (AC)",
+ "tipo": "electronico",
+ "categoria": "Capacitores",
+ "etiquetas": [
+  "capacitor",
+  "THT",
+  "película",
+  "polipropileno",
+  "motor",
+  "AC",
+  "pasivo",
+  "familia"
+ ],
+ "fabricante": "Genérico (varios)",
+ "referencia": "CBB61 450VAC",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "familia": true,
+ "ficha": {
+  "descripcion": "Polipropileno metalizado para marcha de motores. Arranque/marcha de motores monofásicos (ventiladores, bombas pequeñas).",
+  "funcionamiento": "Almacena carga: Q = C·V; corriente i = C·dV/dt; reactancia Xc = 1 / (2π f C). Elegir voltaje nominal con margen.",
+  "voltaje": "450 VAC",
+  "corriente": "",
+  "interfaz": "",
+  "entradas": "",
+  "salidas": "",
+  "dimensiones": "≈ 38 × 19 × 29 mm con 2 cables",
+  "datasheet": "",
+  "notas": "Familia genérica del anexo de pasivos: medidas típicas de catálogo (verificar con calibrador para el fabricante concreto). Indica el valor exacto en la nota/valor del BOM."
+ },
+ "especificaciones": [
+  {
+   "param": "Tecnología",
+   "valor": "Polipropileno metalizado para marcha de motores"
+  },
+  {
+   "param": "Voltaje",
+   "valor": "250–450 VAC"
+  },
+  {
+   "param": "Tolerancia",
+   "valor": "±5 %"
+  },
+  {
+   "param": "Voltaje máximo",
+   "valor": "450 VAC"
+  },
+  {
+   "param": "Rango de valores",
+   "valor": "1 µF – 10 µF"
+  },
+  {
+   "param": "Marcado",
+   "valor": "Impreso"
+  }
+ ],
+ "valores": {
+  "magnitud": "capacitancia",
+  "unidad": "F",
+  "lista": [
+   1e-06,
+   1.5e-06,
+   2e-06,
+   2.5e-06,
+   3e-06,
+   4e-06,
+   5e-06,
+   6e-06,
+   8e-06,
+   1e-05
+  ],
+  "voltajes": [
+   "250 VAC",
+   "450 VAC"
+  ]
+ },
+ "imagen": {
+  "src": "img/cap_cbb61_motor.png",
+  "origen": "render del modelo 3D (anexo de pasivos)"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "soldadura_tht",
+  "agujeros": [],
+  "altura_superior": 15,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Medidas típicas de catálogo (anexo de pasivos).",
+  "pcb": [
+   38,
+   19,
+   29
+  ],
+  "forma": "redondeada",
+  "base_tipo": "prisma",
+  "radio": 3
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "conector": "",
+   "n": "1",
+   "func": "Cable",
+   "x": -5,
+   "y": 0
+  },
+  {
+   "conector": "",
+   "n": "2",
+   "func": "Cable",
+   "x": 5,
+   "y": 0
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "redondeada",
+   "L": 38,
+   "W": 19,
+   "d": 38,
+   "espesor": 29,
+   "radio": 3,
+   "color": "#64748b"
+  },
+  "piezas": [
+   {
+    "id": "w1",
+    "plantilla": "f_cil",
+    "nombre": "Cable 1",
+    "cara": "A",
+    "x": -5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 2,
+     "alto": 15,
+     "color": "#e5e7eb"
+    }
+   },
+   {
+    "id": "w2",
+    "plantilla": "f_cil",
+    "nombre": "Cable 2",
+    "cara": "A",
+    "x": 5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 2,
+     "alto": 15,
+     "color": "#e5e7eb"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -5,
+    "cy": 0,
+    "z0": 29,
+    "z1": 44,
+    "color": "#e5e7eb",
+    "pieza": "w1",
+    "d": 2
+   },
+   {
+    "f": "cil",
+    "cx": 5,
+    "cy": 0,
+    "z0": 29,
+    "z1": 44,
+    "color": "#e5e7eb",
+    "pieza": "w2",
+    "d": 2
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
+  }
+ ],
+ "modificado": "2026-11-19T02:55:28.742Z",
+ "cad_pendiente": true
+}

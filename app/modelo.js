@@ -415,7 +415,7 @@
       let raf = 0; const loop = () => { raf = requestAnimationFrame(loop); ctl.update(); ren.render(scene, cam); }; loop();
       const resize = () => { const w = cont.clientWidth || 360, h = cont.clientHeight || 280; ren.setSize(w, h); cam.aspect = w / h; cam.updateProjectionMatrix(); };
       const vista = v => { const bi = MLPlant.baseInfo(M().base), mt = W.montaje || {}, alto = (bi.top || 0) + (mt.altura_superior || 0) + (mt.altura_inferior || 0), zc = ((bi.top || 0) + (mt.altura_superior || 0) - (mt.altura_inferior || 0)) / 2;
-        const R = Math.max(bi.L || 20, bi.W || 20, alto, 20) * 1.6; ctl.target.set(0, zc, 0);
+        const R = Math.max(bi.L || 20, bi.W || 20, alto, 2.5) * 1.6; ctl.target.set(0, zc, 0);
         if (v === "arriba") cam.position.set(0, R * 1.3, 0.001); else if (v === "abajo") cam.position.set(0, -R * 1.3, 0.001); else cam.position.set(R * 0.75, zc + R * 0.8, R * 0.95); cam.lookAt(0, zc, 0); ctl.update(); };
       v3 = { T, ren, scene, cam, ctl, grupo, rej, resize, vista, stop: () => { cancelAnimationFrame(raf); ren.dispose(); } };
       resize(); vista("iso"); render3d();
