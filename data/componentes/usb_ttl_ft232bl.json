@@ -308,9 +308,12 @@
  ],
  "archivos": {
   "datasheet": {
-   "fuente": "https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT232BL_BQ.pdf",
-   "error": "HTTP Error 403: Forbidden",
-   "fecha": "2026-11-19"
+   "nombre": "usb_ttl_ft232bl_datasheet.pdf",
+   "fuente": "https://www.piekarz.pl/pdf/11534",
+   "fecha": "2026-11-19",
+   "carpeta": "archivos/usb_ttl_ft232bl (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/usb_ttl_ft232bl/usb_ttl_ft232bl_datasheet.pdf",
+   "kb": 1323
   },
   "dxf_huella": {
    "nombre": "usb_ttl_ft232bl_v1_huella.dxf",
