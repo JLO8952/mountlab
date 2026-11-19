@@ -98,7 +98,7 @@
   function corrientes(t) {
     const L = [...String(t || "").matchAll(I_RE)].map(m => ({ v: aMa(m[1], m[2]), i: m.index }));
     if (!L.length) { const w = String(t).match(/(\d+(?:[.,]\d+)?)\s*mW/); return w ? { typ: num(w[1]) / 3.3, pico: num(w[1]) / 3.3 } : null; }
-    const pico = L.find(x => /\bpicos?\b|peak|bloqueo|máx|\bmax|transmisi|escritura|calefactor/i.test(String(t).slice(Math.max(0, x.i - 25), x.i + 25)));
+    const pico = L.slice(1).find(x => /\bpicos?\b|peak|bloqueo|máx|\bmax|transmisi|escritura|calefactor/i.test(String(t).slice(Math.max(0, x.i - 25), x.i + 25)));
     return { typ: L[0].v, pico: Math.max(L[0].v, pico ? pico.v : Math.max(...L.map(x => x.v))) };
   }
   function rangoV(t) {

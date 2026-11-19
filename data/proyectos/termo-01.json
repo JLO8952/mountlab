@@ -27,5 +27,61 @@
    "fecha": "2026-11-13",
    "nota": "Ejercicio 01 de la suite."
   }
- ]
+ ],
+ "circuito": {
+  "version": 1,
+  "inst": [
+   {
+    "ref": "BT1",
+    "id": "@usb",
+    "x": 0,
+    "y": 0,
+    "p": {
+     "V": 5,
+     "Imax": 500
+    }
+   },
+   {
+    "ref": "U1",
+    "id": "esp32_devkit_30p",
+    "x": 470,
+    "y": 0
+   },
+   {
+    "ref": "U2",
+    "id": "lm75_modulo",
+    "x": 860,
+    "y": 0
+   }
+  ],
+  "cables": [
+   {
+    "a": "U1.VIN",
+    "b": "BT1.VBUS"
+   },
+   {
+    "a": "U1.GND",
+    "b": "BT1.GND"
+   },
+   {
+    "a": "U2.VCC",
+    "b": "U1.3V3"
+   },
+   {
+    "a": "U2.GND",
+    "b": "BT1.GND"
+   },
+   {
+    "a": "U2.SDA",
+    "b": "U1.D21"
+   },
+   {
+    "a": "U2.SCL",
+    "b": "U1.D22"
+   }
+  ],
+  "etiquetas": {},
+  "notas": "",
+  "vista": "esq"
+ }
 }
