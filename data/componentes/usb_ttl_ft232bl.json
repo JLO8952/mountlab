@@ -68,7 +68,7 @@
   }
  ],
  "imagen": {
-  "src": "img/usb_ttl_ft232bl.png?v=1795195531181",
+  "src": "img/usb_ttl_ft232bl.png?v=1795195542123",
   "origen": "render del modelo 3D"
  },
  "precios": [
@@ -1288,8 +1288,16 @@
    "cambios": [
     "imagen"
    ]
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
- "modificado": "2026-11-20T17:25:29.479Z",
+ "modificado": "2026-11-20T17:25:40.620Z",
  "cad_pendiente": true
 }
