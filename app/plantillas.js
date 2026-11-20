@@ -201,7 +201,7 @@
     const hs = (M.piezas || []).map(pz => ({ pz, h: huella(pz) })).filter(x => x.h);
     for (const { pz, h } of hs) {
       const fuera = b.forma === "redonda" ? [[h.x0, h.y0], [h.x1, h.y0], [h.x0, h.y1], [h.x1, h.y1]].some(([x, y]) => Math.hypot(x, y) > b.d / 2 + 0.01) : (h.x0 < -L / 2 - 0.01 || h.x1 > L / 2 + 0.01 || h.y0 < -W / 2 - 0.01 || h.y1 > W / 2 + 0.01);
-      const tp = plantilla(pz.plantilla), sobresaleOk = (tp && ["micro_usb", "usb_c", "jack_dc"].includes(tp.id)) || /^zona:(usb|conector|antena)/.test(pz.origen || "");
+      const tp = plantilla(pz.plantilla), sobresaleOk = (tp && ["micro_usb", "usb_c", "jack_dc"].includes(tp.id)) || /^zona:(usb|conector|antena)/.test(pz.origen || "") || !!pz.sobresale;
       if (fuera && !sobresaleOk) out.push({ nivel: "amarillo", pieza: pz.id, msg: `${pz.nombre || tp?.n} sale de la placa.` });
       for (const a of (c.montaje && c.montaje.agujeros) || []) {
         const m = a.d / 2 + 1.5; if (a.x + m > h.x0 && a.x - m < h.x1 && a.y + m > h.y0 && a.y - m < h.y1 && !(tp && ["separador", "tornillo", "tuerca"].includes(tp.id))) out.push({ nivel: "rojo", pieza: pz.id, msg: `${pz.nombre || tp?.n} queda sobre el agujero (x ${a.x}, y ${a.y}) o sin espacio para la cabeza del tornillo.` });
