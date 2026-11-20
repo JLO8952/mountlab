@@ -147,7 +147,7 @@
     opt = opt || {};
     const C = P.circuito = P.circuito || { version: 1, inst: [], cables: [], etiquetas: {}, notas: "" };
     C.inst = C.inst || []; C.cables = C.cables || []; C.etiquetas = C.etiquetas || {};
-    const st = { cardMin: matchMedia("(max-width: 860px)").matches, k: 1, ox: 0, oy: 0, sel: null, selC: null, desde: null, drag: null, ptrs: new Map(), tab: "redes", sug: [], hist: [], fut: [], filtro: "", ancho: 0, vista: "esq" };   // la vista "real" se retiró: el diseño físico va en la pestaña Caja y en el CAD
+    const st = { cardMin: false, k: 1, ox: 0, oy: 0, sel: null, selC: null, desde: null, drag: null, ptrs: new Map(), tab: "redes", sug: [], hist: [], fut: [], filtro: "", ancho: 0, vista: "esq" };   // la vista "real" se retiró: el diseño físico va en la pestaña Caja y en el CAD
     const comp = id => id.startsWith("@") ? Object.assign({ id, nombre: VIRT[id].nombre, pines: [] }, {}) : (Store.db.componentes.find(c => c.id === id));
     const $ = (s, r) => (r || host).querySelector(s), $$ = (s, r) => [...(r || host).querySelectorAll(s)];
 
@@ -693,7 +693,8 @@
         <div class="row" style="gap:4px;flex-wrap:wrap"><button class="sm" id="cpC">${w.curva ? "⌐ Recta" : "〰 Curva"}</button><button class="sm" id="cpA" ${w.pts ? "" : "disabled"}>↺ Ruta automática</button>
           <select id="cpCol" class="sm" style="width:auto;padding:4px 6px"><option value="">Color auto</option>${CODIGO.map(([k, c, n]) => `<option value="${c}" ${w.color === c ? "selected" : ""}>${esc(n)}</option>`).join("")}</select>${w.forzado ? '<button class="sm" id="cpOk" title="Quitar la alarma de este cable">✓ Quitar alarma</button>' : ""}<button class="sm danger" id="cpD">🗑</button></div>`;
       box.classList.remove("hide");
-      const wrap = box.parentElement.getBoundingClientRect(), bw = box.offsetWidth, bh = box.offsetHeight;
+      const enCapa = getComputedStyle(box).position === "absolute", cv = $(".ci-canvas").getBoundingClientRect(), bw = box.offsetWidth, bh = box.offsetHeight, wrap = { width: cv.width, height: cv.height };
+      if (!enCapa) { box.style.left = box.style.top = ""; } else
       box.style.left = Math.max(6, Math.min(wrap.width - bw - 6, st.popXY[0] + 14)) + "px"; box.style.top = Math.max(6, Math.min(wrap.height - bh - 6, st.popXY[1] + 14)) + "px";
       $("#cpX", box).onclick = () => { st.selC = null; st.popXY = null; dibujar(); };
       $("#cpC", box).onclick = () => { snap(); w.curva = !w.curva; if (w.curva && !w.pts) { const P = puntosCable(w, st.selC); if (P) w.pts = P.slice(2, -2); } cambio(); };
@@ -834,10 +835,11 @@
           
           <button class="sm" id="ciFull" title="Agrandar el lienzo (oculta la biblioteca y el panel)">⛶ Lienzo grande</button><button class="sm ai-btn" id="ciSug">✦ Sugerir conexiones</button><button class="sm" id="ciPdf">🖨 Informe PDF</button>
           <select id="ciExp" class="sm" style="width:auto;padding:5px 8px"><option value="">Exportar…</option><option value="svg">Diagrama SVG</option><option value="png">Diagrama PNG</option><option value="csv">Conexiones CSV</option><option value="net">Netlist (texto)</option></select></div>
-        <div class="canvas-wrap ci-canvas"><svg id="ciSvg"></svg><div class="ed-info" id="ciInfo"></div>
+        <div class="ci-stage"><div class="canvas-wrap ci-canvas"><svg id="ciSvg"></svg><div class="ed-info" id="ciInfo"></div>
           <button class="sm ci-legbtn" id="ciLegB" title="Código de colores de los cables">🎨 Colores</button>
           <div class="ci-leg hide" id="ciLeg">${CODIGO.map(([k, c, n]) => `<div><i style="background:${c};${k === "gnd" ? "outline:1px solid #94a3b8" : ""}"></i>${esc(n)}</div>`).join("")}<div class="small muted" style="margin-top:4px">Línea punteada con ! = conexión aceptada con alarma</div></div>
-          <div class="ci-pop hide" id="ciPop"></div><div class="ci-card hide" id="ciCard"></div><div class="ci-dlg hide" id="ciDlg"></div></div></div>
+          <div class="ci-dlg hide" id="ciDlg"></div></div>
+        <div class="ci-under"><div class="ci-pop hide" id="ciPop"></div><div class="ci-card hide" id="ciCard"></div></div></div></div>
       <div class="ci-panel panel" id="ciPanel"></div></div>`;
     const svg = $("#ciSvg");
     function libreria() {

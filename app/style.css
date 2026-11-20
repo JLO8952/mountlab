@@ -395,3 +395,12 @@ body.rol-lectura :is(#bSave,#bUndo,#bDup,#bVar,#bProj,#bDel,#bNew,#hNew,#pSv,#pD
 .caja-kpi span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3)}
 .caja-kpi b{display:block;font-size:20px;margin:2px 0}.caja-kpi small{color:var(--ink2)}
 @media (max-width:900px){.caja-grid{grid-template-columns:1fr}}
+/* tarjetas del diagrama: sobre el lienzo en escritorio, debajo del lienzo en celular */
+.ci-stage{position:relative}
+.ci-under{position:absolute;left:0;right:0;bottom:0;top:0;pointer-events:none}
+.ci-under>*{pointer-events:auto}
+@media (max-width:860px){
+  .ci-under{position:static;display:flex;flex-direction:column;gap:8px;margin-top:8px}
+  .ci-card,.ci-pop{position:static!important;width:auto!important;max-width:none;margin:0;left:auto;right:auto;bottom:auto;box-shadow:none}
+  .ci-canvas{height:58vh}
+}
