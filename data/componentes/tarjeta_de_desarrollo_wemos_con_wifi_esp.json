@@ -1,0 +1,1040 @@
+{
+ "id": "tarjeta_de_desarrollo_wemos_con_wifi_esp",
+ "nombre": "Tarjeta de desarrollo WeMos D1 R1 WiFi ESP8266 (ESP-12)",
+ "tipo": "electronico",
+ "categoria": "Microcontroladores",
+ "etiquetas": [
+  "ESP8266",
+  "ESP-12",
+  "WeMos D1",
+  "WiFi",
+  "Arduino UNO",
+  "CH340",
+  "IoT",
+  "3.3V"
+ ],
+ "fabricante": "WeMos / LOLIN (MCU: Espressif Systems)",
+ "referencia": "WeMos D1 R1 (ESP8266EX / ESP-12E)",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Placa de desarrollo WiFi 2.4 GHz (802.11 b/g/n) basada en el microcontrolador de 32 bits ESP8266EX con 4 MB de memoria Flash y factor de forma compatible mecánicamente con shields de Arduino UNO. Incorpora regulador conmutado para entrada por jack DC de 9 a 24 V y conversor USB-Serial CH340G mediante puerto Micro USB.",
+  "funcionamiento": "El ESP8266EX opera a 80 MHz o 160 MHz ejecutando código desde la memoria Flash externa de 4 MB y gestiona la pila TCP/IP y WiFi (modos STA, AP y STA+AP). Se programa desde el IDE de Arduino, NodeMCU o MicroPython a través del puente CH340G con circuito de autoreset.",
+  "voltaje": "Lógica: 3.3 V; alimentación USB: 5 V; entrada Jack DC / VIN: 9–24 V (regulador integrado)",
+  "corriente": "Consumo típico WiFi TX: 135–215 mA (RX ~60 mA, deep sleep ~20–60 uA); entrada máxima del regulador según vendedor: 1 A",
+  "interfaz": "WiFi 802.11 b/g/n (2.4 GHz), UART (USB CH340G), SPI (GPIO12/13/14/15), I2C por software (SDA=GPIO4, SCL=GPIO5), 1-Wire, PWM (10 bits)",
+  "entradas": "11 pines digitales E/S a 3.3 V (interrupciones en todos excepto D2/GPIO16) y 1 entrada analógica ADC de 10 bits (A0, rango 0–3.2 V mediante divisor interno)",
+  "salidas": "11 pines digitales E/S a 3.3 V con PWM por software (10 bits); salidas de alimentación regulada de 3.3 V y 5 V",
+  "dimensiones": "68.6 × 53.4 × 12.6 mm (PCB de 1.6 mm), 4 agujeros de montaje Ø3.2 mm patrón Arduino UNO R3, headers hembra paso 2.54 mm",
+  "datasheet": "https://documentation.espressif.com/0a-esp8266ex_datasheet_en.pdf",
+  "notas": "ADVERTENCIA: Todos los pines GPIO operan estrictamente a 3.3 V (no toleran 5 V); verificar compatibilidad antes de montar shields de Arduino UNO de 5 V. La imagen corresponde a la versión D1 R1 (serigrafía D0–D15), donde varios pines están duplicados físicamente (D3/D15=GPIO5, D4/D14=GPIO4, D5/D13=GPIO14, D6/D12=GPIO12, D7/D11=GPIO13); en Arduino IDE debe seleccionarse la placa 'LOLIN(WeMos) D1 R1'. Los pines GPIO0, GPIO2 y GPIO15 condicionan el arranque del módulo."
+ },
+ "especificaciones": [
+  {
+   "param": "Microcontrolador",
+   "valor": "ESP8266EX (32 bits, Tensilica L106)"
+  },
+  {
+   "param": "Frecuencia de reloj",
+   "valor": "80 MHz / 160 MHz"
+  },
+  {
+   "param": "Memoria Flash",
+   "valor": "4 MB (32 Mbit)"
+  },
+  {
+   "param": "Conectividad WiFi",
+   "valor": "IEEE 802.11 b/g/n 2.4 GHz (STA / AP / STA+AP, WPA/WPA2)"
+  },
+  {
+   "param": "Voltaje lógico",
+   "valor": "3.3 V"
+  },
+  {
+   "param": "Alimentación Jack DC",
+   "valor": "9–24 V DC"
+  },
+  {
+   "param": "Alimentación USB",
+   "valor": "5 V (Micro USB)"
+  },
+  {
+   "param": "Puente USB-Serial",
+   "valor": "CH340G"
+  },
+  {
+   "param": "Pines digitales E/S",
+   "valor": "11 (interrupción/PWM/I2C/1-Wire, excepto GPIO16 sin interrupción)"
+  },
+  {
+   "param": "Entrada analógica",
+   "valor": "1 canal ADC 10 bits (máx. 3.2 V en pin A0)"
+  },
+  {
+   "param": "Dimensiones PCB",
+   "valor": "68.6 × 53.4 × 1.6 mm"
+  },
+  {
+   "param": "Peso aproximado",
+   "valor": "21.8–25 g"
+  }
+ ],
+ "imagen": null,
+ "precios": [
+  {
+   "proveedor": "Electronica I+D SAS",
+   "precio_cop": 23205,
+   "url": "",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Dualtronica SAS",
+   "precio_cop": 25000,
+   "url": "",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Ferretrónica",
+   "precio_cop": 27000,
+   "url": "",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Tienda de captura (SKU M94)",
+   "precio_cop": 24900,
+   "url": "",
+   "fecha": "2026-11",
+   "estimado": false
+  }
+ ],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -20.3,
+    "y": -24.2,
+    "d": 3.2
+   },
+   {
+    "x": -19.1,
+    "y": 24.1,
+    "d": 3.2
+   },
+   {
+    "x": 31.7,
+    "y": -19.1,
+    "d": 3.2
+   },
+   {
+    "x": 31.7,
+    "y": 8.9,
+    "d": 3.2
+   }
+  ],
+  "altura_superior": 11,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   68.6,
+   53.4,
+   1.6
+  ],
+  "forma": "rect"
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Header Digital Alto (D8-D15)",
+   "cx": -1.5,
+   "cy": 24.1,
+   "w": 25.4,
+   "h": 2.54,
+   "z": [
+    1.6,
+    10.1
+   ],
+   "salida": "+Z",
+   "holgura": 12,
+   "auto": true,
+   "pieza": "p1"
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header Digital Bajo (D0-D7)",
+   "cx": 22.9,
+   "cy": 24.1,
+   "w": 20.32,
+   "h": 2.54,
+   "z": [
+    1.6,
+    10.1
+   ],
+   "salida": "+Z",
+   "holgura": 12,
+   "auto": true,
+   "pieza": "p2"
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header Alimentacion",
+   "cx": 2.5,
+   "cy": -24.1,
+   "w": 20.32,
+   "h": 2.54,
+   "z": [
+    1.6,
+    10.1
+   ],
+   "salida": "+Z",
+   "holgura": 12,
+   "auto": true,
+   "pieza": "p3"
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header Analogico",
+   "cx": 22.9,
+   "cy": -24.1,
+   "w": 15.24,
+   "h": 2.54,
+   "z": [
+    1.6,
+    10.1
+   ],
+   "salida": "+Z",
+   "holgura": 12,
+   "auto": true,
+   "pieza": "p4"
+  },
+  {
+   "tipo": "usb",
+   "nombre": "Micro USB",
+   "cx": -32,
+   "cy": 12,
+   "w": 5.6,
+   "h": 7.5,
+   "z": [
+    1.6,
+    4.2
+   ],
+   "salida": "-X",
+   "holgura": 20,
+   "auto": true,
+   "pieza": "p5"
+  },
+  {
+   "tipo": "conector",
+   "nombre": "Jack DC 2.1 mm",
+   "cx": -27.5,
+   "cy": -15.5,
+   "w": 9,
+   "h": 14,
+   "z": [
+    1.6,
+    12.6
+   ],
+   "salida": "+Y",
+   "holgura": 25,
+   "auto": true,
+   "pieza": "p6"
+  },
+  {
+   "tipo": "boton",
+   "nombre": "Boton RESET",
+   "cx": -28,
+   "cy": 21.5,
+   "w": 6,
+   "h": 6,
+   "z": [
+    1.6,
+    6.6
+   ],
+   "salida": "+Z",
+   "holgura": 3,
+   "auto": true,
+   "pieza": "p7"
+  },
+  {
+   "tipo": "calor",
+   "nombre": "Regulador 3.3V",
+   "cx": -5.5,
+   "cy": -12,
+   "w": 6.5,
+   "h": 7,
+   "z": [
+    1.6,
+    3.4
+   ],
+   "salida": "+Z",
+   "holgura": 8,
+   "auto": true,
+   "pieza": "p12"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED integrado",
+   "cx": 10.5,
+   "cy": 4,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "p13"
+  }
+ ],
+ "pines": [
+  {
+   "n": "D15/SCL",
+   "func": "GPIO5 - I2C SCL (duplicado con D3)",
+   "x": -12.93,
+   "y": 24.1,
+   "conector": "Header Digital Alto (D8-D15)",
+   "pieza": "p1",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "D14/SDA",
+   "func": "GPIO4 - I2C SDA (duplicado con D4)",
+   "x": -10.39,
+   "y": 24.1,
+   "conector": "Header Digital Alto (D8-D15)",
+   "pieza": "p1",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "AREF",
+   "func": "Sin conexión (posición estándar UNO)",
+   "x": -7.85,
+   "y": 24.1,
+   "conector": "Header Digital Alto (D8-D15)",
+   "pieza": "p1",
+   "idx": 2,
+   "cara": "A"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": -5.31,
+   "y": 24.1,
+   "conector": "Header Digital Alto (D8-D15)",
+   "pieza": "p1",
+   "idx": 3,
+   "cara": "A"
+  },
+  {
+   "n": "D13/SCK",
+   "func": "GPIO14 - SPI SCK (duplicado con D5)",
+   "x": -2.77,
+   "y": 24.1,
+   "conector": "Header Digital Alto (D8-D15)",
+   "pieza": "p1",
+   "idx": 4,
+   "cara": "A"
+  },
+  {
+   "n": "D12/MISO",
+   "func": "GPIO12 - SPI MISO (duplicado con D6)",
+   "x": -0.23,
+   "y": 24.1,
+   "conector": "Header Digital Alto (D8-D15)",
+   "pieza": "p1",
+   "idx": 5,
+   "cara": "A"
+  },
+  {
+   "n": "D11/MOSI",
+   "func": "GPIO13 - SPI MOSI (duplicado con D7)",
+   "x": 2.31,
+   "y": 24.1,
+   "conector": "Header Digital Alto (D8-D15)",
+   "pieza": "p1",
+   "idx": 6,
+   "cara": "A"
+  },
+  {
+   "n": "D10/SS",
+   "func": "GPIO15 - SPI CS (pull-down en arranque)",
+   "x": 4.85,
+   "y": 24.1,
+   "conector": "Header Digital Alto (D8-D15)",
+   "pieza": "p1",
+   "idx": 7,
+   "cara": "A"
+  },
+  {
+   "n": "D9",
+   "func": "GPIO2 - E/S digital y LED integrado (pull-up en arranque)",
+   "x": 7.39,
+   "y": 24.1,
+   "conector": "Header Digital Alto (D8-D15)",
+   "pieza": "p1",
+   "idx": 8,
+   "cara": "A"
+  },
+  {
+   "n": "D8",
+   "func": "GPIO0 - E/S digital / modo Flash (pull-up en arranque)",
+   "x": 9.93,
+   "y": 24.1,
+   "conector": "Header Digital Alto (D8-D15)",
+   "pieza": "p1",
+   "idx": 9,
+   "cara": "A"
+  },
+  {
+   "n": "D7/MOSI",
+   "func": "GPIO13 - SPI MOSI (duplicado con D11)",
+   "x": 14.01,
+   "y": 24.1,
+   "conector": "Header Digital Bajo (D0-D7)",
+   "pieza": "p2",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "D6/MISO",
+   "func": "GPIO12 - SPI MISO (duplicado con D12)",
+   "x": 16.55,
+   "y": 24.1,
+   "conector": "Header Digital Bajo (D0-D7)",
+   "pieza": "p2",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "D5/SCK",
+   "func": "GPIO14 - SPI SCK (duplicado con D13)",
+   "x": 19.09,
+   "y": 24.1,
+   "conector": "Header Digital Bajo (D0-D7)",
+   "pieza": "p2",
+   "idx": 2,
+   "cara": "A"
+  },
+  {
+   "n": "D4/SDA",
+   "func": "GPIO4 - I2C SDA (duplicado con D14)",
+   "x": 21.63,
+   "y": 24.1,
+   "conector": "Header Digital Bajo (D0-D7)",
+   "pieza": "p2",
+   "idx": 3,
+   "cara": "A"
+  },
+  {
+   "n": "D3/SCL",
+   "func": "GPIO5 - I2C SCL (duplicado con D15)",
+   "x": 24.17,
+   "y": 24.1,
+   "conector": "Header Digital Bajo (D0-D7)",
+   "pieza": "p2",
+   "idx": 4,
+   "cara": "A"
+  },
+  {
+   "n": "D2",
+   "func": "GPIO16 - E/S digital / Wake de Deep Sleep (sin interrupciones)",
+   "x": 26.71,
+   "y": 24.1,
+   "conector": "Header Digital Bajo (D0-D7)",
+   "pieza": "p2",
+   "idx": 5,
+   "cara": "A"
+  },
+  {
+   "n": "TX/D1",
+   "func": "GPIO1 - UART0 TX",
+   "x": 29.25,
+   "y": 24.1,
+   "conector": "Header Digital Bajo (D0-D7)",
+   "pieza": "p2",
+   "idx": 6,
+   "cara": "A"
+  },
+  {
+   "n": "RX/D0",
+   "func": "GPIO3 - UART0 RX",
+   "x": 31.79,
+   "y": 24.1,
+   "conector": "Header Digital Bajo (D0-D7)",
+   "pieza": "p2",
+   "idx": 7,
+   "cara": "A"
+  },
+  {
+   "n": "NC",
+   "func": "Sin conexión",
+   "x": -6.39,
+   "y": -24.1,
+   "conector": "Header Alimentacion",
+   "pieza": "p3",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "IOREF",
+   "func": "Referencia de voltaje lógico (3.3 V)",
+   "x": -3.85,
+   "y": -24.1,
+   "conector": "Header Alimentacion",
+   "pieza": "p3",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "RESET",
+   "func": "Reinicio del ESP8266 (activo en bajo)",
+   "x": -1.31,
+   "y": -24.1,
+   "conector": "Header Alimentacion",
+   "pieza": "p3",
+   "idx": 2,
+   "cara": "A"
+  },
+  {
+   "n": "3.3V",
+   "func": "Salida regulada 3.3 V",
+   "x": 1.23,
+   "y": -24.1,
+   "conector": "Header Alimentacion",
+   "pieza": "p3",
+   "idx": 3,
+   "cara": "A"
+  },
+  {
+   "n": "5V",
+   "func": "Salida/entrada 5 V",
+   "x": 3.77,
+   "y": -24.1,
+   "conector": "Header Alimentacion",
+   "pieza": "p3",
+   "idx": 4,
+   "cara": "A"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": 6.31,
+   "y": -24.1,
+   "conector": "Header Alimentacion",
+   "pieza": "p3",
+   "idx": 5,
+   "cara": "A"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": 8.85,
+   "y": -24.1,
+   "conector": "Header Alimentacion",
+   "pieza": "p3",
+   "idx": 6,
+   "cara": "A"
+  },
+  {
+   "n": "VIN",
+   "func": "Entrada de alimentación al regulador (9–24 V)",
+   "x": 11.39,
+   "y": -24.1,
+   "conector": "Header Alimentacion",
+   "pieza": "p3",
+   "idx": 7,
+   "cara": "A"
+  },
+  {
+   "n": "A0",
+   "func": "ADC0 - Entrada analógica 10 bits (0–3.2 V máx.)",
+   "x": 16.55,
+   "y": -24.1,
+   "conector": "Header Analogico",
+   "pieza": "p4",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "NC",
+   "func": "Sin conexión (posición A1 UNO)",
+   "x": 19.09,
+   "y": -24.1,
+   "conector": "Header Analogico",
+   "pieza": "p4",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "NC",
+   "func": "Sin conexión (posición A2 UNO)",
+   "x": 21.63,
+   "y": -24.1,
+   "conector": "Header Analogico",
+   "pieza": "p4",
+   "idx": 2,
+   "cara": "A"
+  },
+  {
+   "n": "NC",
+   "func": "Sin conexión (posición A3 UNO)",
+   "x": 24.17,
+   "y": -24.1,
+   "conector": "Header Analogico",
+   "pieza": "p4",
+   "idx": 3,
+   "cara": "A"
+  },
+  {
+   "n": "NC",
+   "func": "Sin conexión (posición A4 UNO)",
+   "x": 26.71,
+   "y": -24.1,
+   "conector": "Header Analogico",
+   "pieza": "p4",
+   "idx": 4,
+   "cara": "A"
+  },
+  {
+   "n": "NC",
+   "func": "Sin conexión (posición A5 UNO)",
+   "x": 29.25,
+   "y": -24.1,
+   "conector": "Header Analogico",
+   "pieza": "p4",
+   "idx": 5,
+   "cara": "A"
+  }
+ ],
+ "archivos": {},
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo, precios",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo",
+    "precios"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 68.6,
+   "W": 53.4,
+   "d": 30,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "header_hembra",
+    "nombre": "Header Digital Alto (D8-D15)",
+    "cara": "A",
+    "x": -1.5,
+    "y": 24.1,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 10,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 8.5
+    }
+   },
+   {
+    "id": "p2",
+    "plantilla": "header_hembra",
+    "nombre": "Header Digital Bajo (D0-D7)",
+    "cara": "A",
+    "x": 22.9,
+    "y": 24.1,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 8,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 8.5
+    }
+   },
+   {
+    "id": "p3",
+    "plantilla": "header_hembra",
+    "nombre": "Header Alimentacion",
+    "cara": "A",
+    "x": 2.5,
+    "y": -24.1,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 8,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 8.5
+    }
+   },
+   {
+    "id": "p4",
+    "plantilla": "header_hembra",
+    "nombre": "Header Analogico",
+    "cara": "A",
+    "x": 22.9,
+    "y": -24.1,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 6,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 8.5
+    }
+   },
+   {
+    "id": "p5",
+    "plantilla": "micro_usb",
+    "nombre": "Micro USB",
+    "cara": "A",
+    "x": -31.5,
+    "y": 12,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "sal": 1
+    }
+   },
+   {
+    "id": "p6",
+    "plantilla": "jack_dc",
+    "nombre": "Jack DC 2.1 mm",
+    "cara": "A",
+    "x": -27.5,
+    "y": -15.5,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "p7",
+    "plantilla": "pulsador",
+    "nombre": "Boton RESET",
+    "cara": "A",
+    "x": -28,
+    "y": 21.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "vastago": 1.5
+    }
+   },
+   {
+    "id": "p8",
+    "plantilla": "f_caja",
+    "nombre": "Modulo WiFi ESP-12",
+    "cara": "A",
+    "x": 18,
+    "y": -2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 24,
+     "h": 16,
+     "alto": 3.2,
+     "r": 0.5,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p9",
+    "plantilla": "f_caja",
+    "nombre": "CH340G",
+    "cara": "A",
+    "x": -16,
+    "y": 9.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 10.2,
+     "h": 6,
+     "alto": 1.8,
+     "r": 0.2,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p10",
+    "plantilla": "inductor",
+    "nombre": "Inductor Buck",
+    "cara": "A",
+    "x": -17.5,
+    "y": -2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "lado": 6,
+     "alto": 4.5
+    }
+   },
+   {
+    "id": "p11",
+    "plantilla": "electrolitico",
+    "nombre": "Capacitor entrada",
+    "cara": "A",
+    "x": -16.5,
+    "y": -13.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 6.3,
+     "alto": 7.7
+    }
+   },
+   {
+    "id": "p12",
+    "plantilla": "sot223",
+    "nombre": "Regulador 3.3V",
+    "cara": "A",
+    "x": -5.5,
+    "y": -12,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "p13",
+    "plantilla": "led_smd",
+    "nombre": "LED integrado",
+    "cara": "A",
+    "x": 10.5,
+    "y": 4,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -1.5,
+    "cy": 24.1,
+    "z0": 1.6,
+    "z1": 10.1,
+    "color": "#1f2937",
+    "pieza": "p1",
+    "w": 25.4,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": 22.9,
+    "cy": 24.1,
+    "z0": 1.6,
+    "z1": 10.1,
+    "color": "#1f2937",
+    "pieza": "p2",
+    "w": 20.32,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": 2.5,
+    "cy": -24.1,
+    "z0": 1.6,
+    "z1": 10.1,
+    "color": "#1f2937",
+    "pieza": "p3",
+    "w": 20.32,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": 22.9,
+    "cy": -24.1,
+    "z0": 1.6,
+    "z1": 10.1,
+    "color": "#1f2937",
+    "pieza": "p4",
+    "w": 15.24,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -32,
+    "cy": 12,
+    "z0": 1.6,
+    "z1": 4.2,
+    "color": "#cbd5e1",
+    "pieza": "p5",
+    "w": 5.6,
+    "h": 7.5
+   },
+   {
+    "f": "caja",
+    "cx": -27.5,
+    "cy": -15.5,
+    "z0": 1.6,
+    "z1": 12.6,
+    "color": "#1f2937",
+    "pieza": "p6",
+    "w": 9,
+    "h": 14
+   },
+   {
+    "f": "cil",
+    "cx": -27.5,
+    "cy": -8.5,
+    "z0": 4.6,
+    "z1": 10.6,
+    "color": "#334155",
+    "pieza": "p6",
+    "d": 6
+   },
+   {
+    "f": "caja",
+    "cx": -28,
+    "cy": 21.5,
+    "z0": 1.6,
+    "z1": 5.1,
+    "color": "#1f2937",
+    "pieza": "p7",
+    "w": 6,
+    "h": 6
+   },
+   {
+    "f": "cil",
+    "cx": -28,
+    "cy": 21.5,
+    "z0": 5.1,
+    "z1": 6.6,
+    "color": "#9ca3af",
+    "pieza": "p7",
+    "d": 3.5
+   },
+   {
+    "f": "caja",
+    "cx": 18,
+    "cy": -2,
+    "z0": 1.6,
+    "z1": 4.8,
+    "color": "#64748b",
+    "pieza": "p8",
+    "w": 24,
+    "h": 16,
+    "r": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": -16,
+    "cy": 9.5,
+    "z0": 1.6,
+    "z1": 3.4,
+    "color": "#64748b",
+    "pieza": "p9",
+    "w": 10.2,
+    "h": 6,
+    "r": 0.2
+   },
+   {
+    "f": "caja",
+    "cx": -17.5,
+    "cy": -2,
+    "z0": 1.6,
+    "z1": 6.1,
+    "color": "#334155",
+    "pieza": "p10",
+    "w": 6,
+    "h": 6,
+    "r": 0.8
+   },
+   {
+    "f": "cil",
+    "cx": -16.5,
+    "cy": -13.5,
+    "z0": 1.6,
+    "z1": 9.3,
+    "color": "#2563eb",
+    "pieza": "p11",
+    "d": 6.3
+   },
+   {
+    "f": "cil",
+    "cx": -16.5,
+    "cy": -13.5,
+    "z0": 9.3,
+    "z1": 9.4,
+    "color": "#cbd5e1",
+    "pieza": "p11",
+    "d": 5.04
+   },
+   {
+    "f": "caja",
+    "cx": -5.5,
+    "cy": -12.6,
+    "z0": 1.6,
+    "z1": 3.4,
+    "color": "#1f2937",
+    "pieza": "p12",
+    "w": 6.5,
+    "h": 3.5
+   },
+   {
+    "f": "caja",
+    "cx": -5.5,
+    "cy": -9.6,
+    "z0": 1.6,
+    "z1": 1.9,
+    "color": "#cbd5e1",
+    "pieza": "p12",
+    "w": 3,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": 10.5,
+    "cy": 4,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "p13",
+    "w": 2,
+    "h": 1.25
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-20T15:19:45.730Z"
+}
