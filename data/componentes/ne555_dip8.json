@@ -1,0 +1,462 @@
+{
+ "id": "ne555_dip8",
+ "nombre": "NE555P - Temporizador 555 de precisión (TI, DIP-8)",
+ "tipo": "electronico",
+ "categoria": "Circuitos integrados",
+ "etiquetas": [
+  "555",
+  "temporizador",
+  "timer",
+  "astable",
+  "monoestable",
+  "PWM",
+  "DIP-8",
+  "5V"
+ ],
+ "fabricante": "Texas Instruments",
+ "referencia": "NE555P",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Temporizador de precisión de un solo canal (NE555, serie xx555 de TI). Genera retardos o oscilaciones de microsegundos a horas con una red RC externa. Salida compatible TTL que entrega o absorbe hasta 200 mA.",
+  "funcionamiento": "Divisor interno de 3 resistencias fija umbrales en 1/3 y 2/3 de VCC (alterables con CONT). TRIG < 1/3 VCC pone la salida en alto y abre DISCH; THRES > 2/3 VCC pone la salida en bajo y activa DISCH (transistor a GND). RESET (activo en bajo) anula todo. Monoestable: tw ≈ 1.1·RA·C. Astable: tH ≈ 0.693·(RA+RB)·C, tL ≈ 0.693·RB·C, f ≈ 1.44/((RA+2RB)·C); mantener ≤100 kHz. Los pines no usados se atan a un nivel lógico (RESET a VCC).",
+  "voltaje": "VCC 4.5–16 V (NE555). Entradas CONT/RESET/THRES/TRIG ≤ VCC. Máx. absoluto 18 V.",
+  "corriente": "Consumo sin carga: 2–5 mA (5 V, salida alta), 3–6 mA (5 V, salida baja); 9–13 mA / 10–15 mA a 15 V. Salida: ±200 mA recomendado (±225 mA máx. absoluto).",
+  "interfaz": "N/A (señal digital de 1 pin; salida compatible TTL con VCC = 5 V)",
+  "entradas": "TRIG (pin 2), THRES (pin 6), RESET (pin 4, activo en bajo), CONT (pin 5, control de umbral 2/3 VCC)",
+  "salidas": "OUT (pin 3, ±200 mA) y DISCH (pin 7, colector abierto para descargar el capacitor)",
+  "dimensiones": "DIP-8 (P): cuerpo ≈ 9.6 × 6.35 mm (datasheet 9.02–10.16 × 6.10–6.60), altura de asiento máx. 5.08 mm; filas a 7.62 mm (punta a punta máx. 10.92); paso 2.54 mm",
+  "datasheet": "https://www.ti.com/lit/ds/symlink/ne555.pdf",
+  "notas": "Con VCC = 5 V la salida en alto es ≈3.3 V típ. (mín. 2.75 V a 100 mA): ojo con GPIO de ESP32 (3.3 V, no tolerantes a 5 V); usar divisor o level shifter. No funciona con 3.3 V (VCC mín. 4.5 V). Desacoplar VCC con 0.1 µF cerámico y CONT con 0.01 µF. Para >100 kHz o bajo consumo usar TLC555 (CMOS). ESD HBM ±500 V: manipular con cuidado. Otros encapsulados del datasheet: SOIC-8 (D), SO-8 (PS), TSSOP-8 (PW). Variantes: NA555 (−40…105 °C), SA555 (−40…85 °C), SE555 (−55…125 °C, VCC hasta 18 V)."
+ },
+ "especificaciones": [
+  {
+   "param": "Rango de temperatura",
+   "valor": "0 a 70 °C"
+  },
+  {
+   "param": "Rango de temporización",
+   "valor": "10 µs a horas (< 1 mHz a 100 kHz)"
+  },
+  {
+   "param": "Nivel TRIG",
+   "valor": "≈ 1/3 VCC (1.67 V típ. a 5 V)"
+  },
+  {
+   "param": "Nivel THRES",
+   "valor": "≈ 2/3 VCC (3.3 V típ. a 5 V)"
+  },
+  {
+   "param": "VOL",
+   "valor": "0.1 V típ. a 10 mA (15 V); 0.15 V típ. a 8 mA (5 V)"
+  },
+  {
+   "param": "VOH",
+   "valor": "3.3 V típ. a −100 mA (5 V); 13.3 V típ. a −100 mA (15 V)"
+  },
+  {
+   "param": "Tiempo de subida/bajada",
+   "valor": "100 ns típ. (CL = 15 pF)"
+  },
+  {
+   "param": "Deriva de temporización",
+   "valor": "50 ppm/°C monoestable; 150 ppm/°C astable"
+  },
+  {
+   "param": "RθJA (PDIP-P)",
+   "valor": "98.5 °C/W"
+  },
+  {
+   "param": "Corriente máx. por RA+RB",
+   "valor": "≈3.4 MΩ a 5 V; ≈10 MΩ a 15 V"
+  },
+  {
+   "param": "ESD",
+   "valor": "HBM ±500 V; CDM ±1500 V"
+  }
+ ],
+ "imagen": null,
+ "precios": [
+  {
+   "proveedor": "Mercado Libre CO (pack ×2)",
+   "precio_cop": 4600,
+   "url": "https://articulo.mercadolibre.com.co/MCO-499242246-2-pcs-temporizador-ne555-ne555p-555-dip-8-_JM",
+   "fecha": "2026-11"
+  },
+  {
+   "proveedor": "Mercado Libre CO (pack ×10)",
+   "precio_cop": 13910,
+   "url": "https://listado.mercadolibre.com.co/circuito-integrado-ne555",
+   "fecha": "2026-11"
+  }
+ ],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 3.8,
+  "holgura_inferior_cableado": 0,
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   9.6,
+   6.35,
+   3.9
+  ],
+  "forma": "rect",
+  "base_tipo": "prisma"
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Patas DIP-8",
+   "cx": 0,
+   "cy": 0,
+   "w": 10.16,
+   "h": 7.62,
+   "z": [
+    -3.8,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 5,
+   "auto": true,
+   "pieza": "p1"
+  }
+ ],
+ "pines": [
+  {
+   "n": "GND",
+   "func": "Tierra (pin 1)",
+   "x": -3.81,
+   "y": -3.81,
+   "conector": "Patas DIP-8",
+   "pieza": "p1",
+   "idx": 0,
+   "cara": "B"
+  },
+  {
+   "n": "TRIG",
+   "func": "Disparo: < 1/3 VCC pone OUT en alto (pin 2)",
+   "x": -1.27,
+   "y": -3.81,
+   "conector": "Patas DIP-8",
+   "pieza": "p1",
+   "idx": 1,
+   "cara": "B"
+  },
+  {
+   "n": "OUT",
+   "func": "Salida, ±200 mA (pin 3)",
+   "x": 1.27,
+   "y": -3.81,
+   "conector": "Patas DIP-8",
+   "pieza": "p1",
+   "idx": 2,
+   "cara": "B"
+  },
+  {
+   "n": "RESET",
+   "func": "Reinicio activo en bajo; atar a VCC si no se usa (pin 4)",
+   "x": 3.81,
+   "y": -3.81,
+   "conector": "Patas DIP-8",
+   "pieza": "p1",
+   "idx": 3,
+   "cara": "B"
+  },
+  {
+   "n": "CONT",
+   "func": "Control de umbral 2/3 VCC; desacoplar con 0.01 µF (pin 5)",
+   "x": 3.81,
+   "y": 3.81,
+   "conector": "Patas DIP-8",
+   "pieza": "p1",
+   "idx": 4,
+   "cara": "B"
+  },
+  {
+   "n": "THRES",
+   "func": "Umbral: > 2/3 VCC pone OUT en bajo (pin 6)",
+   "x": 1.27,
+   "y": 3.81,
+   "conector": "Patas DIP-8",
+   "pieza": "p1",
+   "idx": 5,
+   "cara": "B"
+  },
+  {
+   "n": "DISCH",
+   "func": "Descarga del capacitor, colector abierto (pin 7)",
+   "x": -1.27,
+   "y": 3.81,
+   "conector": "Patas DIP-8",
+   "pieza": "p1",
+   "idx": 6,
+   "cara": "B"
+  },
+  {
+   "n": "VCC",
+   "func": "Alimentación 4.5–16 V (pin 8)",
+   "x": -3.81,
+   "y": 3.81,
+   "conector": "Patas DIP-8",
+   "pieza": "p1",
+   "idx": 7,
+   "cara": "B"
+  }
+ ],
+ "archivos": {
+  "datasheet": {
+   "nombre": "ne555_dip8_datasheet.pdf",
+   "fecha": "2026-11-19",
+   "subido": true,
+   "fuente": "subido desde el chat: NE555.PDF",
+   "carpeta": "archivos/ne555_dip8 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/ne555_dip8/ne555_dip8_datasheet.pdf"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado con datos de asistente IA · Claude (Anthropic) · claude-haiku-5-5 / claude-sonnet-5-5 (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo, precios",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo",
+    "precios"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 9.6,
+   "W": 6.35,
+   "d": 25,
+   "espesor": 3.9,
+   "radio": 0,
+   "color": "#1f2937"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "patas_dip",
+    "nombre": "Patas DIP-8",
+    "cara": "B",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 8,
+     "paso": 2.54,
+     "fila": 7.62,
+     "largo": 3.8
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -3.81,
+    "cy": -3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": -3.81,
+    "cy": -3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": -1.27,
+    "cy": -3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": -1.27,
+    "cy": -3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": 1.27,
+    "cy": -3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": 1.27,
+    "cy": -3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": 3.81,
+    "cy": -3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": 3.81,
+    "cy": -3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": 3.81,
+    "cy": 3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": 3.81,
+    "cy": 3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": 1.27,
+    "cy": 3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": 1.27,
+    "cy": 3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": -1.27,
+    "cy": 3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": -1.27,
+    "cy": 3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": -3.81,
+    "cy": 3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": -3.81,
+    "cy": 3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-20T03:30:13.660Z"
+}
