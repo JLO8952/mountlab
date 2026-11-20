@@ -26,8 +26,8 @@
   "entradas": "SCL, SDA, AD0 (dirección), XDA/XCL (I2C auxiliar)",
   "salidas": "Datos digitales por I2C; INT (interrupción, salida activa en alto por defecto)",
   "dimensiones": "Módulo 20.3 × 15.6 × 1.6 mm (≈3.4 mm con componentes, sin header); 2 agujeros Ø3.0 mm; header de 8 pines paso 2.54 mm. Chip QFN-24 4 × 4 × 0.9 mm.",
-  "datasheet": "https://www.mikrocontroller.net/attachment/236856/MPU-6050.pdf",
-  "notas": "Pines en orden: VCC, GND, SCL, SDA, XDA, XCL, AD0, INT. AD0 tiene pull-down: dejarlo suelto = 0x68. Para dos IMU en el mismo bus pon AD0 de una en VCC (0x69). El header viene suelto: el modelo lo muestra soldado hacia abajo (para protoboard). Medidas del módulo tomadas del plano de Components101 y de la publicación del vendedor (20.4 × 15.6 mm): verificar con calibrador, varían ±0.3 mm entre fabricantes. El MPU-6050 está descontinuado por TDK pero los módulos siguen muy disponibles; reemplazo moderno: ICM-42688-P o MPU-6500. Datasheet oficial PS-MPU-6000A-00 rev. 3.4 (la página de TDK bloquea la descarga automática; esta es una copia del mismo documento (52 págs.) alojada en mikrocontroller.net)."
+  "datasheet": "https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf",
+  "notas": "Pines en orden: VCC, GND, SCL, SDA, XDA, XCL, AD0, INT. AD0 tiene pull-down: dejarlo suelto = 0x68. Para dos IMU en el mismo bus pon AD0 de una en VCC (0x69). El header viene suelto: el modelo lo muestra soldado hacia abajo (para protoboard). Medidas del módulo tomadas del plano de Components101 y de la publicación del vendedor (20.4 × 15.6 mm): verificar con calibrador, varían ±0.3 mm entre fabricantes. El MPU-6050 está descontinuado por TDK pero los módulos siguen muy disponibles; reemplazo moderno: ICM-42688-P o MPU-6500. Datasheet oficial: PS-MPU-6000A-00 rev. 3.4 (TDK). Los servidores bloquean la copia automática: ábrelo en el navegador o súbelo por el chat para guardar la copia."
  },
  "especificaciones": [
   {
@@ -282,8 +282,8 @@
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/mpu6050_gy521/mpu6050_gy521_v1_plano.dxf"
   },
   "datasheet": {
-   "fuente": "https://www.mikrocontroller.net/attachment/236856/MPU-6050.pdf",
-   "error": "HTTP Error 403: Forbidden",
+   "fuente": "https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf",
+   "error": "El servidor de TDK no permite descarga automática; abrir en el navegador.",
    "fecha": "2026-11-20"
   }
  },
