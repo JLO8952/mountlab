@@ -283,6 +283,27 @@
    "fuente": "subido desde el chat: max3232.pdf",
    "carpeta": "archivos/max3232_soic16 (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/max3232_soic16/max3232_soic16_datasheet.pdf"
+  },
+  "dxf_huella": {
+   "nombre": "max3232_soic16_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/max3232_soic16 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/max3232_soic16/max3232_soic16_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "max3232_soic16_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/max3232_soic16 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/max3232_soic16/max3232_soic16_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "max3232_soic16_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/max3232_soic16 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/max3232_soic16/max3232_soic16_v1_plano.dxf"
   }
  },
  "historial": [
@@ -523,6 +544,5 @@
    }
   ]
  },
- "cad_pendiente": true,
  "modificado": "2026-11-20T03:35:44.405Z"
 }
