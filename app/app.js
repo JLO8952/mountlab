@@ -899,6 +899,100 @@ Uso / montaje: [cómo lo voy a montar o conectar — opcional]
 Llena TODOS los campos de la ficha: nombre, tipo, categoría, etiquetas, fabricante, referencia; descripción, funcionamiento, voltaje, corriente, interfaz (y dirección I2C si aplica), entradas, salidas, dimensiones, datasheet (URL directa al PDF) y notas; especificaciones; pines en el ORDEN FÍSICO del conector con su función; montaje (placa y agujeros desde el centro); modelo 3D con sus piezas (header, chip, conectores, LED…); y precios en Colombia.
 Verifica cada medida con al menos dos fuentes (datasheet/plano y vendedor), dime cuáles coinciden y marca confianza baja lo que no puedas confirmar.`;
 
+  // ---- investigación externa: prompt para Gemini/ChatGPT/Claude web y pegado de la respuesta (sin gastar API)
+  function catalogoPlantillas() {
+    const ok = ["header_macho", "header_hembra", "patas_dip", "patas_smd", "micro_usb", "usb_c", "jack_dc", "jst_xh", "jst_ph", "bornera", "qfn", "tqfp", "wroom", "cristal", "smd", "electrolitico", "inductor", "trimmer", "pulsador", "led_th", "led_smd", "interruptor", "buzzer", "pantalla", "sot223", "to220", "disipador", "rele", "antena", "f_caja", "f_cil"];
+    return ok.map(id => { const t = MLPlant.plantilla(id); if (!t) return null; const ps = (t.params || []).filter(q => q.k !== "color").map(q => `${q.k}=${q.def}`).join(", "); return `- ${id}: ${t.n}${ps ? ` {${ps}}` : ""}`; }).filter(Boolean).join("\n");
+  }
+  function promptExterno({ nombre, variante, notas, existente }) {
+    const cats = [...new Set(Store.db.componentes.map(c => c.categoria))].filter(Boolean).join(", ");
+    const id = existente ? existente.id : slug(nombre + (variante ? " " + variante : ""));
+    const faltan = existente ? ["descripcion", "funcionamiento", "voltaje", "corriente", "interfaz", "entradas", "salidas", "dimensiones", "datasheet", "notas"].filter(k => !(existente.ficha || {})[k]).map(k => "ficha." + k).concat(existente.montaje && existente.montaje.pcb ? [] : ["montaje", "modelo"], (existente.pines || []).length ? [] : ["pines"], (existente.especificaciones || []).length ? [] : ["especificaciones"], (existente.precios || []).length ? [] : ["precios"]) : [];
+    return `Eres un ingeniero electrónico. Investiga en internet este componente para registrarlo en mi biblioteca (app MountLab):
+COMPONENTE: ${nombre}${variante ? `\nVERSIÓN / ENCAPSULADO: ${variante}` : ""}${notas ? `\nNOTAS: ${notas}` : ""}
+${existente ? `\nYa existe en mi biblioteca con id "${existente.id}". Solo necesito lo que le falta${faltan.length ? `: ${faltan.join(", ")}` : " o esté mal"}. No incluyas montaje, modelo ni pines si no están en esa lista.\n` : ""}
+CÓMO INVESTIGAR
+1. Busca el datasheet OFICIAL del fabricante (PDF) y, si es un módulo/breakout, el plano mecánico o la página del vendedor con medidas.
+2. Comprueba cada medida con al menos 2 fuentes. Si no coinciden o solo hay una fuente, márcala con confianza "baja". No inventes: si no encuentras un dato, omítelo.
+3. Distingue chip suelto de módulo (p. ej. GY-521 es el módulo del MPU-6050): para un módulo, medidas, pines y agujeros son los del MÓDULO.
+
+RESPONDE ÚNICAMENTE con un bloque \`\`\`json con este formato (JSON válido, sin comentarios, decimales con punto, medidas en mm, precios en pesos colombianos):
+{
+ "componente": "${id}",
+ "resumen": "2-3 frases: qué es y de dónde salió cada dato",
+ "cambios": {
+  "nombre": "nombre descriptivo en español", "tipo": "electronico", "categoria": "una de: ${cats}", "etiquetas": ["…"],
+  "fabricante": "…", "referencia": "…",
+  "ficha.descripcion": "…", "ficha.funcionamiento": "…", "ficha.voltaje": "…", "ficha.corriente": "…", "ficha.interfaz": "… (dirección I2C si aplica)",
+  "ficha.entradas": "…", "ficha.salidas": "…", "ficha.dimensiones": "largo × ancho × alto mm, agujeros, paso de pines", "ficha.datasheet": "URL directa al PDF", "ficha.notas": "advertencias, compatibilidad 3.3/5 V, variantes",
+  "especificaciones": [{"param": "…", "valor": "…"}],
+  "pines": [{"n": "VCC", "func": "…"}],
+  "montaje": {"pcb": [largo, ancho, espesor_o_alto], "agujeros": [{"x": 0, "y": 0, "d": 3.0}]},
+  "modelo": {"base": {"tipo": "placa|prisma", "forma": "rect", "L": largo, "W": ancho, "espesor": 1.6, "color": "#1d4ed8"}, "piezas": [{"plantilla": "header_macho", "nombre": "…", "cara": "A|B", "x": 0, "y": 0, "rot": 0, "params": {}}]},
+  "precios": [{"proveedor": "Mercado Libre CO", "precio_cop": 0, "url": "…", "fecha": "AAAA-MM", "estimado": true}]
+ },
+ "fuentes": {"campo": "URL de donde salió"},
+ "confianza": {"campo": "alta|media|baja"},
+ "verificacion": [{"dato": "Largo × ancho", "valor": "20.3 × 15.6 mm", "fuentes": 2, "ok": true, "nota": "plano y vendedor coinciden"}]
+}
+
+REGLAS DE GEOMETRÍA (importantes)
+- Origen en el CENTRO de la placa o del cuerpo, vista desde arriba. X = lado más largo, Y = lado corto. Todo en mm.
+- Agujeros y piezas DENTRO de la placa: |x| ≤ L/2 y |y| ≤ W/2.
+- "pines": en el ORDEN FÍSICO del conector (pin 1 primero), solo nombre y función, sin coordenadas. La pieza conector del modelo (header o patas) debe tener el mismo número de pines; la app les pone los nombres en ese orden.
+- MÓDULO: base "placa" (espesor del PCB, normalmente 1.6) + header ("cara": "B" si va soldado hacia abajo) + chip principal, regulador, conectores y LED en su posición aproximada.
+- CHIP SUELTO (DIP, SOIC, TSSOP…): base "prisma" con las medidas del CUERPO (espesor = alto del cuerpo, color "#1f2937") + UNA pieza de patas en "cara": "B", x 0, y 0: "patas_dip" {n, paso, fila, largo} o "patas_smd" {n, paso, ancho (punta a punta), cuerpo (ancho del cuerpo)}. Pin 1 abajo a la izquierda, numeración antihoraria. montaje.pcb = [largo, ancho, alto] del cuerpo.
+- Si no hallas medidas confiables, omite "montaje" y "modelo" y dilo en el resumen.
+
+PIEZAS DISPONIBLES PARA "modelo.piezas" (plantilla {parámetros=valor por defecto}):
+${catalogoPlantillas()}`;
+  }
+  /** Lee la respuesta pegada (Gemini, ChatGPT…): tolera texto alrededor, comillas tipográficas y comas sobrantes. */
+  function leerRespuestaExterna(txt) {
+    let t = String(txt || "").trim(); if (!t) throw new Error("No pegaste nada");
+    const m = t.match(/```(?:json|mountlab-propuesta)?\s*([\s\S]*?)```/i); if (m) t = m[1];
+    const a = t.indexOf("{"), b = t.lastIndexOf("}"); if (a < 0 || b < a) throw new Error("No encontré un bloque JSON en la respuesta. Pídele a la IA: «responde solo con el bloque json».");
+    t = t.slice(a, b + 1).replace(/[\u201C\u201D]/g, '"').replace(/[\u2018\u2019]/g, "'").replace(/^\s*\/\/.*$/gm, "").replace(/,(\s*[}\]])/g, "$1");
+    let o; try { o = JSON.parse(t); } catch (e) { throw new Error("El JSON tiene un error (" + e.message + "). Pídele a la IA que lo corrija y vuelve a pegarlo."); }
+    if (!o.cambios) { const { componente, resumen, fuentes, confianza, verificacion, ...resto } = o; o = { componente, resumen, fuentes, confianza, verificacion, cambios: resto }; }
+    // aplanar "ficha": {...} → "ficha.x"
+    if (o.cambios.ficha && typeof o.cambios.ficha === "object") { Object.entries(o.cambios.ficha).forEach(([k, v]) => { o.cambios["ficha." + k] = v; }); delete o.cambios.ficha; }
+    Object.keys(o.cambios).forEach(k => { const v = o.cambios[k]; if (v == null || v === "" || v === "…" || (Array.isArray(v) && !v.length)) delete o.cambios[k]; });
+    o.componente = slug(o.componente || o.cambios.nombre || o.cambios.referencia || "componente");
+    if (!Object.keys(o.cambios).length) throw new Error("La respuesta no trae datos para la ficha");
+    return o;
+  }
+  function importarExterno(txt, quien) {
+    const p = leerRespuestaExterna(txt), ya = comp(p.componente);
+    if (ya && p.cambios.nombre && ya.nombre && slug(ya.nombre) !== slug(p.cambios.nombre) && !/actualiz|complet/i.test(p.resumen || "")) p.resumen = `⚠ Ya existe «${ya.nombre}» con este id: esto lo ACTUALIZA. Si es otra versión, cambia el id en la respuesta (p. ej. ${p.componente}_v2) y vuelve a pegarla. ` + (p.resumen || "");
+    S.chat.push({ role: "user", content: `(pegué la respuesta de ${quien || "la IA externa"} para ${p.componente})` },
+      { role: "assistant", content: "Importé la respuesta externa.", vista: `📥 Respuesta de ${quien || "la IA externa"} importada sin gastar créditos: revisa la propuesta, mira la 🔎 revisión automática y aprueba lo que esté bien.`, local: true, via: "importación", props: [p] });
+    abrirAsistente(); vAsistente(); return p;
+  }
+  async function dlgExterno(pre) {
+    const ctx = ctxActual(), ex = ctx.vista === "componente" && ctx.id ? comp(ctx.id) : null;
+    await modal(`<h3>🌐 Investigar con Gemini / ChatGPT (sin gastar API)</h3>
+      <div class="small muted">1) Genera el prompt y cópialo. 2) Pégalo en Gemini (o ChatGPT/Claude web) con búsqueda en internet. 3) Copia su respuesta completa y pégala abajo.</div>
+      <div class="grid2" style="margin-top:8px"><div><label>Componente (nombre y referencia)</label><input id="exN" value="${esc(pre || (ex ? ex.nombre : ""))}" placeholder="p. ej. módulo GY-521 MPU-6050, NE555P, HC-SR04"></div>
+        <div><label>Versión / encapsulado (opcional)</label><input id="exV" placeholder="p. ej. SOIC-14, DIP-8, versión 3.3 V"></div></div>
+      <div style="margin-top:6px"><label>Notas (opcional)</label><input id="exO" placeholder="cómo lo vas a montar, link del vendedor, medidas que ya conoces…"></div>
+      ${ex ? `<label class="small" style="display:flex;gap:6px;align-items:center;margin-top:6px"><input type="checkbox" id="exE" checked style="width:auto"> Completar el existente «${esc(ex.id)}» (solo lo que le falta)</label>` : ""}
+      <div class="row" style="margin-top:8px"><button class="pri" id="exG">1 · Generar y copiar prompt</button>
+        <a class="btn sm" href="https://gemini.google.com/app" target="_blank" rel="noopener">Abrir Gemini ↗</a><a class="btn sm" href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT ↗</a><a class="btn sm" href="https://claude.ai/new" target="_blank" rel="noopener">Claude ↗</a></div>
+      <textarea id="exP" readonly rows="5" class="small" style="margin-top:6px;width:100%;font-family:var(--mono,monospace);display:none"></textarea>
+      <div style="margin-top:10px"><label>2 · Pega aquí la respuesta completa de la IA</label><textarea id="exR" rows="6" style="width:100%" placeholder='Debe contener un bloque \`\`\`json { "componente": …, "cambios": { … } } \`\`\`'></textarea></div>
+      <div class="msg warn small hide" id="exErr"></div>
+      <div class="row" style="justify-content:flex-end;margin-top:8px"><button data-close>Cerrar</button><button class="pri" id="exI">3 · Importar y revisar</button></div>`, (b, close) => {
+      $("#exG", b).onclick = async () => {
+        const nombre = $("#exN", b).value.trim(); if (!nombre) return toast("Escribe el nombre del componente");
+        const txt = promptExterno({ nombre, variante: $("#exV", b).value.trim(), notas: $("#exO", b).value.trim(), existente: ex && $("#exE", b) && $("#exE", b).checked ? ex : null });
+        const ta = $("#exP", b); ta.value = txt; ta.style.display = "";
+        try { await navigator.clipboard.writeText(txt); toast("Prompt copiado: pégalo en Gemini con búsqueda activada", 5000); } catch (e) { ta.select(); toast("Selecciona y copia el texto del recuadro"); }
+      };
+      $("#exI", b).onclick = () => { try { importarExterno($("#exR", b).value, "IA externa"); close(true); } catch (e) { const er = $("#exErr", b); er.textContent = e.message; er.classList.remove("hide"); } };
+    });
+  }
+
   // ---- propuestas (crear / actualizar componentes): nada se guarda sin aprobar
   function compVacio(id, nombre) {
     return { id, nombre: nombre || id, tipo: "electronico", categoria: "Otros", etiquetas: [], fabricante: "", referencia: "", estado: "borrador", version: 1, unidad: "und",
@@ -1088,10 +1182,11 @@ Verifica cada medida con al menos dos fuentes (datasheet/plano y vendedor), dime
         ${sinResp.length ? `<div style="margin-top:8px"><b>Sin respuesta</b> (enséñale a qué componente se refieren):${sinResp.slice(-10).reverse().map(x => `<div class="row" style="justify-content:space-between;margin-top:3px"><span>“${esc(x)}”</span><button class="sm" data-ens="${esc(x)}">Enseñar</button></div>`).join("")}<button class="sm" id="cbL" style="margin-top:6px">Limpiar lista</button></div>` : ""}</div></details>
       <div class="log" id="log"></div>
       <div id="adjBox" class="adj-box"></div>
-      <div class="in"><div class="in-tools"><button class="sm ghost" id="qF" title="Adjuntar foto o datasheet (PDF) · también puedes arrastrarlo o pegarlo">📎</button><button class="sm ghost" id="qCam" title="Tomar foto con la cámara">📷</button><button class="sm ghost" id="qTpl" title="Plantilla estándar para agregar un componente">📋</button></div>
+      <div class="in"><div class="in-tools"><button class="sm ghost" id="qF" title="Adjuntar foto o datasheet (PDF) · también puedes arrastrarlo o pegarlo">📎</button><button class="sm ghost" id="qCam" title="Tomar foto con la cámara">📷</button><button class="sm ghost" id="qTpl" title="Plantilla estándar para agregar un componente">📋</button><button class="sm ghost" id="qExt" title="Investigar con Gemini/ChatGPT y pegar la respuesta (sin gastar API)">🌐</button></div>
         <textarea id="q" rows="2" placeholder="Pregunta, da una orden o adjunta un datasheet… (Enter envía)" ${sinKey ? "disabled" : ""}></textarea><button class="pri" id="send" ${sinKey ? "disabled" : ""}>➤</button>
         <input type="file" id="qFile" accept="image/*,application/pdf,.pdf,.txt" multiple hidden><input type="file" id="qFoto" accept="image/*" capture="environment" hidden></div>`;
     const log = $("#log");
+    { const xb = $("#qExt"); if (xb) xb.onclick = () => dlgExterno(); }
     { const tb = $("#qTpl"); if (tb) tb.onclick = () => { const q = $("#q"); q.value = PLANTILLA_AGREGAR; q.focus(); q.setSelectionRange(q.value.indexOf("["), q.value.indexOf("]") + 1); q.style.height = "180px"; toast("Reemplaza lo que está entre [corchetes] y envía. Puedes adjuntar fotos o el PDF del datasheet.", 6000); }; }
     const fmt = t => esc(t).replace(/\[\[([a-z0-9_]+)\]\]/g, (m, id) => comp(id) ? `<a class="cref" href="#/c/${id}">${esc(comp(id).nombre)}</a>` : m).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
     const ejemplos = ["¿Qué voltaje usa el bme28o?", "pines del lm75", "¿Qué sensores I2C tengo?", "abre el proyecto cansat", "busca I2C", ...(nubeLista() ? ["Agrega el sensor MPU6050 (GY-521): datasheet, pines, medidas y precios en Colombia", "Completa el datasheet del TP4056"] : [])];
@@ -1186,6 +1281,7 @@ Verifica cada medida con al menos dos fuentes (datasheet/plano y vendedor), dime
         S.chat.push({ role: "user", content: q }); const r = await MLAgent.ejecutar(it.a, it.args);
         S.chat.push({ role: "act", content: r.msg, ok: r.ok }); pintaLog(); return;
       }
+      if (/"cambios"\s*:/.test(q) && /"componente"\s*:|"nombre"\s*:/.test(q)) { try { importarExterno(q, "la IA externa"); $("#q").value = ""; return; } catch (e) { toast(e.message, 7000); return; } }
       if (S.modo !== "nube" && /^\s*(hola|holi|buen[oa]s?( d[ií]as| tardes| noches)?|hey|qu[eé] tal|gracias|muchas gracias|ok|listo|vale|perfecto)[\s!.,¡¿?]*$/i.test(q)) {
         const g = /gracias/i.test(q) ? "¡Con gusto! ¿Qué más hacemos?" : /^(ok|listo|vale|perfecto)/i.test(q) ? "👍" : "¡Hola! Pregúntame por tus componentes, pídeme que busque un datasheet en internet, adjunta una foto o un PDF, o dame una orden (\"abre termo-01\", \"código de colores\"…).";
         S.chat.push({ role: "user", content: q }, { role: "assistant", content: g, local: true, via: "saludo" }); pintaLog(); return;
@@ -1690,6 +1786,7 @@ Para un chip suelto usa base "prisma" con las medidas del CUERPO del encapsulado
     { id: "ir_catalogo", n: "Ir al catálogo", ic: "▦", k: "biblioteca componentes lista", global: true, run: () => { location.hash = "#/catalogo"; } },
     { id: "ir_proyectos", n: "Ir a proyectos", ic: "📁", k: "proyectos bom", global: true, run: () => { location.hash = "#/proyectos"; } },
     { id: "ver_consumo_ia", n: "Ver consumo y créditos de la IA", ic: "📊", k: "consumo creditos tokens gasto saldo costo uso ia claude gemini", global: true, run: () => { location.hash = "#/ajustes"; setTimeout(() => { const e = document.getElementById("usoP"); if (e) e.scrollIntoView({ behavior: "smooth" }); }, 400); } },
+    { id: "prompt_externo", n: "Investigar componente con Gemini/ChatGPT (prompt para copiar y pegar)", ic: "🌐", k: "gemini chatgpt prompt externo copiar pegar investigar buscar datasheet internet componente nuevo", global: true, run: () => dlgExterno() },
     { id: "plantilla_agregar", n: "Plantilla para agregar un componente con la IA", ic: "📋", k: "plantilla prompt agregar crear componente formulario ia", global: true, run: () => { abrirAsistente(); setTimeout(() => { const q = document.getElementById("q"); if (q) { q.value = PLANTILLA_AGREGAR; q.focus(); } }, 400); } },
     { id: "ir_pendientes", n: "Revisar pendientes por aprobar", ic: "📥", k: "pendientes aprobar bandeja propuestas", global: true, run: () => { location.hash = "#/pendientes"; } },
     { id: "ir_pasivos", n: "Abrir el anexo de pasivos", ic: "Ω", k: "resistencias capacitores condensadores codigo colores bandas series e smd valores", global: true, run: () => { location.hash = "#/pasivos"; } },

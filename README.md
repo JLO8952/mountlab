@@ -80,6 +80,11 @@ Vista superior, frontal y lateral izquierda (ISO-E, primer diedro) a escala 1:1 
 - **Llevar las claves al celular**: Ajustes → Acceso y seguridad → «📱 Llevar mis claves a otro dispositivo» muestra un QR/enlace (cifrado, vence en 30 min) y un PIN. En el celular se escanea, se escribe el PIN y una contraseña para ese dispositivo (`#/traer/<código>`, `Auth.crearTraspaso`).
 - Claude (Anthropic) y OpenAI siguen disponibles como alternativas en el mismo selector.
 
+## Investigar con Gemini / ChatGPT (sin gastar API)
+- Botón **🌐** del chat (o la acción «Investigar componente con Gemini/ChatGPT»): escribe el componente (y la versión/encapsulado), **Generar y copiar prompt**, pégalo en Gemini (o ChatGPT / Claude web) con búsqueda, copia su respuesta completa y pégala en **Importar y revisar** (o directamente en el chat).
+- El prompt explica el formato JSON de MountLab, las reglas de geometría (origen al centro, pines en orden físico, módulo vs chip suelto) y la lista de piezas 3D disponibles; si estás en la ficha de un componente, pide solo lo que le falta.
+- La respuesta se lee aunque traiga texto alrededor, comillas tipográficas o comas sobrantes; sale como propuesta con la 🔎 revisión automática y se aprueba igual que las de la IA integrada (no gasta créditos).
+
 ## Agregar componentes con la IA (protocolo y revisión)
 - Botón **📋** del chat (o la acción «Plantilla para agregar un componente»): inserta el prompt estándar con los datos a llenar; la IA debe completar todos los campos del formulario, los pines en orden físico, el montaje, el modelo 3D y la verificación con dos fuentes.
 - Cada propuesta muestra una **🔎 Revisión automática** antes de aprobar: ficha incompleta, dimensiones de la ficha vs montaje, agujeros fuera de la placa o pegados al borde, piezas fuera/encimadas, número de pines vs header, datasheet que no es PDF, campos de confianza baja.
