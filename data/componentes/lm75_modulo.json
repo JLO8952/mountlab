@@ -9,7 +9,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Sensor digital de temperatura de 9-11 bits por I2C, -55 a 125 C, precision +/-2 C.",
@@ -24,22 +24,26 @@
   "notas": "Modulo generico SIN agujeros (supuesto). Confirmar referencia y medidas; hay versiones de 8 pines (A0-A2, OS)."
  },
  "especificaciones": [],
- "imagen": null,
+ "imagen": {
+  "src": "img/lm75_modulo.png?v=1795195492463",
+  "origen": "render del modelo 3D"
+ },
  "precios": [],
  "busquedas": {},
  "montaje": {
-  "pcb": [
-   18,
-   13,
-   1.6
-  ],
+  "origen": "centro",
   "fijacion": "guia_deslizante",
   "agujeros": [],
   "altura_superior": 1.2,
   "altura_inferior": 8.5,
   "holgura_inferior_cableado": 22,
   "nota": "Sin agujeros: MountLab usa guia deslizante (rieles con ranura) en lugar de tornillos.",
-  "origen": "centro"
+  "pcb": [
+   18,
+   13,
+   1.6
+  ],
+  "forma": "rect"
  },
  "zonas": [
   {
@@ -53,7 +57,7 @@
    "holgura": 5,
    "regla": "Requiere flujo de aire: poner junto a rejilla y lejos de zonas de calor",
    "cx": 0.5,
-   "cy": 0.0,
+   "cy": 0,
    "w": 3,
    "h": 3
   },
@@ -67,7 +71,7 @@
    "salida": "-Z",
    "holgura": 22,
    "cx": -7.73,
-   "cy": 0.0,
+   "cy": 0,
    "w": 2.54,
    "h": 10.16
   }
@@ -160,6 +164,16 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado a MountLab unificado: origen de coordenadas movido al centro de la placa."
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: modelo 3D, montaje/agujeros, imagen",
+   "cambios": [
+    "modelo",
+    "montaje",
+    "imagen"
+   ]
   }
  ],
  "i2c": {
@@ -169,5 +183,82 @@
    "0x4F"
   ],
   "pines_direccion": "A0-A2"
- }
+ },
+ "modelo": {
+  "version": 1,
+  "base": {
+   "forma": "rect",
+   "L": 18,
+   "W": 13,
+   "d": 18,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#166534"
+  },
+  "piezas": [
+   {
+    "id": "z1",
+    "plantilla": "f_caja",
+    "origen": "zona:sensor",
+    "nombre": "Chip LM75",
+    "cara": "A",
+    "x": 0.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3,
+     "h": 3,
+     "alto": 1.2,
+     "r": 0,
+     "color": "#34d399"
+    }
+   },
+   {
+    "id": "z2",
+    "plantilla": "f_caja",
+    "origen": "zona:pines",
+    "nombre": "Header 1x4",
+    "cara": "B",
+    "x": -7.73,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 2.54,
+     "h": 10.16,
+     "alto": 8.5,
+     "r": 0,
+     "color": "#1f2937"
+    }
+   }
+  ],
+  "nota": "Piezas iniciales creadas a partir de las zonas del componente.",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 0.5,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 2.8,
+    "color": "#34d399",
+    "pieza": "z1",
+    "w": 3,
+    "h": 3
+   },
+   {
+    "f": "caja",
+    "cx": -7.73,
+    "cy": 0,
+    "z0": -8.5,
+    "z1": 0,
+    "color": "#1f2937",
+    "pieza": "z2",
+    "w": 2.54,
+    "h": 10.16
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-20T17:21:14.719Z"
 }
