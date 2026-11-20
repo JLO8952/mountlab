@@ -78,19 +78,40 @@
   ],
   "fijacion": "guia_deslizante",
   "agujeros": [],
-  "altura_superior": 6.0,
+  "altura_superior": 6,
   "altura_inferior": 0,
   "holgura_inferior_cableado": 22,
-  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 6,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 6,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
  },
  "zonas": [
   {
    "tipo": "pines",
    "nombre": "Header hembra",
-   "cx": -8.0,
-   "cy": -10.0,
-   "w": 20.0,
-   "h": 2.0,
+   "cx": -8,
+   "cy": -10,
+   "w": 20,
+   "h": 2,
    "z": [
     1.6,
     7.6
@@ -101,10 +122,10 @@
   {
    "tipo": "pines",
    "nombre": "Header hembra",
-   "cx": -8.0,
-   "cy": 12.0,
-   "w": 20.0,
-   "h": 2.0,
+   "cx": -8,
+   "cy": 12,
+   "w": 20,
+   "h": 2,
    "z": [
     1.6,
     7.6
@@ -116,7 +137,7 @@
    "tipo": "usb",
    "nombre": "Mini USB",
    "cx": 18.5,
-   "cy": 0.0,
+   "cy": 0,
    "w": 7,
    "h": 8,
    "z": [

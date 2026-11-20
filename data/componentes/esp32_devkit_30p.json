@@ -64,7 +64,28 @@
   "altura_inferior": 8.5,
   "holgura_inferior_cableado": 22,
   "nota": "Headers macho hacia abajo: con cables Dupont se necesitan ~22 mm libres bajo el PCB.",
-  "origen": "centro"
+  "origen": "centro",
+  "conexiones": {
+   "header": "abajo",
+   "header_alto": 8.5,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 3.1,
+    "altura_inferior": 2,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Sin header: los cables se sueldan en los pads por arriba; puntas recortadas ≈2 mm por debajo."
+   },
+   "jumper": {
+    "altura_superior": 3.1,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "Header macho hacia abajo (8.5 mm) + carcasa Dupont y curva del cable ≈22 mm."
+   }
+  }
  },
  "zonas": [
   {
@@ -81,7 +102,7 @@
     9
    ],
    "cx": -23.95,
-   "cy": 0.0,
+   "cy": 0,
    "w": 5.6,
    "h": 7.5
   },
@@ -96,7 +117,7 @@
    "holgura": 10,
    "regla": "Sin metal ni cobre a menos de 10 mm",
    "cx": 22.75,
-   "cy": 0.0,
+   "cy": 0,
    "w": 6,
    "h": 18
   },
@@ -109,7 +130,7 @@
    ],
    "salida": "+Z",
    "holgura": 3,
-   "cx": -18.0,
+   "cx": -18,
    "cy": 8.25,
    "w": 3.5,
    "h": 3
@@ -123,7 +144,7 @@
    ],
    "salida": "+Z",
    "holgura": 3,
-   "cx": -18.0,
+   "cx": -18,
    "cy": -8.25,
    "w": 3.5,
    "h": 3
@@ -166,8 +187,8 @@
    "salida": "+Z",
    "holgura": 15,
    "regla": "Mantener sensores de temperatura a >15 mm",
-   "cx": 5.0,
-   "cy": 0.0,
+   "cx": 5,
+   "cy": 0,
    "w": 41.5,
    "h": 18
   }

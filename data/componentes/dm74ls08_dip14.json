@@ -143,7 +143,28 @@
    3.43
   ],
   "forma": "rect",
-  "base_tipo": "prisma"
+  "base_tipo": "prisma",
+  "conexiones": {
+   "header": "no_aplica",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 0.1,
+    "altura_inferior": 3.8,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 0,
+    "cable": "Soldado en la placa",
+    "nota": "Se suelda directo en la tarjeta: misma medida en las dos versiones."
+   },
+   "jumper": {
+    "altura_superior": 0.1,
+    "altura_inferior": 3.8,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 0,
+    "cable": "Zócalo o protoboard",
+    "nota": "Para pruebas en protoboard o zócalo."
+   }
+  }
  },
  "zonas": [
   {

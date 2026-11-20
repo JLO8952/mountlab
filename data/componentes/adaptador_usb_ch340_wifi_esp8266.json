@@ -76,7 +76,28 @@
    17,
    1.6
   ],
-  "forma": "rect"
+  "forma": "rect",
+  "conexiones": {
+   "header": "arriba",
+   "header_alto": 8.5,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 10.1,
+    "altura_inferior": 1.8,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Sin header: cables soldados en los pads por arriba (≈6 mm para la curva del cable)."
+   },
+   "jumper": {
+    "altura_superior": 10.1,
+    "altura_inferior": 1.8,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 12,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "Header hembra arriba (8.5 mm): jumper macho insertado ≈12 mm."
+   }
+  }
  },
  "zonas": [
   {

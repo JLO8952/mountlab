@@ -582,6 +582,19 @@
         ${h ? `<div class="kv" style="margin-top:10px"><div><label>X (mm)</label><input type="number" step="0.1" id="hx" value="${h.x}"></div><div><label>Y (mm)</label><input type="number" step="0.1" id="hy" value="${h.y}"></div><div><label>Ø (mm)</label><input type="number" step="0.1" id="hd" value="${h.d}"></div></div>
           <div class="row" style="margin-top:6px"><span class="small muted">Tornillo sugerido: ${tornilloPara(h.d)}</span><button class="sm danger" id="hX" style="margin-left:auto">Eliminar</button></div>` : '<div class="small muted" style="margin-top:6px">Arrastra un agujero en la placa o selecciónalo en la lista para editar sus coordenadas.</div>'}
       </div>`;
+    // dos versiones de conexión: soldado (sin jumper, por defecto en los proyectos) y jumper (headers + Dupont)
+    const CX = MLCaja.conexiones(W);
+    if (CX) {
+      const campos = [["altura_superior", "Alto sobre PCB"], ["holgura_superior_cableado", "Cables arriba"], ["altura_inferior", "Bajo PCB (pines)"], ["holgura_inferior_cableado", "Cables abajo"]];
+      sd.insertAdjacentHTML("beforeend", `<div class="panel"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Versiones de conexión</h3><button class="sm ghost" id="cxR" title="Vuelve a calcular las dos versiones desde las alturas y los headers del modelo">↻ Recalcular</button></div>
+        <div class="small muted" style="margin:4px 0 8px">Header: <b>${{ abajo: "hacia abajo", arriba: "hacia arriba", ninguno: "no trae", no_aplica: "no aplica (se suelda directo)" }[CX.header] || CX.header}</b>${CX.header_alto ? ` · ${CX.header_alto} mm` : ""}. Los proyectos usan <b>soldado</b> por defecto; en el diagrama se cambia por componente.</div>
+        <table class="t small"><tr><th></th><th>🔧 Soldado</th><th>📌 Jumper</th></tr>
+        ${campos.map(([k, n]) => `<tr><td>${n}</td>${["soldado", "jumper"].map(v => `<td><input type="number" step="0.1" data-cx="${v}" data-ck="${k}" value="${CX[v][k] ?? 0}" style="padding:4px 6px"></td>`).join("")}</tr>`).join("")}
+        <tr><td>Cable</td><td class="muted">${esc(CX.soldado.cable || "")}</td><td class="muted">${esc(CX.jumper.cable || "")}</td></tr>
+        <tr><td>Nota</td><td class="muted">${esc(CX.soldado.nota || "")}</td><td class="muted">${esc(CX.jumper.nota || "")}</td></tr></table></div>`);
+      $$("[data-cx]", sd).forEach(i => i.oninput = () => { if (!M.conexiones) M.conexiones = JSON.parse(JSON.stringify(CX)); M.conexiones[i.dataset.cx][i.dataset.ck] = num(i.value, 0); S.mark(); });
+      $("#cxR", sd).onclick = () => { delete M.conexiones; M.conexiones = JSON.parse(JSON.stringify(MLCaja.conexiones(W))); S.mark(); S.sideRefresh(sel); };
+    }
     const re = () => { S.ed.redraw(); S.mark(); };
     $("#pL").oninput = e => { M.pcb[0] = num(e.target.value, M.pcb[0]); re(); };
     $("#pW").oninput = e => { M.pcb[1] = num(e.target.value, M.pcb[1]); re(); };
@@ -822,9 +835,12 @@
 
   // ---------- caja mínima (envolvente) del proyecto o de un subproyecto
   function vCaja(P, cabecera) {
-    const host = $("#cajaHost"), cfg = Object.assign({}, P.caja || {}), par = Object.assign({ gap: 3, pared: 2, espesor: 2, standoff: 5, arriba: 8, prop: 3, rotar: true, bom: true }, cfg.p || {});
-    const guardarCfg = () => { P.caja = { alcance: cfg.alcance || "__todo", p: par }; cabecera(); };
+    const host = $("#cajaHost"), cfg = Object.assign({ por: {} }, P.caja || {}); cfg.por = Object.assign({}, cfg.por || {});
+    const par = Object.assign({}, MLCaja.PDEF, { bom: true, conexion: "soldado" }, cfg.p || {});
     let alc = cfg.alcance || "__todo"; if (alc !== "__todo" && !P.subs.some(u => u.id === alc)) alc = "__todo";
+    const est = Object.assign({ sel: "op0", manual: null, elementos: [] }, cfg.por[alc] || {}); est.elementos = (est.elementos || []).slice();
+    const guardarCfg = () => { cfg.por[alc] = { sel: est.sel, manual: est.manual, elementos: est.elementos }; P.caja = { alcance: alc, p: par, por: cfg.por }; cabecera(); };
+    const ui = S.cajaUI || (S.cajaUI = { panel: "vistas", nivel: 0, pz: null });
     const comp2 = id => Store.db.componentes.find(c => c.id === id);
     const usar = alc === "__todo" ? P.subs : P.subs.filter(u => u.id === alc), varios = usar.length > 1;
     let inst = usar.flatMap((u, i) => u.circuito.inst.map(it => Object.assign({}, it, { ref: varios ? `${i + 1}·${it.ref}` : it.ref, _sub: u.nombre })));
@@ -832,32 +848,88 @@
       const enDiag = {}; P.subs.forEach(u => u.circuito.inst.forEach(it => enDiag[it.id] = (enDiag[it.id] || 0) + 1)); let k = 1;
       for (const b of P.bom) { const c = comp2(b.id); if (!c || c.anexo || c.tipo !== "electronico" || /^(Cableado|Prototipado|Herrajes|Materiales)$/.test(c.categoria)) continue; for (let n = enDiag[b.id] || 0; n < (+b.cantidad || 0); n++) inst.push({ ref: "B" + k++, id: b.id, _sub: "BOM (sin diagrama)" }); }
     }
-    const pz = MLCaja.piezas(inst, comp2, P), R = MLCaja.calcular(pz.piezas, par), titulo = P.nombre + (alc === "__todo" ? "" : " · " + (P.subs.find(u => u.id === alc) || {}).nombre);
-    const campo = (k, n, ayuda) => `<div title="${esc(ayuda)}"><label>${n}</label><input type="number" step="0.5" min="0" data-cp="${k}" value="${par[k]}"></div>`;
+    const pz = MLCaja.piezas(inst, comp2, P, par.conexion), ops = MLCaja.opciones(pz.piezas, par, est.elementos);
+    const RM = est.manual ? MLCaja.manual(pz.piezas, par, est.elementos, est.manual) : null;
+    if (est.sel === "manual" && !RM) est.sel = "op0";
+    const R = est.sel === "manual" ? RM : (ops.find(o => o.id === est.sel) || ops[0]);
+    const titulo = P.nombre + (alc === "__todo" ? "" : " · " + (P.subs.find(u => u.id === alc) || {}).nombre);
+    const campo = (k, n, ayuda, st) => `<div title="${esc(ayuda)}"><label>${n}</label><input type="number" step="${st || 0.5}" min="0" data-cp="${k}" value="${par[k]}"></div>`;
+    const tarj = o => `<button class="cj-op ${R === o ? "on" : ""}" data-op="${o.manual ? "manual" : o.id}"><div class="cj-op-h"><b>${o.manual ? "✋" : o.letra}</b> ${esc(o.etiqueta)}</div>
+      <div class="cj-op-d">${o.interior.L} × ${o.interior.W} × ${o.interior.H}</div><div class="small muted">mm int. · ${o.volumen} cm³ · ${o.n} nivel${o.n > 1 ? "es" : ""}</div>
+      <div class="cj-op-b">${o.mejorArea ? '<span class="tag ok">menor área</span>' : ""}${o.mejorVol ? '<span class="tag">menor volumen</span>' : ""}${o.manual && (o.choques || []).length ? '<span class="tag bad">choques</span>' : ""}</div></button>`;
+    const carasOpt = v => Object.entries(MLCaja.CARAS).map(([k, n]) => `<option value="${k}" ${v === k ? "selected" : ""}>${n}</option>`).join("");
+    const filaEl = (e, i) => { const d = MLCaja.ELEMENTOS[e.tipo] || {}, pared = /^[+-][XY]$/.test(e.cara), rs = R && (R.elementos || [])[i];
+      return `<div class="cj-el"><div class="cj-el-h"><b>E${i + 1}</b> ${d.ic || ""} <span>${esc(e.nombre || d.n || e.tipo)}</span><button class="sm ghost" data-ex="${i}" title="Quitar">✕</button></div>
+        <div class="cj-el-g"><div><label>Cara</label><select data-ef="cara" data-ei="${i}">${carasOpt(e.cara)}</select></div>
+        <div><label>Ancho</label><input type="number" step="0.5" data-ef="w" data-ei="${i}" value="${e.w}"></div><div><label>Alto</label><input type="number" step="0.5" data-ef="h" data-ei="${i}" value="${e.h}"></div>
+        <div title="Lo que entra hacia adentro de la caja (tuerca, cuerpo del conector, cable doblado). 0 = solo el agujero."><label>Fondo int.</label><input type="number" step="0.5" data-ef="prof" data-ei="${i}" value="${e.prof}"></div>
+        <div title="Posición del centro a lo largo de la cara (mm desde la esquina −X o −Y). Vacío = automática."><label>Posición</label><input type="number" step="0.5" data-ef="u" data-ei="${i}" value="${e.u ?? ""}" placeholder="${rs ? rs.u : "auto"}" ${pared && e.prof > 0 ? "disabled" : ""}></div>
+        <div title="${pared ? "Altura del centro sobre el fondo (mm)" : "Posición en Y del centro (mm)"}. Vacío = automática."><label>${pared ? "Altura" : "Pos. Y"}</label><input type="number" step="0.5" data-ef="v" data-ei="${i}" value="${e.v ?? ""}" placeholder="${rs ? rs.v : "auto"}"></div>
+        ${pared ? `<div><label>Nivel</label><select data-ef="nivel" data-ei="${i}">${[0, 1, 2].map(n => `<option value="${n}" ${(+e.nivel || 0) === n ? "selected" : ""}>${n + 1}</option>`).join("")}</select></div>` : ""}</div></div>`; };
+    const selPz = R && ui.pz && R.piezas.find(q => q.ref === ui.pz);
+    if (R && ui.nivel >= R.n) ui.nivel = 0;
     host.innerHTML = `<div class="sub-bar">${[["__todo", "🗂 Todo el proyecto"], ...P.subs.map(u => [u.id, `${(TIPOS_SUB[u.tipo] || TIPOS_SUB.otro)[0]} ${u.nombre}`])].map(([id, n]) => `<button class="sub-chip ${alc === id ? "on" : ""}" data-ca="${esc(id)}">${esc(n)}</button>`).join("")}</div>
+      ${ops.length ? `<div class="small muted" style="margin:2px 0 6px">Opciones de caja de área mínima (elige una; luego puedes acomodar las piezas a mano):</div><div class="cj-ops">${ops.map(tarj).join("")}${RM ? tarj(RM) : ""}</div>` : ""}
       <div class="caja-grid">
-        <div class="panel"><h3>Parámetros</h3><div class="grid2">${campo("gap", "Separación entre piezas (mm)", "Espacio libre entre componentes")}${campo("pared", "Holgura a las paredes (mm)", "Espacio entre las piezas y la pared interior")}${campo("espesor", "Espesor de pared (mm)", "Para calcular la medida exterior")}${campo("standoff", "Separadores bajo placas (mm)", "Altura de los separadores en placas con agujeros")}${campo("arriba", "Espacio para cables arriba (mm)", "Conectores dupont, cables y holgura sobre los componentes")}${campo("prop", "Proporción máx. largo/ancho", "Evita cajas muy alargadas")}</div>
-          <label class="small" style="display:flex;gap:6px;align-items:center;margin-top:8px"><input type="checkbox" data-cp="rotar" ${par.rotar ? "checked" : ""} style="width:auto"> Permitir girar piezas</label>
-          ${alc === "__todo" ? `<label class="small" style="display:flex;gap:6px;align-items:center;margin-top:4px"><input type="checkbox" data-cp="bom" ${par.bom ? "checked" : ""} style="width:auto"> Incluir piezas del BOM que no están en ningún diagrama</label>` : ""}
-          ${R ? `<div class="caja-kpi"><div><span>Interior</span><b>${R.interior.L} × ${R.interior.W} × ${R.interior.H}</b><small>mm (largo × ancho × alto)</small></div><div><span>Exterior</span><b>${R.exterior.L} × ${R.exterior.W} × ${R.exterior.H}</b><small>mm con pared de ${par.espesor} mm</small></div><div><span>Volumen</span><b>${R.volumen} cm³</b><small>ocupación en planta ${R.ocupacion} %</small></div></div>
-            <div class="row" style="margin-top:10px"><button class="sm" id="cjSvg">⬇ SVG</button><button class="sm" id="cjDxf">⬇ DXF (3 vistas)</button><button class="sm" id="cjCsv">⬇ Posiciones CSV</button></div>` : ""}
-          ${pz.faltan.length ? `<div class="msg warn small" style="margin-top:10px">Sin medidas (no entran en el cálculo): ${pz.faltan.map(esc).join(", ")}. Complétalas con el Generador (🩺 Revisión).</div>` : ""}
-          ${pz.aberturas.length ? `<div class="msg info small" style="margin-top:8px">Aberturas en pared: ${pz.aberturas.map(a => `${esc(a.n)} (${a.w}×${a.h} mm)`).join(", ")}.</div>` : ""}
-          ${R && R.piezas.some(q => q.faltaPared) ? `<div class="msg warn small" style="margin-top:8px">Algunas piezas con conector en dos lados no quedaron contra ambas paredes: revisa ${R.piezas.filter(q => q.faltaPared).map(q => esc(q.ref)).join(", ")}.</div>` : ""}
+        <div class="side">
+          <div class="panel"><h3>Parámetros</h3><div class="grid2">${campo("gap", "Separación entre piezas (mm)", "Espacio libre entre componentes")}${campo("pared", "Holgura a las paredes (mm)", "Espacio entre las piezas y la pared interior")}${campo("espesor", "Espesor de pared (mm)", "Para calcular la medida exterior")}${campo("standoff", "Separadores bajo placas (mm)", "Altura de los separadores en placas con agujeros")}${campo("arriba", "Holgura sobre componentes (mm)", "Aire libre encima de cada pieza (los cables ya se cuentan según la versión soldado/jumper)")}${campo("repisa", "Espesor de repisa (mm)", "Placa que separa un nivel del siguiente")}${campo("prop", "Proporción máx. largo/ancho", "Evita cajas muy alargadas")}${campo("nivelesMax", "Niveles máximos", "Hasta 3 niveles", 1)}</div>
+            <div style="margin-top:8px"><label>Conexión por defecto</label><select data-cp="conexion"><option value="soldado" ${par.conexion !== "jumper" ? "selected" : ""}>🔧 Soldado (cables directo a la placa)</option><option value="jumper" ${par.conexion === "jumper" ? "selected" : ""}>📌 Jumper (headers + Dupont)</option></select><div class="small muted">Cada componente del diagrama puede cambiarse en su tarjeta.</div></div>
+            <label class="small" style="display:flex;gap:6px;align-items:center;margin-top:8px"><input type="checkbox" data-cp="rotar" ${par.rotar ? "checked" : ""} style="width:auto"> Permitir girar piezas</label>
+            ${alc === "__todo" ? `<label class="small" style="display:flex;gap:6px;align-items:center;margin-top:4px"><input type="checkbox" data-cp="bom" ${par.bom ? "checked" : ""} style="width:auto"> Incluir piezas del BOM que no están en ningún diagrama</label>` : ""}
+          </div>
+          <div class="panel"><h3>Elementos de la caja</h3><div class="small muted" style="margin-bottom:6px">Salidas de cable, conectores de panel, rejillas, ventanas… Los que entran hacia adentro reservan su espacio junto a la pared.</div>
+            <select id="cjAdd"><option value="">＋ Agregar elemento…</option>${Object.entries(MLCaja.ELEMENTOS).map(([k, d]) => `<option value="${k}">${d.ic} ${esc(d.n)}</option>`).join("")}</select>
+            <div id="cjEls">${est.elementos.map(filaEl).join("")}</div></div>
+          ${R ? `<div class="panel"><div class="caja-kpi"><div><span>Interior · ${esc(R.etiqueta || "")}</span><b>${R.interior.L} × ${R.interior.W} × ${R.interior.H}</b><small>mm (largo × ancho × alto) · ${R.n} nivel${R.n > 1 ? "es" : ""}</small></div><div><span>Exterior</span><b>${R.exterior.L} × ${R.exterior.W} × ${R.exterior.H}</b><small>mm con pared de ${par.espesor} mm</small></div><div><span>Volumen</span><b>${R.volumen} cm³</b><small>ocupación ${R.ocupacion} %</small></div></div>
+            <div class="row" style="margin-top:10px"><button class="sm" id="cjSvg">⬇ SVG</button><button class="sm" id="cjDxf">⬇ DXF</button><button class="sm" id="cjCsv">⬇ CSV</button></div></div>` : ""}
+          ${pz.faltan.length ? `<div class="msg warn small">Sin medidas (no entran en el cálculo): ${pz.faltan.map(esc).join(", ")}. Complétalas con el Generador (🩺 Revisión).</div>` : ""}
+          ${pz.aberturas.length ? `<div class="msg info small">Aberturas en pared: ${pz.aberturas.map(a => `${esc(a.n)} (${a.w}×${a.h} mm)`).join(", ")}.</div>` : ""}
+          ${R && R.piezas.some(q => q.faltaPared) ? `<div class="msg warn small">Conectores que no quedan contra su pared: ${R.piezas.filter(q => q.faltaPared).map(q => esc(q.ref)).join(", ")}.</div>` : ""}
+          ${R && (R.choques || []).length ? `<div class="msg bad small">Piezas que chocan (o sin la separación mínima): ${R.choques.map(c => esc(c.join(" ↔ "))).join(", ")}.</div>` : ""}
         </div>
-        <div class="panel caja-vistas">${R ? MLCaja.vistas(R, { titulo }) : `<div class="muted" style="padding:30px;text-align:center">No hay piezas con medidas en ${alc === "__todo" ? "el proyecto" : "este subproyecto"}.<br>Agrega componentes al diagrama (o al BOM) que tengan montaje en su ficha.</div>`}</div>
+        <div class="panel caja-vistas">${R ? `<div class="tabs" style="margin-bottom:8px"><button data-cpn="vistas" class="${ui.panel === "vistas" ? "on" : ""}">📐 Vistas</button><button data-cpn="mano" class="${ui.panel === "mano" ? "on" : ""}">✋ Acomodar a mano</button></div>
+          ${ui.panel === "mano" ? `<div class="row" style="flex-wrap:wrap;gap:6px;margin-bottom:6px">${R.n > 1 ? Array.from({ length: R.n }, (_, k) => `<button class="sub-chip ${ui.nivel === k ? "on" : ""}" data-cnv="${k}">Nivel ${k + 1}</button>`).join("") : ""}
+              <span style="flex:1"></span>${est.sel !== "manual" ? '<span class="small muted">Arrastra una pieza para empezar a acomodar esta opción a mano.</span>' : `<button class="sm ghost" id="cjReset" title="Descarta la disposición a mano">↺ Descartar a mano</button>`}</div>
+            <div id="cjEd">${MLCaja.planoEditable(R, ui.nivel, ui.pz)}</div>
+            <div class="cj-tool">${selPz ? `<b>${esc(selPz.ref)}</b> <span class="small">${esc(selPz.n)} · ${selPz.L}×${selPz.W} mm · alto ${Math.round(selPz.Ht * 10) / 10}</span><span style="flex:1"></span>
+              ${selPz.elemento == null ? `<button class="sm" id="cjRot">⟳ Girar 90°</button>` : ""}<select id="cjNv" style="width:auto">${[0, 1, 2].map(k => `<option value="${k}" ${selPz.nivel === k ? "selected" : ""}>Nivel ${k + 1}</option>`).join("")}</select>
+              ${["←", "↑", "↓", "→"].map(f => `<button class="sm ghost" data-cmv="${f}" title="Mover 1 mm">${f}</button>`).join("")}` : '<span class="small muted">Toca una pieza para girarla, cambiarla de nivel o moverla milímetro a milímetro. La caja se ajusta al contorno de todas las piezas.</span>'}</div>`
+          : MLCaja.vistas(R, { titulo })}` : `<div class="muted" style="padding:30px;text-align:center">No hay piezas con medidas en ${alc === "__todo" ? "el proyecto" : "este subproyecto"}.<br>Agrega componentes al diagrama (o al BOM) que tengan montaje en su ficha.</div>`}</div>
       </div>
-      ${R ? `<div class="panel" style="margin-top:12px;overflow:auto"><h3>Piezas</h3><table class="t small"><tr><th>Ref.</th><th>Componente</th>${varios ? "<th>Subproyecto</th>" : ""}<th>Planta (mm)</th><th>Alto total</th><th>Posición X, Y</th><th>Giro</th><th>Necesita</th></tr>
-        ${R.piezas.map(q => `<tr><td><b>${esc(q.ref)}</b></td><td>${esc(q.n)}</td>${varios ? `<td>${esc(q.sub || "")}</td>` : ""}<td>${q.L} × ${q.W}</td><td>${Math.round(q.Ht * 10) / 10}</td><td>${q.x}, ${q.y}</td><td>${q.rot}°</td><td>${[q.paredes.length ? "abertura en pared " + q.paredes.join(", ") : "", q.panel ? "montaje en panel" : "", q.arribaZ ? "ventana en tapa" : "", ...q.notas].filter(Boolean).map(esc).join(" · ")}</td></tr>`).join("")}</table>
-        <div class="small muted" style="margin-top:6px">Cálculo en planta con rectángulos (un solo nivel). Medidas de la ficha de cada componente; los conectores USB, jack, bornera y antena se colocan contra la pared hacia donde salen. Revisa en el CAD antes de imprimir.</div></div>` : ""}`;
-    $$("[data-ca]", host).forEach(b => b.onclick = () => { cfg.alcance = b.dataset.ca; guardarCfg(); vCaja(P, cabecera); });
-    $$("[data-cp]", host).forEach(i => i.onchange = () => { const k = i.dataset.cp; par[k] = i.type === "checkbox" ? i.checked : Math.max(0, +i.value || 0); if (k === "prop") par.prop = Math.max(1, par.prop); guardarCfg(); vCaja(P, cabecera); });
-    if (R) {
-      const nom = `caja_${P.id}${alc === "__todo" ? "" : "_" + alc}`;
-      $("#cjSvg").onclick = () => download(nom + ".svg", MLCaja.vistas(R, { titulo, claro: true }), "image/svg+xml");
-      $("#cjDxf").onclick = () => download(nom + ".dxf", MLCaja.dxf(R, titulo), "application/dxf");
-      $("#cjCsv").onclick = () => download(nom + ".csv", "﻿" + [["Ref", "Componente", "Subproyecto", "X mm", "Y mm", "Largo mm", "Ancho mm", "Alto total mm", "Giro", "Necesita"], ...R.piezas.map(q => [q.ref, q.n, q.sub || "", q.x, q.y, q.L, q.W, Math.round(q.Ht * 10) / 10, q.rot, [q.paredes.join(" "), q.arribaZ ? "ventana tapa" : ""].filter(Boolean).join("; ")])].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(";")).join("\r\n"), "text/csv");
-    }
+      ${R ? `<div class="panel" style="margin-top:12px;overflow:auto"><h3>Piezas y elementos</h3><table class="t small"><tr><th>Ref.</th><th>Componente</th>${varios ? "<th>Subproyecto</th>" : ""}<th>Nivel</th><th>Conexión</th><th>Planta (mm)</th><th>Alto</th><th>X, Y</th><th>Giro</th><th>Necesita</th></tr>
+        ${R.piezas.filter(q => q.elemento == null).map(q => `<tr><td><b>${esc(q.ref)}</b></td><td>${esc(q.n)}</td>${varios ? `<td>${esc(q.sub || "")}</td>` : ""}<td>${q.nivel + 1}</td><td>${q.ver ? (q.ver === "jumper" ? "📌 jumper" : "🔧 soldado") : "—"}</td><td>${q.L} × ${q.W}</td><td>${Math.round(q.Ht * 10) / 10}</td><td>${q.x}, ${q.y}</td><td>${q.rot}°</td><td>${[q.paredes.length ? "abertura en pared " + q.paredes.join(", ") : "", q.panel ? "montaje en panel" : "", q.arribaZ ? "ventana en tapa" : "", ...q.notas].filter(Boolean).map(esc).join(" · ")}</td></tr>`).join("")}
+        ${(R.elementos || []).map(e => `<tr><td><b>${esc(e.ref)}</b></td><td>${esc(e.n)}</td>${varios ? "<td></td>" : ""}<td>${/^[+-][XY]$/.test(e.cara) ? e.nivel + 1 : "—"}</td><td>—</td><td>${e.w} × ${e.h}${e.forma === "circ" ? " ⌀" : ""}</td><td>${e.prof ? "entra " + e.prof : "—"}</td><td>${e.u}, ${e.v}</td><td>—</td><td>${esc(MLCaja.CARAS[e.cara] || e.cara)}</td></tr>`).join("")}</table>
+        <div class="small muted" style="margin-top:6px">Solo calcula medidas de la caja. Alturas según la versión de conexión de cada pieza (soldado o jumper). Conectores USB, jack, bornera y antena se colocan contra la pared hacia donde salen. Revisa en el CAD antes de imprimir.</div></div>` : ""}`;
+    const repinta = () => { guardarCfg(); vCaja(P, cabecera); };
+    $$("[data-ca]", host).forEach(b => b.onclick = () => { cfg.alcance = b.dataset.ca; P.caja = Object.assign({}, P.caja || {}, { alcance: b.dataset.ca, p: par, por: cfg.por }); cabecera(); vCaja(P, cabecera); });
+    $$("[data-op]", host).forEach(b => b.onclick = () => { est.sel = b.dataset.op; ui.pz = null; repinta(); });
+    $$("[data-cp]", host).forEach(i => i.onchange = () => { const k = i.dataset.cp; par[k] = i.type === "checkbox" ? i.checked : i.tagName === "SELECT" ? i.value : Math.max(0, +i.value || 0); if (k === "prop") par.prop = Math.max(1, par.prop); if (k === "nivelesMax") par.nivelesMax = Math.min(3, Math.max(1, Math.round(par.nivelesMax))); repinta(); });
+    $("#cjAdd", host).onchange = e => { const t = e.target.value; if (!t) return; const d = MLCaja.ELEMENTOS[t]; est.elementos.push({ tipo: t, cara: d.cara, w: d.w, h: d.h, prof: d.prof, forma: d.forma, nivel: 0 }); repinta(); };
+    $$("[data-ex]", host).forEach(b => b.onclick = () => { est.elementos.splice(+b.dataset.ex, 1); if (est.manual) Object.keys(est.manual.pos || {}).filter(k => /^E\d+$/.test(k)).forEach(k => delete est.manual.pos[k]); repinta(); });
+    $$("[data-ef]", host).forEach(i => i.onchange = () => { const e = est.elementos[+i.dataset.ei], k = i.dataset.ef; if (k === "cara") e.cara = i.value; else if (i.value === "" && (k === "u" || k === "v")) delete e[k]; else e[k] = Math.max(0, +i.value || 0); if (est.manual && (k === "cara" || k === "prof" || k === "w")) delete est.manual.pos["E" + (+i.dataset.ei + 1)]; repinta(); });
+    $$("[data-cpn]", host).forEach(b => b.onclick = () => { ui.panel = b.dataset.cpn; vCaja(P, cabecera); });
+    $$("[data-cnv]", host).forEach(b => b.onclick = () => { ui.nivel = +b.dataset.cnv; ui.pz = null; vCaja(P, cabecera); });
+    if (!R) return;
+    const nom = `caja_${P.id}${alc === "__todo" ? "" : "_" + alc}`;
+    $("#cjSvg").onclick = () => download(nom + ".svg", MLCaja.vistas(R, { titulo, claro: true }), "image/svg+xml");
+    $("#cjDxf").onclick = () => download(nom + ".dxf", MLCaja.dxf(R, titulo), "application/dxf");
+    $("#cjCsv").onclick = () => download(nom + ".csv", "﻿" + [["Ref", "Componente", "Subproyecto", "Nivel", "Conexión", "X mm", "Y mm", "Largo mm", "Ancho mm", "Alto mm", "Giro", "Necesita"], ...R.piezas.filter(q => q.elemento == null).map(q => [q.ref, q.n, q.sub || "", q.nivel + 1, q.ver || "", q.x, q.y, q.L, q.W, Math.round(q.Ht * 10) / 10, q.rot, [q.paredes.join(" "), q.arribaZ ? "ventana tapa" : ""].filter(Boolean).join("; ")]), ...(R.elementos || []).map(e => [e.ref, e.n, "", "", "", e.u, e.v, e.w, e.h, e.prof, "", MLCaja.CARAS[e.cara]])].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(";")).join("\r\n"), "text/csv");
+    if (ui.panel !== "mano") return;
+    // ---------- edición a mano: arrastrar, girar, cambiar de nivel
+    const asegurarManual = () => { if (est.sel !== "manual") { est.manual = MLCaja.aManual(R); est.sel = "manual"; } return est.manual.pos; };
+    const reset = $("#cjReset"); if (reset) reset.onclick = () => { est.manual = null; est.sel = "op0"; ui.pz = null; repinta(); };
+    const svg = $("#cjEd svg");
+    const aSvg = e => { const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse()); };
+    let drag = null;
+    svg.onpointerdown = e => { const g = e.target.closest("[data-pz]"); if (!g) { if (ui.pz) { ui.pz = null; vCaja(P, cabecera); } return; } e.preventDefault(); svg.setPointerCapture(e.pointerId); const p0 = aSvg(e); drag = { ref: g.dataset.pz, g, p0, dx: 0, dy: 0 }; };
+    svg.onpointermove = e => { if (!drag) return; const p = aSvg(e); drag.dx = Math.round((p.x - drag.p0.x) * 2) / 2; drag.dy = Math.round((p.y - drag.p0.y) * 2) / 2; drag.g.setAttribute("transform", `translate(${drag.dx} ${drag.dy})`); };
+    svg.onpointerup = () => { if (!drag) return; const d = drag; drag = null; ui.pz = d.ref;
+      if (Math.abs(d.dx) + Math.abs(d.dy) >= 0.5) { const pos = asegurarManual(), q = R.piezas.find(x => x.ref === d.ref), s = pos[d.ref] || (pos[d.ref] = { x: q.x, y: q.y, rot: q.rot, nivel: q.nivel }); s.x = +(s.x + d.dx).toFixed(1); s.y = +(s.y - d.dy).toFixed(1); repinta(); }
+      else vCaja(P, cabecera); };
+    const mod = fn => { const pos = asegurarManual(), q = R.piezas.find(x => x.ref === ui.pz); const s = pos[ui.pz] || (pos[ui.pz] = { x: q.x, y: q.y, rot: q.rot, nivel: q.nivel }); fn(s, q); repinta(); };
+    const rot = $("#cjRot"); if (rot) rot.onclick = () => mod((s, q) => { s.rot = ((+s.rot || 0) + 90) % 360; s.x = +(s.x + (q.L - q.W) / 2).toFixed(1); s.y = +(s.y + (q.W - q.L) / 2).toFixed(1); });
+    const nv = $("#cjNv"); if (nv) nv.onchange = () => mod(s => { s.nivel = +nv.value; ui.nivel = +nv.value; });
+    $$("[data-cmv]", host).forEach(b => b.onclick = () => mod(s => { const f = b.dataset.cmv; if (f === "←") s.x -= 1; if (f === "→") s.x += 1; if (f === "↑") s.y += 1; if (f === "↓") s.y -= 1; }));
   }
 
   function vProyecto(id) {

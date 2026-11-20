@@ -66,6 +66,9 @@ jobs:
       - name: Copiar datasheets (PDF)
         run: python tools/datasheets.py
 
+      - name: Versiones de conexión (soldado / jumper)
+        run: node tools/conexiones.mjs
+
       - name: Reconstruir db.json
         run: python tools/build_db.py
 

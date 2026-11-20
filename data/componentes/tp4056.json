@@ -82,14 +82,35 @@
   "altura_superior": 3.2,
   "altura_inferior": 0,
   "holgura_inferior_cableado": 0,
-  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 3.2,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 3.2,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
  },
  "zonas": [
   {
    "tipo": "usb",
    "nombre": "USB-C",
    "cx": -10.5,
-   "cy": 0.0,
+   "cy": 0,
    "w": 7.4,
    "h": 9,
    "z": [

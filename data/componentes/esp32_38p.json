@@ -98,14 +98,35 @@
   "altura_superior": 3.2,
   "altura_inferior": 8.5,
   "holgura_inferior_cableado": 22,
-  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "conexiones": {
+   "header": "abajo",
+   "header_alto": 8.5,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 3.2,
+    "altura_inferior": 2,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Sin header: los cables se sueldan en los pads por arriba; puntas recortadas ≈2 mm por debajo."
+   },
+   "jumper": {
+    "altura_superior": 3.2,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "Header macho hacia abajo (8.5 mm) + carcasa Dupont y curva del cable ≈22 mm."
+   }
+  }
  },
  "zonas": [
   {
    "tipo": "calor",
    "nombre": "Módulo WROOM",
    "cx": 14.75,
-   "cy": 0.0,
+   "cy": 0,
    "w": 25.5,
    "h": 18,
    "z": [
@@ -119,7 +140,7 @@
    "tipo": "usb",
    "nombre": "Micro USB",
    "cx": -25.7,
-   "cy": 0.0,
+   "cy": 0,
    "w": 5.6,
    "h": 7.5,
    "z": [
@@ -133,7 +154,7 @@
    "tipo": "boton",
    "nombre": "Botón EN",
    "cx": -22.5,
-   "cy": -10.0,
+   "cy": -10,
    "w": 4,
    "h": 3,
    "z": [
@@ -147,7 +168,7 @@
    "tipo": "boton",
    "nombre": "Botón BOOT",
    "cx": -22.5,
-   "cy": 10.0,
+   "cy": 10,
    "w": 4,
    "h": 3,
    "z": [
@@ -160,13 +181,13 @@
   {
    "tipo": "pines",
    "nombre": "Header",
-   "cx": 0.0,
+   "cx": 0,
    "cy": -12.7,
    "w": 48.26,
    "h": 2.54,
    "z": [
     -2.5,
-    0.0
+    0
    ],
    "salida": "-Z",
    "holgura": 22
@@ -174,13 +195,13 @@
   {
    "tipo": "pines",
    "nombre": "Header",
-   "cx": 0.0,
+   "cx": 0,
    "cy": 12.7,
    "w": 48.26,
    "h": 2.54,
    "z": [
     -2.5,
-    0.0
+    0
    ],
    "salida": "-Z",
    "holgura": 22

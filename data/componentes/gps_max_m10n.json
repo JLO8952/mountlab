@@ -88,32 +88,53 @@
   "fijacion": "tornillo",
   "agujeros": [
    {
-    "x": -10.0,
-    "y": 12.0,
-    "d": 3.0
+    "x": -10,
+    "y": 12,
+    "d": 3
    },
    {
-    "x": 10.0,
-    "y": 12.0,
-    "d": 3.0
+    "x": 10,
+    "y": 12,
+    "d": 3
    }
   ],
   "altura_superior": 2.5,
   "altura_inferior": 8.5,
   "holgura_inferior_cableado": 22,
-  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "conexiones": {
+   "header": "abajo",
+   "header_alto": 8.5,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 2.5,
+    "altura_inferior": 2,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Sin header: los cables se sueldan en los pads por arriba; puntas recortadas ≈2 mm por debajo."
+   },
+   "jumper": {
+    "altura_superior": 2.5,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "Header macho hacia abajo (8.5 mm) + carcasa Dupont y curva del cable ≈22 mm."
+   }
+  }
  },
  "zonas": [
   {
    "tipo": "antena",
    "nombre": "Antena cerámica (cara inferior)",
-   "cx": 0.0,
-   "cy": 3.0,
+   "cx": 0,
+   "cy": 3,
    "w": 18,
    "h": 18,
    "z": [
     -4.5,
-    0.0
+    0
    ],
    "salida": "+Y",
    "holgura": 10
@@ -121,13 +142,13 @@
   {
    "tipo": "pines",
    "nombre": "Header",
-   "cx": 0.0,
+   "cx": 0,
    "cy": -13.7,
    "w": 15.24,
    "h": 2.54,
    "z": [
     -2.5,
-    0.0
+    0
    ],
    "salida": "-Z",
    "holgura": 22

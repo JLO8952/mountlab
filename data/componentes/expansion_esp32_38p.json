@@ -77,35 +77,56 @@
   "agujeros": [
    {
     "x": -31.5,
-    "y": -24.0,
-    "d": 3.0
+    "y": -24,
+    "d": 3
    },
    {
     "x": 31.5,
-    "y": -24.0,
-    "d": 3.0
+    "y": -24,
+    "d": 3
    },
    {
     "x": -31.5,
-    "y": 24.0,
-    "d": 3.0
+    "y": 24,
+    "d": 3
    },
    {
     "x": 31.5,
-    "y": 24.0,
-    "d": 3.0
+    "y": 24,
+    "d": 3
    }
   ],
-  "altura_superior": 11.0,
+  "altura_superior": 11,
   "altura_inferior": 0,
   "holgura_inferior_cableado": 22,
-  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 11,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 11,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
  },
  "zonas": [
   {
    "tipo": "pines",
    "nombre": "Header hembra",
-   "cx": 0.0,
+   "cx": 0,
    "cy": -12.7,
    "w": 48.26,
    "h": 2.54,
@@ -119,7 +140,7 @@
   {
    "tipo": "pines",
    "nombre": "Header hembra",
-   "cx": 0.0,
+   "cx": 0,
    "cy": 12.7,
    "w": 48.26,
    "h": 2.54,
@@ -133,7 +154,7 @@
   {
    "tipo": "pines",
    "nombre": "GVS",
-   "cx": 0.0,
+   "cx": 0,
    "cy": -17.7,
    "w": 48.26,
    "h": 2.54,
@@ -147,7 +168,7 @@
   {
    "tipo": "pines",
    "nombre": "GVS",
-   "cx": 0.0,
+   "cx": 0,
    "cy": 17.7,
    "w": 48.26,
    "h": 2.54,
@@ -161,7 +182,7 @@
   {
    "tipo": "pines",
    "nombre": "GVS",
-   "cx": 0.0,
+   "cx": 0,
    "cy": -20.24,
    "w": 48.26,
    "h": 2.54,
@@ -175,7 +196,7 @@
   {
    "tipo": "pines",
    "nombre": "GVS",
-   "cx": 0.0,
+   "cx": 0,
    "cy": 20.24,
    "w": 48.26,
    "h": 2.54,
@@ -189,7 +210,7 @@
   {
    "tipo": "pines",
    "nombre": "GVS",
-   "cx": 0.0,
+   "cx": 0,
    "cy": -22.78,
    "w": 48.26,
    "h": 2.54,
@@ -203,7 +224,7 @@
   {
    "tipo": "pines",
    "nombre": "GVS",
-   "cx": 0.0,
+   "cx": 0,
    "cy": 22.78,
    "w": 48.26,
    "h": 2.54,
@@ -217,8 +238,8 @@
   {
    "tipo": "conector",
    "nombre": "Jack DC",
-   "cx": 29.0,
-   "cy": 0.0,
+   "cx": 29,
+   "cy": 0,
    "w": 14,
    "h": 9,
    "z": [

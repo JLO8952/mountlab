@@ -619,10 +619,14 @@
         ${st.cardMin ? "" : `${desc ? `<div class="ci-card-d">${esc(desc.length > 220 ? desc.slice(0, 219) + "…" : desc)}</div>` : ""}
         ${datos ? `<div class="small muted" style="margin:4px 0">${datos}</div>` : ""}
         <div class="ci-chips">${chips || '<span class="small muted">Sin pines definidos en la ficha</span>'}</div>
+        ${(() => { const cx = !v && window.MLCaja && MLCaja.conexiones(c); if (!cx || cx.header === "no_aplica") return ""; const ver = it.conexion === "jumper" ? "jumper" : "soldado", V = cx[ver];
+          return `<div class="ci-ver"><span class="small muted">Conexión:</span><button class="sm ${ver === "soldado" ? "pri" : ""}" data-cv="soldado" title="${esc(cx.soldado.nota || "")}">🔧 Soldado</button><button class="sm ${ver === "jumper" ? "pri" : ""}" data-cv="jumper" title="${esc(cx.jumper.nota || "")}">📌 Jumper</button><button class="sm ghost" data-cva="${ver}" title="Usar esta versión en todos los componentes del diagrama">Aplicar a todos</button><span class="small muted">${esc(V.cable || "")} · alto ${Math.round(((+V.altura_inferior || 0) + (+V.holgura_inferior_cableado || 0)) * 10) / 10} mm abajo / ${Math.round(((+V.altura_superior || 0) + (+V.holgura_superior_cableado || 0)) * 10) / 10} mm arriba</span></div>`; })()}
         ${sug.length ? `<div class="ci-sugs"><span class="small muted">Sugerido:</span>${sug.map((x, i) => `<button class="sm ${x.pri ? "pri" : ""}" data-cs="${i}" title="${esc(x.det || "")}">${x.txt}</button>`).join("")}</div>` : ""}`}`;
       box.classList.remove("hide");
       $("#ciCardX", box).onclick = () => { st.sel = null; dibujar(); };
       $("#ciCardMin", box).onclick = () => { st.cardMin = !st.cardMin; dibujar(); };
+      $$("[data-cv]", box).forEach(b => b.onclick = () => { snap(); if (b.dataset.cv === "jumper") it.conexion = "jumper"; else delete it.conexion; cambio(); });
+      $$("[data-cva]", box).forEach(b => b.onclick = () => { snap(); const j = b.dataset.cva === "jumper"; C.inst.forEach(x => { if (x.id.startsWith("@")) return; if (j) x.conexion = "jumper"; else delete x.conexion; }); cambio(); opt.toast && opt.toast(j ? "Todos los componentes en versión jumper" : "Todos los componentes soldados (sin jumper)", 4000); });
       $$("[data-cs]", box).forEach(b => b.onclick = () => { const x = sug[+b.dataset.cs]; try { x.fn(); } catch (e) { opt.toast && opt.toast(e.message, 5000); } });
     }
     // helpers para las sugerencias de un toque
@@ -685,7 +689,8 @@
       const logic = r && r.V == null && !r.gnd ? (r.pins.map(k => INFO.get(partir(k)[0])).find(I => I && I.pf.rol === "mcu")?.pf.logica || 3.3) : null;
       const V = r ? (r.gnd ? "0 V" : r.V != null ? r.V + " V" : `señal ${logic} V (nivel lógico)`) : "—";
       const I = r && r.V > 0 ? `${fmtI(r.I || 0)} típ · ${fmtI(r.Ip || r.I || 0)} pico` : r && r.gnd ? `retorno ≈ ${fmtI(Imax)}` : "< 1 mA (señal)";
-      const cal = r && (r.V > 0 || r.gnd) ? calibre(r.gnd ? Imax : (r.Ip || r.I || 0)) : "señal (26–28 AWG)";
+      const dup = [w.a, w.b].some(k => (C.inst.find(x => x.ref === partir(k)[0]) || {}).conexion === "jumper");
+      const cal = (r && (r.V > 0 || r.gnd) ? calibre(r.gnd ? Imax : (r.Ip || r.I || 0), dup) : "señal (26–28 AWG)") + (dup ? " · jumper Dupont" : " · soldado directo a la placa");
       box.innerHTML = `<div class="row" style="justify-content:space-between;gap:6px"><b><span class="sw" style="background:${w.color || tr.col};${tr.k === "gnd" ? "outline:1px solid #94a3b8" : ""}"></span> ${esc(tr.n)}</b><button class="sm ghost" id="cpX">✕</button></div>
         <div class="small" style="margin:4px 0"><code>${esc(w.a)}</code> → <code>${esc(w.b)}</code></div>
         <table class="t small" style="margin:4px 0"><tr><td>Voltaje</td><td><b>${esc(V)}</b></td></tr><tr><td>Corriente</td><td><b>${esc(I)}</b></td></tr><tr><td>Cable</td><td>${esc(cal)}</td></tr></table>
@@ -745,7 +750,7 @@
       bindSel(box);
     }
     const nombreRed = r => r.nombre || (r.gnd ? "GND" : r.V != null ? `${r.V} V` : r.tipos.includes("sda") ? "SDA" : r.tipos.includes("scl") ? "SCL" : r.pins[0]);
-    const calibre = I => I < 500 ? "26–28 AWG (dupont)" : I < 1000 ? "24 AWG" : I < 2000 ? "22 AWG" : I < 3000 ? "20 AWG" : I < 5000 ? "18 AWG" : "16 AWG o más";
+    const calibre = (I, dup) => I < 500 ? (dup ? "26–28 AWG (dupont)" : "26–28 AWG soldado") : I < 1000 ? "24 AWG" : I < 2000 ? "22 AWG" : I < 3000 ? "20 AWG" : I < 5000 ? "18 AWG" : "16 AWG o más";
     function panelSel(calc) {
       const it = C.inst.find(x => x.ref === st.sel), I = it && INFO.get(it.ref); if (!I) return "";
       const pf = I.pf, v = VIRT[it.id], p = it.p || {};

@@ -84,37 +84,58 @@
   "fijacion": "tornillo",
   "agujeros": [
    {
-    "x": -22.0,
+    "x": -22,
     "y": -19.5,
-    "d": 3.0
+    "d": 3
    },
    {
-    "x": 22.0,
+    "x": 22,
     "y": -19.5,
-    "d": 3.0
+    "d": 3
    },
    {
-    "x": -22.0,
+    "x": -22,
     "y": 19.5,
-    "d": 3.0
+    "d": 3
    },
    {
-    "x": 22.0,
+    "x": 22,
     "y": 19.5,
-    "d": 3.0
+    "d": 3
    }
   ],
   "altura_superior": 2.6,
   "altura_inferior": 8.5,
   "holgura_inferior_cableado": 22,
-  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "conexiones": {
+   "header": "abajo",
+   "header_alto": 8.5,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 2.6,
+    "altura_inferior": 2,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Sin header: los cables se sueldan en los pads por arriba; puntas recortadas ≈2 mm por debajo."
+   },
+   "jumper": {
+    "altura_superior": 2.6,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "Header macho hacia abajo (8.5 mm) + carcasa Dupont y curva del cable ≈22 mm."
+   }
+  }
  },
  "zonas": [
   {
    "tipo": "conector",
    "nombre": "Conector GSM",
    "cx": 18.5,
-   "cy": -11.0,
+   "cy": -11,
    "w": 7,
    "h": 7,
    "z": [
@@ -128,7 +149,7 @@
    "tipo": "conector",
    "nombre": "Conector GPS",
    "cx": 18.5,
-   "cy": 1.0,
+   "cy": 1,
    "w": 7,
    "h": 7,
    "z": [
@@ -141,7 +162,7 @@
   {
    "tipo": "conector",
    "nombre": "Porta SIM",
-   "cx": -2.0,
+   "cx": -2,
    "cy": 17.5,
    "w": 16,
    "h": 8,
@@ -155,13 +176,13 @@
   {
    "tipo": "pines",
    "nombre": "Header",
-   "cx": -20.0,
+   "cx": -20,
    "cy": -6.61,
    "w": 2.54,
    "h": 20.32,
    "z": [
     -2.5,
-    0.0
+    0
    ],
    "salida": "-Z",
    "holgura": 22

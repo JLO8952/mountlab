@@ -82,12 +82,12 @@
   "fijacion": "tornillo",
   "agujeros": [
    {
-    "x": -16.0,
+    "x": -16,
     "y": -9.5,
     "d": 2.6
    },
    {
-    "x": -16.0,
+    "x": -16,
     "y": 9.5,
     "d": 2.6
    },
@@ -105,7 +105,28 @@
   "altura_superior": 1.8,
   "altura_inferior": 8.5,
   "holgura_inferior_cableado": 22,
-  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador."
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "conexiones": {
+   "header": "abajo",
+   "header_alto": 8.5,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 1.8,
+    "altura_inferior": 2,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Sin header: los cables se sueldan en los pads por arriba; puntas recortadas ≈2 mm por debajo."
+   },
+   "jumper": {
+    "altura_superior": 1.8,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "Header macho hacia abajo (8.5 mm) + carcasa Dupont y curva del cable ≈22 mm."
+   }
+  }
  },
  "zonas": [
   {
@@ -126,12 +147,12 @@
    "tipo": "pines",
    "nombre": "Header",
    "cx": -19.4,
-   "cy": 0.0,
+   "cy": 0,
    "w": 2.54,
    "h": 15.24,
    "z": [
     -2.5,
-    0.0
+    0
    ],
    "salida": "-Z",
    "holgura": 22
