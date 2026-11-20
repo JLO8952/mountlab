@@ -259,7 +259,34 @@
    "cara": "B"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "mpu6050_gy521_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/mpu6050_gy521 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/mpu6050_gy521/mpu6050_gy521_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "mpu6050_gy521_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/mpu6050_gy521 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/mpu6050_gy521/mpu6050_gy521_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "mpu6050_gy521_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/mpu6050_gy521 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/mpu6050_gy521/mpu6050_gy521_v1_plano.dxf"
+  },
+  "datasheet": {
+   "fuente": "https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf",
+   "error": "la dirección no entrega un PDF directo (es una página web)",
+   "fecha": "2026-11-20"
+  }
+ },
  "historial": [
   {
    "v": 1,
@@ -500,6 +527,5 @@
     "h": 1.25
    }
   ]
- },
- "cad_pendiente": true
+ }
 }
