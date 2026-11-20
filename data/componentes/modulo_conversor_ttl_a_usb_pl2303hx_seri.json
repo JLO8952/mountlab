@@ -228,7 +228,34 @@
    "cara": "A"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "modulo_conversor_ttl_a_usb_pl2303hx_seri_v4_huella.dxf",
+   "version": 4,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri/modulo_conversor_ttl_a_usb_pl2303hx_seri_v4_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "modulo_conversor_ttl_a_usb_pl2303hx_seri_v4_montaje.step",
+   "version": 4,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri/modulo_conversor_ttl_a_usb_pl2303hx_seri_v4_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "modulo_conversor_ttl_a_usb_pl2303hx_seri_v4_plano.dxf",
+   "version": 4,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri/modulo_conversor_ttl_a_usb_pl2303hx_seri_v4_plano.dxf"
+  },
+  "datasheet": {
+   "fuente": "https://www.prolific.com.tw/UserFiles/files/ds_pl2303HXD_v1_4_4.pdf",
+   "error": "HTTP Error 404: Not Found",
+   "fecha": "2026-11-20"
+  }
+ },
  "historial": [
   {
    "v": 1,
@@ -591,6 +618,5 @@
     "h": 1.25
    }
   ]
- },
- "cad_pendiente": true
+ }
 }
