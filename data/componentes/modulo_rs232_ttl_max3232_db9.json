@@ -1,0 +1,847 @@
+{
+ "id": "modulo_rs232_ttl_max3232_db9",
+ "nombre": "Módulo conversor RS232 a TTL MAX3232 con DB9 hembra (3.3–5 V)",
+ "tipo": "electronico",
+ "categoria": "Comunicación",
+ "etiquetas": [
+  "RS232",
+  "TTL",
+  "UART",
+  "MAX3232",
+  "DB9",
+  "serial",
+  "módulo"
+ ],
+ "fabricante": "Genérico",
+ "referencia": "Módulo MAX3232 RS232-TTL DB9 hembra",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Placa azul con el transceptor MAX3232 que convierte señales RS232 (±5 a ±6 V, conector DB9 hembra) a niveles TTL de 3.3 V o 5 V para microcontroladores. Header de 4 pines (GND, TXD, RXD, VCC), LED D1 de encendido y dos agujeros de fijación.",
+  "funcionamiento": "Las bombas de carga internas del MAX3232 (con los capacitores C1–C4) generan los voltajes positivo y negativo de RS232 desde 3.3 o 5 V. Un canal: lo que entra por RXD (TTL) sale por el pin 2 del DB9 (T1OUT) y lo que llega al pin 3 del DB9 (R1IN) sale por TXD (TTL). El pin 5 del DB9 es tierra. Sirve para conectar un microcontrolador al puerto COM de un PC, PLC, router, DVD u otro equipo con RS232.",
+  "voltaje": "3.3–5 V (MAX3232: 3.0–5.5 V); TTL del mismo nivel que VCC; salida RS232 ≈ ±5.4 V",
+  "corriente": "≈0.3 mA el MAX3232 sin carga (1 mA máx.) + LED ≈1–3 mA",
+  "interfaz": "UART TTL ↔ RS232 (1 canal TX/RX, sin RTS/CTS); hasta 250 kbit/s",
+  "entradas": "RXD (TTL desde el TX del microcontrolador); pin 3 del DB9 (RS232)",
+  "salidas": "TXD (TTL al RX del microcontrolador); pin 2 del DB9 (RS232)",
+  "dimensiones": "PCB ≈30.8 × 28.8 mm; altura ≈14 mm con el DB9; el frente del DB9 sobresale ≈6 mm del borde (confianza media)",
+  "datasheet": "https://www.ti.com/lit/ds/symlink/max3232.pdf",
+  "notas": "Ojo con los nombres: TXD es la salida del módulo (va al RX del micro) y RXD es la entrada (va al TX del micro); si no hay datos, cruzarlos. El DB9 es hembra con cableado tipo DCE: conecta directo al puerto macho de un PC con cable recto. Para un equipo con DB9 hembra usar cable null-modem o adaptador. Sin RTS/CTS ni DTR. El chip suelto está en la biblioteca como max3232_soic16. Medidas de la placa con 2 fuentes de vendedor y la foto; agujeros y posición de piezas estimados: verificar con calibrador."
+ },
+ "especificaciones": [
+  {
+   "param": "Chip",
+   "valor": "MAX3232 (SOIC-16), compatible MAX3232/SP3232"
+  },
+  {
+   "param": "Canales usados",
+   "valor": "1 TX + 1 RX (el chip trae 2 + 2)"
+  },
+  {
+   "param": "Velocidad",
+   "valor": "Hasta 250 kbit/s (datasheet TI); en módulo, uso típico 9600–115200 baud"
+  },
+  {
+   "param": "Alimentación",
+   "valor": "3.3 V o 5 V"
+  },
+  {
+   "param": "Conector RS232",
+   "valor": "DB9 hembra en ángulo con tornillos 4-40: pin 2 = TX (T1OUT), pin 3 = RX (R1IN), pin 5 = GND"
+  },
+  {
+   "param": "Conector TTL",
+   "valor": "Header macho 4 pines paso 2.54 mm: GND, TXD, RXD, VCC"
+  },
+  {
+   "param": "Indicador",
+   "valor": "LED D1 de encendido"
+  },
+  {
+   "param": "Fijación",
+   "valor": "2 agujeros ≈Ø3 mm (M2.5/M3) en el borde opuesto al DB9"
+  },
+  {
+   "param": "Protección ESD",
+   "valor": "±15 kV en líneas RS232 (según el chip)"
+  },
+  {
+   "param": "Temperatura",
+   "valor": "−40 a +85 °C (chip MAX3232E/I)"
+  }
+ ],
+ "imagen": {
+  "src": "img/modulo_rs232_ttl_max3232_db9.png",
+  "origen": "foto del proveedor (enviada por John)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 4000,
+   "url": "https://es.aliexpress.com/w/wholesale-MAX3232-RS232-TTL-DB9-module.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 25000,
+   "url": "https://www.amazon.com/s?k=MAX3232+RS232+to+TTL+DB9+module",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 12000,
+   "url": "https://listado.mercadolibre.com.co/modulo-rs232-ttl-max3232",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=MAX3232+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=MAX3232+RS232+TTL+DB9+module"
+ },
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "tornillos",
+  "agujeros": [
+   {
+    "x": -12.4,
+    "y": 11.4,
+    "d": 3,
+    "tornillo": "M2.5"
+   },
+   {
+    "x": 12.4,
+    "y": 11.4,
+    "d": 3,
+    "tornillo": "M2.5"
+   }
+  ],
+  "altura_superior": 12.5,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "X a lo largo del DB9; el DB9 sobresale por −Y. Agujeros estimados de la foto (confianza baja).",
+  "pcb": [
+   30.8,
+   28.8,
+   1.6
+  ],
+  "forma": "rect"
+ },
+ "zonas": [
+  {
+   "tipo": "conector",
+   "nombre": "DB9 hembra (frente con tornillos)",
+   "cx": 0,
+   "cy": -17.9,
+   "w": 30.8,
+   "h": 7,
+   "z": [
+    1.6,
+    14.1
+   ],
+   "salida": "-Y",
+   "holgura": 35,
+   "regla": "El frente del DB9 debe quedar en la pared de la caja; espacio para la carcasa del cable y sus tornillos"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED D1",
+   "cx": 9,
+   "cy": 3.5,
+   "w": 2,
+   "h": 1.3,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "regla": "Ventana si se quiere ver encendido"
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header TTL 4 pines",
+   "cx": 1,
+   "cy": 10,
+   "w": 10.16,
+   "h": 2.54,
+   "z": [
+    1.6,
+    12.6
+   ],
+   "salida": "+Z",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "hdr"
+  },
+  {
+   "tipo": "led",
+   "nombre": "D1 (LED)",
+   "cx": 9,
+   "cy": 3.5,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "d1"
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header TTL",
+   "cx": 1,
+   "cy": 10,
+   "w": 10.2,
+   "h": 2.5,
+   "z": [
+    1.6,
+    12.6
+   ],
+   "salida": "+Z",
+   "holgura": 12,
+   "regla": "Espacio para conectores Dupont"
+  }
+ ],
+ "pines": [
+  {
+   "n": "DB9-2",
+   "func": "RS232 TX (T1OUT) → al RX del equipo",
+   "x": 0,
+   "y": -14.4,
+   "conector": "DB9 hembra"
+  },
+  {
+   "n": "DB9-3",
+   "func": "RS232 RX (R1IN) ← del TX del equipo",
+   "x": 0,
+   "y": -14.4,
+   "conector": "DB9 hembra"
+  },
+  {
+   "n": "DB9-5",
+   "func": "GND",
+   "x": 0,
+   "y": -14.4,
+   "conector": "DB9 hembra"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": -2.81,
+   "y": 10,
+   "conector": "Header macho 4 pines 2.54 mm",
+   "pieza": "hdr",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "TXD",
+   "func": "Salida TTL (R1OUT) → al RX del microcontrolador",
+   "x": -0.27,
+   "y": 10,
+   "conector": "Header macho 4 pines 2.54 mm",
+   "pieza": "hdr",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "RXD",
+   "func": "Entrada TTL (T1IN) ← del TX del microcontrolador",
+   "x": 2.27,
+   "y": 10,
+   "conector": "Header macho 4 pines 2.54 mm",
+   "pieza": "hdr",
+   "idx": 2,
+   "cara": "A"
+  },
+  {
+   "n": "VCC",
+   "func": "Alimentación 3.3–5 V",
+   "x": 4.81,
+   "y": 10,
+   "conector": "Header macho 4 pines 2.54 mm",
+   "pieza": "hdr",
+   "idx": 3,
+   "cara": "A"
+  }
+ ],
+ "archivos": {},
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 30.8,
+   "W": 28.8,
+   "d": 30.8,
+   "espesor": 1.6,
+   "radio": 0.5,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "db9c",
+    "plantilla": "f_caja",
+    "nombre": "DB9 cuerpo plástico (en la placa)",
+    "cara": "A",
+    "x": 0,
+    "y": -9.4,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 30.8,
+     "h": 10,
+     "alto": 12.5,
+     "r": 0,
+     "color": "#111111"
+    }
+   },
+   {
+    "id": "db9f",
+    "plantilla": "f_caja",
+    "nombre": "DB9 brida metálica",
+    "cara": "A",
+    "x": 0,
+    "y": -14.9,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 30.8,
+     "h": 1,
+     "alto": 12.5,
+     "r": 0,
+     "color": "#b8bcc4"
+    }
+   },
+   {
+    "id": "db9s",
+    "plantilla": "f_caja",
+    "nombre": "DB9 frente (D hembra)",
+    "cara": "A",
+    "x": 0,
+    "y": -18.4,
+    "rot": 0,
+    "z": 2.3,
+    "params": {
+     "w": 16.3,
+     "h": 6,
+     "alto": 7.9,
+     "r": 0,
+     "color": "#c9ccd2"
+    }
+   },
+   {
+    "id": "db9t1",
+    "plantilla": "f_caja",
+    "nombre": "Tornillo 4-40 (hex)",
+    "cara": "A",
+    "x": -12.5,
+    "y": -18.4,
+    "rot": 0,
+    "z": 3.85,
+    "params": {
+     "w": 4.8,
+     "h": 6,
+     "alto": 4.8,
+     "r": 0,
+     "color": "#c9ccd2"
+    }
+   },
+   {
+    "id": "db9t2",
+    "plantilla": "f_caja",
+    "nombre": "Tornillo 4-40 (hex)",
+    "cara": "A",
+    "x": 12.5,
+    "y": -18.4,
+    "rot": 0,
+    "z": 3.85,
+    "params": {
+     "w": 4.8,
+     "h": 6,
+     "alto": 4.8,
+     "r": 0,
+     "color": "#c9ccd2"
+    }
+   },
+   {
+    "id": "hdr",
+    "plantilla": "header_macho",
+    "nombre": "Header TTL 4 pines",
+    "cara": "A",
+    "x": 1,
+    "y": 10,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 4,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 11
+    }
+   },
+   {
+    "id": "ic",
+    "plantilla": "soic",
+    "nombre": "MAX3232",
+    "cara": "A",
+    "x": -1.5,
+    "y": 2.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 16,
+     "ancho": 3.9
+    }
+   },
+   {
+    "id": "d1",
+    "plantilla": "led_smd",
+    "nombre": "D1 (LED)",
+    "cara": "A",
+    "x": 9,
+    "y": 3.5,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "r1",
+    "plantilla": "smd",
+    "nombre": "R1",
+    "cara": "A",
+    "x": 9,
+    "y": 6,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "c1",
+    "plantilla": "smd",
+    "nombre": "C1",
+    "cara": "A",
+    "x": -8,
+    "y": -2.8,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "c2",
+    "plantilla": "smd",
+    "nombre": "C2",
+    "cara": "A",
+    "x": -5.5,
+    "y": -2.8,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "c3",
+    "plantilla": "smd",
+    "nombre": "C3",
+    "cara": "A",
+    "x": -3,
+    "y": -2.8,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "c4",
+    "plantilla": "smd",
+    "nombre": "C4",
+    "cara": "A",
+    "x": -0.5,
+    "y": -2.8,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "c5",
+    "plantilla": "smd",
+    "nombre": "C5",
+    "cara": "A",
+    "x": 6.8,
+    "y": 7.6,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -9.4,
+    "z0": 1.6,
+    "z1": 14.1,
+    "color": "#111111",
+    "pieza": "db9c",
+    "w": 30.8,
+    "h": 10
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -14.9,
+    "z0": 1.6,
+    "z1": 14.1,
+    "color": "#b8bcc4",
+    "pieza": "db9f",
+    "w": 30.8,
+    "h": 1
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -18.4,
+    "z0": 3.9,
+    "z1": 11.8,
+    "color": "#c9ccd2",
+    "pieza": "db9s",
+    "w": 16.3,
+    "h": 6
+   },
+   {
+    "f": "caja",
+    "cx": -12.5,
+    "cy": -18.4,
+    "z0": 5.45,
+    "z1": 10.25,
+    "color": "#c9ccd2",
+    "pieza": "db9t1",
+    "w": 4.8,
+    "h": 6
+   },
+   {
+    "f": "caja",
+    "cx": 12.5,
+    "cy": -18.4,
+    "z0": 5.45,
+    "z1": 10.25,
+    "color": "#c9ccd2",
+    "pieza": "db9t2",
+    "w": 4.8,
+    "h": 6
+   },
+   {
+    "f": "caja",
+    "cx": 1,
+    "cy": 10,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#1f2937",
+    "pieza": "hdr",
+    "w": 10.16,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -2.81,
+    "cy": 10,
+    "z0": 4.1,
+    "z1": 12.6,
+    "color": "#d4a017",
+    "pieza": "hdr",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -0.27,
+    "cy": 10,
+    "z0": 4.1,
+    "z1": 12.6,
+    "color": "#d4a017",
+    "pieza": "hdr",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 2.27,
+    "cy": 10,
+    "z0": 4.1,
+    "z1": 12.6,
+    "color": "#d4a017",
+    "pieza": "hdr",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 4.81,
+    "cy": 10,
+    "z0": 4.1,
+    "z1": 12.6,
+    "color": "#d4a017",
+    "pieza": "hdr",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -1.5,
+    "cy": 2.5,
+    "z0": 1.6,
+    "z1": 3.2,
+    "color": "#1f2937",
+    "pieza": "ic",
+    "w": 10.56,
+    "h": 3.9
+   },
+   {
+    "f": "caja",
+    "cx": -1.5,
+    "cy": 2.5,
+    "z0": 1.6,
+    "z1": 1.9,
+    "color": "#cbd5e1",
+    "pieza": "ic",
+    "w": 10.16,
+    "h": 5.9
+   },
+   {
+    "f": "caja",
+    "cx": 9,
+    "cy": 3.5,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "d1",
+    "w": 2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 9,
+    "cy": 6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "r1",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 8.2,
+    "cy": 6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r1",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 9.8,
+    "cy": 6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "r1",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -8,
+    "cy": -2.8,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "c1",
+    "w": 1.25,
+    "h": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": -8,
+    "cy": -3.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c1",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": -8,
+    "cy": -2,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c1",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": -5.5,
+    "cy": -2.8,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "c2",
+    "w": 1.25,
+    "h": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": -5.5,
+    "cy": -3.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c2",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": -5.5,
+    "cy": -2,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c2",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": -3,
+    "cy": -2.8,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "c3",
+    "w": 1.25,
+    "h": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": -3,
+    "cy": -3.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c3",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": -3,
+    "cy": -2,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c3",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": -0.5,
+    "cy": -2.8,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "c4",
+    "w": 1.25,
+    "h": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": -0.5,
+    "cy": -3.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c4",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": -0.5,
+    "cy": -2,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c4",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": 6.8,
+    "cy": 7.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "c5",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 6,
+    "cy": 7.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c5",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 7.6,
+    "cy": 7.6,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "c5",
+    "w": 0.4,
+    "h": 1.25
+   }
+  ]
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado desde la página del vendedor enviada por John (MAX3232, DB9 hembra, VCC/GND/TX/RX, 3.3–5 V). Placa 30.8 × 28.8 mm (Phipps Electronics 30.8 × 28.8; Robozar 29 × 32: coinciden ±2 mm). Agujeros, orden del header y posición de piezas estimados de la foto (confianza baja). Datasheet del chip: TI MAX3232."
+  }
+ ],
+ "modificado": "2026-11-20T03:39:33.465Z",
+ "cad_pendiente": true
+}
