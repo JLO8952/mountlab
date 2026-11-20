@@ -274,7 +274,34 @@
    "cara": "A"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "adaptador_usb_ch340_wifi_esp8266_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/adaptador_usb_ch340_wifi_esp8266 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/adaptador_usb_ch340_wifi_esp8266/adaptador_usb_ch340_wifi_esp8266_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "adaptador_usb_ch340_wifi_esp8266_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/adaptador_usb_ch340_wifi_esp8266 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/adaptador_usb_ch340_wifi_esp8266/adaptador_usb_ch340_wifi_esp8266_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "adaptador_usb_ch340_wifi_esp8266_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/adaptador_usb_ch340_wifi_esp8266 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/adaptador_usb_ch340_wifi_esp8266/adaptador_usb_ch340_wifi_esp8266_v1_plano.dxf"
+  },
+  "datasheet": {
+   "fuente": "https://www.wch-ic.com/downloads/CH340DS1_PDF.html",
+   "error": "la dirección no entrega un PDF directo (es una página web)",
+   "fecha": "2026-11-20"
+  }
+ },
  "historial": [
   {
    "v": 1,
