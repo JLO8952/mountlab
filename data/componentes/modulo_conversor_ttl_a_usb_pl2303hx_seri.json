@@ -540,7 +540,37 @@
    "cara": "A"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "modulo_conversor_ttl_a_usb_pl2303hx_seri_v3_huella.dxf",
+   "version": 3,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri/modulo_conversor_ttl_a_usb_pl2303hx_seri_v3_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "modulo_conversor_ttl_a_usb_pl2303hx_seri_v3_montaje.step",
+   "version": 3,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri/modulo_conversor_ttl_a_usb_pl2303hx_seri_v3_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "modulo_conversor_ttl_a_usb_pl2303hx_seri_v3_plano.dxf",
+   "version": 3,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri/modulo_conversor_ttl_a_usb_pl2303hx_seri_v3_plano.dxf"
+  },
+  "datasheet": {
+   "nombre": "modulo_conversor_ttl_a_usb_pl2303hx_seri_datasheet.pdf",
+   "fuente": "https://voltiq.ru/datasheets/pl2303hxd_v1_4_4.pdf",
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri/modulo_conversor_ttl_a_usb_pl2303hx_seri_datasheet.pdf",
+   "kb": 1135
+  }
+ },
  "historial": [
   {
    "v": 1,
@@ -1185,6 +1215,5 @@
     "h": 1.6
    }
   ]
- },
- "cad_pendiente": true
+ }
 }
