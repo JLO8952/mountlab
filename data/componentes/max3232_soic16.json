@@ -77,8 +77,8 @@
   }
  ],
  "imagen": {
-  "src": "img/max3232_soic16.png",
-  "origen": "render 3D (modelo simplificado)"
+  "src": "img/max3232_soic16.png?v=1795195480138",
+  "origen": "render del modelo 3D"
  },
  "precios": [],
  "busquedas": {},
@@ -336,6 +336,14 @@
     "montaje",
     "modelo"
    ]
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
  "modelo": {
@@ -547,5 +555,5 @@
    }
   ]
  },
- "modificado": "2026-11-20T03:35:44.405Z"
+ "modificado": "2026-11-20T14:27:59.445Z"
 }
