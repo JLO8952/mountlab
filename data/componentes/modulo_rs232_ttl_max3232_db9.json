@@ -15,7 +15,7 @@
  "fabricante": "Genérico",
  "referencia": "Módulo MAX3232 RS232-TTL DB9 hembra",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Placa azul con el transceptor MAX3232 que convierte señales RS232 (±5 a ±6 V, conector DB9 hembra) a niveles TTL de 3.3 V o 5 V para microcontroladores. Header de 4 pines (GND, TXD, RXD, VCC), LED D1 de encendido y dos agujeros de fijación.",
@@ -72,8 +72,8 @@
   }
  ],
  "imagen": {
-  "src": "img/modulo_rs232_ttl_max3232_db9.png",
-  "origen": "foto del proveedor (enviada por John)"
+  "src": "img/modulo_rs232_ttl_max3232_db9.png?v=1795195476753",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -163,6 +163,21 @@
   },
   {
    "tipo": "pines",
+   "nombre": "Header TTL",
+   "cx": 1,
+   "cy": 10,
+   "w": 10.2,
+   "h": 2.5,
+   "z": [
+    1.6,
+    12.6
+   ],
+   "salida": "+Z",
+   "holgura": 12,
+   "regla": "Espacio para conectores Dupont"
+  },
+  {
+   "tipo": "pines",
    "nombre": "Header TTL 4 pines",
    "cx": 1,
    "cy": 10,
@@ -192,42 +207,27 @@
    "holgura": 2,
    "auto": true,
    "pieza": "d1"
-  },
-  {
-   "tipo": "pines",
-   "nombre": "Header TTL",
-   "cx": 1,
-   "cy": 10,
-   "w": 10.2,
-   "h": 2.5,
-   "z": [
-    1.6,
-    12.6
-   ],
-   "salida": "+Z",
-   "holgura": 12,
-   "regla": "Espacio para conectores Dupont"
   }
  ],
  "pines": [
   {
    "n": "DB9-2",
    "func": "RS232 TX (T1OUT) → al RX del equipo",
-   "x": -2.77,
+   "x": 0,
    "y": -14.4,
    "conector": "DB9 hembra"
   },
   {
    "n": "DB9-3",
    "func": "RS232 RX (R1IN) ← del TX del equipo",
-   "x": 0.0,
+   "x": 0,
    "y": -14.4,
    "conector": "DB9 hembra"
   },
   {
    "n": "DB9-5",
    "func": "GND",
-   "x": 5.54,
+   "x": 0,
    "y": -14.4,
    "conector": "DB9 hembra"
   },
@@ -236,7 +236,7 @@
    "func": "Tierra",
    "x": -2.81,
    "y": 10,
-   "conector": "Header macho 4 pines 2.54 mm",
+   "conector": "Header TTL 4 pines",
    "pieza": "hdr",
    "idx": 0,
    "cara": "A"
@@ -246,7 +246,7 @@
    "func": "Salida TTL (R1OUT) → al RX del microcontrolador",
    "x": -0.27,
    "y": 10,
-   "conector": "Header macho 4 pines 2.54 mm",
+   "conector": "Header TTL 4 pines",
    "pieza": "hdr",
    "idx": 1,
    "cara": "A"
@@ -256,7 +256,7 @@
    "func": "Entrada TTL (T1IN) ← del TX del microcontrolador",
    "x": 2.27,
    "y": 10,
-   "conector": "Header macho 4 pines 2.54 mm",
+   "conector": "Header TTL 4 pines",
    "pieza": "hdr",
    "idx": 2,
    "cara": "A"
@@ -266,7 +266,7 @@
    "func": "Alimentación 3.3–5 V",
    "x": 4.81,
    "y": 10,
-   "conector": "Header macho 4 pines 2.54 mm",
+   "conector": "Header TTL 4 pines",
    "pieza": "hdr",
    "idx": 3,
    "cara": "A"
@@ -348,8 +348,7 @@
      "alto": 12.5,
      "r": 0,
      "color": "#b8bcc4"
-    },
-    "sobresale": true
+    }
    },
    {
     "id": "db9s",
@@ -366,8 +365,7 @@
      "alto": 7.9,
      "r": 0,
      "color": "#c9ccd2"
-    },
-    "sobresale": true
+    }
    },
    {
     "id": "db9t1",
@@ -384,8 +382,7 @@
      "alto": 4.8,
      "r": 0,
      "color": "#c9ccd2"
-    },
-    "sobresale": true
+    }
    },
    {
     "id": "db9t2",
@@ -402,8 +399,7 @@
      "alto": 4.8,
      "r": 0,
      "color": "#c9ccd2"
-    },
-    "sobresale": true
+    }
    },
    {
     "id": "hdr",
@@ -876,10 +872,16 @@
    "nota": "Creado desde la página del vendedor enviada por John (MAX3232, DB9 hembra, VCC/GND/TX/RX, 3.3–5 V). Placa 30.8 × 28.8 mm (Phipps Electronics 30.8 × 28.8; Robozar 29 × 32: coinciden ±2 mm). Agujeros, orden del header y posición de piezas estimados de la foto (confianza baja). Datasheet del chip: TI MAX3232."
   },
   {
-   "v": 1,
+   "v": 2,
    "fecha": "2026-11-20",
-   "nota": "Depuración: pines 2, 3 y 5 del DB9 separados en su fila (paso 2.77 mm, pin 3 al centro); piezas del DB9 marcadas como sobresalientes."
+   "nota": "Actualizado: zonas, pines, imagen",
+   "cambios": [
+    "zonas",
+    "pines",
+    "imagen"
+   ]
   }
  ],
- "modificado": "2026-11-20T03:39:33.465Z"
+ "modificado": "2026-11-20T14:27:50.327Z",
+ "cad_pendiente": true
 }
