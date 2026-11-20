@@ -201,6 +201,27 @@
    "fuente": "subido desde el chat: DM74LS08.PDF",
    "carpeta": "archivos/dm74ls08_dip14 (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/dm74ls08_dip14/dm74ls08_dip14_datasheet.pdf"
+  },
+  "dxf_huella": {
+   "nombre": "dm74ls08_dip14_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/dm74ls08_dip14 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/dm74ls08_dip14/dm74ls08_dip14_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "dm74ls08_dip14_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/dm74ls08_dip14 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/dm74ls08_dip14/dm74ls08_dip14_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "dm74ls08_dip14_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/dm74ls08_dip14 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/dm74ls08_dip14/dm74ls08_dip14_v1_plano.dxf"
   }
  },
  "historial": [
@@ -1063,6 +1084,5 @@
     "h": 0.85
    }
   ]
- },
- "cad_pendiente": true
+ }
 }
