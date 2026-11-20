@@ -114,8 +114,8 @@
   }
  ],
  "imagen": {
-  "src": "img/modulo_conversor_ttl_a_usb_pl2303hx_seri.jpg?v=1795205683318",
-  "origen": "foto subida en el chat"
+  "src": "img/modulo_conversor_ttl_a_usb_pl2303hx_seri.png?v=1795205997593",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -334,9 +334,17 @@
     "montaje",
     "modelo"
    ]
+  },
+  {
+   "v": 4,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
- "modificado": "2026-11-20T20:19:43.867Z",
+ "modificado": "2026-11-20T20:19:56.054Z",
  "modelo": {
   "version": 1,
   "base": {
