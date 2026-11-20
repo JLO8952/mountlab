@@ -147,7 +147,7 @@
     opt = opt || {};
     const C = P.circuito = P.circuito || { version: 1, inst: [], cables: [], etiquetas: {}, notas: "" };
     C.inst = C.inst || []; C.cables = C.cables || []; C.etiquetas = C.etiquetas || {};
-    const st = { cardMin: matchMedia("(max-width: 860px)").matches, k: 1, ox: 0, oy: 0, sel: null, selC: null, desde: null, drag: null, ptrs: new Map(), tab: "redes", sug: [], hist: [], fut: [], filtro: "", ancho: 0, vista: C.vista || "esq" };
+    const st = { cardMin: matchMedia("(max-width: 860px)").matches, k: 1, ox: 0, oy: 0, sel: null, selC: null, desde: null, drag: null, ptrs: new Map(), tab: "redes", sug: [], hist: [], fut: [], filtro: "", ancho: 0, vista: "esq" };   // la vista "real" se retiró: el diseño físico va en la pestaña Caja y en el CAD
     const comp = id => id.startsWith("@") ? Object.assign({ id, nombre: VIRT[id].nombre, pines: [] }, {}) : (Store.db.componentes.find(c => c.id === id));
     const $ = (s, r) => (r || host).querySelector(s), $$ = (s, r) => [...(r || host).querySelectorAll(s)];
 
@@ -795,7 +795,7 @@
     }
     function sincronizarBom() {
       P.bom = P.bom || []; const cuenta = {}, clave = (id, v) => id + "|" + (v || "");
-      for (const it of C.inst) { if (it.id.startsWith("@")) continue; const k = clave(it.id, it.valor); cuenta[k] = (cuenta[k] || 0) + 1; }
+      for (const it of (opt.instTodas ? opt.instTodas() : C.inst)) { if (it.id.startsWith("@")) continue; const k = clave(it.id, it.valor); cuenta[k] = (cuenta[k] || 0) + 1; }
       P.bom = P.bom.filter(b => b.nota !== "desde el diagrama" || cuenta[clave(b.id, b.valor)]);
       for (const [k, n] of Object.entries(cuenta)) { const [id, valor] = k.split("|"); const b = P.bom.find(x => x.id === id && (x.valor || "") === valor);
         if (b) { if (b.nota === "desde el diagrama" || b.cantidad < n) b.cantidad = n; } else P.bom.push(Object.assign({ id, cantidad: n, nota: "desde el diagrama" }, valor ? { valor } : {})); }
@@ -831,7 +831,7 @@
       <div class="ci-centro"><div class="mo-bar row" style="gap:4px">
           <button class="sm" id="ciUndo" title="Deshacer (Ctrl+Z)">↶</button><button class="sm" id="ciRedo" title="Rehacer (Ctrl+Y)">↷</button><span class="mo-sep"></span>
           <button class="sm" id="ciOrd" title="Ordenar los bloques por función">▦ Ordenar</button><button class="sm" id="ciFit">Ajustar</button><button class="sm" id="ciZi">＋</button><button class="sm" id="ciZo">－</button><span class="mo-sep"></span>
-          <button class="sm ${st.vista === "esq" ? "on" : ""}" data-vista="esq">Esquemático</button><button class="sm ${st.vista === "real" ? "on" : ""}" data-vista="real" title="Huella real a escala con cables tipo dupont">Vista real</button><span class="mo-sep"></span>
+          
           <button class="sm" id="ciFull" title="Agrandar el lienzo (oculta la biblioteca y el panel)">⛶ Lienzo grande</button><button class="sm ai-btn" id="ciSug">✦ Sugerir conexiones</button><button class="sm" id="ciPdf">🖨 Informe PDF</button>
           <select id="ciExp" class="sm" style="width:auto;padding:5px 8px"><option value="">Exportar…</option><option value="svg">Diagrama SVG</option><option value="png">Diagrama PNG</option><option value="csv">Conexiones CSV</option><option value="net">Netlist (texto)</option></select></div>
         <div class="canvas-wrap ci-canvas"><svg id="ciSvg"></svg><div class="ed-info" id="ciInfo"></div>
@@ -917,7 +917,7 @@
     $("#ciFit").onclick = () => { ajustar(); dibujar(); };
     $("#ciZi").onclick = () => { st.k = Math.min(4, st.k * 1.2); dibujar(); }; $("#ciZo").onclick = () => { st.k = Math.max(0.2, st.k / 1.2); dibujar(); };
     $("#ciSug").onclick = () => { st.sug = sugerir(); st.tab = "sug"; opt.toast && opt.toast(st.sug.length ? `${st.sug.length} conexiones sugeridas (moradas): acéptalas en el panel o con clic` : "No encontré conexiones que sugerir"); dibujar(); };
-    $$("[data-vista]", host).forEach(b => b.onclick = () => { st.vista = C.vista = b.dataset.vista; $$("[data-vista]", host).forEach(x => x.classList.toggle("on", x === b)); ajustar(); dibujar(); opt.onChange && opt.onChange(); });
+    if (false) $$("[data-vista]", host).forEach(b => b.onclick = () => { st.vista = C.vista = b.dataset.vista; $$("[data-vista]", host).forEach(x => x.classList.toggle("on", x === b)); ajustar(); dibujar(); opt.onChange && opt.onChange(); });
     $("#ciPdf").onclick = () => informe();
     $("#ciExp").onchange = e => { const v = e.target.value; e.target.value = ""; exportar(v); };
     new ResizeObserver(() => { if (host.isConnected) dibujar(); }).observe(svg);

@@ -379,3 +379,19 @@ body.rol-lectura :is(#bSave,#bUndo,#bDup,#bVar,#bProj,#bDel,#bNew,#hNew,#pSv,#pD
   .ci-libl{max-height:96px}
   .ci-card .ci-card-h .tag{display:none}
 }
+
+/* ===================== subproyectos y caja ===================== */
+.sub-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 10px}
+.sub-chip{border-radius:999px;padding:6px 12px;font-size:13px}
+.sub-chip small{background:var(--bg2);border-radius:999px;padding:0 6px;margin-left:4px;color:var(--ink2)}
+.sub-chip.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.sub-chip.add{border-style:dashed;color:var(--ink2)}
+.sub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.sub-card{margin:0}
+.caja-grid{display:grid;grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:12px;align-items:start}
+.caja-vistas{padding:8px;overflow:auto}.caja-vistas svg{max-height:72vh}
+.caja-kpi{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
+.caja-kpi>div{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.caja-kpi span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3)}
+.caja-kpi b{display:block;font-size:20px;margin:2px 0}.caja-kpi small{color:var(--ink2)}
+@media (max-width:900px){.caja-grid{grid-template-columns:1fr}}

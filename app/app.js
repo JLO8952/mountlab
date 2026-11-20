@@ -772,20 +772,109 @@
     if (!silencioso) { try { await Store.save("proyectos", p, `Proyecto ${id}: creado`); } catch (e) { toast("Error: " + e.message, 5000); } estadoPill(); }
     return p;
   }
+  // ---------- subproyectos: cada proyecto tiene uno o varios circuitos (potencia, lógica, RF…)
+  const TIPOS_SUB = { potencia: ["⚡", "Potencia"], logica: ["🧠", "Lógica / control"], rf: ["📡", "RF"], comunicaciones: ["🔌", "Comunicaciones"], sensores: ["🌡", "Sensores"], actuadores: ["⚙", "Actuadores"], energia: ["🔋", "Energía / baterías"], otro: ["▣", "Otro"] };
+  function migrarSubs(P) {
+    if (!Array.isArray(P.subs) || !P.subs.length) { P.subs = [{ id: "principal", nombre: "Circuito principal", tipo: "logica", circuito: P.circuito || { version: 1, inst: [], cables: [], etiquetas: {}, notas: "" } }]; }
+    delete P.circuito; P.subs.forEach(u => { u.circuito = u.circuito || { version: 1, inst: [], cables: [], etiquetas: {}, notas: "" }; u.circuito.inst = u.circuito.inst || []; u.circuito.cables = u.circuito.cables || []; u.circuito.etiquetas = u.circuito.etiquetas || {}; delete u.circuito.vista; });
+    return P;
+  }
+  function subproyectos(P, cabecera, repintar) {
+    S.subSel = S.subSel || {}; let sel = S.subSel[P.id]; if (sel !== "__todo" && !P.subs.some(u => u.id === sel)) sel = S.subSel[P.id] = P.subs[0].id;
+    const bar = $("#subBar"), host = $("#circHost");
+    const etiq = u => Object.values(u.circuito.etiquetas || {}).filter(Boolean);
+    const compartidas = () => { const cnt = {}; P.subs.forEach(u => new Set(etiq(u)).forEach(n => (cnt[n] = cnt[n] || []).push(u.nombre))); return Object.entries(cnt).filter(([, L]) => L.length > 1); };
+    bar.innerHTML = `<div class="sub-bar"><button class="sub-chip ${sel === "__todo" ? "on" : ""}" data-su="__todo">🗂 Vista general</button>
+      ${P.subs.map(u => `<button class="sub-chip ${sel === u.id ? "on" : ""}" data-su="${esc(u.id)}">${(TIPOS_SUB[u.tipo] || TIPOS_SUB.otro)[0]} ${esc(u.nombre)} <small>${u.circuito.inst.length}</small></button>`).join("")}
+      <button class="sub-chip add" id="suNew">＋ Subproyecto</button>
+      ${sel !== "__todo" ? `<span style="flex:1"></span><button class="sm ghost" id="suEd" title="Nombre, tipo y notas">✎ Editar</button><button class="sm ghost" id="suDup">⧉ Duplicar</button>${P.subs.length > 1 ? '<button class="sm ghost danger" id="suDel">🗑</button>' : ""}` : ""}</div>`;
+    $$("[data-su]", bar).forEach(b => b.onclick = () => { S.subSel[P.id] = b.dataset.su; repintar(); });
+    const editar = async (u, nuevo) => {
+      const r = await modal(`<h3>${nuevo ? "Nuevo subproyecto" : "Editar subproyecto"}</h3><div class="grid2"><div><label>Nombre</label><input id="suN" value="${esc(u.nombre)}"></div><div><label>Tipo</label><select id="suT">${Object.entries(TIPOS_SUB).map(([k, [ic, n]]) => `<option value="${k}" ${u.tipo === k ? "selected" : ""}>${ic} ${n}</option>`).join("")}</select></div></div>
+        <div style="margin-top:8px"><label>Notas</label><textarea id="suO" placeholder="Qué hace este circuito, dónde va dentro de la caja…">${esc(u.notas || "")}</textarea></div>
+        <div class="small muted" style="margin-top:6px">Para unir subproyectos entre sí usa <b>etiquetas de red</b> con el mismo nombre (doble clic en un pin → p. ej. «5V_BUS», «SDA»): aparecen en la Vista general como conexiones entre placas.</div>
+        <div class="row" style="justify-content:flex-end;margin-top:10px"><button data-close>Cancelar</button><button class="pri" id="suOk">${nuevo ? "Crear" : "Guardar"}</button></div>`, (b, close) => { $("#suOk", b).onclick = () => close({ nombre: $("#suN", b).value.trim() || u.nombre, tipo: $("#suT", b).value, notas: $("#suO", b).value }); });
+      if (!r) return null; Object.assign(u, r); return u;
+    };
+    const nw = $("#suNew"); if (nw) nw.onclick = async () => { const u = { id: "s" + Date.now().toString(36), nombre: "Circuito " + (P.subs.length + 1), tipo: "logica", circuito: { version: 1, inst: [], cables: [], etiquetas: {}, notas: "" } }; if (await editar(u, true)) { P.subs.push(u); S.subSel[P.id] = u.id; cabecera(); repintar(); } };
+    const cur = P.subs.find(u => u.id === sel);
+    const ed = $("#suEd"); if (ed) ed.onclick = async () => { if (await editar(cur)) { cabecera(); repintar(); } };
+    const du = $("#suDup"); if (du) du.onclick = () => { const u = clone(cur); u.id = "s" + Date.now().toString(36); u.nombre += " (copia)"; P.subs.push(u); S.subSel[P.id] = u.id; cabecera(); repintar(); };
+    const dl = $("#suDel"); if (dl) dl.onclick = async () => { if (!(await confirmar(`¿Eliminar el subproyecto <b>${esc(cur.nombre)}</b> y su diagrama?`, "Eliminar"))) return; P.subs = P.subs.filter(u => u !== cur); S.subSel[P.id] = P.subs[0].id; cabecera(); repintar(); };
+    if (sel === "__todo") {
+      const comp2 = id => Store.db.componentes.find(c => c.id === id);
+      const tarj = u => { const C = u.circuito, ns = C.inst.filter(i => !i.id.startsWith("@")).map(i => (comp2(i.id) || {}).nombre).filter(Boolean), fu = C.inst.filter(i => /^@(usb|lipo|18650|2s|lab|dc12)$/.test(i.id)).map(i => (MLCircuito.VIRT[i.id] || {}).nombre);
+        return `<div class="panel sub-card" data-su2="${esc(u.id)}"><div class="row" style="justify-content:space-between"><b>${(TIPOS_SUB[u.tipo] || TIPOS_SUB.otro)[0]} ${esc(u.nombre)}</b><span class="tag">${esc((TIPOS_SUB[u.tipo] || TIPOS_SUB.otro)[1])}</span></div>
+          <div class="small muted" style="margin:4px 0">${C.inst.length} componentes · ${C.cables.length} cables${fu.length ? " · fuente: " + esc(fu.join(", ")) : ""}</div>
+          <div class="small">${ns.slice(0, 6).map(esc).join(" · ") || '<span class="muted">Vacío</span>'}${ns.length > 6 ? ` · +${ns.length - 6}` : ""}</div>${u.notas ? `<div class="small muted" style="margin-top:4px">${esc(u.notas)}</div>` : ""}
+          <div class="row" style="margin-top:8px"><button class="sm" data-su3="${esc(u.id)}">Abrir diagrama</button></div></div>`; };
+      const comp3 = compartidas();
+      host.innerHTML = `<div class="sub-grid">${P.subs.map(tarj).join("")}</div>
+        <div class="panel" style="margin-top:12px"><h3>🔗 Conexiones entre subproyectos</h3>${comp3.length ? `<table class="t small"><tr><th>Red (etiqueta)</th><th>Une</th></tr>${comp3.map(([n, L]) => `<tr><td><span class="tag vio">${esc(n)}</span></td><td>${L.map(esc).join(" ↔ ")}</td></tr>`).join("")}</table>` : '<div class="small muted">Aún no hay. En cada diagrama pon la misma etiqueta de red (doble clic en un pin: «5V_BUS», «GND», «SDA»…) en los pines que van de una placa a otra.</div>'}</div>`;
+      $$("[data-su3]", host).forEach(b => b.onclick = () => { S.subSel[P.id] = b.dataset.su3; repintar(); });
+      S.circ = null; return;
+    }
+    // proyecto "visto" por el editor de diagramas: comparte el BOM del proyecto y cuenta todos los subproyectos
+    const Q = { id: P.id + "_" + cur.id, nombre: P.nombre + " · " + cur.nombre, descripcion: P.descripcion, documentacion: cur.notas || P.documentacion, circuito: cur.circuito };
+    Object.defineProperty(Q, "bom", { get: () => P.bom, set: v => { P.bom = v; }, enumerable: true });
+    S.circ = MLCircuito.montar(host, Q, { onChange: cabecera, toast, ia: circuitoIA, instTodas: () => P.subs.flatMap(u => u.circuito.inst) });
+  }
+
+  // ---------- caja mínima (envolvente) del proyecto o de un subproyecto
+  function vCaja(P, cabecera) {
+    const host = $("#cajaHost"), cfg = Object.assign({}, P.caja || {}), par = Object.assign({ gap: 3, pared: 2, espesor: 2, standoff: 5, arriba: 8, prop: 3, rotar: true, bom: true }, cfg.p || {});
+    const guardarCfg = () => { P.caja = { alcance: cfg.alcance || "__todo", p: par }; cabecera(); };
+    let alc = cfg.alcance || "__todo"; if (alc !== "__todo" && !P.subs.some(u => u.id === alc)) alc = "__todo";
+    const comp2 = id => Store.db.componentes.find(c => c.id === id);
+    const usar = alc === "__todo" ? P.subs : P.subs.filter(u => u.id === alc), varios = usar.length > 1;
+    let inst = usar.flatMap((u, i) => u.circuito.inst.map(it => Object.assign({}, it, { ref: varios ? `${i + 1}·${it.ref}` : it.ref, _sub: u.nombre })));
+    if (alc === "__todo" && par.bom) {   // piezas del BOM que no están en ningún diagrama
+      const enDiag = {}; P.subs.forEach(u => u.circuito.inst.forEach(it => enDiag[it.id] = (enDiag[it.id] || 0) + 1)); let k = 1;
+      for (const b of P.bom) { const c = comp2(b.id); if (!c || c.anexo || c.tipo !== "electronico" || /^(Cableado|Prototipado|Herrajes|Materiales)$/.test(c.categoria)) continue; for (let n = enDiag[b.id] || 0; n < (+b.cantidad || 0); n++) inst.push({ ref: "B" + k++, id: b.id, _sub: "BOM (sin diagrama)" }); }
+    }
+    const pz = MLCaja.piezas(inst, comp2, P), R = MLCaja.calcular(pz.piezas, par), titulo = P.nombre + (alc === "__todo" ? "" : " · " + (P.subs.find(u => u.id === alc) || {}).nombre);
+    const campo = (k, n, ayuda) => `<div title="${esc(ayuda)}"><label>${n}</label><input type="number" step="0.5" min="0" data-cp="${k}" value="${par[k]}"></div>`;
+    host.innerHTML = `<div class="sub-bar">${[["__todo", "🗂 Todo el proyecto"], ...P.subs.map(u => [u.id, `${(TIPOS_SUB[u.tipo] || TIPOS_SUB.otro)[0]} ${u.nombre}`])].map(([id, n]) => `<button class="sub-chip ${alc === id ? "on" : ""}" data-ca="${esc(id)}">${esc(n)}</button>`).join("")}</div>
+      <div class="caja-grid">
+        <div class="panel"><h3>Parámetros</h3><div class="grid2">${campo("gap", "Separación entre piezas (mm)", "Espacio libre entre componentes")}${campo("pared", "Holgura a las paredes (mm)", "Espacio entre las piezas y la pared interior")}${campo("espesor", "Espesor de pared (mm)", "Para calcular la medida exterior")}${campo("standoff", "Separadores bajo placas (mm)", "Altura de los separadores en placas con agujeros")}${campo("arriba", "Espacio para cables arriba (mm)", "Conectores dupont, cables y holgura sobre los componentes")}${campo("prop", "Proporción máx. largo/ancho", "Evita cajas muy alargadas")}</div>
+          <label class="small" style="display:flex;gap:6px;align-items:center;margin-top:8px"><input type="checkbox" data-cp="rotar" ${par.rotar ? "checked" : ""} style="width:auto"> Permitir girar piezas</label>
+          ${alc === "__todo" ? `<label class="small" style="display:flex;gap:6px;align-items:center;margin-top:4px"><input type="checkbox" data-cp="bom" ${par.bom ? "checked" : ""} style="width:auto"> Incluir piezas del BOM que no están en ningún diagrama</label>` : ""}
+          ${R ? `<div class="caja-kpi"><div><span>Interior</span><b>${R.interior.L} × ${R.interior.W} × ${R.interior.H}</b><small>mm (largo × ancho × alto)</small></div><div><span>Exterior</span><b>${R.exterior.L} × ${R.exterior.W} × ${R.exterior.H}</b><small>mm con pared de ${par.espesor} mm</small></div><div><span>Volumen</span><b>${R.volumen} cm³</b><small>ocupación en planta ${R.ocupacion} %</small></div></div>
+            <div class="row" style="margin-top:10px"><button class="sm" id="cjSvg">⬇ SVG</button><button class="sm" id="cjDxf">⬇ DXF (3 vistas)</button><button class="sm" id="cjCsv">⬇ Posiciones CSV</button></div>` : ""}
+          ${pz.faltan.length ? `<div class="msg warn small" style="margin-top:10px">Sin medidas (no entran en el cálculo): ${pz.faltan.map(esc).join(", ")}. Complétalas con el Generador (🩺 Revisión).</div>` : ""}
+          ${pz.aberturas.length ? `<div class="msg info small" style="margin-top:8px">Aberturas en pared: ${pz.aberturas.map(a => `${esc(a.n)} (${a.w}×${a.h} mm)`).join(", ")}.</div>` : ""}
+          ${R && R.piezas.some(q => q.faltaPared) ? `<div class="msg warn small" style="margin-top:8px">Algunas piezas con conector en dos lados no quedaron contra ambas paredes: revisa ${R.piezas.filter(q => q.faltaPared).map(q => esc(q.ref)).join(", ")}.</div>` : ""}
+        </div>
+        <div class="panel caja-vistas">${R ? MLCaja.vistas(R, { titulo }) : `<div class="muted" style="padding:30px;text-align:center">No hay piezas con medidas en ${alc === "__todo" ? "el proyecto" : "este subproyecto"}.<br>Agrega componentes al diagrama (o al BOM) que tengan montaje en su ficha.</div>`}</div>
+      </div>
+      ${R ? `<div class="panel" style="margin-top:12px;overflow:auto"><h3>Piezas</h3><table class="t small"><tr><th>Ref.</th><th>Componente</th>${varios ? "<th>Subproyecto</th>" : ""}<th>Planta (mm)</th><th>Alto total</th><th>Posición X, Y</th><th>Giro</th><th>Necesita</th></tr>
+        ${R.piezas.map(q => `<tr><td><b>${esc(q.ref)}</b></td><td>${esc(q.n)}</td>${varios ? `<td>${esc(q.sub || "")}</td>` : ""}<td>${q.L} × ${q.W}</td><td>${Math.round(q.Ht * 10) / 10}</td><td>${q.x}, ${q.y}</td><td>${q.rot}°</td><td>${[q.paredes.length ? "abertura en pared " + q.paredes.join(", ") : "", q.panel ? "montaje en panel" : "", q.arribaZ ? "ventana en tapa" : "", ...q.notas].filter(Boolean).map(esc).join(" · ")}</td></tr>`).join("")}</table>
+        <div class="small muted" style="margin-top:6px">Cálculo en planta con rectángulos (un solo nivel). Medidas de la ficha de cada componente; los conectores USB, jack, bornera y antena se colocan contra la pared hacia donde salen. Revisa en el CAD antes de imprimir.</div></div>` : ""}`;
+    $$("[data-ca]", host).forEach(b => b.onclick = () => { cfg.alcance = b.dataset.ca; guardarCfg(); vCaja(P, cabecera); });
+    $$("[data-cp]", host).forEach(i => i.onchange = () => { const k = i.dataset.cp; par[k] = i.type === "checkbox" ? i.checked : Math.max(0, +i.value || 0); if (k === "prop") par.prop = Math.max(1, par.prop); guardarCfg(); vCaja(P, cabecera); });
+    if (R) {
+      const nom = `caja_${P.id}${alc === "__todo" ? "" : "_" + alc}`;
+      $("#cjSvg").onclick = () => download(nom + ".svg", MLCaja.vistas(R, { titulo, claro: true }), "image/svg+xml");
+      $("#cjDxf").onclick = () => download(nom + ".dxf", MLCaja.dxf(R, titulo), "application/dxf");
+      $("#cjCsv").onclick = () => download(nom + ".csv", "﻿" + [["Ref", "Componente", "Subproyecto", "X mm", "Y mm", "Largo mm", "Ancho mm", "Alto total mm", "Giro", "Necesita"], ...R.piezas.map(q => [q.ref, q.n, q.sub || "", q.x, q.y, q.L, q.W, Math.round(q.Ht * 10) / 10, q.rot, [q.paredes.join(" "), q.arribaZ ? "ventana tapa" : ""].filter(Boolean).join("; ")])].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(";")).join("\r\n"), "text/csv");
+    }
+  }
+
   function vProyecto(id) {
     const o = Store.db.proyectos.find(p => p.id === id);
     if (!o) { app.innerHTML = `<div class="panel">No existe el proyecto. <a href="#/proyectos">Volver</a></div>`; return; }
-    const P = clone(o), O = JSON.stringify(o); P.bom = P.bom || [];
+    const P = clone(o); P.bom = P.bom || [];
+    migrarSubs(P); const O = JSON.stringify(migrarSubs(clone(o)));
     if (S.proyId !== id) { S.proyId = id; S.ptabP = S.ptabSig || "resumen"; } S.ptabSig = null;
     const cabecera = () => { const sucio = JSON.stringify(P) !== O, d = $("#pDirty"), b = $("#pSv"); if (d) d.innerHTML = sucio ? '<span class="dirty">Cambios sin guardar</span>' : ""; if (b) b.disabled = !sucio; };
     S.proySucio = () => JSON.stringify(P) !== O;
     const pinta = () => {
-      const t = totalesBom(P), sucio = JSON.stringify(P) !== O, diag = S.ptabP === "diagrama";
+      const t = totalesBom(P), sucio = JSON.stringify(P) !== O, diag = S.ptabP === "diagrama", cajaT = S.ptabP === "caja";
       if (S.circ) { S.circ.destroy(); S.circ = null; }
       app.innerHTML = `<div class="det-head"><div><div class="small"><a href="#/proyectos">← Proyectos</a></div><input id="pNm" value="${esc(P.nombre)}" style="font-size:20px;font-weight:700;border:none;padding:4px 0;background:none"></div>
         <div class="row"><span id="pDirty">${sucio ? '<span class="dirty">Cambios sin guardar</span>' : ""}</span><button class="pri" id="pSv" ${sucio ? "" : "disabled"}>Guardar</button><button id="pCsv">Exportar BOM (CSV)</button><button id="pDup">Duplicar</button><button class="danger" id="pDel">Eliminar</button></div></div>
-        <div class="tabs"><button data-pt2="resumen" class="${diag ? "" : "on"}">Resumen y BOM</button><button data-pt2="diagrama" class="${diag ? "on" : ""}">⚡ Diagrama de conexiones${P.circuito && (P.circuito.inst || []).length ? ` <span class="tag">${P.circuito.inst.length}</span>` : ""}</button></div>
-        ${diag ? '<div id="circHost"></div>' : `
+        <div class="tabs"><button data-pt2="resumen" class="${diag || cajaT ? "" : "on"}">Resumen y BOM</button><button data-pt2="diagrama" class="${diag ? "on" : ""}">⚡ Circuitos <span class="tag">${P.subs.length}</span></button><button data-pt2="caja" class="${cajaT ? "on" : ""}">📦 Caja</button></div>
+        ${diag ? '<div id="subBar"></div><div id="circHost"></div>' : cajaT ? '<div id="cajaHost"></div>' : `
         <div class="grid2" style="grid-template-columns:2fr 1fr;align-items:start">
           <div class="side">
             <div class="panel"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Lista de materiales (BOM)</h3><div class="picker" style="width:320px"><input id="pk" placeholder="+ Añadir componente: buscar…"><div class="res hide" id="pkR"></div></div></div>
@@ -806,13 +895,14 @@
             <div class="panel"><h3>Historial</h3>${(P.historial || []).slice().reverse().slice(0, 12).map(h => `<div class="small" style="margin-bottom:4px"><span class="muted">${esc(h.fecha)}</span> · ${esc(h.nota)}</div>`).join("")}</div>
           </div></div>`}`;
       $$("[data-pt2]").forEach(b => b.onclick = () => { S.ptabP = b.dataset.pt2; pinta(); if (window.MLAgent) MLAgent.refrescar(); });
-      if (diag) S.circ = MLCircuito.montar($("#circHost"), P, { onChange: cabecera, toast, ia: circuitoIA });
+      if (diag) subproyectos(P, cabecera, pinta);
+      if (cajaT) vCaja(P, cabecera);
       const set = () => { pinta(); };
       $("#pNm").oninput = e => { P.nombre = e.target.value; };
-      $("#pNm").onchange = () => diag ? cabecera() : set();
-      if (!diag) $("#pEs").onchange = e => { P.estado = e.target.value; set(); };
-      if (!diag) $("#pDs").onchange = e => { P.descripcion = e.target.value; set(); };
-      if (!diag) $("#pDoc").onchange = e => { P.documentacion = e.target.value; set(); };
+      $("#pNm").onchange = () => diag || cajaT ? cabecera() : set();
+      if (!diag && !cajaT) $("#pEs").onchange = e => { P.estado = e.target.value; set(); };
+      if (!diag && !cajaT) $("#pDs").onchange = e => { P.descripcion = e.target.value; set(); };
+      if (!diag && !cajaT) $("#pDoc").onchange = e => { P.documentacion = e.target.value; set(); };
       $$("[data-b]").forEach(i => i.onchange = () => { const b = P.bom[+i.dataset.b]; b[i.dataset.k] = i.dataset.k === "cantidad" ? Math.max(0, +i.value) : i.dataset.k === "valor" ? valorBonito(comp(b.id), i.value) : i.value; if (i.dataset.k === "valor") i.value = b.valor; set(); });
       $$("[data-bx]").forEach(x => x.onclick = () => { const b = P.bom.splice(+x.dataset.bx, 1)[0]; P.historial.push({ fecha: hoy(), nota: "Quitado " + b.id }); set(); });
       const pk = $("#pk"), res = $("#pkR");
