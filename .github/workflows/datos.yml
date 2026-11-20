@@ -35,6 +35,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Solicitudes de STEP bajo demanda y limpieza
+        run: python tools/solicitudes.py
+
       - name: ¿Hay CAD por regenerar?
         id: pend
         run: |

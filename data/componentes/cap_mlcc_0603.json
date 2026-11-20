@@ -125,29 +125,7 @@
    "y": 0
   }
  ],
- "archivos": {
-  "dxf_huella": {
-   "nombre": "cap_mlcc_0603_v1_huella.dxf",
-   "version": 1,
-   "fecha": "2026-11-19",
-   "carpeta": "archivos/cap_mlcc_0603 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/cap_mlcc_0603/cap_mlcc_0603_v1_huella.dxf"
-  },
-  "step_montaje": {
-   "nombre": "cap_mlcc_0603_v1_montaje.step",
-   "version": 1,
-   "fecha": "2026-11-19",
-   "carpeta": "archivos/cap_mlcc_0603 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/cap_mlcc_0603/cap_mlcc_0603_v1_montaje.step"
-  },
-  "dxf_plano": {
-   "nombre": "cap_mlcc_0603_v1_plano.dxf",
-   "version": 1,
-   "fecha": "2026-11-19",
-   "carpeta": "archivos/cap_mlcc_0603 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/cap_mlcc_0603/cap_mlcc_0603_v1_plano.dxf"
-  }
- },
+ "archivos": {},
  "modelo": {
   "version": 1,
   "base": {
@@ -228,5 +206,6 @@
    "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
   }
  ],
- "modificado": "2026-11-19T02:55:28.736Z"
+ "modificado": "2026-11-19T02:55:28.736Z",
+ "anexo": "pasivos"
 }

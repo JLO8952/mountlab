@@ -140,7 +140,7 @@ for (const f of F) {
     zonas: [], pines: f.mod.pines.map(p => Object.assign({ conector: "" }, p)), archivos: {},
     modelo: { version: 1, base: f.mod.base, piezas: f.mod.piezas || [] },
     historial: [{ v: 1, fecha: HOY, nota: "Creado en el anexo de pasivos (familia genérica, medidas típicas)" }],
-    modificado: new Date().toISOString(), cad_pendiente: true,
+    modificado: new Date().toISOString(), anexo: "pasivos",
   };
   P.sincronizar(c);
   fs.writeFileSync(ruta, JSON.stringify(c, null, 1) + "\n"); n++;

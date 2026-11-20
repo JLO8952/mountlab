@@ -322,7 +322,8 @@
      "alto": 5,
      "r": 0,
      "color": "#cbd5e1"
-    }
+    },
+    "sobresale": true
    },
    {
     "id": "p0",

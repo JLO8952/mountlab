@@ -213,21 +213,21 @@
   {
    "n": "DB9-2",
    "func": "RS232 TX (T1OUT) → al RX del equipo",
-   "x": 0,
+   "x": -2.77,
    "y": -14.4,
    "conector": "DB9 hembra"
   },
   {
    "n": "DB9-3",
    "func": "RS232 RX (R1IN) ← del TX del equipo",
-   "x": 0,
+   "x": 0.0,
    "y": -14.4,
    "conector": "DB9 hembra"
   },
   {
    "n": "DB9-5",
    "func": "GND",
-   "x": 0,
+   "x": 5.54,
    "y": -14.4,
    "conector": "DB9 hembra"
   },
@@ -348,7 +348,8 @@
      "alto": 12.5,
      "r": 0,
      "color": "#b8bcc4"
-    }
+    },
+    "sobresale": true
    },
    {
     "id": "db9s",
@@ -365,7 +366,8 @@
      "alto": 7.9,
      "r": 0,
      "color": "#c9ccd2"
-    }
+    },
+    "sobresale": true
    },
    {
     "id": "db9t1",
@@ -382,7 +384,8 @@
      "alto": 4.8,
      "r": 0,
      "color": "#c9ccd2"
-    }
+    },
+    "sobresale": true
    },
    {
     "id": "db9t2",
@@ -399,7 +402,8 @@
      "alto": 4.8,
      "r": 0,
      "color": "#c9ccd2"
-    }
+    },
+    "sobresale": true
    },
    {
     "id": "hdr",
@@ -870,6 +874,11 @@
    "v": 1,
    "fecha": "2026-11-19",
    "nota": "Creado desde la página del vendedor enviada por John (MAX3232, DB9 hembra, VCC/GND/TX/RX, 3.3–5 V). Placa 30.8 × 28.8 mm (Phipps Electronics 30.8 × 28.8; Robozar 29 × 32: coinciden ±2 mm). Agujeros, orden del header y posición de piezas estimados de la foto (confianza baja). Datasheet del chip: TI MAX3232."
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Depuración: pines 2, 3 y 5 del DB9 separados en su fila (paso 2.77 mm, pin 3 al centro); piezas del DB9 marcadas como sobresalientes."
   }
  ],
  "modificado": "2026-11-20T03:39:33.465Z"

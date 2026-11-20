@@ -76,7 +76,10 @@
    "valor": "HBM ±500 V; CDM ±1500 V"
   }
  ],
- "imagen": null,
+ "imagen": {
+  "src": "img/ne555_dip8.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
  "precios": [
   {
    "proveedor": "Mercado Libre CO (pack ×2)",

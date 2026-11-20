@@ -59,12 +59,14 @@
     if (S.circ) { S.circ.destroy(); S.circ = null; }
     if (!h.startsWith("#/c/")) { S.W = null; S.orig = null; }
     const [, r, id] = h.split("/");
-    $$("#nav a").forEach(a => a.classList.toggle("act", a.dataset.r === ({ "": "inicio", asistente: "inicio", invitacion: "inicio", c: "catalogo", p: "proyectos", pasivos: "pasivos" }[r] ?? r)));
+    $$("#nav a").forEach(a => a.classList.toggle("act", a.dataset.r === ({ "": "inicio", asistente: "inicio", invitacion: "inicio", c: "catalogo", p: "proyectos", pasivos: "pasivos", nuevo: "catalogo", revision: "catalogo" }[r] ?? r)));
     window.scrollTo(0, 0);
     if (r !== "asistente" && $("#drawer").classList.contains("wide")) { $("#drawer").classList.remove("wide"); document.body.classList.remove("drawer-wide"); }
     if (r === "asistente") { abrirAsistente(true); history.replaceState(null, "", "#/"); lastHash = "#/"; return vInicio(); }
     if (r === "catalogo") return vCatalogo();
     if (r === "pasivos") return vPasivos();
+    if (r === "nuevo") return vGenerador();
+    if (r === "revision") return vRevision();
     if (r === "c" && id) return vComponente(decodeURIComponent(id));
     if (r === "proyectos") return vProyectos();
     if (r === "p" && id) return vProyecto(decodeURIComponent(id));
@@ -74,12 +76,171 @@
   }
   window.addEventListener("hashchange", route);
 
+  // =====================================================================  GENERADOR (agregar componentes con la IA que prefieras)
+  const GEN_K = "ml_gen";
+  function genEstado() {
+    if (!S.gen) { let g = {}; try { g = JSON.parse(localStorage.getItem(GEN_K)) || {}; } catch (e) { } S.gen = Object.assign({ nombre: "", variante: "", notas: "", enlaces: "", completar: "", archivos: [], respuesta: "" }, g); S.gen.archivos = S.gen.archivos || []; }
+    return S.gen;
+  }
+  function genGuardar() {
+    const g = genEstado(), lig = Object.assign({}, g, { archivos: g.archivos.filter(a => a.kind === "imagen").slice(0, 6).map(a => ({ id: a.id, nombre: a.nombre, kind: a.kind, dataUrl: a.dataUrl, b64: a.b64, mime: a.mime })) });
+    try { localStorage.setItem(GEN_K, JSON.stringify(lig)); } catch (e) { try { lig.archivos = []; localStorage.setItem(GEN_K, JSON.stringify(lig)); } catch (e2) { } }
+  }
+  function abrirGenerador({ nombre, archivos, completar } = {}) {
+    const g = genEstado();
+    if (nombre != null && nombre !== "" && nombre !== g.nombre) { Object.assign(g, { nombre, variante: "", notas: "", enlaces: "", respuesta: "", archivos: [] }); }
+    if (completar) { const c = comp(completar); Object.assign(g, { completar, nombre: c ? c.nombre : g.nombre, archivos: [], respuesta: "" }); } else if (nombre) g.completar = "";
+    (archivos || []).forEach(a => { if (a && !g.archivos.some(x => x.id === a.id)) g.archivos.push(a); });
+    genGuardar(); if (location.hash === "#/nuevo") vGenerador(); else location.hash = "#/nuevo";
+    if (matchMedia("(max-width: 1100px)").matches) cerrarAsistenteSiAbierto();
+  }
+  function cerrarAsistenteSiAbierto() { const d = $("#drawer"); if (d && d.classList.contains("open")) { d.classList.remove("open", "wide"); document.body.classList.remove("drawer-open", "drawer-wide"); const b = $("#btnIA"); if (b) b.classList.remove("on"); } }
+  const MSJ_CORTO = "Lee el PDF adjunto y sigue sus instrucciones al pie de la letra. Responde SOLO con el bloque ```json que se pide.";
+  function genPrompt(conPdf) {
+    const g = genEstado(), ex = g.completar ? comp(g.completar) : null, imgs = g.archivos.filter(a => a.kind === "imagen"), pdfs = g.archivos.filter(a => a.kind === "pdf");
+    let notas = [g.notas, g.enlaces ? "Enlaces: " + g.enlaces : ""].filter(Boolean).join("\n");
+    let txt = promptExterno({ nombre: g.nombre, variante: g.variante, notas, existente: ex });
+    if (imgs.length || pdfs.length) txt += `\n\nMATERIAL ADJUNTO${conPdf ? " EN ESTE PDF" : ""}: ${imgs.length ? `${imgs.length} foto(s) del componente${conPdf ? " (páginas al final de las instrucciones)" : " (te las adjunto)"}` : ""}${imgs.length && pdfs.length ? " y " : ""}${pdfs.length ? `el datasheet${conPdf ? " (páginas finales de este PDF)" : " (te lo adjunto)"}` : ""}. Úsalo como fuente principal: mide en las fotos solo si hay una referencia de escala y dilo en "verificacion".`;
+    return txt;
+  }
+  // texto compatible con las fuentes estándar del PDF (WinAnsi)
+  function pdfTexto(t) {
+    const map = { "“": '"', "”": '"', "‘": "'", "’": "'", "—": "-", "–": "-", "…": "...", "≤": "<=", "≥": ">=", "→": "->", "←": "<-", "↔": "<->", "Ω": "Ohm", "Ω": "Ohm", "✓": "OK", "✗": "X", "≈": "~", "π": "pi", "−": "-", "•": "-", " ": " ", " ": " ", " ": " ", "↗": "", "⚠": "!", "‑": "-" };
+    return String(t || "").replace(/[“”‘’—–…≤≥→←↔ΩΩ✓✗≈π−•   ↗⚠‑]/g, c => map[c]).replace(/[^\x09\x0A\x0D\x20-\x7E¡-ÿ€]/gu, "");
+  }
+  let pdfLibP = null;
+  function cargarPdfLib() { return pdfLibP || (pdfLibP = new Promise((res, rej) => { if (window.PDFLib) return res(window.PDFLib); const sc = document.createElement("script"); sc.src = "app/vendor/pdflib/pdf-lib.min.js"; sc.onload = () => res(window.PDFLib); sc.onerror = () => { pdfLibP = null; rej(new Error("No pude cargar el generador de PDF")); }; document.head.appendChild(sc); })); }
+  const b64aBytes = b64 => { const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u; };
+  /** PDF con instrucciones + fotos + datasheet (para subirlo a Gemini, ChatGPT o Claude). */
+  async function genPdf() {
+    const g = genEstado(), { PDFDocument, StandardFonts, rgb } = await cargarPdfLib();
+    const doc = await PDFDocument.create(), fR = await doc.embedFont(StandardFonts.Helvetica), fB = await doc.embedFont(StandardFonts.HelveticaBold), fM = await doc.embedFont(StandardFonts.Courier);
+    const A4 = [595.28, 841.89], M = 46; let pg, y;
+    const nueva = () => { pg = doc.addPage(A4); y = A4[1] - M; pg.drawText(pdfTexto("MountLab · solicitud de investigación de componente"), { x: M, y: 22, size: 7.5, font: fR, color: rgb(.45, .5, .58) }); };
+    const linea = (t, { f = fR, size = 9.5, color = rgb(.1, .12, .16), gap = 3 } = {}) => {
+      const ancho = A4[0] - 2 * M; for (const par of pdfTexto(t).split("\n")) { let w = ""; const pal = par.split(/(\s+)/); const salir = () => { if (y < M + size) nueva(); pg.drawText(w, { x: M, y, size, font: f, color }); y -= size + gap; w = ""; };
+        if (!par.trim()) { y -= size * 0.6; continue; }
+        for (const p of pal) { const prueba = w + p; if (f.widthOfTextAtSize(prueba, size) > ancho && w.trim()) { salir(); w = p.trimStart(); } else w = prueba; } if (w.trim()) salir(); } };
+    nueva();
+    linea("MountLab · Investigar y registrar un componente", { f: fB, size: 16, gap: 8, color: rgb(.05, .3, .6) });
+    linea(`Componente: ${g.nombre}${g.variante ? " · " + g.variante : ""}`, { f: fB, size: 11.5, gap: 4 });
+    linea(`Generado: ${new Date().toLocaleString("es-CO")}`, { size: 8.5, color: rgb(.4, .45, .5), gap: 10 });
+    linea("Instrucciones para la IA (Gemini, ChatGPT, Claude…): lee TODO este documento, investiga en internet y responde ÚNICAMENTE con el bloque ```json descrito abajo.", { f: fB, size: 10, gap: 10, color: rgb(.6, .2, .1) });
+    linea(genPrompt(true), { f: fR, size: 9, gap: 2.4 });
+    const imgs = g.archivos.filter(a => a.kind === "imagen");
+    for (const [i, a] of imgs.entries()) {
+      const bytes = b64aBytes(a.b64 || a.dataUrl.split(",")[1]); let im; try { im = /png/.test(a.mime || a.dataUrl.slice(0, 30)) ? await doc.embedPng(bytes) : await doc.embedJpg(bytes); } catch (e) { continue; }
+      nueva(); linea(`Foto ${i + 1} de ${imgs.length}: ${a.nombre || ""}`, { f: fB, size: 11, gap: 8 });
+      const maxW = A4[0] - 2 * M, maxH = y - M - 10, k = Math.min(maxW / im.width, maxH / im.height, 2); pg.drawImage(im, { x: M, y: y - im.height * k, width: im.width * k, height: im.height * k });
+    }
+    for (const a of g.archivos.filter(x => x.kind === "pdf")) {
+      try { const src = await PDFDocument.load(b64aBytes(a.b64), { ignoreEncryption: true }); const n = src.getPageCount(), lim = Math.min(n, 60); nueva(); linea(`Datasheet adjunto: ${a.nombre} (${n} páginas${n > lim ? `, se incluyen las primeras ${lim}` : ""})`, { f: fB, size: 11 });
+        const cp = await doc.copyPages(src, [...Array(lim).keys()]); cp.forEach(p => doc.addPage(p)); }
+      catch (e) { nueva(); linea(`(No pude incluir ${a.nombre}: ${e.message}. Adjúntalo aparte.)`, { size: 10 }); }
+    }
+    const bytes = await doc.save(); return new File([bytes], `MountLab_${slug(g.nombre || "componente")}.pdf`, { type: "application/pdf" });
+  }
+  function vGenerador() {
+    const g = genEstado(), ex = g.completar ? comp(g.completar) : null;
+    const chipA = (a, i) => a.kind === "imagen" ? `<div class="gen-im"><img src="${a.dataUrl}" alt=""><button class="sm danger" data-gx="${i}" title="Quitar">✕</button></div>` : `<div class="gen-doc">📄 <span>${esc(a.nombre)}</span>${a.paginas ? `<small>${a.paginas} pág.</small>` : ""}<button class="sm danger" data-gx="${i}">✕</button></div>`;
+    app.innerHTML = `<div class="hero"><div><div class="small"><a href="#/catalogo">← Catálogo</a></div><h1>🧩 Agregar <span>componente</span></h1>
+        <div class="muted">${ex ? `Completar <b>${esc(ex.nombre)}</b>: el prompt pide solo lo que le falta.` : "Describe el componente, pega fotos o el datasheet y lleva el prompt (o el PDF) a la IA que prefieras. Luego pega su respuesta aquí."}</div></div></div>
+      <div class="gen-grid">
+        <div class="panel">
+          <h3><span class="gen-n">1</span> Datos del componente</h3>
+          <div class="grid2"><div><label>Nombre y referencia *</label><input id="gN" value="${esc(g.nombre)}" placeholder="p. ej. Módulo GY-521 MPU-6050"></div>
+            <div><label>Versión / encapsulado</label><input id="gV" value="${esc(g.variante)}" placeholder="SOIC-14, DIP-8, 3.3 V…"></div></div>
+          <div style="margin-top:8px"><label>Notas (lo que sabes o copiaste de la página web)</label><textarea id="gO" rows="5" placeholder="Pega aquí la descripción del vendedor, medidas que conoces, cómo lo vas a montar…">${esc(g.notas)}</textarea></div>
+          <div style="margin-top:8px"><label>Enlaces (datasheet, tienda…)</label><input id="gL" value="${esc(g.enlaces)}" placeholder="https://…"></div>
+          <div style="margin-top:10px"><label>Fotos y datasheet</label>
+            <div id="gDrop" class="gen-drop" tabindex="0"><b>📋 Pega aquí</b> una imagen (Ctrl+V o mantén presionado → Pegar), <b>arrástrala</b> o <a href="#" id="gPick">elige archivos</a> · <a href="#" id="gCam">📷 cámara</a>
+              <div class="small muted">Imágenes y PDF del datasheet. Van dentro del PDF para la IA.</div></div>
+            <input type="file" id="gFile" accept="image/*,application/pdf,.pdf" multiple hidden><input type="file" id="gFoto" accept="image/*" capture="environment" hidden>
+            <div id="gAdj" class="gen-adj">${g.archivos.map(chipA).join("")}</div></div>
+          ${ex ? `<label class="small" style="display:flex;gap:6px;align-items:center;margin-top:8px"><input type="checkbox" id="gC" checked style="width:auto"> Completar «${esc(ex.id)}» en lugar de crear uno nuevo</label>` : ""}
+        </div>
+        <div class="panel">
+          <h3><span class="gen-n">2</span> Llévalo a tu IA</h3>
+          <div class="small muted" style="margin-bottom:8px">Gemini, ChatGPT o Claude, con búsqueda en internet activada. No gasta créditos de MountLab.</div>
+          <div class="gen-btns">
+            <button class="pri" id="gPdf">📄 Descargar PDF</button>
+            ${navigator.canShare ? '<button class="pri" id="gSh">📤 Compartir PDF</button>' : ""}
+            <button id="gCp">📋 Copiar prompt</button>
+            <button id="gCm" title="Mensaje para acompañar el PDF">💬 Copiar mensaje corto</button>
+          </div>
+          <div class="small muted" style="margin:8px 0 4px">Abrir:</div>
+          <div class="row"><a class="btn sm" href="https://gemini.google.com/app" target="_blank" rel="noopener">Gemini ↗</a><a class="btn sm" href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT ↗</a><a class="btn sm" href="https://claude.ai/new" target="_blank" rel="noopener">Claude ↗</a></div>
+          <ol class="small" style="padding-left:18px;margin:10px 0 0;line-height:1.7">
+            <li><b>Con PDF</b> (recomendado si tienes fotos o datasheet): súbelo a la IA y envía el <i>mensaje corto</i>.</li>
+            <li><b>Sin PDF</b>: pega el prompt; si tienes fotos, adjúntalas en la IA.</li>
+          </ol>
+          <details style="margin-top:8px"><summary class="small">Ver el prompt</summary><pre id="gPre" class="small" style="white-space:pre-wrap;max-height:260px;overflow:auto;background:var(--bg2);padding:8px;border-radius:8px"></pre></details>
+        </div>
+        <div class="panel gen-full">
+          <h3><span class="gen-n">3</span> Pega la respuesta de la IA</h3>
+          <textarea id="gR" rows="7" placeholder='Copia TODA la respuesta (debe traer un bloque ${"```"}json { "componente": …, "cambios": { … } } ${"```"}) y pégala aquí'>${esc(g.respuesta)}</textarea>
+          <div class="msg warn small hide" id="gErr" style="margin-top:6px"></div>
+          <div class="row" style="justify-content:space-between;margin-top:8px"><button class="sm ghost" id="gClr">🗑 Empezar de nuevo</button><button class="pri" id="gI">🔎 Importar y revisar</button></div>
+        </div>
+      </div>`;
+    const sync = () => { g.nombre = $("#gN").value.trim(); g.variante = $("#gV").value.trim(); g.notas = $("#gO").value; g.enlaces = $("#gL").value.trim(); g.respuesta = $("#gR").value; if ($("#gC") && !$("#gC").checked) g.completar = ""; genGuardar(); const pre = $("#gPre"); if (pre && pre.parentElement.open) pre.textContent = genPrompt(false); };
+    ["gN", "gV", "gO", "gL", "gR"].forEach(i => $("#" + i).addEventListener("input", sync)); if ($("#gC")) $("#gC").onchange = sync;
+    $("#gPre").parentElement.addEventListener("toggle", () => { $("#gPre").textContent = genPrompt(false); });
+    const pintaAdj = () => { $("#gAdj").innerHTML = g.archivos.map(chipA).join(""); $$("[data-gx]").forEach(b => b.onclick = () => { g.archivos.splice(+b.dataset.gx, 1); genGuardar(); pintaAdj(); }); };
+    pintaAdj();
+    const agregar = async files => { for (const f of [...files]) { if (!/^image\//.test(f.type) && !/pdf/i.test(f.type + f.name)) continue; if (f.size > 40e6) { toast("Máximo 40 MB por archivo"); continue; }
+        try { const a = await MLArchivos.leer(f); if (!a.nombre || /^image\.(png|jpe?g)$/i.test(a.nombre)) a.nombre = "foto_" + (g.archivos.length + 1); g.archivos.push(a); if (a.kind === "pdf" && !g.nombre && a.texto) { const m = a.texto.match(/\b([A-Z]{2,}[A-Z0-9-]{2,})\b/); if (m) { g.nombre = m[1]; $("#gN").value = g.nombre; } } } catch (e) { toast(e.message, 5000); } }
+      genGuardar(); pintaAdj(); toast(`${g.archivos.length} archivo(s) listos para el PDF`); };
+    const pegar = e => { if (location.hash !== "#/nuevo") return; const it = [...((e.clipboardData || {}).items || [])].filter(x => x.kind === "file"); if (!it.length) return; e.preventDefault(); agregar(it.map(x => x.getAsFile()).filter(Boolean)); };
+    document.removeEventListener("paste", S.genPaste || (() => { })); S.genPaste = pegar; document.addEventListener("paste", pegar);
+    const dz = $("#gDrop"); dz.ondragover = e => { e.preventDefault(); dz.classList.add("on"); }; dz.ondragleave = () => dz.classList.remove("on"); dz.ondrop = e => { e.preventDefault(); dz.classList.remove("on"); agregar(e.dataTransfer.files); };
+    $("#gPick").onclick = e => { e.preventDefault(); $("#gFile").click(); }; $("#gCam").onclick = e => { e.preventDefault(); $("#gFoto").click(); };
+    $("#gFile").onchange = e => agregar(e.target.files); $("#gFoto").onchange = e => agregar(e.target.files);
+    const listo = () => { sync(); if (!g.nombre) { toast("Escribe el nombre del componente"); $("#gN").focus(); return false; } return true; };
+    const copiar = async (t, msg) => { try { await navigator.clipboard.writeText(t); toast(msg, 5000); } catch (e) { prompt("Copia el texto:", t); } };
+    $("#gCp").onclick = () => listo() && copiar(genPrompt(false), "Prompt copiado: pégalo en Gemini, ChatGPT o Claude");
+    $("#gCm").onclick = () => copiar(MSJ_CORTO, "Mensaje copiado: envíalo junto con el PDF");
+    const hacerPdf = async (b) => { if (!listo()) return null; const t = b.textContent; b.disabled = true; b.textContent = "Generando…"; try { return await genPdf(); } catch (e) { toast("No pude generar el PDF: " + e.message, 6000); return null; } finally { b.disabled = false; b.textContent = t; } };
+    $("#gPdf").onclick = async e => { const f = await hacerPdf(e.currentTarget); if (!f) return; const u = URL.createObjectURL(f), a = document.createElement("a"); a.href = u; a.download = f.name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 60000); toast(`PDF listo (${(f.size / 1e6).toFixed(1)} MB): súbelo a tu IA con el mensaje corto`, 6000); };
+    const sh = $("#gSh"); if (sh) sh.onclick = async e => { const f = await hacerPdf(e.currentTarget); if (!f) return; try { if (navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], title: "MountLab · " + g.nombre, text: MSJ_CORTO }); return; } } catch (er) { if (er.name === "AbortError") return; } toast("Este navegador no comparte archivos: usa Descargar PDF"); };
+    $("#gI").onclick = () => { sync(); try { const p = importarExterno(g.respuesta, "tu IA", { imagenes: g.archivos.filter(a => a.kind === "imagen"), pdf: g.archivos.find(a => a.kind === "pdf") }); $("#gErr").classList.add("hide"); toast("Propuesta lista en el asistente: revísala y aprueba", 5000); } catch (e) { const er = $("#gErr"); er.textContent = e.message; er.classList.remove("hide"); } };
+    $("#gClr").onclick = async () => { if (!(await confirmar("¿Borrar el borrador del generador (nombre, notas, fotos y respuesta)?", "Borrar"))) return; S.gen = null; localStorage.removeItem(GEN_K); vGenerador(); };
+  }
+
+  // ---- calidad de una ficha: qué le falta (para el catálogo y la revisión de la biblioteca)
+  function calidad(c) {
+    const f = c.ficha || {}, falta = [], anexo = !!c.anexo;
+    // elementos genéricos (cables, headers, portapilas, baterías, fuentes, paneles): sin datasheet ni pines obligatorios
+    const simple = /^(Cableado|Conectores|Prototipado)$/.test(c.categoria || "") || /portapilas|bateria|panel|fuente|cable|header|jack|^inr|18650/i.test(c.id);
+    const elec = c.tipo === "electronico" && !simple;
+    if (!f.descripcion) falta.push("descripción");
+    if (!c.imagen || !c.imagen.src) falta.push("foto");
+    if (elec && !anexo) { if (!f.voltaje) falta.push("voltaje"); if (!f.datasheet && !((c.archivos || {}).datasheet || {}).subido) falta.push("datasheet"); if (!f.interfaz && !f.corriente) falta.push("interfaz/corriente"); }
+    if ((c.tipo === "electronico" || c.tipo === "mecanico") && c.categoria !== "Cableado" && !(c.montaje && c.montaje.pcb)) falta.push("medidas");
+    else if (elec && !anexo && !c.modelo) falta.push("modelo 3D");
+    if (elec && !anexo) { const P = c.pines || []; if (!P.length) falta.push("pines"); else if (P.some(p => p.x == null)) falta.push("posición de pines"); }
+    return { ok: !falta.length, falta, pct: Math.round(100 * (1 - Math.min(falta.length, 6) / 6)) };
+  }
+  const ICAT = { "Sensores": "🌡", "Microcontroladores": "🧠", "Comunicación RF": "📡", "Comunicación": "🔌", "Energía": "🔋", "Circuitos integrados": "🔲", "Conectores": "🔗", "Interruptores": "🎚", "Actuadores": "⚙", "Almacenamiento": "💾", "Cableado": "〰", "Prototipado": "🧪", "Herrajes": "🔩", "Materiales": "🧵", "Resistencias": "Ω", "Capacitores": "⊣⊢", "Pantallas": "🖥", "Motores": "⚙" };
+  function vRevision() {
+    const L = Store.db.componentes.filter(c => !c.anexo).map(c => ({ c, q: calidad(c) })).sort((a, b) => a.q.pct - b.q.pct || a.c.nombre.localeCompare(b.c.nombre));
+    const ok = L.filter(x => x.q.ok).length;
+    app.innerHTML = `<div class="hero"><div><div class="small"><a href="#/catalogo">← Catálogo</a></div><h1>🩺 Revisión de la <span>biblioteca</span></h1><div class="muted">${ok} de ${L.length} fichas completas · lo que falta se completa con el Generador (🌐) sin gastar créditos</div></div></div>
+      <div class="panel" style="padding:0;overflow:auto"><table class="t"><tr><th></th><th>Componente</th><th>Completo</th><th>Le falta</th><th></th></tr>
+      ${L.map(({ c, q }) => `<tr><td style="width:46px"><div style="width:42px;height:30px;display:flex;align-items:center;justify-content:center;overflow:hidden">${imgHtml(c)}</div></td><td><a href="#/c/${encodeURIComponent(c.id)}"><b>${esc(c.nombre)}</b></a><div class="small muted">${esc(c.categoria)} · ${esc(c.id)}</div></td>
+        <td style="min-width:110px"><div style="height:8px;background:var(--bg2);border-radius:5px;overflow:hidden"><div style="height:100%;width:${q.pct}%;background:${q.ok ? "var(--ok)" : q.pct > 60 ? "#e6b450" : "var(--bad)"}"></div></div><div class="small muted">${q.ok ? "✓ completa" : q.pct + " %"}</div></td>
+        <td class="small">${q.falta.map(x => `<span class="tag warn">${esc(x)}</span>`).join(" ") || '<span class="tag ok">nada</span>'}</td>
+        <td>${q.ok ? "" : `<button class="sm" data-comp="${esc(c.id)}">🌐 Completar</button>`}</td></tr>`).join("")}</table></div>`;
+    $$("[data-comp]").forEach(b => b.onclick = () => abrirGenerador({ completar: b.dataset.comp }));
+  }
+
   // =====================================================================  CATÁLOGO
   function filtrar() {
     const f = S.f, q = f.q.trim().toLowerCase();
     let difusa = null;   // tolerante a errores de ortografía (cerebro local)
     if (q && window.MLLocal) { MLLocal.asegurar(Store.db.componentes); difusa = new Set(MLLocal.buscar(q, 15).filter(r => r.s >= 0.6).map(r => r.c.id)); }
     return Store.db.componentes.filter(c => {
+      if (c.anexo) return false;   // resistencias y capacitores viven en el anexo de pasivos
       if (f.tipo && c.tipo !== f.tipo) return false;
       if (f.cat && c.categoria !== f.cat) return false;
       if (f.tag && !(c.etiquetas || []).includes(f.tag)) return false;
@@ -87,12 +248,38 @@
       if (f.estado === "borrador" && c.estado === "verificado") return false;
       if (f.estado === "montaje" && !(c.montaje && c.montaje.pcb)) return false;
       if (f.estado === "sinimg" && c.imagen) return false;
+      if (f.estado === "incompleto" && calidad(c).ok) return false;
       if (q) { const t = [c.id, c.nombre, c.categoria, c.fabricante, c.referencia, ...(c.alias || []), ...(c.etiquetas || []), ...Object.values(c.ficha || {})].join(" ").toLowerCase(); if (!q.split(/\s+/).every(w => t.includes(w)) && !(difusa && difusa.has(c.id))) return false; }
       return true;
     }).sort((a, b) => a.categoria.localeCompare(b.categoria, "es") || a.nombre.localeCompare(b.nombre, "es"));
   }
+  function vCatalogoInicio() {
+    const f = S.f, todos = Store.db.componentes, cs = todos.filter(c => !c.anexo), pas = todos.filter(c => c.anexo === "pasivos");
+    const porTipo = {}; cs.forEach(c => { const t = c.tipo || "otro"; (porTipo[t] = porTipo[t] || {}); (porTipo[t][c.categoria || "Sin categoría"] = porTipo[t][c.categoria || "Sin categoría"] || []).push(c); });
+    const completas = cs.filter(c => calidad(c).ok).length, ncat = new Set(cs.map(c => c.categoria)).size;
+    const tile = (cat, L) => { const ims = L.filter(c => c.imagen && c.imagen.src).slice(0, 3), ok = L.filter(c => calidad(c).ok).length;
+      return `<div class="cat-tile" data-cat="${esc(cat)}" tabindex="0"><div class="ct-ic">${ICAT[cat] || "▣"}</div><div class="ct-bd"><div class="ct-n">${esc(cat)}</div><div class="ct-c">${L.length} ${L.length === 1 ? "elemento" : "elementos"}</div>
+        <div class="ct-bar"><i style="width:${Math.round(100 * ok / L.length)}%"></i></div></div><div class="ct-im">${ims.map(c => `<span>${imgHtml(c)}</span>`).join("")}</div></div>`; };
+    const recientes = cs.slice().sort((a, b) => String(b.modificado || "").localeCompare(String(a.modificado || ""))).slice(0, 6);
+    app.innerHTML = `<div class="cat-home">
+      <div class="ch-top"><h1>Biblioteca</h1>
+        <div class="ch-q"><input id="cq" placeholder="Buscar: nombre, referencia, voltaje, I2C…" autocomplete="off"><button class="pri" id="cNew">🧩 Agregar componente</button></div>
+        <div class="ch-stats"><span><b>${cs.length}</b> componentes</span><span><b>${ncat}</b> categorías</span><span><b>${completas}</b> fichas completas</span><a href="#/pasivos"><b>${pas.length}</b> familias de pasivos</a><a href="#/revision">🩺 Revisión</a><a href="#" id="cAll">Ver todos →</a></div></div>
+      ${Object.entries(TIPOS).filter(([t]) => porTipo[t]).map(([t, nom]) => { const cats = Object.entries(porTipo[t]).sort((a, b) => b[1].length - a[1].length); const n = cats.reduce((s, [, L]) => s + L.length, 0);
+        return `<h3 class="ch-h">${esc(nom)} <span class="muted">· ${n}</span></h3><div class="cat-tiles">${cats.map(([cat, L]) => tile(cat, L)).join("")}${t === "electronico" ? `<a class="cat-tile pas" href="#/pasivos"><div class="ct-ic">Ω</div><div class="ct-bd"><div class="ct-n">Resistencias y capacitores</div><div class="ct-c">${pas.length} familias · busca por valor o código</div><div class="small muted">STEP bajo demanda</div></div></a>` : ""}</div>`; }).join("")}
+      ${recientes.length ? `<h3 class="ch-h">Modificados recientemente</h3><div class="cards">${recientes.map(c => `<div class="card" data-id="${esc(c.id)}"><div class="im">${imgHtml(c)}</div><div class="bd"><div class="nm">${esc(c.nombre)}</div><div class="row" style="gap:4px"><span class="tag cat">${esc(c.categoria)}</span></div></div></div>`).join("")}</div>` : ""}
+    </div>`;
+    $$(".cat-tile[data-cat]").forEach(d => { const go = () => { f.cat = d.dataset.cat; vCatalogo(); }; d.onclick = go; d.onkeydown = e => { if (e.key === "Enter") go(); }; });
+    $$(".card[data-id]").forEach(d => d.onclick = () => location.hash = "#/c/" + encodeURIComponent(d.dataset.id));
+    $("#cq").oninput = e => { f.q = e.target.value; S.focoQ = true; vCatalogo(); };
+    $("#cAll").onclick = e => { e.preventDefault(); f.todos = 1; vCatalogo(); };
+    $("#cNew").onclick = () => abrirGenerador({});
+    if (matchMedia("(pointer:fine)").matches) $("#cq").focus();
+  }
   function vCatalogo() {
-    const cs = Store.db.componentes, f = S.f;
+    const f = S.f;
+    if (!(f.q || f.tipo || f.cat || f.tag || f.estado || f.todos)) return vCatalogoInicio();
+    const cs = Store.db.componentes.filter(c => !c.anexo);
     const cnt = (k, v) => cs.filter(c => c[k] === v).length;
     const tags = {}; cs.forEach(c => (c.etiquetas || []).forEach(t => tags[t] = (tags[t] || 0) + 1));
     app.innerHTML = `<div class="cat-layout">
@@ -101,13 +288,14 @@
         <h4>Tipo</h4><div class="chips">${Object.entries(TIPOS).filter(([k]) => cnt("tipo", k)).map(([k, n]) => `<span class="chip ${f.tipo === k ? "on" : ""}" data-f="tipo" data-v="${k}">${n} (${cnt("tipo", k)})</span>`).join("")}</div>
         <h4>Categoría</h4><select id="fcat"><option value="">Todas</option>${categorias().filter(c => cnt("categoria", c)).map(c => `<option ${f.cat === c ? "selected" : ""}>${esc(c)}</option>`).join("")}</select>
         <h4>Etiquetas</h4><div class="chips">${Object.entries(tags).sort((a, b) => b[1] - a[1]).map(([t, n]) => `<span class="chip ${f.tag === t ? "on" : ""}" data-f="tag" data-v="${esc(t)}">${esc(t)} (${n})</span>`).join("") || '<span class="muted small">—</span>'}</div>
-        <h4>Estado</h4><div class="chips">${[["verificado", "Verificado"], ["borrador", "Sin verificar"], ["montaje", "Con montaje"], ["sinimg", "Sin foto"]].map(([k, n]) => `<span class="chip ${f.estado === k ? "on" : ""}" data-f="estado" data-v="${k}">${n}</span>`).join("")}</div>
+        <h4>Estado</h4><div class="chips">${[["verificado", "Verificado"], ["borrador", "Sin verificar"], ["montaje", "Con montaje"], ["sinimg", "Sin foto"], ["incompleto", "Incompletas"]].map(([k, n]) => `<span class="chip ${f.estado === k ? "on" : ""}" data-f="estado" data-v="${k}">${n}</span>`).join("")}</div>
         <div class="row" style="margin-top:14px"><button class="sm" id="fclr">Limpiar filtros</button></div>
       </aside>
       <section>
+        <div class="small" style="margin-bottom:6px"><a href="#/catalogo" id="fHome">← Todas las categorías</a>${f.cat ? ` · <b>${esc(f.cat)}</b>` : ""}</div>
         <div class="row" style="justify-content:space-between;margin-bottom:12px">
           <div class="stats" id="stats" style="margin:0"></div>
-          <div class="row"><button class="sm ${f.vista === "tarjetas" ? "on" : ""}" data-v="tarjetas">Tarjetas</button><button class="sm ${f.vista === "tabla" ? "on" : ""}" data-v="tabla">Tabla</button><a class="btn" href="#/pasivos" title="Resistencias y capacitores: valores, códigos y calculadoras">Ω Pasivos</a><button class="pri" id="bNew">+ Nuevo</button></div>
+          <div class="row"><button class="sm ${f.vista === "tarjetas" ? "on" : ""}" data-v="tarjetas">Tarjetas</button><button class="sm ${f.vista === "tabla" ? "on" : ""}" data-v="tabla">Tabla</button><a class="btn" href="#/pasivos" title="Resistencias y capacitores: valores, códigos y calculadoras">Ω Pasivos</a><button class="pri" id="bNew">🧩 Agregar</button></div>
         </div>
         <div id="lst"></div>
       </section></div>`;
@@ -125,7 +313,7 @@
         $$("tr[data-id]").forEach(tr => tr.onclick = () => location.hash = "#/c/" + encodeURIComponent(tr.dataset.id));
       } else {
         $("#lst").innerHTML = `<div class="cards">${L.map(c => { const p = precioMin(c); return `<div class="card" data-id="${esc(c.id)}"><div class="im">${imgHtml(c)}</div><div class="bd">
-          <div class="nm">${esc(c.nombre)}</div><div class="row" style="gap:4px"><span class="tag cat">${esc(c.categoria)}</span>${c.estado === "verificado" ? '<span class="tag ok">✓</span>' : ""}${(c.etiquetas || []).slice(0, 3).map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>
+          <div class="nm">${esc(c.nombre)}</div><div class="row" style="gap:4px"><span class="tag cat">${esc(c.categoria)}</span>${c.estado === "verificado" ? '<span class="tag ok">✓</span>' : ""}${(q => q.ok ? '<span class="tag ok" title="Ficha completa">completa</span>' : `<span class="tag warn" title="Le falta: ${esc(q.falta.join(", "))}">le falta ${q.falta.length}</span>`)(calidad(c))}${(c.etiquetas || []).slice(0, 3).map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>
           <div class="small muted">${esc(((c.ficha || {}).voltaje || "").slice(0, 60))}</div>
           <div class="ft"><span>${c.montaje && c.montaje.pcb ? `▭ ${c.montaje.pcb[0]}×${c.montaje.pcb[1]} mm` : TIPOS[c.tipo] || ""}</span><span>${p ? "desde " + cop(p.precio_cop) : ""}</span></div></div></div>`; }).join("")}</div>`;
         $$(".card").forEach(d => d.onclick = () => location.hash = "#/c/" + encodeURIComponent(d.dataset.id));
@@ -135,8 +323,10 @@
     $("#fcat").onchange = e => { f.cat = e.target.value; pinta(); };
     $$(".chip[data-f]").forEach(ch => ch.onclick = () => { const k = ch.dataset.f; f[k] = f[k] === ch.dataset.v ? "" : ch.dataset.v; vCatalogo(); });
     $("#fclr").onclick = () => { Object.assign(f, { q: "", tipo: "", cat: "", tag: "", estado: "" }); vCatalogo(); };
+    $("#fHome").onclick = e => { e.preventDefault(); Object.assign(f, { q: "", tipo: "", cat: "", tag: "", estado: "", todos: 0 }); vCatalogo(); };
+    if (S.focoQ) { S.focoQ = false; const i = $("#fq"); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
     $$("[data-v]").forEach(b => { if (b.tagName === "BUTTON") b.onclick = () => { f.vista = b.dataset.v; vCatalogo(); }; });
-    $("#bNew").onclick = nuevoComponente;
+    $("#bNew").onclick = () => abrirGenerador({});
     pinta();
   }
 
@@ -520,6 +710,7 @@
           : `<div class="msg info" style="margin-top:10px">En tu PC los encuentras en <b>D:\\Mi unidad\\MountLab\\biblioteca\\archivos\\${esc(W.id)}\\</b> (Drive para escritorio) para abrirlos directo en SolidWorks.</div>`}
         ${W.cad_pendiente ? '<div class="msg warn">Hay cambios de geometría pendientes de regenerar en CAD.</div>' : ""}</div>
       <div class="panel"><h3>Generar</h3>
+        ${W.anexo ? `<div class="msg info" style="margin-bottom:10px"><b>Familia del anexo de pasivos:</b> sus archivos 3D no se guardan para no ocupar espacio. Pídelos cuando los necesites: GitHub genera el <b>STEP, DXF y plano</b> en 2–3 minutos y los deja aquí ${W.bajo_demanda_vence ? `hasta el <b>${esc(W.bajo_demanda_vence)}</b>` : "por 7 días"}.<div class="row" style="margin-top:8px"><button class="pri" id="bDem" ${Store.mode === "github" ? "" : "disabled"}>⚙ Generar STEP + DXF ahora</button></div></div>` : ""}
         <p class="small muted">El DXF de huella se puede bajar ya mismo desde aquí (lo genera el navegador). El STEP de montaje y el <b>plano de taller</b> (vista superior, frontal y lateral con cotas generales, agujeros y cajetín, escala 1:1) los genera GitHub con CadQuery al guardar cambios de geometría, como versión nueva.</p>
         <div class="row"><button class="pri" id="bDxf" ${W.montaje ? "" : "disabled"}>Descargar DXF de huella (v${W.version || 1})</button>
         <button id="bCad" ${Store.mode === "github" && W.montaje ? "" : "disabled"}>Regenerar DXF + STEP en GitHub</button></div>
@@ -537,6 +728,11 @@
       } catch (er) { toast("No se pudo descargar: " + er.message, 5000); }
     });
     $("#bDxf").onclick = () => download(`${W.id}_v${W.version || 1}_huella.dxf`, MLDxf.componenteADxf(W), "application/dxf");
+    const bd = $("#bDem", body); if (bd) bd.onclick = async () => {
+      bd.disabled = true;
+      try { const txt = JSON.stringify({ id: W.id, fecha: new Date().toISOString() }) + "\n"; await Store.putFile(`data/solicitudes/${W.id}.json`, btoa(unescape(encodeURIComponent(txt))), `Solicitud de STEP bajo demanda: ${W.id}`);
+        toast("Pedido enviado: en 2–3 minutos los archivos aparecen aquí (recarga la página)", 7000); } catch (e) { bd.disabled = false; toast("No pude enviar la solicitud: " + e.message, 6000); }
+    };
     $("#bCad").onclick = async () => {
       if (dirty()) return toast("Guarda primero los cambios");
       try { await Store.dispatch("datos.yml", { id: W.id }); toast("Listo: GitHub está regenerando los archivos (1–3 min)"); } catch (e) { toast("Error: " + e.message, 6000); }
@@ -905,7 +1101,7 @@ Verifica cada medida con al menos dos fuentes (datasheet/plano y vendedor), dime
     return ok.map(id => { const t = MLPlant.plantilla(id); if (!t) return null; const ps = (t.params || []).filter(q => q.k !== "color").map(q => `${q.k}=${q.def}`).join(", "); return `- ${id}: ${t.n}${ps ? ` {${ps}}` : ""}`; }).filter(Boolean).join("\n");
   }
   function promptExterno({ nombre, variante, notas, existente }) {
-    const cats = [...new Set(Store.db.componentes.map(c => c.categoria))].filter(Boolean).join(", ");
+    const cats = [...new Set(Store.db.componentes.filter(c => !c.anexo).map(c => c.categoria))].filter(Boolean).join(", ");
     const id = existente ? existente.id : slug(nombre + (variante ? " " + variante : ""));
     const faltan = existente ? ["descripcion", "funcionamiento", "voltaje", "corriente", "interfaz", "entradas", "salidas", "dimensiones", "datasheet", "notas"].filter(k => !(existente.ficha || {})[k]).map(k => "ficha." + k).concat(existente.montaje && existente.montaje.pcb ? [] : ["montaje", "modelo"], (existente.pines || []).length ? [] : ["pines"], (existente.especificaciones || []).length ? [] : ["especificaciones"], (existente.precios || []).length ? [] : ["precios"]) : [];
     return `Eres un ingeniero electrónico. Investiga en internet este componente para registrarlo en mi biblioteca (app MountLab):
@@ -962,14 +1158,20 @@ ${catalogoPlantillas()}`;
     if (!Object.keys(o.cambios).length) throw new Error("La respuesta no trae datos para la ficha");
     return o;
   }
-  function importarExterno(txt, quien) {
-    const p = leerRespuestaExterna(txt), ya = comp(p.componente);
+  function importarExterno(txt, quien, extra) {
+    const p = leerRespuestaExterna(txt), ya = comp(p.componente), g = S.gen;
+    if (g && g.completar && comp(g.completar)) p.componente = g.completar;   // completar: siempre sobre el elegido
+    const ya2 = comp(p.componente), imgs = (extra && extra.imagenes) || [];
+    if (imgs.length && !(ya2 && ya2.imagen && ya2.imagen.src) && !p.cambios.imagen) { p.cambios.imagen = imgs[0].dataUrl; (p.confianza = p.confianza || {}).imagen = "alta"; }
+    if (extra && extra.pdf) p._adjIds = [extra.pdf.id];
     if (ya && p.cambios.nombre && ya.nombre && slug(ya.nombre) !== slug(p.cambios.nombre) && !/actualiz|complet/i.test(p.resumen || "")) p.resumen = `⚠ Ya existe «${ya.nombre}» con este id: esto lo ACTUALIZA. Si es otra versión, cambia el id en la respuesta (p. ej. ${p.componente}_v2) y vuelve a pegarla. ` + (p.resumen || "");
     S.chat.push({ role: "user", content: `(pegué la respuesta de ${quien || "la IA externa"} para ${p.componente})` },
-      { role: "assistant", content: "Importé la respuesta externa.", vista: `📥 Respuesta de ${quien || "la IA externa"} importada sin gastar créditos: revisa la propuesta, mira la 🔎 revisión automática y aprueba lo que esté bien.`, local: true, via: "importación", props: [p] });
+      { role: "assistant", content: "Importé la respuesta externa.", vista: `📥 Respuesta de ${quien || "la IA externa"} importada sin gastar créditos: revisa la propuesta, mira la 🔎 revisión automática y aprueba lo que esté bien.`, local: true, via: "importación", props: [p], adjIds: (extra && extra.pdf) ? [extra.pdf.id] : undefined });
+    if (extra && extra.pdf) S.adj[extra.pdf.id] = extra.pdf;
     abrirAsistente(); vAsistente(); return p;
   }
-  async function dlgExterno(pre) {
+  async function dlgExterno(pre) { return abrirGenerador({ nombre: pre || "" }); }
+  async function dlgExternoViejo(pre) {
     const ctx = ctxActual(), ex = ctx.vista === "componente" && ctx.id ? comp(ctx.id) : null;
     await modal(`<h3>🌐 Investigar con Gemini / ChatGPT (sin gastar API)</h3>
       <div class="small muted">1) Genera el prompt y cópialo. 2) Pégalo en Gemini (o ChatGPT/Claude web) con búsqueda en internet. 3) Copia su respuesta completa y pégala abajo.</div>
@@ -1274,7 +1476,14 @@ ${catalogoPlantillas()}`;
       let q = $("#q").value.trim(); const adj = (S.pend || []).splice(0); pintaAdj();
       if (!q && !adj.length) return; $("#q").value = "";
       if (adj.length && matchMedia("(min-width: 1180px)").matches) { $("#drawer").classList.add("wide"); document.body.classList.add("drawer-wide"); }
-      if (adj.length) return conArchivos(q || "Revisa este archivo e identifica el componente; propón agregarlo a la biblioteca con toda su información técnica.", adj);
+      // agregar componentes = Generador (prompt/PDF para la IA que prefieras); los adjuntos pasan al generador
+      const crear = q.match(/^\s*(?:por favor\s+)?(?:agrega\w*|añad\w*|anad\w*|crea\w*|registr\w*|nuevo|nueva|ingresa\w*|mete\w*)\s+(?:a la (?:biblioteca|librer[ií]a)\s+)?(?:(?:un|una|el|la)\s+)?(?:nuevo\s+|nueva\s+)?(?:componente\s*:?\s*)?(.*)$/i);
+      if ((adj.length && (!q || crear)) || (crear && crear[1] && !/proyecto|circuito|diagrama|cable|conexi/i.test(q))) {
+        const nombre = crear ? crear[1].replace(/\s+(a|en) la (biblioteca|librer[ií]a)\s*$/i, "").trim() : "";
+        S.chat.push({ role: "user", content: q || adj.map(a => a.nombre).join(", ") }, { role: "assistant", content: "Abro el generador.", vista: `🧩 Para agregar componentes uso el **Generador**: arma el prompt (o un PDF con tus fotos y el datasheet) para la IA que prefieras y luego pegas su respuesta aquí.${nombre ? ` Ya puse «${nombre}».` : ""}${adj.length ? ` Pasé ${adj.length} archivo(s) al generador.` : ""}`, local: true, via: "generador" });
+        pintaLog(); abrirGenerador({ nombre, archivos: adj }); return;
+      }
+      if (adj.length) return conArchivos(q, adj);
       // 1) ¿es una orden para la app? (agente local, sin internet)
       const it = window.MLAgent && !/^(aprende|olvida|revisa proyecto)\b/i.test(q) ? MLAgent.intencion(q) : null;
       if (it) {
@@ -1361,6 +1570,7 @@ PROPUESTAS — cuando John pida AGREGAR, CREAR, COMPLETAR o ACTUALIZAR component
  "verificacion":[{"dato":"Largo × ancho del módulo","valor":"20.3 × 15.6 mm","fuentes":2,"ok":true,"nota":"plano y vendedor coinciden ±0.2 mm"}]}
 \`\`\`
 Reglas: para ACTUALIZAR usa el id existente de la biblioteca y pon solo los campos que cambian o faltan; para CREAR usa un id nuevo que no exista. Incluye "nombre" y "categoria" al crear (usa categorías existentes si encajan: ${[...new Set(Store.db.componentes.map(c => c.categoria))].join(", ")}).
+NOTA: para AGREGAR componentes nuevos, John usa el Generador de la app (botón 🧩 «Agregar componente»: arma un prompt/PDF para Gemini, ChatGPT o Claude y luego pega la respuesta). Si te pide crear uno, recuérdaselo en una línea; propón la ficha aquí solo si insiste o adjunta el material.
 PROTOCOLO PARA CREAR/COMPLETAR (síguelo siempre):
 a) Identifica bien la pieza: ¿chip suelto o módulo/breakout (p. ej. GY-521 = módulo del MPU-6050)? Para un módulo, las medidas, pines y agujeros son las del MÓDULO, no las del chip.
 b) Coordenadas: mm, ORIGEN EN EL CENTRO de la placa, X a lo largo (lado más largo), Y a lo ancho, vista desde arriba (cara A). Agujeros y piezas deben quedar DENTRO de la placa (|x| ≤ L/2, |y| ≤ W/2) y el borde del agujero a ≥0.3 mm del borde.
@@ -1759,8 +1969,8 @@ Para un chip suelto usa base "prisma" con las medidas del CUERPO del encapsulado
     $$("[data-c]", app).forEach(k => k.onclick = () => location.hash = "#/c/" + encodeURIComponent(k.dataset.c));
     $$("[data-p]", app).forEach(k => k.onclick = () => location.hash = "#/p/" + encodeURIComponent(k.dataset.p));
     $$("[data-pr]", app).forEach(k => k.onclick = async () => { const r = await MLAgent.ejecutar(pred[+k.dataset.pr].a); toast(r.msg); });
-    $("#hBus").onclick = () => MLAgent.paleta(); $("#hNew").onclick = () => nuevoComponente();
-    $$("[data-q]", app).forEach(b => b.onclick = async () => { const q = b.dataset.q; if (q === "nuevo") nuevoComponente(); if (q === "ia") abrirAsistente(); if (q === "cat") location.hash = "#/catalogo"; if (q === "proy" || q === "circ") { const pr = await crearProyecto(false); if (pr) { if (q === "circ") S.ptabSig = "diagrama"; location.hash = "#/p/" + encodeURIComponent(pr.id); } } });
+    $("#hBus").onclick = () => MLAgent.paleta(); $("#hNew").onclick = () => abrirGenerador({});
+    $$("[data-q]", app).forEach(b => b.onclick = async () => { const q = b.dataset.q; if (q === "nuevo") abrirGenerador({}); if (q === "ia") abrirAsistente(); if (q === "cat") location.hash = "#/catalogo"; if (q === "proy" || q === "circ") { const pr = await crearProyecto(false); if (pr) { if (q === "circ") S.ptabSig = "diagrama"; location.hash = "#/p/" + encodeURIComponent(pr.id); } } });
     const hd = $("#hDs"); if (hd) hd.onclick = () => preguntar("Busca y completa el datasheet (URL directa al PDF) de los componentes electrónicos que no lo tienen: " + cs.filter(c => c.tipo === "electronico" && !(c.ficha || {}).datasheet).slice(0, 5).map(c => c.id).join(", "));
   }
 
@@ -1796,7 +2006,9 @@ Para un chip suelto usa base "prisma" con las medidas del CUERPO del encapsulado
     { id: "abrir_componente", n: "Abrir un componente", ic: "▭", k: "ver ficha", global: true, args: '{"id":"id_del_componente"}', run: a => { const c = comp(a.id) || (a.q && buscarComponente(a.q)?.c); if (!c) return false; location.hash = "#/c/" + encodeURIComponent(c.id); return "Abierto " + c.nombre; } },
     { id: "abrir_proyecto", n: "Abrir un proyecto", ic: "📁", global: true, args: '{"id":"id_del_proyecto"}', run: a => { const p = Store.db.proyectos.find(x => x.id === a.id) || (a.q && buscarProyecto(a.q)?.p); if (!p) return false; location.hash = "#/p/" + encodeURIComponent(p.id); return "Abierto " + p.nombre; } },
     { id: "buscar_catalogo", n: "Buscar en el catálogo", ic: "🔎", k: "filtrar", global: true, args: '{"q":"texto"}', run: a => buscarCatalogo(a.q || "") },
-    { id: "nuevo_componente", n: "Crear componente nuevo", ic: "＋", k: "agregar nuevo elemento ficha", global: true, run: () => { nuevoComponente(); } },
+    { id: "nuevo_componente", n: "Agregar componente (generador para Gemini/ChatGPT/Claude)", ic: "🧩", k: "agregar nuevo elemento ficha crear componente generador", global: true, run: () => { abrirGenerador({}); } },
+    { id: "componente_manual", n: "Crear ficha vacía a mano", ic: "＋", k: "manual vacio ficha en blanco", global: true, run: () => { nuevoComponente(); } },
+    { id: "revision_biblioteca", n: "Revisión de la biblioteca (qué le falta a cada ficha)", ic: "🩺", k: "revision calidad incompletas faltan depurar verificar biblioteca", global: true, run: () => { location.hash = "#/revision"; } },
     { id: "nuevo_proyecto", n: "Crear proyecto nuevo", ic: "📁", k: "nuevo proyecto", global: true, run: async () => { const p = await crearProyecto(false); if (p) location.hash = "#/p/" + encodeURIComponent(p.id); } },
     { id: "abrir_asistente", n: "Abrir el asistente", ic: "✦", k: "chat ia", global: true, run: () => abrirAsistente() },
     { id: "paleta", n: "Buscar en toda la app", ic: "⌘", k: "paleta comandos", global: true, run: () => MLAgent.paleta() },

@@ -76,7 +76,10 @@
    "valor": "85.9 °C/W"
   }
  ],
- "imagen": null,
+ "imagen": {
+  "src": "img/max3232_soic16.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
  "precios": [],
  "busquedas": {},
  "montaje": {

@@ -382,7 +382,8 @@
      "alto": 0.64,
      "r": 0,
      "color": "#d4a017"
-    }
+    },
+    "sobresale": true
    },
    {
     "id": "jmp",
@@ -676,7 +677,8 @@
      "alto": 4.5,
      "r": 0,
      "color": "#d4a017"
-    }
+    },
+    "sobresale": true
    }
   ],
   "cuerpos": [

@@ -395,8 +395,8 @@ def procesar(ruta_json):
 
 def main(args):
     todos = sorted(glob.glob(os.path.join(DCOMP, "*.json")))
-    if "--todos" in args:
-        sel = todos
+    if "--todos" in args:  # las familias del anexo de pasivos solo se generan bajo demanda
+        sel = [f for f in todos if not json.load(open(f, encoding="utf-8")).get("anexo")]
     elif args:
         sel = [os.path.join(DCOMP, f"{a}.json") for a in args if a]
     else:

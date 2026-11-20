@@ -121,29 +121,7 @@
    "y": -2.5
   }
  ],
- "archivos": {
-  "dxf_huella": {
-   "nombre": "res_trimmer_rm065_v1_huella.dxf",
-   "version": 1,
-   "fecha": "2026-11-19",
-   "carpeta": "archivos/res_trimmer_rm065 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/res_trimmer_rm065/res_trimmer_rm065_v1_huella.dxf"
-  },
-  "step_montaje": {
-   "nombre": "res_trimmer_rm065_v1_montaje.step",
-   "version": 1,
-   "fecha": "2026-11-19",
-   "carpeta": "archivos/res_trimmer_rm065 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/res_trimmer_rm065/res_trimmer_rm065_v1_montaje.step"
-  },
-  "dxf_plano": {
-   "nombre": "res_trimmer_rm065_v1_plano.dxf",
-   "version": 1,
-   "fecha": "2026-11-19",
-   "carpeta": "archivos/res_trimmer_rm065 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/res_trimmer_rm065/res_trimmer_rm065_v1_plano.dxf"
-  }
- },
+ "archivos": {},
  "modelo": {
   "version": 1,
   "base": {
@@ -268,5 +246,6 @@
    "nota": "Creado en el anexo de pasivos (familia genérica, medidas típicas)"
   }
  ],
- "modificado": "2026-11-19T02:55:28.734Z"
+ "modificado": "2026-11-19T02:55:28.734Z",
+ "anexo": "pasivos"
 }

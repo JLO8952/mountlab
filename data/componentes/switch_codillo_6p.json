@@ -2,7 +2,7 @@
  "id": "switch_codillo_6p",
  "nombre": "Switch de palanca 2 posiciones 6 pines",
  "tipo": "electronico",
- "categoria": "Conectores",
+ "categoria": "Interruptores",
  "etiquetas": [],
  "fabricante": "",
  "referencia": "",
@@ -101,6 +101,11 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Depuración: movido de Conectores a Interruptores."
   }
  ]
 }
