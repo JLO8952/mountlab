@@ -1,0 +1,505 @@
+{
+ "id": "mpu6050_gy521",
+ "nombre": "Módulo MPU-6050 (GY-521) acelerómetro + giroscopio 6 ejes",
+ "tipo": "electronico",
+ "categoria": "Sensores",
+ "etiquetas": [
+  "I2C",
+  "IMU",
+  "6 ejes",
+  "acelerómetro",
+  "giroscopio",
+  "3.3V",
+  "5V"
+ ],
+ "fabricante": "TDK InvenSense (chip) · módulo genérico GY-521",
+ "referencia": "MPU-6050 / GY-521",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Módulo breakout GY-521 con el MPU-6050: acelerómetro de 3 ejes + giroscopio de 3 ejes con procesador de movimiento (DMP), sensor de temperatura y bus I2C auxiliar para un magnetómetro externo.",
+  "funcionamiento": "MEMS capacitivos (acelerómetro y giroscopio) con 6 ADC de 16 bits. Entrega aceleración, velocidad angular y temperatura por I2C; el DMP puede fusionar los datos (cuaterniones). El módulo trae regulador LDO de 3.3 V, resistencias pull-up de 10 kΩ en SCL/SDA y LED de encendido.",
+  "voltaje": "Módulo 3.3–5 V en VCC (LDO 3.3 V a bordo); chip VDD 2.375–3.46 V. Lógica I2C a 3.3 V (tolera microcontroladores de 3.3 V y la mayoría de 5 V).",
+  "corriente": "≈3.9 mA con giroscopio + acelerómetro activos (chip); ≈5 mA el módulo con LED; 5 µA en reposo (chip)",
+  "interfaz": "I2C hasta 400 kHz · dirección 0x68 (AD0 a GND, por defecto) o 0x69 (AD0 a VCC) · WHO_AM_I = 0x68",
+  "entradas": "SCL, SDA, AD0 (dirección), XDA/XCL (I2C auxiliar)",
+  "salidas": "Datos digitales por I2C; INT (interrupción, salida activa en alto por defecto)",
+  "dimensiones": "Módulo 20.3 × 15.6 × 1.6 mm (≈3.4 mm con componentes, sin header); 2 agujeros Ø3.0 mm; header de 8 pines paso 2.54 mm. Chip QFN-24 4 × 4 × 0.9 mm.",
+  "datasheet": "https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf",
+  "notas": "Pines en orden: VCC, GND, SCL, SDA, XDA, XCL, AD0, INT. AD0 tiene pull-down: dejarlo suelto = 0x68. Para dos IMU en el mismo bus pon AD0 de una en VCC (0x69). El header viene suelto: el modelo lo muestra soldado hacia abajo (para protoboard). Medidas del módulo tomadas del plano de Components101 y de la publicación del vendedor (20.4 × 15.6 mm): verificar con calibrador, varían ±0.3 mm entre fabricantes. El MPU-6050 está descontinuado por TDK pero los módulos siguen muy disponibles; reemplazo moderno: ICM-42688-P o MPU-6500."
+ },
+ "especificaciones": [
+  {
+   "param": "Giroscopio",
+   "valor": "±250 / ±500 / ±1000 / ±2000 °/s (16 bits)"
+  },
+  {
+   "param": "Acelerómetro",
+   "valor": "±2 / ±4 / ±8 / ±16 g (16 bits)"
+  },
+  {
+   "param": "Frecuencia de muestreo",
+   "valor": "Giroscopio hasta 8 kHz · acelerómetro 1 kHz"
+  },
+  {
+   "param": "Filtro digital (DLPF)",
+   "valor": "Configurable 5–260 Hz"
+  },
+  {
+   "param": "FIFO",
+   "valor": "1024 bytes"
+  },
+  {
+   "param": "Sensor de temperatura",
+   "valor": "-40 a 85 °C"
+  },
+  {
+   "param": "Temperatura de operación",
+   "valor": "-40 a 85 °C"
+  },
+  {
+   "param": "Dirección I2C",
+   "valor": "0x68 / 0x69 (AD0)"
+  },
+  {
+   "param": "Pull-ups en el módulo",
+   "valor": "10 kΩ en SCL y SDA"
+  },
+  {
+   "param": "Chip",
+   "valor": "QFN-24, 4 × 4 × 0.9 mm"
+  }
+ ],
+ "imagen": {
+  "src": "img/mpu6050_gy521.png",
+  "origen": "render 3D (modelo simplificado)"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 6000,
+   "url": "https://es.aliexpress.com/w/wholesale-GY-521-MPU6050.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 12000,
+   "url": "https://listado.mercadolibre.com.co/mpu6050-gy-521",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 30000,
+   "url": "https://www.amazon.com/s?k=GY-521+MPU-6050",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=MPU-6050+datasheet+PS-MPU-6000A-00+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=GY-521+MPU6050+module+dimensions"
+ },
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -7.65,
+    "y": -5.24,
+    "d": 3
+   },
+   {
+    "x": 7.65,
+    "y": -5.24,
+    "d": 3
+   }
+  ],
+  "altura_superior": 1.9,
+  "altura_inferior": 11,
+  "holgura_inferior_cableado": 22,
+  "nota": "Origen en el centro; X a lo largo (20.3 mm, en el sentido de la fila de pines), Y a lo ancho (15.6 mm). Fila de pines en Y = +6.4 (1.4 mm del borde); agujeros Ø3.0 a 2.5 mm de los bordes del lado opuesto. Tornillo M2.5 (o M3 justo). Verificar con calibrador.",
+  "pcb": [
+   20.3,
+   15.6,
+   1.6
+  ],
+  "forma": "rect"
+ },
+ "zonas": [
+  {
+   "tipo": "sensor",
+   "nombre": "MPU-6050 (ejes: X a lo largo, Y a lo ancho, Z hacia arriba según serigrafía)",
+   "cx": 0,
+   "cy": -0.6,
+   "w": 4,
+   "h": 4,
+   "z": [
+    1.6,
+    2.5
+   ],
+   "salida": "+Z",
+   "holgura": 0,
+   "regla": "Montar rígido y plano; alejar de motores y vibración. Alinear los ejes con el dispositivo."
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header 8 pines",
+   "cx": 0,
+   "cy": 6.4,
+   "w": 20.32,
+   "h": 2.54,
+   "z": [
+    -11,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "hdr"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED PWR",
+   "cx": 7,
+   "cy": 2.6,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "led"
+  }
+ ],
+ "pines": [
+  {
+   "n": "VCC",
+   "func": "Alimentación 3.3–5 V (LDO 3.3 V a bordo)",
+   "x": -8.89,
+   "y": 6.4,
+   "conector": "Header 8 pines",
+   "pieza": "hdr",
+   "idx": 0,
+   "cara": "B"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": -6.35,
+   "y": 6.4,
+   "conector": "Header 8 pines",
+   "pieza": "hdr",
+   "idx": 1,
+   "cara": "B"
+  },
+  {
+   "n": "SCL",
+   "func": "Reloj I2C (pull-up 10 kΩ)",
+   "x": -3.81,
+   "y": 6.4,
+   "conector": "Header 8 pines",
+   "pieza": "hdr",
+   "idx": 2,
+   "cara": "B"
+  },
+  {
+   "n": "SDA",
+   "func": "Datos I2C (pull-up 10 kΩ)",
+   "x": -1.27,
+   "y": 6.4,
+   "conector": "Header 8 pines",
+   "pieza": "hdr",
+   "idx": 3,
+   "cara": "B"
+  },
+  {
+   "n": "XDA",
+   "func": "Datos I2C auxiliar (magnetómetro externo)",
+   "x": 1.27,
+   "y": 6.4,
+   "conector": "Header 8 pines",
+   "pieza": "hdr",
+   "idx": 4,
+   "cara": "B"
+  },
+  {
+   "n": "XCL",
+   "func": "Reloj I2C auxiliar",
+   "x": 3.81,
+   "y": 6.4,
+   "conector": "Header 8 pines",
+   "pieza": "hdr",
+   "idx": 5,
+   "cara": "B"
+  },
+  {
+   "n": "AD0",
+   "func": "Dirección I2C: GND/suelto = 0x68, VCC = 0x69",
+   "x": 6.35,
+   "y": 6.4,
+   "conector": "Header 8 pines",
+   "pieza": "hdr",
+   "idx": 6,
+   "cara": "B"
+  },
+  {
+   "n": "INT",
+   "func": "Salida de interrupción",
+   "x": 8.89,
+   "y": 6.4,
+   "conector": "Header 8 pines",
+   "pieza": "hdr",
+   "idx": 7,
+   "cara": "B"
+  }
+ ],
+ "archivos": {},
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado y verificado a mano (datasheet PS-MPU-6000A-00 rev. 3.4, plano del módulo de Components101 y medidas del vendedor 20.4 × 15.6 × 3.4 mm)."
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 20.3,
+   "W": 15.6,
+   "d": 20.3,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "hdr",
+    "plantilla": "header_macho",
+    "nombre": "Header 8 pines",
+    "cara": "B",
+    "x": 0,
+    "y": 6.4,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 8,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 11
+    }
+   },
+   {
+    "id": "imu",
+    "plantilla": "qfn",
+    "nombre": "MPU-6050",
+    "cara": "A",
+    "x": 0,
+    "y": -0.6,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "lado": 4
+    }
+   },
+   {
+    "id": "ldo",
+    "plantilla": "f_caja",
+    "nombre": "Regulador 3.3 V (SOT-23)",
+    "cara": "A",
+    "x": -6.6,
+    "y": 2.6,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 2.9,
+     "h": 1.6,
+     "alto": 1.1,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "tan",
+    "plantilla": "f_caja",
+    "nombre": "Capacitor de tantalio",
+    "cara": "A",
+    "x": 2.4,
+    "y": -4.6,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3.5,
+     "h": 2.8,
+     "alto": 1.9,
+     "r": 0,
+     "color": "#f59e0b"
+    }
+   },
+   {
+    "id": "led",
+    "plantilla": "led_smd",
+    "nombre": "LED PWR",
+    "cara": "A",
+    "x": 7,
+    "y": 2.6,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 6.4,
+    "z0": -2.5,
+    "z1": 0,
+    "color": "#1f2937",
+    "pieza": "hdr",
+    "w": 20.32,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -8.89,
+    "cy": 6.4,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "hdr",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -6.35,
+    "cy": 6.4,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "hdr",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -3.81,
+    "cy": 6.4,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "hdr",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -1.27,
+    "cy": 6.4,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "hdr",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 1.27,
+    "cy": 6.4,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "hdr",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 3.81,
+    "cy": 6.4,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "hdr",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 6.35,
+    "cy": 6.4,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "hdr",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 8.89,
+    "cy": 6.4,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "hdr",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -0.6,
+    "z0": 1.6,
+    "z1": 2.5,
+    "color": "#1f2937",
+    "pieza": "imu",
+    "w": 4,
+    "h": 4
+   },
+   {
+    "f": "caja",
+    "cx": -6.6,
+    "cy": 2.6,
+    "z0": 1.6,
+    "z1": 2.7,
+    "color": "#111827",
+    "pieza": "ldo",
+    "w": 2.9,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": 2.4,
+    "cy": -4.6,
+    "z0": 1.6,
+    "z1": 3.5,
+    "color": "#f59e0b",
+    "pieza": "tan",
+    "w": 3.5,
+    "h": 2.8
+   },
+   {
+    "f": "caja",
+    "cx": 7,
+    "cy": 2.6,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "led",
+    "w": 2,
+    "h": 1.25
+   }
+  ]
+ },
+ "cad_pendiente": true
+}

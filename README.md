@@ -80,6 +80,15 @@ Vista superior, frontal y lateral izquierda (ISO-E, primer diedro) a escala 1:1 
 - **Llevar las claves al celular**: Ajustes → Acceso y seguridad → «📱 Llevar mis claves a otro dispositivo» muestra un QR/enlace (cifrado, vence en 30 min) y un PIN. En el celular se escanea, se escribe el PIN y una contraseña para ese dispositivo (`#/traer/<código>`, `Auth.crearTraspaso`).
 - Claude (Anthropic) y OpenAI siguen disponibles como alternativas en el mismo selector.
 
+## Agregar componentes con la IA (protocolo y revisión)
+- Botón **📋** del chat (o la acción «Plantilla para agregar un componente»): inserta el prompt estándar con los datos a llenar; la IA debe completar todos los campos del formulario, los pines en orden físico, el montaje, el modelo 3D y la verificación con dos fuentes.
+- Cada propuesta muestra una **🔎 Revisión automática** antes de aprobar: ficha incompleta, dimensiones de la ficha vs montaje, agujeros fuera de la placa o pegados al borde, piezas fuera/encimadas, número de pines vs header, datasheet que no es PDF, campos de confianza baja.
+- Los pines que propone la IA (sin coordenadas) se asignan en orden a los pines del header del modelo, así el DXF y el plano salen con VCC, GND, SCL… en su lugar.
+
+## Consumo de IA
+- Ajustes → **📊 Consumo de IA**: consultas, tokens, búsquedas y costo estimado (hoy, mes, total, por modelo, últimos días) con los precios oficiales; Gemini gratuito = US$0.
+- Anota el saldo que muestra la Console de Claude y la app resta lo gastado («quedan ≈ US$…»); avisa cuando queda menos del 15 %. Chip 📊 en el asistente. Se cuenta por dispositivo (`localStorage: ml_uso_ia2`); el dato exacto está en Console → Usage.
+
 ## Asistente
 - **Agente de la interfaz** (`app/agent.js`): conoce las acciones de la app y todos los botones visibles; aprende tus hábitos (qué pulsas en cada pantalla y qué haces después, en `localStorage`) y **predice** lo siguiente (chips en el panel y burbuja junto a ✦). Entiende órdenes sin internet: “abre el bme280”, “pasa a la cara B”, “coloca un header de 4 pines”, “exporta el BOM”, “busca I2C”. La IA de la nube también puede pedir acciones con bloques `mountlab-accion` (lo que modifica datos pide confirmación).
 - **Archivos en el chat** (`app/archivos.js`): 📎 adjuntar, 📷 cámara del celular, arrastrar o pegar una **foto** o un **datasheet PDF**. El PDF se lee en el navegador (pdf.js en `app/vendor/pdfjs`). Sin internet, el lector local saca referencia, fabricante, voltaje, corriente, interfaz, dirección I2C, temperatura, encapsulado, medidas (también de tablas A/B/C Mín/Típ/Máx) y pines. Con Claude o Gemini, la IA lee el PDF o la foto completos y busca en la web lo que falte. En ambos casos sale una **propuesta**; al aprobarla se crea el componente con su ficha, la foto, la copia del PDF (`archivos/<id>/<id>_datasheet.pdf`) y un **modelo 3D** (placa o prisma con las medidas), y GitHub genera DXF de huella, STEP y plano. Si el componente ya existe, solo completa lo que le falta.

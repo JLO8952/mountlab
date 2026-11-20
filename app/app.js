@@ -748,10 +748,59 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
     if (r.status >= 500) return "Gemini está saturado en este momento (" + r.status + "). Intenta de nuevo en unos segundos.";
     return msg;
   }
-  function usoIA(modelo, meta) {
-    try { const k = "ml_uso_ia", d = hoy(); let u = JSON.parse(localStorage.getItem(k)) || {}; if (u.dia !== d) u = { dia: d, n: 0, tin: 0, tout: 0, mod: {} };
-      u.n++; u.mod[modelo] = (u.mod[modelo] || 0) + 1; if (meta) { u.tin += meta.promptTokenCount || 0; u.tout += (meta.candidatesTokenCount || 0) + (meta.thoughtsTokenCount || 0); } localStorage.setItem(k, JSON.stringify(u)); } catch (e) { }
+  // ---- consumo de IA: tokens, búsquedas y costo estimado (precios oficiales, USD por millón de tokens)
+  const PRECIOS_IA = [
+    [/claude-haiku-5/, 0.10, 0.50, 0.50, 2.50], [/claude-sonnet-5/, 2, 10], [/claude-opus-5/, 4, 20],
+    [/claude-sonnet-4/, 3, 15], [/claude-haiku-4/, 1, 5], [/claude-opus-4/, 15, 75], [/^gemini|^gemma/, 0, 0]];
+  const USD_BUSQUEDA = 0.01, KUSO = "ml_uso_ia2";
+  function precioDe(modelo, tin) { const f = PRECIOS_IA.find(([re]) => re.test(modelo || "")); if (!f) return null; return tin > 100000 && f[3] != null ? [f[3], f[4]] : [f[1], f[2]]; }
+  function leerUso() { try { return Object.assign({ dias: {}, meses: {}, total: {}, modelos: {}, saldo: null, trm: 4000 }, JSON.parse(localStorage.getItem(KUSO)) || {}); } catch (e) { return { dias: {}, meses: {}, total: {}, modelos: {}, saldo: null, trm: 4000 }; } }
+  function guardarUso(u) { try { localStorage.setItem(KUSO, JSON.stringify(u)); } catch (e) { } }
+  /** Registra una llamada: tokens de entrada/salida (con caché), búsquedas web y costo estimado en USD. */
+  function registrarUso({ prov, modelo, tin = 0, tout = 0, cw = 0, cr = 0, busq = 0 }) {
+    const u = leerUso(), d = hoy(), m = d.slice(0, 7), pr = precioDe(modelo, tin + cw + cr) || [0, 0];
+    const usd = ((tin * pr[0]) + (cw * pr[0] * 1.25) + (cr * pr[0] * 0.1) + (tout * pr[1])) / 1e6 + busq * USD_BUSQUEDA;
+    const sum = (o) => { o.n = (o.n || 0) + 1; o.tin = (o.tin || 0) + tin + cw + cr; o.tout = (o.tout || 0) + tout; o.busq = (o.busq || 0) + busq; o.usd = (o.usd || 0) + usd; return o; };
+    u.dias[d] = sum(u.dias[d] || {}); u.meses[m] = sum(u.meses[m] || {}); u.total = sum(u.total || {}); u.modelos[modelo] = Object.assign(sum(u.modelos[modelo] || {}), { prov });
+    Object.keys(u.dias).sort().slice(0, -62).forEach(k => delete u.dias[k]);   // se guardan ~2 meses de días
+    guardarUso(u);
+    const r = restanteIA(u);
+    if (r && r.quedan < Math.max(0.5, r.saldo * 0.15) && u.avisado !== d) { u.avisado = d; guardarUso(u); setTimeout(() => toast(`⚠ Te quedan ≈ US$${r.quedan.toFixed(2)} de créditos de Claude (estimado). Recarga en platform.claude.com → Billing.`, 9000), 300); }
+    try { const ch = document.getElementById("usoChip"); if (ch) ch.outerHTML = chipUso(); } catch (e) { }
+    return usd;
   }
+  /** Saldo estimado: el que John anotó (de la Console) menos lo gastado desde ese momento. */
+  function restanteIA(u) { u = u || leerUso(); if (!u.saldo || !(u.saldo.usd > 0)) return null; const gastado = Math.max(0, (u.total.usd || 0) - (u.saldo.base || 0)); return { saldo: u.saldo.usd, gastado, quedan: Math.max(0, u.saldo.usd - gastado), fecha: u.saldo.fecha }; }
+  const fUSD = v => v >= 1 ? "US$" + v.toFixed(2) : v >= 0.01 ? "US$" + v.toFixed(3) : v > 0 ? "US$" + v.toFixed(4) : "US$0";
+  const fTok = v => v >= 1e6 ? (v / 1e6).toFixed(2) + " M" : v >= 1e3 ? (v / 1e3).toFixed(1) + " k" : String(v || 0);
+  function chipUso() {
+    const u = leerUso(), h = u.dias[hoy()] || {}, r = restanteIA(u), prov = Store.cfg.aiProv || "gemini";
+    const txt = prov === "gemini" ? `Hoy ${h.n || 0} consultas · Gemini gratis` : `Hoy ${fUSD(h.usd || 0)}${r ? ` · quedan ≈ ${fUSD(r.quedan)}` : ""}`;
+    const bajo = r && r.quedan < Math.max(0.5, r.saldo * 0.15);
+    return `<a id="usoChip" href="#/ajustes" class="small" style="display:inline-block;margin:4px 0 0;color:${bajo ? "var(--bad)" : "var(--muted)"};text-decoration:none" title="Consumo de IA (estimado en este dispositivo)">📊 ${esc(txt)}</a>`;
+  }
+  function panelUso() {
+    const u = leerUso(), d = hoy(), h = u.dias[d] || {}, m = u.meses[d.slice(0, 7)] || {}, t = u.total || {}, r = restanteIA(u), trm = +u.trm || 4000;
+    const cop = v => "≈ $" + Math.round(v * trm).toLocaleString("es-CO") + " COP";
+    const fila = (n, o) => `<tr><td>${n}</td><td>${o.n || 0}</td><td>${fTok(o.tin)}</td><td>${fTok(o.tout)}</td><td>${o.busq || 0}</td><td><b>${fUSD(o.usd || 0)}</b><div class="small muted">${cop(o.usd || 0)}</div></td></tr>`;
+    const mods = Object.entries(u.modelos).sort((a, b) => (b[1].usd || 0) - (a[1].usd || 0) || (b[1].n || 0) - (a[1].n || 0));
+    const pct = r ? Math.max(0, Math.min(100, (r.quedan / r.saldo) * 100)) : 0, col = pct < 15 ? "var(--bad)" : pct < 40 ? "#e6b450" : "var(--ok)";
+    const dias = Object.keys(u.dias).sort().slice(-14), mx = Math.max(0.0001, ...dias.map(k => u.dias[k].usd || 0));
+    return `<h3>📊 Consumo de IA</h3>
+      ${r ? `<div><div class="row" style="justify-content:space-between"><b>Créditos de Claude: quedan ≈ ${fUSD(r.quedan)}</b><span class="small muted">de ${fUSD(r.saldo)} anotados el ${esc(r.fecha)}</span></div>
+        <div style="height:10px;background:var(--bg2);border-radius:6px;overflow:hidden;margin:6px 0"><div style="height:100%;width:${pct}%;background:${col}"></div></div>
+        <div class="small muted">Gastado desde entonces: ${fUSD(r.gastado)} (${cop(r.gastado)}). ${pct < 15 ? '<b style="color:var(--bad)">Saldo bajo: recarga pronto.</b>' : ""}</div></div>`
+        : `<div class="small muted">Para ver cuánto te queda, anota el saldo que muestra la Console de Claude (Settings → Billing) y la app irá restando lo que gastes.</div>`}
+      <div class="row" style="margin-top:8px;align-items:flex-end"><div><label>Saldo actual en la Console (US$)</label><input id="uSal" type="number" step="0.01" min="0" placeholder="p. ej. 5.00" style="max-width:140px"></div><button class="sm" id="uSalB">Anotar saldo</button>
+        <div><label>TRM (COP por US$)</label><input id="uTrm" type="number" step="1" value="${trm}" style="max-width:110px"></div></div>
+      <div style="overflow:auto;margin-top:10px"><table class="t"><tr><th></th><th>Consultas</th><th>Tokens entrada</th><th>Tokens salida</th><th>Búsquedas</th><th>Costo</th></tr>${fila("Hoy", h)}${fila("Este mes", m)}${fila("Total", t)}</table></div>
+      ${dias.length ? `<div class="small muted" style="margin-top:8px">Últimos ${dias.length} días</div><div style="display:flex;gap:3px;align-items:flex-end;height:60px;margin-top:4px">${dias.map(k => `<div title="${k}: ${fUSD(u.dias[k].usd || 0)} · ${u.dias[k].n} consultas" style="flex:1;max-width:26px;background:var(--acc,#38bdf8);opacity:.85;border-radius:3px 3px 0 0;height:${Math.max(3, ((u.dias[k].usd || 0) / mx) * 100)}%"></div>`).join("")}</div>` : ""}
+      ${mods.length ? `<details style="margin-top:8px"><summary class="small">Por modelo</summary><table class="t small">${mods.map(([k, o]) => `<tr><td>${esc(k)}</td><td>${o.n} consultas</td><td>${fTok(o.tin)} / ${fTok(o.tout)}</td><td>${fUSD(o.usd || 0)}</td></tr>`).join("")}</table></details>` : ""}
+      <div class="small muted" style="margin-top:8px">Costo estimado con los precios oficiales (Haiku 5.5: US$0.10 / 0.50 por millón de tokens; Sonnet 5.5: US$2 / 10; búsqueda web US$0.01). Gemini en nivel gratuito = US$0. Se cuenta en <b>este dispositivo</b>; el dato exacto está en <a href="https://platform.claude.com/usage" target="_blank" rel="noopener">Console → Usage ↗</a> y <a href="https://aistudio.google.com/usage" target="_blank" rel="noopener">AI Studio → Uso ↗</a>.</div>
+      <div class="row" style="margin-top:8px"><button class="sm danger" id="uRst">Reiniciar contadores</button></div>`;
+  }
+  function usoIA(modelo, meta) { registrarUso({ prov: "gemini", modelo, tin: (meta && meta.promptTokenCount) || 0, tout: meta ? (meta.candidatesTokenCount || 0) + (meta.thoughtsTokenCount || 0) : 0 }); }
+
   /** fetch con límite de tiempo: evita que la app se quede “colgada” si la red no responde. */
   async function fetchT(url, op, ms) {
     const ac = new AbortController(), t = setTimeout(() => ac.abort(), ms || 90000);
@@ -811,6 +860,7 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
       if (buscar) body.tools = [{ type: "web_search_20250305", name: "web_search", max_uses: 6 }];
       const r = await fetchT("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "content-type": "application/json", "x-api-key": c.aiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" }, body: JSON.stringify(body) }, 180000);
       const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(errClaude(r.status, j));
+      const us = j.usage || {}; registrarUso({ prov: "anthropic", modelo: j.model || body.model, tin: us.input_tokens || 0, tout: us.output_tokens || 0, cw: us.cache_creation_input_tokens || 0, cr: us.cache_read_input_tokens || 0, busq: (us.server_tool_use || {}).web_search_requests || 0 });
       for (const b of j.content || []) {
         if (b.type === "text") { texto += b.text; for (const ci of b.citations || []) addF(ci.url, ci.title); }
         if (b.type === "web_search_tool_result" && b.content && b.content.type === "web_search_tool_result_error") texto += `\n(La búsqueda web falló: ${b.content.error_code}${b.content.error_code === "invalid_tool_input" ? "" : ". Revisa que la búsqueda web esté habilitada en console.anthropic.com"})\n`;
@@ -837,6 +887,17 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
     const estable = L => L.find(id => !/preview/.test(id)) || L[0];
     return { rapido: estable(flash) || estable(lite) || ids[0], potente: estable(pro) || null, flash, lite, pro };
   }
+
+  /** Prompt estándar para agregar un componente (botón 📋 del chat). */
+  const PLANTILLA_AGREGAR = `AGREGAR COMPONENTE A LA BIBLIOTECA
+Componente: [nombre comercial y referencia, p. ej. módulo GY-521 con MPU-6050]
+Tipo: [módulo/breakout · chip suelto · mecánico · material]
+Enlaces o archivos: [datasheet, página del vendedor o plano con medidas; o adjunta fotos/PDF]
+Medidas que conozco: [largo × ancho × alto, agujeros (Ø y posición), paso y orden de pines — o "ninguna"]
+Uso / montaje: [cómo lo voy a montar o conectar — opcional]
+
+Llena TODOS los campos de la ficha: nombre, tipo, categoría, etiquetas, fabricante, referencia; descripción, funcionamiento, voltaje, corriente, interfaz (y dirección I2C si aplica), entradas, salidas, dimensiones, datasheet (URL directa al PDF) y notas; especificaciones; pines en el ORDEN FÍSICO del conector con su función; montaje (placa y agujeros desde el centro); modelo 3D con sus piezas (header, chip, conectores, LED…); y precios en Colombia.
+Verifica cada medida con al menos dos fuentes (datasheet/plano y vendedor), dime cuáles coinciden y marca confianza baja lo que no puedas confirmar.`;
 
   // ---- propuestas (crear / actualizar componentes): nada se guarda sin aprobar
   function compVacio(id, nombre) {
@@ -891,6 +952,9 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
       <div class="row" style="justify-content:space-between"><b>${crear ? "➕ Crear" : "✎ Actualizar"} ${esc(p.cambios.nombre || (base && base.nombre) || p.componente)} <span class="tag">${esc(p.componente)}</span></b>
       ${estado ? `<span class="tag ${estado.startsWith("Aprobado") || estado.startsWith("Enviado") ? "ok" : "bad"}">${esc(estado)}</span>` : ""}</div>
       ${p.resumen ? `<div class="small muted" style="margin:4px 0">${esc(p.resumen)}</div>` : ""}
+      ${(() => { const v = estado ? [] : verificarPropuesta(p); if (!v.length) return ""; const nb = v.filter(x => x.n === "bad").length, nw = v.filter(x => x.n === "warn").length;
+        return `<details ${nb || nw ? "open" : ""} style="margin:6px 0"><summary class="small"><b>🔎 Revisión automática</b> · ${nb ? `<span style="color:var(--bad)">${nb} error(es)</span> · ` : ""}${nw ? `<span style="color:#e6b450">${nw} aviso(s)</span> · ` : ""}${v.length - nb - nw} ✓</summary>
+          <ul class="small" style="margin:4px 0;padding-left:18px">${v.map(x => `<li style="color:${x.n === "bad" ? "var(--bad)" : x.n === "warn" ? "#e6b450" : "var(--ok)"}">${x.n === "ok" ? "✓" : x.n === "bad" ? "✗" : "⚠"} ${esc(x.m)}</li>`).join("")}</ul></details>`; })()}
       <div style="overflow:auto"><table class="t" style="margin-top:6px"><tr><th></th><th>Campo</th>${crear ? "" : "<th>Actual</th>"}<th>Propuesto</th><th>Fuente</th></tr>${filas}</table></div>
       ${estado ? "" : `<div class="row" style="margin-top:8px"><button class="pri sm" data-pa="${i}">Aprobar seleccionados</button><button class="sm" data-pp="${i}">Enviar a Pendientes</button><button class="sm danger" data-pd="${i}">Descartar</button></div>`}</div>`;
   }
@@ -903,6 +967,54 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
       return { id: "p" + (i + 1), plantilla: t.id, nombre: q.nombre || `${t.n.split(" (")[0]} ${cuenta[t.id]}`, cara: q.cara === "B" ? "B" : "A", x: +q.x || 0, y: +q.y || 0, rot: +q.rot || 0, z: +q.z || 0, params: Object.assign(MLPlant.paramsDef(t), q.params || {}) }; });
     return { version: 1, base: b, piezas };
   }
+  /** Los pines con nombre que propone la IA (sin x/y o en la misma posición) pasan a los pines del header del modelo, en orden físico. */
+  function asignarPines(c) {
+    const P = c.pines || [], auto = P.filter(p => p.pieza), libres = P.filter(p => !p.pieza);
+    if (!auto.length || !libres.length) return c;
+    const hdr = ((c.modelo && c.modelo.piezas) || []).filter(q => /header|jst|bornera/.test(q.plantilla)).map(q => q.id);
+    const dest = auto.filter(p => hdr.includes(p.pieza)), D = dest.length ? dest : auto, usados = new Set();
+    // 1) los que traen x/y: al pin automático más cercano (≤0.6 mm)
+    libres.filter(p => p.x != null && p.y != null).forEach(p => { const m = D.filter(d => !usados.has(d)).map(d => [d, Math.hypot(d.x - p.x, d.y - p.y)]).sort((a, b) => a[1] - b[1])[0]; if (m && m[1] <= 0.6) { m[0].n = p.n; m[0].func = p.func || ""; usados.add(m[0]); p._ok = true; } });
+    // 2) los que no traen x/y: en orden
+    const sin = libres.filter(p => p.x == null || p.y == null), resto = D.filter(d => !usados.has(d));
+    sin.slice(0, resto.length).forEach((p, i) => { resto[i].n = p.n; resto[i].func = p.func || ""; p._ok = true; });
+    c.pines = P.filter(p => !p._ok); return c;
+  }
+  /** Revisión automática de una propuesta antes de aprobarla: medidas, agujeros, piezas, pines y datos que faltan. */
+  function verificarPropuesta(p) {
+    const out = [], ok = m => out.push({ n: "ok", m }), av = m => out.push({ n: "warn", m }), mal = m => out.push({ n: "bad", m });
+    try {
+      const base = p._nuevo ? null : comp(p.componente), ch = p.cambios || {}, keys = Object.keys(ch);
+      const c = aplicarCambios(base, p.componente, ch, keys.filter(k => k !== "imagen" || !String(ch.imagen).startsWith("data:")), "revisión");
+      if (keys.includes("modelo")) c.modelo = modeloLimpio(ch.modelo);
+      if (!c.modelo && c.montaje && c.montaje.pcb && keys.includes("montaje")) c.modelo = MLPlant.desdeMontaje(c);
+      if (c.modelo) { MLPlant.sincronizar(c); asignarPines(c); MLPlant.sincronizar(c); }
+      const f = c.ficha || {};
+      if (!base) { const falta = ["descripcion", "voltaje", "corriente", "interfaz", "dimensiones", "datasheet"].filter(k => !f[k]); falta.length ? av("Faltan en la ficha: " + falta.join(", ") + ".") : ok("Ficha completa (descripción, voltaje, corriente, interfaz, dimensiones, datasheet)."); }
+      if (f.datasheet && !/\.pdf(\?|#|$)/i.test(f.datasheet)) av("El datasheet no parece un PDF directo: GitHub no podrá guardar la copia.");
+      const m = c.montaje;
+      if (!m || !m.pcb) { if (!base || keys.some(k => GEO.includes(k))) av("Sin medidas de placa: no se generarán modelo 3D, DXF ni STEP."); }
+      else {
+        const [L, W, T] = m.pcb;
+        if (!(L > 0.5 && W > 0.5 && L < 400 && W < 400)) mal(`Medidas de placa raras: ${L} × ${W} mm.`); else ok(`Placa ${L} × ${W} × ${T} mm.`);
+        if (W > L + 0.01 && (!c.modelo || c.modelo.base.tipo === "placa")) av("El ancho (Y) es mayor que el largo (X): la convención es X = lado más largo.");
+        const nums = String(f.dimensiones || "").replace(/,/g, ".").match(/(\d+(?:\.\d+)?)\s*[×x]\s*(\d+(?:\.\d+)?)/);
+        if (nums) { const a = [+nums[1], +nums[2]].sort((x, y) => y - x), b = [L, W].sort((x, y) => y - x); if (Math.abs(a[0] - b[0]) > 1 || Math.abs(a[1] - b[1]) > 1) mal(`La ficha dice ${nums[1]} × ${nums[2]} mm pero el montaje usa ${L} × ${W} mm.`); else ok("Las dimensiones de la ficha coinciden con el montaje."); }
+        const fuera = (m.agujeros || []).filter(a => Math.abs(a.x) + a.d / 2 > L / 2 - 0.2 || Math.abs(a.y) + a.d / 2 > W / 2 - 0.2);
+        if (fuera.length) mal(`${fuera.length} agujero(s) se salen o quedan pegados al borde (coordenadas desde el centro: |x| ≤ ${L / 2}, |y| ≤ ${W / 2}).`);
+        else if ((m.agujeros || []).length) ok(`${m.agujeros.length} agujero(s) Ø${m.agujeros[0].d} dentro de la placa.`);
+      }
+      if (c.modelo) {
+        const rv = MLPlant.revisar(c); rv.forEach(r => (r.nivel === "rojo" ? mal : av)(r.msg)); if (!rv.length) ok("Modelo 3D sin piezas fuera de la placa ni encima de agujeros.");
+        const hdr = (c.modelo.piezas || []).filter(q => /header/.test(q.plantilla)), nH = hdr.reduce((s, q) => s + (+q.params.n || 0) * (+q.params.filas || 1), 0), nP = (ch.pines || []).length;
+        if (nP && nH && nP !== nH) av(`La IA listó ${nP} pines pero el header del modelo tiene ${nH}.`); else if (nP && nH) ok(`${nP} pines asignados al header en orden físico.`);
+        if (nP && !nH && !(c.pines || []).some(q => q.x != null)) av("Hay pines pero ningún header en el modelo: no tendrán posición en el DXF.");
+      }
+      (p.verificacion || []).forEach(v => (v.ok === false ? av : ok)(`${v.dato}: ${v.valor}${v.fuentes ? ` (${v.fuentes} fuente${v.fuentes > 1 ? "s" : ""})` : ""}${v.nota ? " — " + v.nota : ""}`));
+      const bajas = Object.entries(p.confianza || {}).filter(([, v]) => v === "baja").map(([k]) => k); if (bajas.length) av("Confianza baja (desmarcados): " + bajas.join(", ") + ".");
+    } catch (e) { av("No pude revisar la propuesta: " + e.message); }
+    return out;
+  }
   async function guardarPropuesta(p, claves, fuenteTxt, adjIds) {
     const base = comp(p.componente);
     if (!base && !p.cambios.nombre) throw new Error("La propuesta no trae nombre para el componente nuevo");
@@ -912,7 +1024,7 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
     // modelo 3D: el propuesto o uno a partir del montaje → montaje, zonas y pines sincronizados → DXF/STEP/plano en GitHub
     if (claves.includes("modelo")) c.modelo = modeloLimpio(p.cambios.modelo);
     if (!c.modelo && c.montaje && c.montaje.pcb && claves.includes("montaje")) c.modelo = MLPlant.desdeMontaje(c);
-    if (c.modelo) { MLPlant.sincronizar(c); c.cad_pendiente = true; extra.push("modelo 3D"); }
+    if (c.modelo) { MLPlant.sincronizar(c); asignarPines(c); MLPlant.sincronizar(c); c.cad_pendiente = true; extra.push("modelo 3D"); }
     // foto subida en el chat
     const foto = claves.includes("imagen") && String(p.cambios.imagen).startsWith("data:") ? p.cambios.imagen : null;
     if (foto) { c.imagen = { src: foto, origen: "foto subida en el chat" }; if (Store.mode === "github") c.imagen.src = await Store.uploadImage(c.id, foto); extra.push("foto"); }
@@ -959,16 +1071,18 @@ ${actual && actual.inst.length ? "CIRCUITO ACTUAL (puedes completarlo; usa refs 
     H.innerHTML = `<div class="row" style="justify-content:space-between;padding:8px 14px 0;gap:6px"><div class="row" style="gap:4px">${[["auto", "🔀 Auto", "Responde local y gratis; si no sabe o le pides investigar, consulta a la nube"], ["local", "⚡ Local", "Sin internet ni costo: busca en tu biblioteca y maneja la app"], ["nube", "☁ Nube", iaNombre()]].map(([k, n, t]) => `<button class="sm ${S.modo === k ? "on" : ""}" data-modo="${k}" title="${esc(t)}" ${k !== "local" && !nubeLista() ? "disabled" : ""}>${n}</button>`).join("")}</div>
         <div class="row" style="gap:4px"><label class="sm btn" style="margin:0;padding:4px 8px;font-size:12px" title="${iaBusca() ? "La nube busca datasheets, medidas y precios en internet" : "El proveedor OpenAI/compatible no busca en internet desde aquí"}"><input type="checkbox" id="qB" ${S.buscar && iaBusca() ? "checked" : ""} ${iaBusca() ? "" : "disabled"}> 🔎 Web</label><button class="sm ghost" id="qC" title="Nueva conversación">🗋</button></div></div>
       ${!nubeLista() ? '<div class="msg info small" style="margin:8px 14px 0">Modo ⚡ local: responde gratis desde tu biblioteca y maneja la app con órdenes (“abre el bme280”, “pasa a la cara B”). Para investigar en internet agrega una clave de Claude o Gemini en <a href="#/ajustes">Ajustes</a>.</div>' : ""}
+      <div style="margin:2px 14px 0">${chipUso()}</div>
       <details class="small" style="margin:6px 14px 0"><summary>🧠 Cerebro local: <span id="cbE">${esc(MLLocal.estado())}</span>${sinResp.length ? ` · <b>${sinResp.length} sin respuesta</b>` : ""}</summary>
         <div class="panel" style="margin-top:6px;padding:10px"><div class="row" style="flex-wrap:nowrap"><input id="cbQ" placeholder="Prueba cómo interpreta una frase, ej. “sensr de presion”"><button class="sm" id="cbR">Reentrenar</button></div><div id="cbO" class="small" style="margin-top:6px"></div>
         <div class="small muted" style="margin-top:6px">Comandos: <code>aprende: termo = lm75_modulo</code> · <code>olvida: termo</code> · <code>revisa proyecto termo-01</code> · órdenes de la app (“exporta el BOM”, “toma la imagen del modelo”)</div>
         ${sinResp.length ? `<div style="margin-top:8px"><b>Sin respuesta</b> (enséñale a qué componente se refieren):${sinResp.slice(-10).reverse().map(x => `<div class="row" style="justify-content:space-between;margin-top:3px"><span>“${esc(x)}”</span><button class="sm" data-ens="${esc(x)}">Enseñar</button></div>`).join("")}<button class="sm" id="cbL" style="margin-top:6px">Limpiar lista</button></div>` : ""}</div></details>
       <div class="log" id="log"></div>
       <div id="adjBox" class="adj-box"></div>
-      <div class="in"><div class="in-tools"><button class="sm ghost" id="qF" title="Adjuntar foto o datasheet (PDF) · también puedes arrastrarlo o pegarlo">📎</button><button class="sm ghost" id="qCam" title="Tomar foto con la cámara">📷</button></div>
+      <div class="in"><div class="in-tools"><button class="sm ghost" id="qF" title="Adjuntar foto o datasheet (PDF) · también puedes arrastrarlo o pegarlo">📎</button><button class="sm ghost" id="qCam" title="Tomar foto con la cámara">📷</button><button class="sm ghost" id="qTpl" title="Plantilla estándar para agregar un componente">📋</button></div>
         <textarea id="q" rows="2" placeholder="Pregunta, da una orden o adjunta un datasheet… (Enter envía)" ${sinKey ? "disabled" : ""}></textarea><button class="pri" id="send" ${sinKey ? "disabled" : ""}>➤</button>
         <input type="file" id="qFile" accept="image/*,application/pdf,.pdf,.txt" multiple hidden><input type="file" id="qFoto" accept="image/*" capture="environment" hidden></div>`;
     const log = $("#log");
+    { const tb = $("#qTpl"); if (tb) tb.onclick = () => { const q = $("#q"); q.value = PLANTILLA_AGREGAR; q.focus(); q.setSelectionRange(q.value.indexOf("["), q.value.indexOf("]") + 1); q.style.height = "180px"; toast("Reemplaza lo que está entre [corchetes] y envía. Puedes adjuntar fotos o el PDF del datasheet.", 6000); }; }
     const fmt = t => esc(t).replace(/\[\[([a-z0-9_]+)\]\]/g, (m, id) => comp(id) ? `<a class="cref" href="#/c/${id}">${esc(comp(id).nombre)}</a>` : m).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
     const ejemplos = ["¿Qué voltaje usa el bme28o?", "pines del lm75", "¿Qué sensores I2C tengo?", "abre el proyecto cansat", "busca I2C", ...(nubeLista() ? ["Agrega el sensor MPU6050 (GY-521): datasheet, pines, medidas y precios en Colombia", "Completa el datasheet del TP4056"] : [])];
     const pintaLog = () => {
@@ -1129,17 +1243,25 @@ PROPUESTAS — cuando John pida AGREGAR, CREAR, COMPLETAR o ACTUALIZAR component
 {"componente":"id_en_minusculas_con_guiones_bajos","resumen":"una línea",
  "cambios":{
   "nombre":"…","tipo":"electronico|mecanico|material|herramienta|otro","categoria":"…","etiquetas":["I2C","…"],"fabricante":"…","referencia":"…",
-  "ficha.descripcion":"…","ficha.funcionamiento":"…","ficha.voltaje":"…","ficha.corriente":"…","ficha.interfaz":"…","ficha.dimensiones":"…","ficha.datasheet":"URL directa al PDF",
+  "ficha.descripcion":"…","ficha.funcionamiento":"…","ficha.voltaje":"…","ficha.corriente":"…","ficha.interfaz":"…","ficha.entradas":"…","ficha.salidas":"…","ficha.dimensiones":"…","ficha.datasheet":"URL directa al PDF","ficha.notas":"…",
   "especificaciones":[{"param":"…","valor":"…"}],
   "pines":[{"n":"VCC","func":"Alimentación 3.3–5 V"}],
-  "montaje":{"pcb":[largo_mm,ancho_mm,espesor_mm],"agujeros":[{"x":0,"y":0,"d":3}],"altura_superior":0,"altura_inferior":0},
+  "montaje":{"pcb":[largo_mm,ancho_mm,espesor_mm],"agujeros":[{"x":0,"y":0,"d":3}]},
+  "modelo":{"base":{"tipo":"placa","forma":"rect","L":largo,"W":ancho,"espesor":1.6,"color":"#1d4ed8"},"piezas":[{"plantilla":"header_macho","nombre":"Header","cara":"B","x":0,"y":0,"rot":0,"params":{"n":8,"paso":2.54,"alto":11}},{"plantilla":"qfn","nombre":"Chip","cara":"A","x":0,"y":0,"params":{"lado":4}}]},
   "precios":[{"proveedor":"Mercado Libre CO","precio_cop":0,"url":"…"}],
   "imagen.src":"URL directa a una imagen .jpg/.png del producto"},
  "fuentes":{"campo":"URL de donde salió ese dato"},
- "confianza":{"campo":"alta|media|baja"}}
+ "confianza":{"campo":"alta|media|baja"},
+ "verificacion":[{"dato":"Largo × ancho del módulo","valor":"20.3 × 15.6 mm","fuentes":2,"ok":true,"nota":"plano y vendedor coinciden ±0.2 mm"}]}
 \`\`\`
 Reglas: para ACTUALIZAR usa el id existente de la biblioteca y pon solo los campos que cambian o faltan; para CREAR usa un id nuevo que no exista. Incluye "nombre" y "categoria" al crear (usa categorías existentes si encajan: ${[...new Set(Store.db.componentes.map(c => c.categoria))].join(", ")}).
-Montaje: mm, ORIGEN EN EL CENTRO de la placa, X a lo largo, Y a lo ancho; agujeros con coordenadas desde el centro. Inclúyelo solo si hallaste un plano o medidas confiables (si no, omítelo). Precios en pesos colombianos (convierte de USD si hace falta y dilo en el resumen).
+PROTOCOLO PARA CREAR/COMPLETAR (síguelo siempre):
+a) Identifica bien la pieza: ¿chip suelto o módulo/breakout (p. ej. GY-521 = módulo del MPU-6050)? Para un módulo, las medidas, pines y agujeros son las del MÓDULO, no las del chip.
+b) Coordenadas: mm, ORIGEN EN EL CENTRO de la placa, X a lo largo (lado más largo), Y a lo ancho, vista desde arriba (cara A). Agujeros y piezas deben quedar DENTRO de la placa (|x| ≤ L/2, |y| ≤ W/2) y el borde del agujero a ≥0.3 mm del borde.
+c) Pines: lista "pines" en el ORDEN FÍSICO del conector (pin 1 primero) con nombre y función, SIN x/y; y en "modelo" pon la pieza header (header_macho/header_hembra) con params.n = número de pines, paso real y su posición (x,y) — la app asigna los nombres a los pines del header en ese orden. Header soldado hacia abajo = cara "B".
+d) "modelo" es obligatorio si conoces las medidas: base con L, W y espesor, y las piezas principales (chip, regulador, conectores, LED) en su posición aproximada. Sin medidas confiables, omite montaje y modelo y dilo.
+e) Verificación: compara cada medida con al menos dos fuentes (datasheet/plano del fabricante y vendedor o foto con regla); llena "verificacion" con lo que comprobaste y marca confianza "baja" a lo que no coincide o tiene una sola fuente. No mezcles medidas de versiones distintas del módulo.
+f) Precios en pesos colombianos (convierte de USD si hace falta y dilo en el resumen).
 Nunca inventes URLs: si no encontraste un dato, omite el campo. Marca confianza "baja" a lo dudoso.
 
 BIBLIOTECA (id | nombre | categoría | tipo | voltaje | corriente | interfaz | dimensiones | etiquetas | precio | estado | descripción):
@@ -1199,6 +1321,7 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
         <div id="aBox" style="margin-top:8px"></div>
         <div class="row" style="margin-top:8px"><button class="pri" id="aS">Guardar</button><span class="small muted" id="aMsg"></span></div>
         <div class="small muted" style="margin-top:6px">Las claves se guardan solo en este dispositivo. Puedes dejar varias guardadas y cambiar de proveedor cuando quieras.</div></div>
+      <div class="panel" id="usoP">${panelUso()}</div>
       <div class="panel"><h3>Google Drive (archivos pesados)</h3>
         <div><label>Carpeta MountLab en Drive (enlace)</label><input id="dD" value="${esc(c.drive)}" placeholder="https://drive.google.com/drive/folders/…"></div>
         <div class="row" style="margin-top:8px"><button id="dS">Guardar</button>${c.drive ? `<a class="btn" href="${esc(c.drive)}" target="_blank" rel="noopener">Abrir carpeta ↗</a>` : ""}</div>
@@ -1206,6 +1329,11 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
       <div class="panel" style="grid-column:1/-1"><h3>🔐 Acceso y seguridad</h3><div id="acc"></div></div>
       <div class="panel"><h3>Datos</h3><div class="small muted">Base cargada: ${Store.db.componentes.length} componentes, ${Store.db.proyectos.length} proyectos${Store.db.generado ? " · generada " + esc(Store.db.generado) : ""}.</div>
         <div class="row" style="margin-top:8px"><button id="xE">Exportar todo (JSON)</button><label class="btn" style="margin:0">Importar JSON<input type="file" id="xI" accept=".json" hidden></label><button id="xR">Recargar</button></div></div></div>`;
+    const usoH = () => {
+      $("#uSalB").onclick = () => { const v = parseFloat($("#uSal").value); if (!(v >= 0)) return toast("Escribe el saldo en dólares, p. ej. 5.00"); const u = leerUso(); u.saldo = { usd: v, fecha: hoy(), base: (u.total || {}).usd || 0 }; delete u.avisado; guardarUso(u); $("#usoP").innerHTML = panelUso(); usoH(); toast("Saldo anotado: la app restará lo que gastes desde ahora"); };
+      $("#uTrm").onchange = () => { const u = leerUso(); u.trm = +$("#uTrm").value || 4000; guardarUso(u); $("#usoP").innerHTML = panelUso(); usoH(); };
+      $("#uRst").onclick = () => { if (!confirm("¿Reiniciar los contadores de consumo de este dispositivo? (el saldo anotado se conserva)")) return; const u = leerUso(), r = restanteIA(u), trm = u.trm; guardarUso({ saldo: r ? { usd: +r.quedan.toFixed(4), fecha: hoy(), base: 0 } : null, trm }); $("#usoP").innerHTML = panelUso(); usoH(); };
+    }; usoH();
     $("#gS").onclick = async () => {
       Store.saveCfg({ owner: $("#gO").value.trim(), repo: $("#gR").value.trim(), branch: $("#gB").value.trim() || "main", token: $("#gT").value.trim() });
       $("#gMsg").textContent = "Probando…";
@@ -1236,6 +1364,7 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
             const t0 = performance.now(), r = await fetchT("https://api.anthropic.com/v1/messages", { method: "POST", headers: Object.assign({ "content-type": "application/json" }, H), body: JSON.stringify({ model: rap, max_tokens: 16, messages: [{ role: "user", content: "Responde solo con la palabra: listo" }] }) }, 30000);
             const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(errClaude(r.status, j));
             const txt = (j.content || []).filter(x => x.type === "text").map(x => x.text).join("").trim();
+            registrarUso({ prov: "anthropic", modelo: rap, tin: (j.usage || {}).input_tokens || 0, tout: (j.usage || {}).output_tokens || 0 });
             $("#m1").value = rap; $("#m1p").value = pot; Store.saveCfg({ aiProv: "anthropic", aiKey: k, aiModel: rap, aiPro: pot }); S.modo = "auto";
             $("#aMsg").innerHTML = `<span style="color:var(--ok)">✓ Claude conectado en ${Math.round(performance.now() - t0)} ms (“${esc(txt || "ok")}”) · rápido: <b>${esc(rap)}</b> · potente: <b>${esc(pot)}</b></span>`;
             toast("Asistente conectado a Claude"); if ($("#asHost").childElementCount) vAsistente();
@@ -1243,12 +1372,12 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
           b.disabled = false;
         };
       }
-      if (p === "gemini") { let u = {}; try { u = JSON.parse(localStorage.getItem("ml_uso_ia")) || {}; } catch (e) { } const hoyU = u.dia === hoy() ? u : null;
+      if (p === "gemini") { const uu = leerUso(), hd = uu.dias[hoy()], gm = Object.entries(uu.modelos).filter(([k]) => /^gem/.test(k)), hoyU = hd ? { n: hd.n, tin: hd.tin || 0, tout: hd.tout || 0 } : null;
         $("#aBox").innerHTML = `${c.gemKey ? "" : `<ol class="small" style="padding-left:18px;margin:0 0 10px;line-height:1.6"><li>Abre <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> con tu cuenta de Google.</li><li>Pulsa <b>Create API key</b> (crear clave) y cópiala.</li><li>Pégala aquí y pulsa <b>Conectar y probar</b>: elijo solo los mejores modelos disponibles para tu clave.</li></ol>`}
         <div><label>Clave API de Gemini</label><input id="k2" type="password" value="${esc(c.gemKey)}" placeholder="AQ.… o AIza…" autocomplete="off"></div>
         <div class="grid2" style="margin-top:8px"><div><label>Modelo rápido (chat, búsquedas)</label><input id="m2" list="dlGem" value="${esc(c.gemModel)}"></div><div><label>Modelo potente (datasheets, circuitos)</label><input id="m2p" list="dlGem" value="${esc(c.gemPro || "")}" placeholder="(igual al rápido)"></div></div><datalist id="dlGem"></datalist>
         <div class="row" style="margin-top:8px"><button class="pri sm" id="gC">⚡ Conectar y probar</button><button class="sm" id="gL">Ver modelos</button></div>
-        ${hoyU ? `<div class="small muted" style="margin-top:6px">Hoy: <b style="color:var(--ink)">${hoyU.n}</b> consultas · ${Math.round((hoyU.tin + hoyU.tout) / 1000)} k tokens (${Object.entries(hoyU.mod).map(([m, n]) => `${esc(m)} ×${n}`).join(", ")})</div>` : ""}
+        ${hoyU ? `<div class="small muted" style="margin-top:6px">Hoy: <b style="color:var(--ink)">${hoyU.n}</b> consultas · ${Math.round((hoyU.tin + hoyU.tout) / 1000)} k tokens en total${gm.length ? ` · Gemini (acumulado): ${gm.map(([m, o]) => `${esc(m)} ×${o.n}`).join(", ")}` : ""} — detalle en «Consumo de IA»</div>` : ""}
         <details class="small" style="margin-top:8px"><summary>¿Y mi plan Google AI Pro?</summary><div class="muted" style="margin-top:4px;line-height:1.5">El plan Pro mejora la app de Gemini y los límites dentro de AI Studio, pero <b>no paga la API</b>: la clave funciona en el <b>nivel gratuito</b> (sin tarjeta) con límites de consultas por minuto y por día, y en ese nivel Google puede usar las consultas para mejorar sus modelos (no pegues datos privados). Si un día necesitas más, se activa la facturación por uso en el proyecto de AI Studio y la misma clave sigue funcionando.</div></details>`; }
       if (p === "openai") $("#aBox").innerHTML = `<div><label>URL base (OpenAI, OpenRouter, Groq, DeepSeek…)</label><input id="u3" value="${esc(c.oaUrl)}"></div><div style="margin-top:8px"><label>Clave API</label><input id="k3" type="password" value="${esc(c.oaKey)}" placeholder="sk-…"></div><div style="margin-top:8px"><label>Modelo</label><input id="m3" value="${esc(c.oaModel)}" placeholder="ej. gpt-…"></div>`;
       const gc = $("#gC"); if (gc) gc.onclick = async () => {
@@ -1547,6 +1676,8 @@ Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1
     { id: "ir_inicio", n: "Ir al inicio", ic: "⌂", k: "home tablero resumen", global: true, run: () => { location.hash = "#/"; } },
     { id: "ir_catalogo", n: "Ir al catálogo", ic: "▦", k: "biblioteca componentes lista", global: true, run: () => { location.hash = "#/catalogo"; } },
     { id: "ir_proyectos", n: "Ir a proyectos", ic: "📁", k: "proyectos bom", global: true, run: () => { location.hash = "#/proyectos"; } },
+    { id: "ver_consumo_ia", n: "Ver consumo y créditos de la IA", ic: "📊", k: "consumo creditos tokens gasto saldo costo uso ia claude gemini", global: true, run: () => { location.hash = "#/ajustes"; setTimeout(() => { const e = document.getElementById("usoP"); if (e) e.scrollIntoView({ behavior: "smooth" }); }, 400); } },
+    { id: "plantilla_agregar", n: "Plantilla para agregar un componente con la IA", ic: "📋", k: "plantilla prompt agregar crear componente formulario ia", global: true, run: () => { abrirAsistente(); setTimeout(() => { const q = document.getElementById("q"); if (q) { q.value = PLANTILLA_AGREGAR; q.focus(); } }, 400); } },
     { id: "ir_pendientes", n: "Revisar pendientes por aprobar", ic: "📥", k: "pendientes aprobar bandeja propuestas", global: true, run: () => { location.hash = "#/pendientes"; } },
     { id: "ir_pasivos", n: "Abrir el anexo de pasivos", ic: "Ω", k: "resistencias capacitores condensadores codigo colores bandas series e smd valores", global: true, run: () => { location.hash = "#/pasivos"; } },
     { id: "codigo_colores", n: "Código de colores de resistencias", ic: "🎨", k: "bandas colores resistencia leer", global: true, run: () => { S.ptab = "colores"; location.hash === "#/pasivos" ? vPasivos("colores") : location.hash = "#/pasivos"; } },
