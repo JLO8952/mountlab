@@ -80,6 +80,13 @@ Vista superior, frontal y lateral izquierda (ISO-E, primer diedro) a escala 1:1 
 - **Llevar las claves al celular**: Ajustes → Acceso y seguridad → «📱 Llevar mis claves a otro dispositivo» muestra un QR/enlace (cifrado, vence en 30 min) y un PIN. En el celular se escanea, se escribe el PIN y una contraseña para ese dispositivo (`#/traer/<código>`, `Auth.crearTraspaso`).
 - Claude (Anthropic) y OpenAI siguen disponibles como alternativas en el mismo selector.
 
+## Generador: así se agregan componentes (desde nov 2026)
+- **🧩 Agregar componente** (catálogo, inicio, o escribir «agrega …» en el chat) abre `#/nuevo`: nombre, versión/encapsulado, notas (lo copiado de la tienda), enlaces y **fotos/datasheet** (pegar con Ctrl+V o «Pegar» en el celular, arrastrar, elegir o cámara).
+- **📄 Descargar PDF / 📤 Compartir PDF**: un solo PDF con las instrucciones + fotos + páginas del datasheet (pdf-lib, en el navegador) para subirlo a Gemini, ChatGPT o Claude con el **mensaje corto**. También **📋 Copiar prompt** para pegarlo directo.
+- Paso 3: pegar la respuesta → propuesta con 🔎 revisión automática; la primera foto queda como imagen de la ficha y el PDF del datasheet como copia. El borrador se guarda en el dispositivo.
+- **Biblioteca**: inicio por tipo y categoría con conteos y avance de fichas completas; **🩺 Revisión** (`#/revision`) muestra qué le falta a cada ficha con botón «🌐 Completar» (el generador pide solo lo faltante).
+- **Pasivos**: las 45 familias (`anexo: "pasivos"`) ya no guardan STEP/DXF; en su pestaña Archivos CAD, «⚙ Generar STEP + DXF ahora» deja `data/solicitudes/<id>.json`, la Action los genera y `tools/solicitudes.py` los borra a los 7 días.
+
 ## Investigar con Gemini / ChatGPT (sin gastar API)
 - Botón **🌐** del chat (o la acción «Investigar componente con Gemini/ChatGPT»): escribe el componente (y la versión/encapsulado), **Generar y copiar prompt**, pégalo en Gemini (o ChatGPT / Claude web) con búsqueda, copia su respuesta completa y pégala en **Importar y revisar** (o directamente en el chat).
 - El prompt explica el formato JSON de MountLab, las reglas de geometría (origen al centro, pines en orden físico, módulo vs chip suelto) y la lista de piezas 3D disponibles; si estás en la ficha de un componente, pide solo lo que le falta.
