@@ -15,7 +15,7 @@
  "fabricante": "Genérico (placa dorada con FT232BL)",
  "referencia": "FT232BL USB-TTL",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Convertidor USB a serial TTL en forma de memoria USB, con chip FTDI FT232BL, cristal de 6 MHz, EEPROM 93C46 y selector por jumper del nivel lógico 5 V / 3.3 V. Header de 5 pines: 5V, 3V3, TXD, RXD, GND. LEDs de encendido, TX y RX.",
@@ -68,8 +68,8 @@
   }
  ],
  "imagen": {
-  "src": "img/usb_ttl_ft232bl.png",
-  "origen": "foto de John"
+  "src": "img/usb_ttl_ft232bl.png?v=1795195487109",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -160,6 +160,21 @@
    "regla": "Accesible para cambiar el nivel lógico"
   },
   {
+   "tipo": "usb",
+   "nombre": "USB-A macho",
+   "cx": 32.5,
+   "cy": 0,
+   "w": 19,
+   "h": 12,
+   "z": [
+    1.6,
+    6.1
+   ],
+   "salida": "+X",
+   "holgura": 20,
+   "regla": "Debe sobresalir de la carcasa para conectar al PC"
+  },
+  {
    "tipo": "pines",
    "nombre": "Header jumper 3V3-S1-5V",
    "cx": -15.5,
@@ -222,21 +237,6 @@
    "holgura": 2,
    "auto": true,
    "pieza": "ld3"
-  },
-  {
-   "tipo": "usb",
-   "nombre": "USB-A macho",
-   "cx": 32.5,
-   "cy": 0,
-   "w": 19,
-   "h": 12,
-   "z": [
-    1.6,
-    6.1
-   ],
-   "salida": "+X",
-   "holgura": 20,
-   "regla": "Debe sobresalir de la carcasa para conectar al PC"
   }
  ],
  "pines": [
@@ -382,8 +382,7 @@
      "alto": 0.64,
      "r": 0,
      "color": "#d4a017"
-    },
-    "sobresale": true
+    }
    },
    {
     "id": "jmp",
@@ -677,8 +676,7 @@
      "alto": 4.5,
      "r": 0,
      "color": "#d4a017"
-    },
-    "sobresale": true
+    }
    }
   ],
   "cuerpos": [
@@ -1273,7 +1271,17 @@
    "v": 1,
    "fecha": "2026-11-19",
    "nota": "Creado desde las fotos de John (placa dorada FT232BL, chip marcado 2308). Medidas de la foto escaladas con el paso 2.54 mm del header; modelo 3D con plantillas. Precios estimados."
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: zonas, imagen",
+   "cambios": [
+    "zonas",
+    "imagen"
+   ]
   }
  ],
- "modificado": "2026-11-19T20:13:27.357Z"
+ "modificado": "2026-11-20T14:28:18.959Z",
+ "cad_pendiente": true
 }
