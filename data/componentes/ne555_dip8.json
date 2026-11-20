@@ -77,8 +77,8 @@
   }
  ],
  "imagen": {
-  "src": "img/ne555_dip8.png",
-  "origen": "render 3D (modelo simplificado)"
+  "src": "img/ne555_dip8.png?v=1795195483613",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -269,6 +269,14 @@
     "montaje",
     "modelo",
     "precios"
+   ]
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
    ]
   }
  ],
@@ -481,5 +489,5 @@
    }
   ]
  },
- "modificado": "2026-11-20T03:30:13.660Z"
+ "modificado": "2026-11-20T14:28:05.361Z"
 }
