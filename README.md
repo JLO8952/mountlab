@@ -87,6 +87,14 @@ Vista superior, frontal y lateral izquierda (ISO-E, primer diedro) a escala 1:1 
 - **Biblioteca**: inicio por tipo y categoría con conteos y avance de fichas completas; **🩺 Revisión** (`#/revision`) muestra qué le falta a cada ficha con botón «🌐 Completar» (el generador pide solo lo faltante).
 - **Pasivos**: las 45 familias (`anexo: "pasivos"`) ya no guardan STEP/DXF; en su pestaña Archivos CAD, «⚙ Generar STEP + DXF ahora» deja `data/solicitudes/<id>.json`, la Action los genera y `tools/solicitudes.py` los borra a los 7 días.
 
+### Diagrama: edición intuitiva (nov 2026)
+- **Conectar**: toca un pin y luego otro (o arrastra de pin a pin). Mientras eliges, los pines que darían problema se marcan con un anillo punteado. Si la conexión es inválida (cortocircuito, voltajes distintos, 5 V a un pin de 3.3 V, TX–TX, SDA–SCL, LED sin resistencia, pin reservado…) sale una **alarma**: «Cancelar» o «Conectar de todos modos»; si se acepta, el cable queda punteado con «!» y aparece en Verificación.
+- **Rutas**: los cables esquivan los componentes (grilla de visibilidad + A*, con caché) y evitan montarse entre sí. Al seleccionar un cable aparecen puntos **+** para doblarlo por donde quieras (doble clic en un punto lo quita), y la tarjeta del cable permite **Curva / Recta**, **Ruta automática**, color manual y borrar.
+- **Código de colores** (🎨 Colores): + rojo (5 V) / naranja (3.3–4.2 V) / vino (>5.5 V), GND negro, I2C SDA azul y SCL amarillo, UART TX verde / RX blanco, SPI morado, analógico turquesa, PWM rosado, digital celeste.
+- **Tarjeta del cable**: tipo de red, voltaje, corriente típica y pico, calibre sugerido y la alarma si la tiene.
+- **Tarjeta del componente** (abajo del lienzo): descripción, tipos de conexión con cuántos están conectados, alimentación recibida y **sugerencias de un toque**: conectar automáticamente, interruptor de encendido, botón a un GPIO, LED de estado, resistencia para un LED, encender ventilador/motor con **MOSFET + diodo**, interruptor manual.
+- Partes nuevas: interruptor ON/OFF (doble clic lo abre/cierra), diodo, MOSFET canal N, módulo relé, ventilador 5 V, motor DC. «⛶ Lienzo grande» oculta el panel lateral.
+
 ## Investigar con Gemini / ChatGPT (sin gastar API)
 - Botón **🌐** del chat (o la acción «Investigar componente con Gemini/ChatGPT»): escribe el componente (y la versión/encapsulado), **Generar y copiar prompt**, pégalo en Gemini (o ChatGPT / Claude web) con búsqueda, copia su respuesta completa y pégala en **Importar y revisar** (o directamente en el chat).
 - El prompt explica el formato JSON de MountLab, las reglas de geometría (origen al centro, pines en orden físico, módulo vs chip suelto) y la lista de piezas 3D disponibles; si estás en la ficha de un componente, pide solo lo que le falta.

@@ -22,6 +22,12 @@
     "@gnd": { nombre: "Tierra", rol: "gnd", pines: [["GND", "gnd"]], p: {}, ic: "⏚", grupo: "Básicos" },
     "@led": { nombre: "LED", rol: "led", pines: [["A", "anodo"], ["K", "catodo"]], p: { Vf: 2.0, If: 15, color: "rojo" }, ic: "💡", grupo: "Básicos" },
     "@boton": { nombre: "Pulsador", rol: "pasivo", pines: [["1", "signal"], ["2", "signal"]], p: {}, ic: "⏺", grupo: "Básicos" },
+    "@switch": { nombre: "Interruptor ON/OFF", rol: "interruptor", pines: [["1", "paso"], ["2", "paso"]], p: { cerrado: true, Imax: 3000 }, ic: "🎚", grupo: "Básicos" },
+    "@diodo": { nombre: "Diodo 1N4007 / 1N5819", rol: "diodo", pines: [["A", "anodo"], ["K", "catodo"]], p: {}, ic: "▷|", grupo: "Básicos" },
+    "@mosfet": { nombre: "MOSFET canal N (IRLZ44N / AO3400)", rol: "mosfet", pines: [["G", "gpio"], ["D", "signal"], ["S", "gnd"]], p: { Imax: 5000 }, ic: "⫞", grupo: "Básicos" },
+    "@rele": { nombre: "Módulo relé 5 V (1 canal)", rol: "carga", pines: [["VCC", "pwr_in"], ["GND", "gnd"], ["IN", "gpio"], ["COM", "paso"], ["NO", "paso"], ["NC", "paso"]], p: {}, perf: { I: 70, Ipico: 80, rango: [4.5, 5.5], tolera5: true }, ic: "🔁", grupo: "Básicos" },
+    "@ventilador": { nombre: "Ventilador 5 V", rol: "carga", pines: [["+", "pwr_in"], ["−", "gnd"]], p: {}, perf: { I: 150, Ipico: 300, rango: [4, 5.5], motor: true }, ic: "🌀", grupo: "Básicos" },
+    "@motor": { nombre: "Motor DC 6 V", rol: "carga", pines: [["+", "pwr_in"], ["−", "gnd"]], p: {}, perf: { I: 300, Ipico: 1200, rango: [3, 7], motor: true }, ic: "⚙", grupo: "Básicos" },
   };
   const COLOR_LED = { rojo: [2.0, "#ef4444"], amarillo: [2.1, "#facc15"], verde: [2.2, "#22c55e"], azul: [3.1, "#3b82f6"], blanco: [3.1, "#f8fafc"] };
 
@@ -109,7 +115,7 @@
   }
   const cachePerfil = new Map();
   function perfil(c) {
-    if (c.id.startsWith("@")) { const v = VIRT[c.id]; return { rol: v.rol, virt: true }; }
+    if (c.id.startsWith("@")) { const v = VIRT[c.id]; return Object.assign({ rol: v.rol, virt: true, tolera5: true }, v.perf || {}); }
     const k = c.id + "|" + (c.version || 1); if (cachePerfil.has(k)) return cachePerfil.get(k);
     const F = c.ficha || {}, txt = c.id + " " + c.nombre + " " + (c.etiquetas || []).join(" "), tV = F.voltaje || "", tI = F.corriente || "";
     let P = { rol: "carga" };
@@ -141,7 +147,7 @@
     opt = opt || {};
     const C = P.circuito = P.circuito || { version: 1, inst: [], cables: [], etiquetas: {}, notas: "" };
     C.inst = C.inst || []; C.cables = C.cables || []; C.etiquetas = C.etiquetas || {};
-    const st = { k: 1, ox: 0, oy: 0, sel: null, selC: null, desde: null, drag: null, ptrs: new Map(), tab: "redes", sug: [], hist: [], fut: [], filtro: "", ancho: 0, vista: C.vista || "esq" };
+    const st = { cardMin: matchMedia("(max-width: 860px)").matches, k: 1, ox: 0, oy: 0, sel: null, selC: null, desde: null, drag: null, ptrs: new Map(), tab: "redes", sug: [], hist: [], fut: [], filtro: "", ancho: 0, vista: C.vista || "esq" };
     const comp = id => id.startsWith("@") ? Object.assign({ id, nombre: VIRT[id].nombre, pines: [] }, {}) : (Store.db.componentes.find(c => c.id === id));
     const $ = (s, r) => (r || host).querySelector(s), $$ = (s, r) => [...(r || host).querySelectorAll(s)];
 
@@ -150,9 +156,9 @@
       const c = comp(it.id); if (!c) return null;
       const pf = perfil(c), rol = pf.rol;
       let pins;
-      if (it.id.startsWith("@")) pins = VIRT[it.id].pines.map(([n, t]) => ({ n, et: n, func: { pwr_out: "Salida +", gnd: "Tierra", anodo: "Ánodo", catodo: "Cátodo" }[t] || "Terminal", tipo: t }));
+      if (it.id.startsWith("@")) pins = VIRT[it.id].pines.map(([n, t]) => ({ n, et: n, func: { pwr_out: "Salida +", pwr_in: "Alimentación +", gnd: "Tierra", anodo: "Ánodo", catodo: "Cátodo", gpio: n === "IN" ? "Entrada de control" : "Compuerta (control desde un GPIO)", paso: "Contacto" }[t] || (n === "D" ? "Drenador (al − de la carga)" : "Terminal"), tipo: t === "paso" ? "signal" : t, paso: t === "paso" }));
       else pins = pinesDe(c, rol === "resistencia" || rol === "capacitor" ? "pasivo2" : rol === "mcu" ? "mcu" : rol);
-      const dos = pins.length === 2 && ["resistencia", "capacitor", "led", "pasivo"].includes(rol);
+      const dos = pins.length === 2 && ["resistencia", "capacitor", "led", "pasivo", "interruptor", "diodo"].includes(rol);
       let izq = [], der = [];
       if (dos) { izq = [pins[0]]; der = [pins[1]]; }
       else if (rol === "fuente") der = pins;
@@ -176,6 +182,7 @@
       const padre = {}, f = x => (padre[x] = padre[x] ?? x, padre[x] === x ? x : (padre[x] = f(padre[x]))), u = (a, b) => { padre[f(a)] = f(b); };
       for (const [ref, I] of INFO) if (I) for (const n of Object.keys(I.pos)) f(ref + "." + n);
       for (const w of C.cables) if (pinPos(w.a) && pinPos(w.b)) u(w.a, w.b);
+      for (const it of C.inst) if (it.id === "@switch" && !(it.p && it.p.cerrado === false) && pinPos(it.ref + ".1") && pinPos(it.ref + ".2")) u(it.ref + ".1", it.ref + ".2");   // interruptor cerrado = misma red
       const porNombre = {}; for (const [k, nom] of Object.entries(C.etiquetas)) if (pinPos(k) && nom) { if (porNombre[nom]) u(k, porNombre[nom]); else porNombre[nom] = k; }
       // las partes "Tierra" y todos los pines de tierra con la etiqueta GND
       const grupos = {};
@@ -221,7 +228,7 @@
           let pins = pinsDe(o, "pwr_in"); const g = regs.find(x => x.o === o);
           if (pf.rol === "mcu" && g && !g.activo) pins = pins.concat(pinsDe(o, "pwr_out"));   // ESP32 alimentado por 3V3
           const r = pins.map(red).find(x => x && x.V != null && !x.gnd);
-          const gndOk = pinsDe(o, "gnd").some(k => red(k) && red(k).gnd);
+          const gndOk = pinsDe(o, "gnd").some(k => red(k) && (red(k).gnd || red(k).pins.some(x => C.inst.some(i2 => i2.id === "@mosfet" && x === i2.ref + ".D"))));
           if (!r) { if (pinsDe(o, "pwr_in").length || pf.rol === "mcu") add("amarillo", `${it.ref} (${o.I.c.nombre}) no tiene alimentación conectada`, [it.ref]); continue; }
           if (!gndOk && pinsDe(o, "gnd").length) add("amarillo", `${it.ref} no tiene tierra (GND) conectada`, [it.ref]);
           r.cargas.push({ ref: it.ref, nombre: o.I.c.nombre, I: Ityp || 0, Ip: Ip || Ityp || 0 });
@@ -300,6 +307,7 @@
         const vistos = {}; for (const x of devs) { if (vistos[x.d]) add("rojo", `Dirección I2C ${x.d} repetida: ${vistos[x.d]} y ${x.o.it.ref} en el mismo bus (cambia el pin ADR/SDO de uno)`, [x.o.it.ref]); vistos[x.d] = x.o.it.ref; }
         if (devs.length) b.i2c = devs.map(x => `${x.o.it.ref} ${x.d}`);
       }
+      C.cables.forEach(w => { if (w.forzado && pinPos(w.a) && pinPos(w.b)) add(w.forzado.nivel === "rojo" ? "rojo" : "amarillo", `Conexión aceptada con alarma ${w.a} → ${w.b}: ${w.forzado.txt}`, [partir(w.a)[0], partir(w.b)[0]]); });
       return { R, regs, resumenF, avisos, ins };
     }
     function dirI2C(c) { const t = [c.i2c && (c.i2c.direccion || JSON.stringify(c.i2c)), (c.especificaciones || []).filter(e => /direcci/i.test(e.param)).map(e => e.valor).join(" "), /bme280|bmp280/i.test(c.id) ? "0x76" : "", /bme680/i.test(c.id) ? "0x77" : "", /bno055/i.test(c.id) ? "0x28" : "", /qmc5883/i.test(c.id) ? "0x0D" : "", /ssd1306|oled/i.test(c.id) ? "0x3C" : "", /mpu6050/i.test(c.id) ? "0x68" : ""].join(" "); const m = t.match(/0x[0-9A-F]{2}/i); return m ? m[0].toUpperCase().replace("0X", "0x") : null; }
@@ -356,7 +364,24 @@
 
     // ---------- dibujo
     const COLORES_TIPO = { pwr_aux: "#fca5a5", pwr_out: "#ef4444", pwr_in: "#ef4444", bat: "#f97316", gnd: "#94a3b8", sda: "#3b82f6", scl: "#eab308", tx: "#22c55e", rx: "#a3e635", mosi: "#c084fc", miso: "#e879f9", sck: "#f472b6", cs: "#fb7185", analog: "#2dd4bf", pwm: "#fb923c", gpio: "#38bdf8", reset: "#a78bfa", nc: "#475569", signal: "#64748b", anodo: "#ef4444", catodo: "#94a3b8" };
-    const colorRed = (r, calc) => r.gnd ? "#94a3b8" : r.V != null ? (r.V >= 4.5 ? "#ef4444" : r.V > 0 ? "#f97316" : "#94a3b8") : r.tipos.includes("sda") ? "#3b82f6" : r.tipos.includes("scl") ? "#eab308" : r.tipos.some(t => t === "tx" || t === "rx") ? "#22c55e" : r.tipos.some(t => ["mosi", "miso", "sck", "cs"].includes(t)) ? "#c084fc" : r.tipos.includes("analog") ? "#2dd4bf" : r.tipos.includes("pwm") ? "#fb923c" : "#38bdf8";
+    // código de colores (cableado estándar): + rojo/naranja, GND negro, I2C azul/amarillo, UART verde/blanco, SPI morado, analógico turquesa, PWM rosado, digital celeste
+    const CODIGO = [["vhi", "#e11d48", "Alimentación > 5.5 V (12 V, 7.4 V…)"], ["v5", "#ef4444", "Alimentación 5 V"], ["v3", "#f97316", "Alimentación 3.3–4.2 V"], ["gnd", "#111827", "Tierra / negativo (GND)"],
+      ["sda", "#3b82f6", "I2C SDA (datos)"], ["scl", "#eab308", "I2C SCL (reloj)"], ["tx", "#22c55e", "UART: sale del MCU (TX)"], ["rx", "#e5e7eb", "UART: entra al MCU (RX)"], ["spi", "#a855f7", "SPI (MOSI, MISO, SCK, CS)"],
+      ["analog", "#14b8a6", "Señal analógica (ADC)"], ["pwm", "#ec4899", "PWM / servo"], ["dig", "#38bdf8", "Datos digitales / GPIO"], ["paso", "#cbd5e1", "Contacto conmutado (relé, interruptor abierto)"]];
+    const COL = Object.fromEntries(CODIGO.map(([k, c]) => [k, c]));
+    function tipoRed(r) {
+      if (!r) return { k: "dig", col: COL.dig, n: "Señal" };
+      if (r.gnd) return { k: "gnd", col: COL.gnd, n: "Tierra (GND)" };
+      if (r.V != null && r.V > 0) { const k = r.V > 5.5 ? "vhi" : r.V >= 4.5 ? "v5" : "v3"; return { k, col: COL[k], n: `Alimentación ${r.V} V` }; }
+      const t = r.tipos, mcuP = r.pins.map(k => ({ k, p: (pinPos(k) || {}).p, I: INFO.get(partir(k)[0]) })).filter(x => x.p && x.I && x.I.pf.rol === "mcu").map(x => x.p.tipo);
+      if (t.includes("sda")) return { k: "sda", col: COL.sda, n: "I2C · SDA" }; if (t.includes("scl")) return { k: "scl", col: COL.scl, n: "I2C · SCL" };
+      if (t.includes("tx") || t.includes("rx")) { const entra = mcuP.includes("rx") || (!mcuP.length && !t.includes("tx")); return entra ? { k: "rx", col: COL.rx, n: "UART · entra al MCU (RX)" } : { k: "tx", col: COL.tx, n: "UART · sale del MCU (TX)" }; }
+      if (t.some(x => ["mosi", "miso", "sck", "cs"].includes(x))) return { k: "spi", col: COL.spi, n: "SPI · " + t.filter(x => ["mosi", "miso", "sck", "cs"].includes(x)).map(x => x.toUpperCase())[0] };
+      if (t.includes("analog")) return { k: "analog", col: COL.analog, n: "Señal analógica" }; if (t.includes("pwm")) return { k: "pwm", col: COL.pwm, n: "PWM / servo" };
+      if (r.pins.every(k => ((pinPos(k) || {}).p || {}).paso)) return { k: "paso", col: COL.paso, n: "Contacto (sin tensión)" };
+      return { k: "dig", col: COL.dig, n: "Datos digitales" };
+    }
+    const colorRed = r => tipoRed(r).col;
     const toS = (x, y) => [(x - st.ox) * st.k, (y - st.oy) * st.k], toW = (sx, sy) => [sx / st.k + st.ox, sy / st.k + st.oy];
     function ruta(a, b) {
       const out = (q, d) => q.lado === "L" ? [q.x - d, q.y] : q.lado === "R" ? [q.x + d, q.y] : q.lado === "U" ? [q.x, q.y - d] : [q.x, q.y + d];
@@ -368,6 +393,120 @@
       return pts;
     }
     const curva = (a, b) => { const dx = Math.max(30, Math.abs(b.x - a.x) * 0.4), d = q => q.lado === "L" ? -dx : q.lado === "R" ? dx : 0, e = q => q.lado === "U" ? -dx : q.lado === "D" ? dx : 0; return `M${a.x},${a.y} C${a.x + d(a)},${a.y + e(a)} ${b.x + d(b)},${b.y + e(b)} ${b.x},${b.y}`; };
+    // ---------- rutas: esquivan los componentes (grilla de visibilidad + A*), con caché y puntos de paso editables
+    const STUB = 14;
+    const salida = (q, d) => q.lado === "L" ? [q.x - d, q.y] : q.lado === "R" ? [q.x + d, q.y] : q.lado === "U" ? [q.x, q.y - d] : [q.x, q.y + d];
+    function obstaculos() { const L = []; for (const it of C.inst) { const I = INFO.get(it.ref); if (!I) continue; const w = I.rot ? 34 : I.w, h = I.rot ? 76 : I.h; L.push([it.x - 7, it.y - 7, it.x + w + 7, it.y + h + 7]); } return L; }
+    function rutaAuto(a, b, obs, usados) {
+      const A = salida(a, STUB), B = salida(b, STUB), dentro = (x, y) => obs.some(o => x > o[0] && x < o[2] && y > o[1] && y < o[3]);
+      const xs = new Set([A[0], B[0]]), ys = new Set([A[1], B[1]]);
+      for (const o of obs) { xs.add(o[0] - 4); xs.add(o[2] + 4); ys.add(o[1] - 4); ys.add(o[3] + 4); }
+      const x0 = Math.min(A[0], B[0], ...obs.map(o => o[0])) - 60, x1 = Math.max(A[0], B[0], ...obs.map(o => o[2])) + 60, y0 = Math.min(A[1], B[1], ...obs.map(o => o[1])) - 60, y1 = Math.max(A[1], B[1], ...obs.map(o => o[3])) + 60;
+      xs.add(x0); xs.add(x1); ys.add(y0); ys.add(y1); xs.add((A[0] + B[0]) / 2); ys.add((A[1] + B[1]) / 2);
+      const X = [...xs].sort((p, q) => p - q), Y = [...ys].sort((p, q) => p - q), nx = X.length, ny = Y.length;
+      const ia = X.indexOf(A[0]), ja = Y.indexOf(A[1]), ib = X.indexOf(B[0]), jb = Y.indexOf(B[1]);
+      const libre = (i, j) => (i === ia && j === ja) || (i === ib && j === jb) || !dentro(X[i], Y[j]);
+      const arista = (x, y, x2, y2) => !dentro((x + x2) / 2, (y + y2) / 2);
+      const key = (i, j, d) => (i * ny + j) * 5 + d, g = new Map(), prev = new Map(), heap = [];
+      const push = (f, st2) => { heap.push([f, st2]); let c = heap.length - 1; while (c > 0) { const p2 = (c - 1) >> 1; if (heap[p2][0] <= heap[c][0]) break; [heap[p2], heap[c]] = [heap[c], heap[p2]]; c = p2; } };
+      const pop = () => { const top = heap[0], last = heap.pop(); if (heap.length) { heap[0] = last; let c = 0; for (;;) { const l = 2 * c + 1, r = l + 1; let m = c; if (l < heap.length && heap[l][0] < heap[m][0]) m = l; if (r < heap.length && heap[r][0] < heap[m][0]) m = r; if (m === c) break; [heap[m], heap[c]] = [heap[c], heap[m]]; c = m; } } return top; };
+      const dirIni = a.lado === "L" ? 2 : a.lado === "R" ? 0 : a.lado === "U" ? 3 : 1, D = [[1, 0], [0, 1], [-1, 0], [0, -1]];
+      const h = (i, j) => Math.abs(X[i] - B[0]) + Math.abs(Y[j] - B[1]);
+      const k0 = key(ia, ja, dirIni); g.set(k0, 0); push(h(ia, ja), [ia, ja, dirIni]); let fin = null, n = 0;
+      while (heap.length && n++ < 60000) {
+        const [, [i, j, d]] = pop(), kc = key(i, j, d), gc = g.get(kc);
+        if (i === ib && j === jb) { fin = kc; break; }
+        for (let nd = 0; nd < 4; nd++) {
+          if ((nd + 2) % 4 === d) continue; const ni = i + D[nd][0], nj = j + D[nd][1]; if (ni < 0 || nj < 0 || ni >= nx || nj >= ny || !libre(ni, nj) || !arista(X[i], Y[j], X[ni], Y[nj])) continue;
+          const len = Math.abs(X[ni] - X[i]) + Math.abs(Y[nj] - Y[j]), ek = Math.min(i, ni) + "," + Math.min(j, nj) + "," + (nd % 2);
+          const cost = gc + len + (nd !== d ? 28 : 0) + (usados && usados.has(ek) ? len * 0.8 + 10 : 0), nk = key(ni, nj, nd);
+          if (cost < (g.get(nk) ?? Infinity)) { g.set(nk, cost); prev.set(nk, kc); push(cost + h(ni, nj), [ni, nj, nd]); }
+        }
+      }
+      if (fin == null) return null;
+      const camino = []; for (let k = fin; k != null; k = prev.get(k)) { const c = Math.floor(k / 5); camino.push([X[Math.floor(c / ny)], Y[c % ny]]); }
+      camino.reverse(); if (usados) for (let t = 0; t + 1 < camino.length; t++) { const [p, q] = [camino[t], camino[t + 1]], i1 = X.indexOf(p[0]), j1 = Y.indexOf(p[1]), i2 = X.indexOf(q[0]), j2 = Y.indexOf(q[1]); usados.add(Math.min(i1, i2) + "," + Math.min(j1, j2) + "," + (i1 !== i2 ? 0 : 1)); }
+      return simplificar([[a.x, a.y], ...camino, [b.x, b.y]]);
+    }
+    function simplificar(P) { const o = [P[0]]; for (let i = 1; i < P.length - 1; i++) { const [p, q, r] = [o[o.length - 1], P[i], P[i + 1]]; if ((p[0] === q[0] && q[0] === r[0]) || (p[1] === q[1] && q[1] === r[1])) continue; if (p[0] === q[0] && p[1] === q[1]) continue; o.push(q); } o.push(P[P.length - 1]); return o; }
+    /** Puntos del cable i: manuales (w.pts) o automáticos esquivando componentes. */
+    function puntosCable(w, i) {
+      const a = pinPos(w.a), b = pinPos(w.b); if (!a || !b) return null;
+      if (w.pts && w.pts.length) return [[a.x, a.y], salida(a, STUB), ...w.pts, salida(b, STUB), [b.x, b.y]];
+      if (st.vista === "real") return null;
+      if (st.rapido) return ruta(a, b);
+      const r = st.rc && st.rc.m.get(i); return r || ruta(a, b);
+    }
+    function recalcularRutas() {
+      if (st.vista === "real") return;
+      const sig = JSON.stringify([C.inst.map(it => [it.ref, it.x, it.y, it.flip, it.rot]), C.cables.map(w => [w.a, w.b, w.pts ? 1 : 0])]);
+      if (st.rc && st.rc.sig === sig) return;
+      const obs = obstaculos(), usados = new Set(), m = new Map();
+      // primero los cables de alimentación (más gruesos), luego señales
+      const orden = C.cables.map((w, i) => i).sort((p, q) => (C.cables[q].a.length - C.cables[p].a.length) * 0);
+      for (const i of orden) { const w = C.cables[i]; if (w.pts && w.pts.length) continue; const a = pinPos(w.a), b = pinPos(w.b); if (!a || !b) continue; const r = rutaAuto(a, b, obs, usados); if (r) m.set(i, r); }
+      st.rc = { sig, m };
+    }
+    const fmtP = p => r2(p[0]) + "," + r2(p[1]);
+    function trazo(P, curva) {
+      if (!P || P.length < 2) return "";
+      if (curva) { let d = "M" + fmtP(P[0]); for (let i = 0; i < P.length - 1; i++) { const p0 = P[i - 1] || P[i], p1 = P[i], p2 = P[i + 1], p3 = P[i + 2] || p2; d += ` C${r2(p1[0] + (p2[0] - p0[0]) / 6)},${r2(p1[1] + (p2[1] - p0[1]) / 6)} ${r2(p2[0] - (p3[0] - p1[0]) / 6)},${r2(p2[1] - (p3[1] - p1[1]) / 6)} ${fmtP(p2)}`; } return d; }
+      let d = "M" + fmtP(P[0]);
+      for (let i = 1; i < P.length - 1; i++) { const [p, q, r] = [P[i - 1], P[i], P[i + 1]], l1 = Math.hypot(q[0] - p[0], q[1] - p[1]), l2 = Math.hypot(r[0] - q[0], r[1] - q[1]), rr = Math.min(7, l1 / 2, l2 / 2);
+        if (rr < 0.5) { d += " L" + fmtP(q); continue; } const a1 = [q[0] - (q[0] - p[0]) / l1 * rr, q[1] - (q[1] - p[1]) / l1 * rr], a2 = [q[0] + (r[0] - q[0]) / l2 * rr, q[1] + (r[1] - q[1]) / l2 * rr]; d += ` L${fmtP(a1)} Q${fmtP(q)} ${fmtP(a2)}`; }
+      return d + " L" + fmtP(P[P.length - 1]);
+    }
+    const medio = P => { if (!P || P.length < 2) return null; let tot = 0; const L = []; for (let i = 0; i + 1 < P.length; i++) { const l = Math.hypot(P[i + 1][0] - P[i][0], P[i + 1][1] - P[i][1]); L.push(l); tot += l; } let t = tot / 2; for (let i = 0; i < L.length; i++) { if (t <= L[i]) { const f = L[i] ? t / L[i] : 0; return [P[i][0] + (P[i + 1][0] - P[i][0]) * f, P[i][1] + (P[i + 1][1] - P[i][1]) * f]; } t -= L[i]; } return P[0]; };
+
+    // ---------- validación de una conexión antes de hacerla
+    function validarConexion(ka, kb) {
+      const calc = ULT || calcular(), redDe = {}; calc.R.forEach(r => r.pins.forEach(k => redDe[k] = r));
+      const qa = pinPos(ka), qb = pinPos(kb); if (!qa || !qb) return null;
+      const A = { k: ka, p: qa.p, r: redDe[ka], I: INFO.get(partir(ka)[0]) }, B = { k: kb, p: qb.p, r: redDe[kb], I: INFO.get(partir(kb)[0]) };
+      if (A.r && B.r && A.r === B.r) return { nivel: "info", txt: "Ya están en la misma red" };
+      const Vde = x => x.r ? (x.r.gnd ? 0 : x.r.V) : (x.p.tipo === "gnd" ? 0 : x.p.tipo === "pwr_out" && x.I.pf.rol === "fuente" ? (+(C.inst.find(i => i.ref === partir(x.k)[0]).p || {}).V || x.I.pf.V || (VIRT[x.I.c.id] || {}).p?.V) : null);
+      const esGnd = x => (x.r && x.r.gnd) || x.p.tipo === "gnd", Va = Vde(A), Vb = Vde(B), nomb = x => `${x.k} (${x.p.et})`;
+      const pot = (x, V) => V != null && V > 0 && !esGnd(x);
+      for (const [x, y, Vx] of [[A, B, Va], [B, A, Vb]]) if (pot(x, Vx) && esGnd(y)) return { nivel: "rojo", txt: `Cortocircuito: ${nomb(x)} tiene ${Vx} V y ${nomb(y)} es tierra (GND).` };
+      if (pot(A, Va) && pot(B, Vb) && Math.abs(Va - Vb) > 0.1) return { nivel: "rojo", txt: `Une dos voltajes distintos: ${Va} V (${A.k}) con ${Vb} V (${B.k}). Puede dañar las fuentes o el regulador.` };
+      if (A.p.tipo === "nc" || B.p.tipo === "nc") { const x = A.p.tipo === "nc" ? A : B; return { nivel: "rojo", txt: `${nomb(x)} es un pin reservado (flash interna o «no usar»).` }; }
+      const SEN = ["gpio", "sda", "scl", "tx", "rx", "mosi", "miso", "sck", "cs", "analog", "pwm", "reset"];
+      for (const [x, y, Vx] of [[A, B, Va], [B, A, Vb]]) {
+        if (!pot(x, Vx)) continue; const pf = y.I.pf;
+        if (y.p.tipo === "pwr_in") { const rg = rangoV(y.p.func) || pf.rango; if (rg && Vx > rg[1] + 0.05) return { nivel: "rojo", txt: `${nomb(y)} admite máximo ${rg[1]} V y le llegarían ${Vx} V.` }; if (rg && Vx < rg[0] - 0.05) return { nivel: "amarillo", txt: `${nomb(y)} necesita al menos ${rg[0]} V y solo tendría ${Vx} V.` }; }
+        if (SEN.includes(y.p.tipo)) { const lim = pf.rol === "mcu" ? (pf.logica || 3.3) + 0.3 : pf.tolera5 === false ? 3.6 : 5.5;
+          if (Vx > lim) return { nivel: "rojo", txt: `${nomb(y)} es un pin de señal que soporta máx. ≈${r2(lim)} V y le llegarían ${Vx} V. Usa divisor resistivo o adaptador de nivel.` };
+          return { nivel: "amarillo", txt: `Alimentación directa (${Vx} V) a un pin de señal ${nomb(y)}: normalmente va con resistencia (pull-up) o desde un GPIO.` }; }
+        if (y.p.tipo === "anodo" && y.I.pf.rol === "led") return { nivel: "rojo", txt: `LED ${partir(y.k)[0]} directo a ${Vx} V sin resistencia: se quema. Agrega una resistencia en serie (≈220 Ω).` };
+      }
+      for (const [x, y] of [[A, B], [B, A]]) if (esGnd(x) && SEN.includes(y.p.tipo)) return { nivel: "amarillo", txt: `${nomb(y)} quedaría fijo en 0 (a tierra). Si es un botón, va entre el GPIO y GND con pull-up interno.` };
+      const ta = A.p.tipo, tb = B.p.tipo, par = (u, v) => (ta === u && tb === v) || (ta === v && tb === u);
+      if (par("tx", "tx")) return { nivel: "rojo", txt: "TX con TX: en UART se cruza (TX de uno → RX del otro)." };
+      if (par("rx", "rx")) return { nivel: "rojo", txt: "RX con RX: en UART se cruza (RX de uno ← TX del otro)." };
+      if (par("sda", "scl")) return { nivel: "rojo", txt: "SDA con SCL: van SDA↔SDA y SCL↔SCL." };
+      if (par("pwr_out", "pwr_out") && A.I !== B.I) return { nivel: "amarillo", txt: "Dos salidas de alimentación en paralelo: evita unir fuentes/reguladores entre sí." };
+      const bus = t => ({ sda: "I2C", scl: "I2C", tx: "UART", rx: "UART", mosi: "SPI", miso: "SPI", sck: "SPI", cs: "SPI" })[t];
+      if (bus(ta) && bus(tb) && bus(ta) !== bus(tb)) return { nivel: "amarillo", txt: `Mezcla buses distintos: ${ta.toUpperCase()} (${bus(ta)}) con ${tb.toUpperCase()} (${bus(tb)}).` };
+      if (((A.p.cap || []).includes("solo_entrada") && ["pwm", "rx", "cs", "mosi", "sck"].includes(tb)) || ((B.p.cap || []).includes("solo_entrada") && ["pwm", "rx", "cs", "mosi", "sck"].includes(ta))) return { nivel: "rojo", txt: "Ese GPIO del ESP32 es solo entrada: no puede manejar esa señal." };
+      return null;
+    }
+    function dialogo(v, onOk) {
+      const d = $("#ciDlg"); if (!d) return; const rojo = v.nivel === "rojo";
+      d.innerHTML = `<div class="ci-dlg-box ${rojo ? "bad" : "warn"}"><div class="ci-dlg-t">${rojo ? "⛔ Conexión no válida" : "⚠ Revisa esta conexión"}</div><div class="ci-dlg-m">${esc(v.txt)}</div>
+        <div class="small muted" style="margin:6px 0 10px">Si la aceptas, el cable queda marcado con alarma y aparece en Verificación.</div>
+        <div class="row" style="justify-content:flex-end;gap:6px"><button class="sm" data-dl="no">Cancelar</button><button class="sm ${rojo ? "danger" : ""}" data-dl="si">Conectar de todos modos</button></div></div>`;
+      d.classList.remove("hide");
+      d.querySelector('[data-dl="no"]').onclick = () => { d.classList.add("hide"); };
+      d.querySelector('[data-dl="si"]').onclick = () => { d.classList.add("hide"); onOk(); };
+    }
+    function intentarConectar(a, b) {
+      if (!a || !b || a === b) return;
+      const v = validarConexion(a, b);
+      if (!v) { if (conectar(a, b)) opt.toast && opt.toast(`✓ ${a} → ${b}`); return; }
+      if (v.nivel === "info") { opt.toast && opt.toast(v.txt); return; }
+      dialogo(v, () => { if (conectar(a, b, { forzado: { nivel: v.nivel, txt: v.txt } })) opt.toast && opt.toast("Conectado con alarma ⚠"); });
+    }
+
     let ULT = null;
     function dibujar() {
       info(); const calc = ULT = calcular(), svg = $("#ciSvg"); if (!svg) return;
@@ -375,10 +514,19 @@
       const marcados = new Set(calc.avisos.filter(a => a.nivel === "rojo").flatMap(a => a.refs));
       let s = `<defs><pattern id="ciGrid" width="${20 * st.k}" height="${20 * st.k}" patternUnits="userSpaceOnUse" x="${-st.ox * st.k % (20 * st.k)}" y="${-st.oy * st.k % (20 * st.k)}"><circle cx="1" cy="1" r="1" fill="#1e2a3d"/></pattern></defs><rect width="100%" height="100%" fill="url(#ciGrid)"/>`;
       s += `<g transform="translate(${-st.ox * st.k},${-st.oy * st.k}) scale(${st.k})">`;
-      // cables
-      C.cables.forEach((w, i) => { const a = pinPos(w.a), b = pinPos(w.b); if (!a || !b) return; const r = redDe[w.a], col = w.color || (r ? colorRed(r) : "#38bdf8"), sel = st.selC === i;
-        const d = st.vista === "real" ? curva(a, b) : "M" + ruta(a, b).map(p => p.join(",")).join(" L");
-        s += `<path d="${d}" fill="none" stroke="transparent" stroke-width="10" data-w="${i}" style="cursor:pointer"/><path d="${d}" fill="none" stroke="${col}" stroke-width="${sel ? 3.2 : st.vista === "real" ? 2.6 : 2}" stroke-linejoin="round" pointer-events="none" ${sel ? 'filter="drop-shadow(0 0 4px #fff)"' : ""}/>`; });
+      // cables (color por tipo de red, GND negro con borde, alarmas punteadas, edición de puntos)
+      if (!st.rapido) recalcularRutas();
+      const handles = [];
+      C.cables.forEach((w, i) => { const a = pinPos(w.a), b = pinPos(w.b); if (!a || !b) return; const r = redDe[w.a], tr = tipoRed(r), col = w.color || tr.col, sel = st.selC === i;
+        const P = puntosCable(w, i), d = P ? trazo(P, !!w.curva) : curva(a, b), gnd = !w.color && tr.k === "gnd", grosor = (r && r.V > 0) || gnd ? 2.6 : 2;
+        s += `<path d="${d}" fill="none" stroke="transparent" stroke-width="14" data-w="${i}" style="cursor:pointer"/>`;
+        if (gnd || col === COL.rx) s += `<path d="${d}" fill="none" stroke="${gnd ? "#94a3b8" : "#475569"}" stroke-width="${grosor + 2.2}" stroke-linejoin="round" stroke-linecap="round" pointer-events="none"/>`;
+        s += `<path d="${d}" fill="none" stroke="${col}" stroke-width="${sel ? grosor + 1.2 : grosor}" stroke-linejoin="round" stroke-linecap="round" pointer-events="none" ${sel ? 'filter="drop-shadow(0 0 4px #fff)"' : ""}/>`;
+        if (w.forzado) { const m = medio(P) || [(a.x + b.x) / 2, (a.y + b.y) / 2], rj = w.forzado.nivel === "rojo"; s += `<path d="${d}" fill="none" stroke="${rj ? "#f87171" : "#fbbf24"}" stroke-width="1.4" stroke-dasharray="5 4" pointer-events="none"/><g pointer-events="none"><circle cx="${m[0]}" cy="${m[1]}" r="8" fill="${rj ? "#7f1d1d" : "#78350f"}" stroke="${rj ? "#f87171" : "#fbbf24"}"/><text x="${m[0]}" y="${m[1] + 4}" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">!</text></g>`; }
+        if (sel && P) {
+          (w.pts || []).forEach((q, j) => handles.push(`<circle cx="${q[0]}" cy="${q[1]}" r="${6 / Math.max(0.6, st.k)}" fill="#0f172a" stroke="#38bdf8" stroke-width="2" data-wp="${j}" style="cursor:grab"><title>Arrastra para mover · doble clic para quitar</title></circle>`));
+          for (let j = 1; j < P.length - 2; j++) { const mx = (P[j][0] + P[j + 1][0]) / 2, my = (P[j][1] + P[j + 1][1]) / 2; handles.push(`<g data-wm="${j}" style="cursor:copy"><circle cx="${mx}" cy="${my}" r="${5 / Math.max(0.6, st.k)}" fill="#38bdf8" opacity=".85"/><text x="${mx}" y="${my + 3.5 / Math.max(0.6, st.k)}" text-anchor="middle" font-size="${10 / Math.max(0.6, st.k)}" font-weight="800" fill="#05121e" pointer-events="none">+</text><title>Arrastra para doblar la línea por aquí</title></g>`); }
+        } });
       // sugerencias (fantasmas)
       st.sug.forEach((g, i) => { const a = pinPos(g.a), b = pinPos(g.b); if (!a || !b) return; s += `<path d="M${ruta(a, b).map(p => p.join(",")).join(" L")}" fill="none" stroke="#a78bfa" stroke-width="2" stroke-dasharray="6 4" opacity=".85" data-sg="${i}" style="cursor:pointer"><title>${esc(g.motivo)} (clic para aceptar)</title></path>`; });
       // instancias
@@ -394,6 +542,8 @@
           else if (pf.rol === "capacitor") s += ver ? `<line x1="${x0 + 17}" y1="${y0 - 4}" x2="${x0 + 17}" y2="${y0 + 34}" stroke="#94a3b8" stroke-width="2"/><line x1="${x0 + 17}" y1="${y0 + 42}" x2="${x0 + 17}" y2="${y0 + 80}" stroke="#94a3b8" stroke-width="2"/><rect x="${x0}" y="${y0 + 30}" width="34" height="16" fill="transparent" data-i="${esc(it.ref)}"/><line x1="${x0 + 4}" y1="${y0 + 34}" x2="${x0 + 30}" y2="${y0 + 34}" stroke="${sel ? "#38bdf8" : "#e2e8f0"}" stroke-width="3"/><line x1="${x0 + 4}" y1="${y0 + 42}" x2="${x0 + 30}" y2="${y0 + 42}" stroke="${sel ? "#38bdf8" : "#e2e8f0"}" stroke-width="3"/>`
             : `<line x1="${x0}" y1="${y0 + 17}" x2="${x0 + 34}" y2="${y0 + 17}" stroke="#94a3b8" stroke-width="2"/><line x1="${x0 + 42}" y1="${y0 + 17}" x2="${x0 + 76}" y2="${y0 + 17}" stroke="#94a3b8" stroke-width="2"/><rect x="${x0 + 26}" y="${y0}" width="24" height="34" fill="transparent" data-i="${esc(it.ref)}"/><line x1="${x0 + 34}" y1="${y0 + 4}" x2="${x0 + 34}" y2="${y0 + 30}" stroke="${sel ? "#38bdf8" : "#e2e8f0"}" stroke-width="3"/><line x1="${x0 + 42}" y1="${y0 + 4}" x2="${x0 + 42}" y2="${y0 + 30}" stroke="${sel ? "#38bdf8" : "#e2e8f0"}" stroke-width="3"/>`;
           else if (pf.rol === "led") { const col = (COLOR_LED[it.p?.color] || COLOR_LED.rojo)[1]; s += `<line x1="${x0}" y1="${y0 + 17}" x2="${x0 + 76}" y2="${y0 + 17}" stroke="#94a3b8" stroke-width="2"/><polygon points="${x0 + 26},${y0 + 5} ${x0 + 26},${y0 + 29} ${x0 + 48},${y0 + 17}" fill="${col}" stroke="${borde}" stroke-width="2" data-i="${esc(it.ref)}"/><line x1="${x0 + 49}" y1="${y0 + 5}" x2="${x0 + 49}" y2="${y0 + 29}" stroke="${col}" stroke-width="3"/>`; }
+          else if (pf.rol === "interruptor") { const cer = !(it.p && it.p.cerrado === false); s += `<line x1="${x0}" y1="${y0 + 17}" x2="${x0 + 22}" y2="${y0 + 17}" stroke="#94a3b8" stroke-width="2"/><line x1="${x0 + 54}" y1="${y0 + 17}" x2="${x0 + 76}" y2="${y0 + 17}" stroke="#94a3b8" stroke-width="2"/><circle cx="${x0 + 24}" cy="${y0 + 17}" r="3" fill="#e2e8f0"/><circle cx="${x0 + 52}" cy="${y0 + 17}" r="3" fill="#e2e8f0"/><line x1="${x0 + 24}" y1="${y0 + 17}" x2="${x0 + 52}" y2="${y0 + (cer ? 15 : 3)}" stroke="${cer ? "#34d399" : "#f87171"}" stroke-width="3"/><rect x="${x0 + 16}" y="${y0}" width="44" height="30" fill="transparent" data-i="${esc(it.ref)}" style="cursor:move"/>`; }
+          else if (pf.rol === "diodo") s += `<line x1="${x0}" y1="${y0 + 17}" x2="${x0 + 76}" y2="${y0 + 17}" stroke="#94a3b8" stroke-width="2"/><polygon points="${x0 + 28},${y0 + 7} ${x0 + 28},${y0 + 27} ${x0 + 46},${y0 + 17}" fill="#cbd5e1" stroke="${borde}" stroke-width="1.5" data-i="${esc(it.ref)}"/><line x1="${x0 + 47}" y1="${y0 + 7}" x2="${x0 + 47}" y2="${y0 + 27}" stroke="#cbd5e1" stroke-width="3"/>`;
           else s += `<rect x="${x0 + 16}" y="${y0 + 6}" width="44" height="22" rx="11" fill="#1f2937" stroke="${borde}" stroke-width="2" data-i="${esc(it.ref)}"/>`;
           s += `<text x="${x0 + (ver ? 40 : 38)}" y="${y0 + (ver ? 40 : -4)}" fill="#cbd5e1" font-size="11" ${ver ? "" : 'text-anchor="middle"'} pointer-events="none"><tspan font-weight="700">${esc(it.ref)}</tspan> ${esc(val)}</text>`;
         } else {
@@ -407,11 +557,14 @@
         for (const q of Object.values(I.pos)) {
           const k = it.ref + "." + q.p.n, r = redDe[k], usado = r && (r.pins.length > 1 || C.etiquetas[k]), col = COLORES_TIPO[q.p.tipo] || "#64748b", activo = st.desde === k;
           const et = C.etiquetas[k];
-          s += `<circle cx="${q.x}" cy="${q.y}" r="${activo ? 6 : 4.5}" fill="${usado ? col : "#0f172a"}" stroke="${col}" stroke-width="2" data-pin="${esc(k)}" style="cursor:crosshair"><title>${esc(q.p.et)} · ${esc(q.p.func || q.p.tipo)}${(q.p.cap || []).length ? " · " + q.p.cap.join(", ") : ""}${r && r.V != null ? ` · ${r.V} V` : ""}</title></circle>`;
+          s += `<circle cx="${q.x}" cy="${q.y}" r="11" fill="transparent" data-pin="${esc(k)}" style="cursor:crosshair"/>`;
+          if (st.desde && st.desde !== k) { const v0 = st.vAlarma && st.vAlarma[k]; if (v0) s += `<circle cx="${q.x}" cy="${q.y}" r="8" fill="none" stroke="${v0 === "rojo" ? "#f87171" : "#fbbf24"}" stroke-width="1.5" stroke-dasharray="2 2" pointer-events="none"/>`; }
+          s += `<circle cx="${q.x}" cy="${q.y}" r="${activo ? 6.5 : 4.5}" fill="${usado ? col : "#0f172a"}" stroke="${col}" stroke-width="2" data-pin="${esc(k)}" style="cursor:crosshair"><title>${esc(q.p.et)} · ${esc(q.p.func || q.p.tipo)}${(q.p.cap || []).length ? " · " + q.p.cap.join(", ") : ""}${r && r.V != null ? ` · ${r.V} V` : ""}</title></circle>`;
           if (!I.dos) s += `<text x="${q.lado === "L" ? q.x + 8 : q.x - 8}" y="${q.y + 3.5}" fill="${q.p.tipo === "nc" ? "#475569" : "#cbd5e1"}" font-size="10" text-anchor="${q.lado === "L" ? "start" : "end"}" pointer-events="none">${esc(q.p.et.length > 14 ? q.p.et.slice(0, 13) + "…" : q.p.et)}</text>`;
           if (et) s += `<g pointer-events="none"><rect x="${q.lado === "R" ? q.x + 8 : q.x - 8 - et.length * 6.4 - 10}" y="${q.y - 8}" width="${et.length * 6.4 + 10}" height="16" rx="3" fill="#312e81" stroke="#a78bfa"/><text x="${q.lado === "R" ? q.x + 13 : q.x - 13 - et.length * 6.4}" y="${q.y + 4}" fill="#e0e7ff" font-size="10" font-weight="700">${esc(et)}</text></g>`;
         }
       }
+      s += handles.join("");
       // etiqueta de voltaje / corriente en cada red con energía
       if (st.vista !== "real") for (const r of calc.R) { if (r.gnd || r.V == null) continue; const k = r.pins.find(x => ["pwr_out"].includes((pinPos(x) || {}).p?.tipo)) || r.pins[0]; const q = pinPos(k); if (!q) continue;
         const txt = `${r.V} V · ${fmtI(r.I || 0)}`, x = q.lado === "L" ? q.x - 18 - txt.length * 6 : q.x + 18, y = q.y - 16;
@@ -421,7 +574,9 @@
       if (st.drag && st.drag.rect) { const [x0, y0, x1, y1] = st.drag.rect; s += `<rect x="${Math.min(x0, x1)}" y="${Math.min(y0, y1)}" width="${Math.abs(x1 - x0)}" height="${Math.abs(y1 - y0)}" fill="rgba(56,189,248,.08)" stroke="#38bdf8" stroke-dasharray="4 3"/>`; }
       s += `</g>`;
       if (!C.inst.length) s += `<text x="50%" y="45%" text-anchor="middle" fill="#64748b" font-size="15">Arrastra componentes desde la izquierda o pide al asistente que arme el circuito ✦</text>`;
-      svg.innerHTML = s; panel(calc);
+      svg.innerHTML = s; panel(calc); tarjeta(calc, redDe); popCable(calc, redDe);
+      const inf = $("#ciInfo"); if (inf) inf.innerHTML = st.desde ? `🔗 Conectando desde <b>${esc(st.desde)}</b>: toca el pin de destino · <a href="#" id="ciCan">cancelar</a>` : st.selC != null ? "Cable seleccionado: arrastra los puntos <b>+</b> para doblarlo · doble clic en un punto lo quita · Supr lo borra" : "Toca un pin y luego otro para conectar · toca un componente para ver su ficha y sugerencias · arrastra el fondo para moverte";
+      const cn = $("#ciCan"); if (cn) cn.onclick = e => { e.preventDefault(); st.desde = null; st.cursor = null; dibujar(); };
     }
     function bloqueReal(it, I, borde) { // vista real: huella de la placa a escala con los pines en su lugar físico
       const m = I.c.montaje, k = 4, L = m.pcb[0] * k, W = m.pcb[1] * k, x0 = it.x, y0 = it.y;
@@ -445,6 +600,108 @@
     }
     function infoInstSel(it) { return st.vista === "real" ? infoReal(it) : infoBase(it); }
     info = () => { INFO = new Map(C.inst.map(it => [it.ref, infoInstSel(it)])); return INFO; };
+
+    // ---------- tarjeta inferior del componente seleccionado: descripción, tipos de conexión y sugerencias de un toque
+    const GRUPOS = [["Alimentación", t => ["pwr_in", "pwr_out", "bat", "pwr_aux"].includes(t), "v5"], ["GND", t => t === "gnd", "gnd"], ["I2C", t => t === "sda" || t === "scl", "sda"], ["UART", t => t === "tx" || t === "rx", "tx"], ["SPI", t => ["mosi", "miso", "sck", "cs"].includes(t), "spi"], ["Analógico", t => t === "analog", "analog"], ["PWM", t => t === "pwm", "pwm"], ["Digital / GPIO", t => ["gpio", "reset"].includes(t), "dig"], ["Otros", t => ["signal", "anodo", "catodo"].includes(t), "paso"]];
+    function tarjeta(calc, redDe) {
+      const box = $("#ciCard"); if (!box) return;
+      const it = st.sel && C.inst.find(x => x.ref === st.sel), I = it && INFO.get(it.ref);
+      if (!I) { box.classList.add("hide"); return; }
+      const c = I.c, pf = I.pf, v = VIRT[it.id], f = (c.ficha || {}), desc = v ? ({ "@switch": "Interruptor de palanca o deslizable: abre y cierra la alimentación. Tócalo dos veces en el diagrama para abrir/cerrar.", "@mosfet": "Transistor para encender cargas grandes (ventilador, motor, tira LED) desde un GPIO: G al GPIO, D al − de la carga, S a GND.", "@diodo": "Diodo de protección (flyback): va en paralelo con motores y relés, el cátodo (K) al +.", "@rele": "Módulo relé de 1 canal: el MCU lo activa con IN; COM–NO cierra el circuito de la carga.", "@ventilador": "Ventilador de 5 V (≈150 mA, arranque ≈300 mA). No lo alimentes desde un GPIO: usa MOSFET o relé.", "@motor": "Motor DC pequeño (≈300 mA, arranque >1 A). Necesita MOSFET o driver y diodo de protección." }[it.id] || v.nombre) : (f.descripcion || "");
+      const pinsK = Object.values(I.pos).map(q => ({ k: it.ref + "." + q.p.n, p: q.p }));
+      const chips = GRUPOS.map(([nom, fn, ck]) => { const L = pinsK.filter(x => fn(x.p.tipo)); if (!L.length) return ""; const con = L.filter(x => redDe[x.k] && redDe[x.k].pins.length > 1).length;
+        return `<span class="ci-chip" title="${esc(L.map(x => x.p.et).join(", "))}"><i style="background:${COL[ck]}"></i>${nom} <b>${L.length}</b>${con ? ` <small>· ${con} conectado${con > 1 ? "s" : ""}</small>` : ""}</span>`; }).join("");
+      const alim = pinsK.map(x => redDe[x.k]).find(r => r && r.V > 0 && pinsK.some(y => redDe[y.k] === r && ["pwr_in", "bat"].includes(y.p.tipo)));
+      const datos = [pf.rango ? `Voltaje ${pf.rango[0]}–${pf.rango[1]} V` : f.voltaje ? "Voltaje: " + f.voltaje.slice(0, 60) : "", pf.I ? `Consumo ${fmtI(+it.I || pf.I)}${pf.Ipico ? ` (pico ${fmtI(+it.Ipico || pf.Ipico)})` : ""}` : "", alim ? `<b style="color:var(--ok)">Recibe ${alim.V} V</b>` : (["carga", "mcu"].includes(pf.rol) ? `<b style="color:var(--warn)">Sin alimentación</b>` : ""), pf.tolera5 === false ? "Lógica 3.3 V (no tolera 5 V)" : ""].filter(Boolean).join(" · ");
+      const sug = sugerenciasComp(it, I, redDe);
+      box.innerHTML = `<div class="ci-card-h"><b>${esc(it.ref)}</b> <span>${esc(c.nombre)}</span><span class="tag">${esc({ mcu: "MCU", fuente: "fuente", regulador: "regulador", carga: pf.motor ? "carga · motor" : "carga", resistencia: "resistencia", capacitor: "capacitor", led: "LED", gnd: "tierra", pasivo: "pasivo", interruptor: "interruptor", diodo: "diodo", mosfet: "MOSFET" }[pf.rol] || pf.rol)}</span>
+          <span style="flex:1"></span>${it.id.startsWith("@") ? "" : `<a class="btn sm" href="#/c/${encodeURIComponent(it.id)}" target="_blank" rel="noopener">Ficha ↗</a>`}<button class="sm ghost" id="ciCardMin">${st.cardMin ? "▴" : "▾"}</button><button class="sm ghost" id="ciCardX">✕</button></div>
+        ${st.cardMin ? "" : `${desc ? `<div class="ci-card-d">${esc(desc.length > 220 ? desc.slice(0, 219) + "…" : desc)}</div>` : ""}
+        ${datos ? `<div class="small muted" style="margin:4px 0">${datos}</div>` : ""}
+        <div class="ci-chips">${chips || '<span class="small muted">Sin pines definidos en la ficha</span>'}</div>
+        ${sug.length ? `<div class="ci-sugs"><span class="small muted">Sugerido:</span>${sug.map((x, i) => `<button class="sm ${x.pri ? "pri" : ""}" data-cs="${i}" title="${esc(x.det || "")}">${x.txt}</button>`).join("")}</div>` : ""}`}`;
+      box.classList.remove("hide");
+      $("#ciCardX", box).onclick = () => { st.sel = null; dibujar(); };
+      $("#ciCardMin", box).onclick = () => { st.cardMin = !st.cardMin; dibujar(); };
+      $$("[data-cs]", box).forEach(b => b.onclick = () => { const x = sug[+b.dataset.cs]; try { x.fn(); } catch (e) { opt.toast && opt.toast(e.message, 5000); } });
+    }
+    // helpers para las sugerencias de un toque
+    const keyDe = (ref, pred) => { const I = INFO.get(ref); if (!I) return null; const q = Object.values(I.pos).find(q2 => pred(q2.p)); return q ? ref + "." + q.p.n : null; };
+    const conectadoA = k => C.cables.filter(w => w.a === k || w.b === k).map(w => w.a === k ? w.b : w.a);
+    const quitarCables = k => { C.cables = C.cables.filter(w => w.a !== k && w.b !== k); };
+    const unir = (a, b, extra) => { if (a && b && a !== b && !C.cables.some(w => (w.a === a && w.b === b) || (w.a === b && w.b === a))) C.cables.push(Object.assign({ a, b }, extra || {})); };
+    function gndK() { info(); const R = redes(); const r = R.find(x => x.tipos.includes("gnd") && x.pins.length > 1) || R.find(x => x.tipos.includes("gnd")); if (r) return r.pins[0]; for (const it of C.inst) { const k = keyDe(it.ref, p => p.tipo === "gnd"); if (k) return k; } return null; }
+    function mcuInst() { return C.inst.find(it => (INFO.get(it.ref) || {}).pf?.rol === "mcu"); }
+    function gpioLibre(m) {
+      const I = INFO.get(m.ref), usados = new Set(C.cables.flatMap(w => [w.a, w.b]));
+      const L = Object.values(I.pos).map(q => ({ k: m.ref + "." + q.p.n, p: q.p })).filter(x => x.p.gpio != null && x.p.tipo === "gpio" && !usados.has(x.k) && !(x.p.cap || []).some(c => ["flash", "strapping", "solo_entrada"].includes(c)));
+      for (const g of ESP32.preferidos) { const y = L.find(x => x.p.gpio === g); if (y) return y.k; } return (L[0] || {}).k || null;
+    }
+    function fuenteK(V) { const calc = calcular(); const r = calc.R.find(x => !x.gnd && x.V != null && Math.abs(x.V - V) < 0.3) || calc.R.find(x => !x.gnd && x.V >= V - 0.3); if (r) return r.pins.find(k => ["pwr_out"].includes((pinPos(k) || {}).p?.tipo)) || r.pins[0]; const f = C.inst.find(it => (INFO.get(it.ref) || {}).pf?.rol === "fuente"); return f ? keyDe(f.ref, p => p.tipo === "pwr_out") : null; }
+    function resId() { const L = Store.db.componentes.filter(c => c.valores && c.valores.magnitud === "resistencia"); return (L.find(c => /carbon_14w|pelicula_14w|14w/.test(c.id)) || L[0] || {}).id || null; }
+    function poner(id, x, y, extra) { const c = comp(id); if (!c) throw new Error("No encontré " + id + " en la biblioteca"); [x, y] = lugarLibre(id, x, y, extra); st.selC = null; st.popXY = null; const it2 = Object.assign({ ref: nuevaRef(id), id, x: Math.round(x / 10) * 10, y: Math.round(y / 10) * 10 }, extra || {}); if (VIRT[id]) it2.p = Object.assign({}, VIRT[id].p, (extra || {}).p || {}); C.inst.push(it2); info(); return it2; }
+    function hecho(msg, sel) { st.rc = null; if (sel) st.sel = sel; sincronizarBom(); cambio(); opt.toast && opt.toast(msg, 6000); }
+    function interruptorEn(it, k) {
+      snap(); const q = pinPos(k), sw = poner("@switch", (q.lado === "R" ? q.x + 40 : q.x - 120), q.y - 17), otros = conectadoA(k);
+      quitarCables(k); otros.forEach(o => unir(o, sw.ref + ".1")); unir(sw.ref + ".2", k);
+      if (!otros.length) { const f = it && INFO.get(it.ref).pf.rol === "fuente" ? null : fuenteK(5); if (f) unir(f, sw.ref + ".1"); }
+      hecho(`${sw.ref}: interruptor agregado en la alimentación de ${it.ref}`, sw.ref);
+    }
+    function sugerenciasComp(it, I, redDe) {
+      const pf = I.pf, L = [], ref = it.ref, m = mcuInst();
+      const pend = sugerir().filter(g => g.a.startsWith(ref + ".") || g.b.startsWith(ref + "."));
+      if (pend.length) L.push({ txt: `⚡ Conectar automáticamente (${pend.length})`, pri: true, det: pend.map(g => `${g.a} → ${g.b}: ${g.motivo}`).join("\n"), fn: () => { st.sug = pend; aceptar(pend.map((_, i) => i)); } });
+      const kIn = keyDe(ref, p => p.tipo === "pwr_in"), kOut = keyDe(ref, p => p.tipo === "pwr_out");
+      if (pf.rol === "fuente" && kOut) L.push({ txt: "🎚 Interruptor de encendido", det: "Pone un interruptor entre el + de la fuente y lo que alimenta", fn: () => interruptorEn(it, kOut) });
+      if (pf.rol === "mcu") {
+        const kV = keyDe(ref, p => p.tipo === "pwr_in" && /VIN|5V/i.test(p.n)) || kIn; if (kV) L.push({ txt: "🎚 Interruptor de encendido", det: "Interruptor entre la fuente y " + kV, fn: () => interruptorEn(it, kV) });
+        L.push({ txt: "⏺ Botón a un GPIO", det: "Pulsador entre un GPIO libre y GND (usa INPUT_PULLUP)", fn: () => { snap(); const g = gpioLibre(it), gn = gndK(); if (!g) throw new Error("No hay GPIO libre"); const q = pinPos(g), b = poner("@boton", q.x + (q.lado === "R" ? 50 : -130), q.y - 17); unir(g, b.ref + ".1"); if (gn) unir(b.ref + ".2", gn); hecho(`${b.ref} en ${g}: configúralo como INPUT_PULLUP en el código`, b.ref); } });
+        L.push({ txt: "💡 LED de estado", det: "GPIO → resistencia 220 Ω → LED → GND", fn: () => { snap(); const g = gpioLibre(it), gn = gndK(), rid = resId(); if (!g) throw new Error("No hay GPIO libre"); const q = pinPos(g), dx = q.lado === "R" ? 50 : -260; const R = rid ? poner(rid, q.x + dx, q.y - 17, { valor: "220 Ω" }) : null, D = poner("@led", q.x + dx + 110, q.y - 17, { p: { color: "verde", Vf: 2.2 } });
+          if (R) { unir(g, R.ref + "." + Object.keys(INFO.get(R.ref).pos)[0]); unir(R.ref + "." + Object.keys(INFO.get(R.ref).pos)[1], D.ref + ".A"); } else unir(g, D.ref + ".A"); if (gn) unir(D.ref + ".K", gn); hecho(`LED ${D.ref}${R ? " con " + R.ref + " de 220 Ω" : ""} en ${g}`, D.ref); } });
+      }
+      const potente = pf.motor || (pf.Ipico || 0) >= 200 || /ventilador|fan|motor|bomba|solenoide|tira led|cooler/i.test(I.c.nombre + " " + it.id);
+      if (pf.rol === "carga" && potente && it.id !== "@rele") {
+        L.push({ txt: "⫞ Encender con MOSFET desde el MCU", pri: !pend.length, det: "MOSFET canal N + diodo de protección: G al GPIO, D al − de la carga, S a GND", fn: () => {
+          snap(); const kM = keyDe(ref, p => p.tipo === "gnd"), kP = kIn; if (!kM || !kP) throw new Error("La carga necesita pines + y −");
+          const q = pinPos(kM), Q = poner("@mosfet", it.x - 200, it.y + (I.h || 40) + 30), D = poner("@diodo", it.x + (I.w || 80) + 40, it.y - 10);
+          quitarCables(kM); unir(kM, Q.ref + ".D"); const gn = gndK(); if (gn && gn !== kM) unir(Q.ref + ".S", gn);
+          if (m) { const g = gpioLibre(m); if (g) unir(g, Q.ref + ".G"); }
+          if (!conectadoA(kP).length) { const f = fuenteK(pf.rango ? Math.min(pf.rango[1], 5) : 5); if (f) unir(f, kP); }
+          unir(D.ref + ".K", kP); unir(D.ref + ".A", kM);
+          hecho(`${Q.ref} (MOSFET) y ${D.ref} (diodo) agregados: el GPIO enciende ${ref}. Pon 10 kΩ de G a GND.`, Q.ref); } });
+        if (kIn) L.push({ txt: "🎚 Interruptor manual", det: "Interruptor en serie con el + de la carga", fn: () => interruptorEn(it, kIn) });
+      }
+      if (pf.rol === "led") { const kA = ref + ".A", rs = conectadoA(kA).some(k => (INFO.get(partir(k)[0]) || {}).pf?.rol === "resistencia");
+        if (!rs) L.push({ txt: "Ω Resistencia limitadora 220 Ω", pri: true, det: "Resistencia en serie con el ánodo", fn: () => { snap(); const rid = resId(); if (!rid) throw new Error("No hay resistencias en la biblioteca"); const q = pinPos(kA), R = poner(rid, q.x - 110, q.y - 17, { valor: "220 Ω" }), [r1, r2k] = Object.keys(INFO.get(R.ref).pos).map(n2 => R.ref + "." + n2), otros = conectadoA(kA); quitarCables(kA); otros.forEach(o => unir(o, r1)); unir(r2k, kA); hecho(`${R.ref} (220 Ω) en serie con ${ref}`, R.ref); } }); }
+      if (pf.rol === "carga" && !potente && m && /sda|scl/.test(Object.values(I.pos).map(q => q.p.tipo).join(" ")) && !pend.length) L.push({ txt: "🔗 Revisar bus I2C", det: "SDA y SCL al MCU", fn: () => { const n2 = conectarPar(m.ref, ref, "I2C"); opt.toast && opt.toast(n2 ? `${n2} conexiones` : "Ya está conectado"); } });
+      if (it.id === "@switch") L.push({ txt: (it.p && it.p.cerrado === false) ? "▶ Cerrar (encender)" : "⏸ Abrir (apagar)", det: "Simula el interruptor en el cálculo", fn: () => { snap(); it.p = it.p || {}; it.p.cerrado = it.p.cerrado === false; cambio(); } });
+      return L;
+    }
+    // ---------- tarjeta flotante del cable: tipo, voltaje, corriente, calibre y acciones
+    function popCable(calc, redDe) {
+      const box = $("#ciPop"); if (!box) return; const w = st.selC != null && C.cables[st.selC];
+      if (!w || !st.popXY) { box.classList.add("hide"); return; }
+      const r = redDe[w.a], tr = tipoRed(r), Imax = Math.max(0, ...calc.R.filter(x => x.V > 0).map(x => x.Ip || 0));
+      const logic = r && r.V == null && !r.gnd ? (r.pins.map(k => INFO.get(partir(k)[0])).find(I => I && I.pf.rol === "mcu")?.pf.logica || 3.3) : null;
+      const V = r ? (r.gnd ? "0 V" : r.V != null ? r.V + " V" : `señal ${logic} V (nivel lógico)`) : "—";
+      const I = r && r.V > 0 ? `${fmtI(r.I || 0)} típ · ${fmtI(r.Ip || r.I || 0)} pico` : r && r.gnd ? `retorno ≈ ${fmtI(Imax)}` : "< 1 mA (señal)";
+      const cal = r && (r.V > 0 || r.gnd) ? calibre(r.gnd ? Imax : (r.Ip || r.I || 0)) : "señal (26–28 AWG)";
+      box.innerHTML = `<div class="row" style="justify-content:space-between;gap:6px"><b><span class="sw" style="background:${w.color || tr.col};${tr.k === "gnd" ? "outline:1px solid #94a3b8" : ""}"></span> ${esc(tr.n)}</b><button class="sm ghost" id="cpX">✕</button></div>
+        <div class="small" style="margin:4px 0"><code>${esc(w.a)}</code> → <code>${esc(w.b)}</code></div>
+        <table class="t small" style="margin:4px 0"><tr><td>Voltaje</td><td><b>${esc(V)}</b></td></tr><tr><td>Corriente</td><td><b>${esc(I)}</b></td></tr><tr><td>Cable</td><td>${esc(cal)}</td></tr></table>
+        ${w.forzado ? `<div class="small" style="color:${w.forzado.nivel === "rojo" ? "var(--bad)" : "var(--warn)"};margin:4px 0">⚠ ${esc(w.forzado.txt)}</div>` : ""}
+        <div class="row" style="gap:4px;flex-wrap:wrap"><button class="sm" id="cpC">${w.curva ? "⌐ Recta" : "〰 Curva"}</button><button class="sm" id="cpA" ${w.pts ? "" : "disabled"}>↺ Ruta automática</button>
+          <select id="cpCol" class="sm" style="width:auto;padding:4px 6px"><option value="">Color auto</option>${CODIGO.map(([k, c, n]) => `<option value="${c}" ${w.color === c ? "selected" : ""}>${esc(n)}</option>`).join("")}</select>${w.forzado ? '<button class="sm" id="cpOk" title="Quitar la alarma de este cable">✓ Quitar alarma</button>' : ""}<button class="sm danger" id="cpD">🗑</button></div>`;
+      box.classList.remove("hide");
+      const wrap = box.parentElement.getBoundingClientRect(), bw = box.offsetWidth, bh = box.offsetHeight;
+      box.style.left = Math.max(6, Math.min(wrap.width - bw - 6, st.popXY[0] + 14)) + "px"; box.style.top = Math.max(6, Math.min(wrap.height - bh - 6, st.popXY[1] + 14)) + "px";
+      $("#cpX", box).onclick = () => { st.selC = null; st.popXY = null; dibujar(); };
+      $("#cpC", box).onclick = () => { snap(); w.curva = !w.curva; if (w.curva && !w.pts) { const P = puntosCable(w, st.selC); if (P) w.pts = P.slice(2, -2); } cambio(); };
+      $("#cpA", box).onclick = () => { snap(); delete w.pts; delete w.curva; st.rc = null; cambio(); };
+      $("#cpCol", box).onchange = e => { snap(); if (e.target.value) w.color = e.target.value; else delete w.color; cambio(); };
+      const ok = $("#cpOk", box); if (ok) ok.onclick = () => { snap(); delete w.forzado; cambio(); };
+      $("#cpD", box).onclick = () => { snap(); C.cables.splice(st.selC, 1); st.selC = null; st.popXY = null; st.rc = null; cambio(); };
+    }
 
     // ---------- panel lateral
     function panel(calc) {
@@ -520,10 +777,18 @@
     }
 
     // ---------- referencias, colocar, aceptar
-    function prefijo(id) { if (id === "@gnd") return "GND"; if (id === "@led") return "D"; if (id === "@boton") return "SW"; if (id.startsWith("@")) return "BT"; const c = comp(id); const pf = c && perfil(c); return !pf ? "U" : pf.rol === "resistencia" ? (/pot|trimmer/i.test(id) ? "RV" : "R") : pf.rol === "capacitor" ? "C" : pf.rol === "fuente" ? "BT" : pf.rol === "regulador" ? "PS" : pf.motor ? "M" : "U"; }
+    function prefijo(id) { if (id === "@gnd") return "GND"; if (id === "@led") return "D"; if (id === "@boton" || id === "@switch") return "SW"; if (id === "@diodo") return "D"; if (id === "@mosfet") return "Q"; if (id === "@rele") return "K"; if (id === "@ventilador" || id === "@motor") return "M"; if (id.startsWith("@")) return "BT"; const c = comp(id); const pf = c && perfil(c); return !pf ? "U" : pf.rol === "resistencia" ? (/pot|trimmer/i.test(id) ? "RV" : "R") : pf.rol === "capacitor" ? "C" : pf.rol === "fuente" ? "BT" : pf.rol === "regulador" ? "PS" : pf.motor ? "M" : "U"; }
     function nuevaRef(id) { const p = prefijo(id); let n = 1; while (C.inst.some(x => x.ref === p + n)) n++; return p + n; }
+    /** Busca un lugar cercano donde la pieza no se monte sobre otra (espiral alrededor del punto pedido). */
+    function lugarLibre(id, x, y, extra) {
+      info(); const tmp = Object.assign({ ref: "__tmp", id, x, y }, extra || {}), I = infoInst(tmp); if (!I) return [x, y];
+      const w = (I.rot ? 34 : I.w) + 30, h = (I.rot ? 76 : I.h) + 30, obs = obstaculos();
+      const choca = (px, py) => obs.some(o => px < o[2] + 12 && px + w > o[0] - 12 && py < o[3] + 12 && py + h > o[1] - 12);
+      for (let r = 0; r < 40; r++) for (let k = 0; k < Math.max(1, r * 8); k++) { const ang = (k / Math.max(1, r * 8)) * Math.PI * 2, px = Math.round((x + Math.cos(ang) * r * 40) / 10) * 10, py = Math.round((y + Math.sin(ang) * r * 40) / 10) * 10; if (!choca(px, py)) return [px, py]; }
+      return [x, y];
+    }
     function colocar(id, x, y, extra) {
-      const c = comp(id); if (!c) return null; snap();
+      const c = comp(id); if (!c) return null; snap(); [x, y] = lugarLibre(id, x, y, extra); st.selC = null; st.popXY = null;
       const it = Object.assign({ ref: nuevaRef(id), id, x: Math.round(x / 10) * 10, y: Math.round(y / 10) * 10 }, extra || {});
       if (VIRT[id]) it.p = Object.assign({}, VIRT[id].p, (extra || {}).p || {});
       C.inst.push(it); st.sel = it.ref; sincronizarBom(); cambio(); return it;
@@ -536,7 +801,7 @@
         if (b) { if (b.nota === "desde el diagrama" || b.cantidad < n) b.cantidad = n; } else P.bom.push(Object.assign({ id, cantidad: n, nota: "desde el diagrama" }, valor ? { valor } : {})); }
     }
     function aceptar(idx) { snap(); const L = idx.map(i => st.sug[i]).filter(Boolean); for (const g of L) if (!C.cables.some(w => (w.a === g.a && w.b === g.b) || (w.a === g.b && w.b === g.a))) C.cables.push({ a: g.a, b: g.b }); st.sug = st.sug.filter((_, i) => !idx.includes(i)); cambio(); opt.toast && opt.toast(`${L.length} conexión(es) agregada(s)`); }
-    function conectar(a, b) { if (!a || !b || a === b || !pinPos(a) || !pinPos(b)) return false; if (C.cables.some(w => (w.a === a && w.b === b) || (w.a === b && w.b === a))) return false; snap(); C.cables.push({ a, b }); cambio(); return true; }
+    function conectar(a, b, extra) { if (!a || !b || a === b || !pinPos(a) || !pinPos(b)) return false; if (C.cables.some(w => (w.a === a && w.b === b) || (w.a === b && w.b === a))) return false; snap(); C.cables.push(Object.assign({ a, b }, extra || {})); cambio(); return true; }
 
     // ---------- orden automático
     function ordenar() {
@@ -567,9 +832,12 @@
           <button class="sm" id="ciUndo" title="Deshacer (Ctrl+Z)">↶</button><button class="sm" id="ciRedo" title="Rehacer (Ctrl+Y)">↷</button><span class="mo-sep"></span>
           <button class="sm" id="ciOrd" title="Ordenar los bloques por función">▦ Ordenar</button><button class="sm" id="ciFit">Ajustar</button><button class="sm" id="ciZi">＋</button><button class="sm" id="ciZo">－</button><span class="mo-sep"></span>
           <button class="sm ${st.vista === "esq" ? "on" : ""}" data-vista="esq">Esquemático</button><button class="sm ${st.vista === "real" ? "on" : ""}" data-vista="real" title="Huella real a escala con cables tipo dupont">Vista real</button><span class="mo-sep"></span>
-          <button class="sm ai-btn" id="ciSug">✦ Sugerir conexiones</button><button class="sm" id="ciPdf">🖨 Informe PDF</button>
+          <button class="sm" id="ciFull" title="Agrandar el lienzo (oculta la biblioteca y el panel)">⛶ Lienzo grande</button><button class="sm ai-btn" id="ciSug">✦ Sugerir conexiones</button><button class="sm" id="ciPdf">🖨 Informe PDF</button>
           <select id="ciExp" class="sm" style="width:auto;padding:5px 8px"><option value="">Exportar…</option><option value="svg">Diagrama SVG</option><option value="png">Diagrama PNG</option><option value="csv">Conexiones CSV</option><option value="net">Netlist (texto)</option></select></div>
-        <div class="canvas-wrap ci-canvas"><svg id="ciSvg"></svg><div class="ed-info" id="ciInfo">Clic en un pin y luego en otro para conectar · doble clic en un pin = etiqueta de red · arrastra el fondo para mover</div></div></div>
+        <div class="canvas-wrap ci-canvas"><svg id="ciSvg"></svg><div class="ed-info" id="ciInfo"></div>
+          <button class="sm ci-legbtn" id="ciLegB" title="Código de colores de los cables">🎨 Colores</button>
+          <div class="ci-leg hide" id="ciLeg">${CODIGO.map(([k, c, n]) => `<div><i style="background:${c};${k === "gnd" ? "outline:1px solid #94a3b8" : ""}"></i>${esc(n)}</div>`).join("")}<div class="small muted" style="margin-top:4px">Línea punteada con ! = conexión aceptada con alarma</div></div>
+          <div class="ci-pop hide" id="ciPop"></div><div class="ci-card hide" id="ciCard"></div><div class="ci-dlg hide" id="ciDlg"></div></div></div>
       <div class="ci-panel panel" id="ciPanel"></div></div>`;
     const svg = $("#ciSvg");
     function libreria() {
@@ -593,13 +861,23 @@
       const [sx, sy] = pt(e), [wx, wy] = toW(sx, sy), t = e.target; svg.setPointerCapture(e.pointerId); st.ptrs.set(e.pointerId, [sx, sy]);
       if (st.ptrs.size === 2) { const [a, b] = [...st.ptrs.values()]; st.drag = { pinch: { d0: Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, k0: st.k, mw: toW((a[0] + b[0]) / 2, (a[1] + b[1]) / 2) } }; return; }
       const pin = t.dataset && t.dataset.pin;
-      if (pin) { if (st.desde && st.desde !== pin) { conectar(st.desde, pin); st.desde = null; st.cursor = null; dibujar(); } else { st.desde = st.desde === pin ? null : pin; st.drag = { desdePin: pin, sx, sy }; dibujar(); } return; }
+      if (pin) {
+        if (st.desde && st.desde !== pin) { const a0 = st.desde; st.desde = null; st.cursor = null; st.vAlarma = null; dibujar(); intentarConectar(a0, pin); }
+        else { st.desde = st.desde === pin ? null : pin; st.selC = null; st.popXY = null; st.vAlarma = null;
+          if (st.desde) { st.vAlarma = {}; for (const [ref, I] of INFO) if (I) for (const n of Object.keys(I.pos)) { const k = ref + "." + n; if (k === pin) continue; const v = validarConexion(pin, k); if (v && v.nivel !== "info") st.vAlarma[k] = v.nivel; } }
+          st.drag = { desdePin: pin, sx, sy }; dibujar(); }
+        return; }
+      const wp = t.closest && t.closest("[data-wp],[data-wm]");
+      if (wp && st.selC != null) { const w = C.cables[st.selC], sn = JSON.stringify(C);
+        if (wp.dataset.wp != null) { st.drag = { wp: +wp.dataset.wp, snap: sn, moved: false }; return; }
+        const j = +wp.dataset.wm, P = puntosCable(w, st.selC); if (!P) return; if (!w.pts) w.pts = P.slice(2, -2).map(q => [r2(q[0]), r2(q[1])]);
+        const ins = j - 1, pa = P[j], pb = P[j + 1]; w.pts.splice(ins, 0, [r2((pa[0] + pb[0]) / 2), r2((pa[1] + pb[1]) / 2)]); st.drag = { wp: ins, snap: sn, moved: true }; dibujar(); return; }
       if (t.dataset && t.dataset.sg != null) { aceptar([+t.dataset.sg]); return; }
-      if (t.dataset && t.dataset.w != null) { st.selC = +t.dataset.w; st.sel = null; st.tab = "cables"; dibujar(); return; }
+      if (t.dataset && t.dataset.w != null) { st.selC = +t.dataset.w; st.sel = null; st.popXY = [sx, sy]; st.desde = null; dibujar(); return; }
       const g = t.closest && t.closest("[data-i]");
-      if (g) { const ref = g.dataset.i, it = C.inst.find(x => x.ref === ref); st.sel = ref; st.selC = null; st.drag = { it, dx: wx - it.x, dy: wy - it.y, moved: false, snap: JSON.stringify(C) }; dibujar(); return; }
-      if (st.desde) { st.desde = null; st.cursor = null; }
-      st.sel = null; st.selC = null; st.drag = { pan: [sx, sy, st.ox, st.oy] }; dibujar();
+      if (g) { const ref = g.dataset.i, it = C.inst.find(x => x.ref === ref); st.sel = ref; st.selC = null; st.popXY = null; st.drag = { it, dx: wx - it.x, dy: wy - it.y, moved: false, snap: JSON.stringify(C) }; dibujar(); return; }
+      if (st.desde) { st.desde = null; st.cursor = null; st.vAlarma = null; }
+      st.sel = null; st.selC = null; st.popXY = null; st.drag = { pan: [sx, sy, st.ox, st.oy] }; dibujar();
     };
     svg.onpointermove = e => {
       const [sx, sy] = pt(e), [wx, wy] = toW(sx, sy), d = st.drag; if (st.ptrs.has(e.pointerId)) st.ptrs.set(e.pointerId, [sx, sy]);
@@ -607,26 +885,34 @@
       if (st.desde) { st.cursor = [wx, wy]; if (!d) { dibujar(); return; } }
       if (!d) return;
       if (d.pan) { st.ox = d.pan[2] - (sx - d.pan[0]) / st.k; st.oy = d.pan[3] - (sy - d.pan[1]) / st.k; dibujar(); }
-      else if (d.it) { const nx = Math.round((wx - d.dx) / 10) * 10, ny = Math.round((wy - d.dy) / 10) * 10; if (nx !== d.it.x || ny !== d.it.y) { d.it.x = nx; d.it.y = ny; d.moved = true; dibujar(); } }
+      else if (d.it) { const nx = Math.round((wx - d.dx) / 10) * 10, ny = Math.round((wy - d.dy) / 10) * 10; if (nx !== d.it.x || ny !== d.it.y) { d.it.x = nx; d.it.y = ny; d.moved = true; st.rapido = true; dibujar(); } }
+      else if (d.wp != null && st.selC != null) { const w = C.cables[st.selC]; if (w && w.pts && w.pts[d.wp]) { w.pts[d.wp] = [Math.round(wx / 5) * 5, Math.round(wy / 5) * 5]; d.moved = true; dibujar(); } }
       else if (d.desdePin) dibujar();
     };
     svg.onpointerup = e => {
       st.ptrs.delete(e.pointerId); const d = st.drag; if (d && d.pinch) { if (!st.ptrs.size) st.drag = null; return; } st.drag = null;
-      if (d && d.it && d.moved) { st.hist.push(d.snap); st.fut = []; opt.onChange && opt.onChange(); }
-      if (d && d.desdePin) { const t = document.elementFromPoint(e.clientX, e.clientY); const p2 = t && t.dataset && t.dataset.pin; if (p2 && p2 !== d.desdePin) { conectar(d.desdePin, p2); st.desde = null; st.cursor = null; dibujar(); } }
+      if (d && d.it && d.moved) { st.rapido = false; st.hist.push(d.snap); st.fut = []; dibujar(); opt.onChange && opt.onChange(); }
+      if (d && d.wp != null && d.moved) { st.hist.push(d.snap); st.fut = []; dibujar(); opt.onChange && opt.onChange(); }
+      if (d && d.desdePin) { const t = document.elementFromPoint(e.clientX, e.clientY); const p2 = t && t.dataset && t.dataset.pin; if (p2 && p2 !== d.desdePin) { const a0 = d.desdePin; st.desde = null; st.cursor = null; st.vAlarma = null; dibujar(); intentarConectar(a0, p2); } }
     };
-    svg.ondblclick = e => { const pin = e.target.dataset && e.target.dataset.pin; if (!pin) return; const ac = C.etiquetas[pin] || ""; const n = prompt("Etiqueta de red (los pines con el mismo nombre quedan conectados). Vacío = quitar.\nEj.: 3V3, 5V, GND, SDA", ac); if (n == null) return; snap(); if (n.trim()) C.etiquetas[pin] = n.trim().toUpperCase(); else delete C.etiquetas[pin]; st.desde = null; cambio(); };
+    svg.ondblclick = e => {
+      const wp = e.target.closest && e.target.closest("[data-wp]");
+      if (wp && st.selC != null) { const w = C.cables[st.selC]; snap(); w.pts.splice(+wp.dataset.wp, 1); if (!w.pts.length) delete w.pts; cambio(); return; }
+      const g = e.target.closest && e.target.closest("[data-i]"); if (g) { const it = C.inst.find(x => x.ref === g.dataset.i); if (it && it.id === "@switch") { snap(); it.p = it.p || {}; it.p.cerrado = it.p.cerrado === false; cambio(); return; } }
+      const pin = e.target.dataset && e.target.dataset.pin; if (!pin) return; const ac = C.etiquetas[pin] || ""; const n = prompt("Etiqueta de red (los pines con el mismo nombre quedan conectados). Vacío = quitar.\nEj.: 3V3, 5V, GND, SDA", ac); if (n == null) return; snap(); if (n.trim()) C.etiquetas[pin] = n.trim().toUpperCase(); else delete C.etiquetas[pin]; st.desde = null; cambio(); };
     svg.onwheel = e => { e.preventDefault(); const [sx, sy] = pt(e), [wx, wy] = toW(sx, sy); st.k = Math.max(0.2, Math.min(4, st.k * (e.deltaY < 0 ? 1.12 : 1 / 1.12))); st.ox = wx - sx / st.k; st.oy = wy - sy / st.k; dibujar(); };
     const onKey = e => {
       if (!host.isConnected) return document.removeEventListener("keydown", onKey);
       if (/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") { e.preventDefault(); deshacer(); }
       else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") { e.preventDefault(); rehacer(); }
-      else if (e.key === "Delete" || e.key === "Backspace") { if (st.selC != null) { snap(); C.cables.splice(st.selC, 1); st.selC = null; cambio(); } else if (st.sel) accionSel("del"); }
-      else if (e.key === "Escape") { st.desde = null; st.cursor = null; st.sug = []; dibujar(); }
+      else if (e.key === "Delete" || e.key === "Backspace") { if (st.selC != null) { snap(); C.cables.splice(st.selC, 1); st.selC = null; st.popXY = null; cambio(); } else if (st.sel) accionSel("del"); }
+      else if (e.key === "Escape") { st.desde = null; st.cursor = null; st.vAlarma = null; st.sug = []; st.selC = null; st.popXY = null; dibujar(); }
       else if (e.key.toLowerCase() === "r" && st.sel) accionSel(INFO.get(st.sel)?.dos ? "rot" : "flip");
     };
     document.addEventListener("keydown", onKey);
+    $("#ciLegB").onclick = () => $("#ciLeg").classList.toggle("hide");
+    $("#ciFull").onclick = () => { const L = $(".ci-layout"), on = !L.classList.contains("ci-full"); L.classList.toggle("ci-full", on); $("#ciFull").classList.toggle("on", on); $("#ciFull").textContent = on ? "⛶ Salir del lienzo grande" : "⛶ Lienzo grande"; setTimeout(() => { ajustar(); dibujar(); }, 60); };
     $("#ciUndo").onclick = deshacer; $("#ciRedo").onclick = rehacer; $("#ciOrd").onclick = ordenar;
     $("#ciFit").onclick = () => { ajustar(); dibujar(); };
     $("#ciZi").onclick = () => { st.k = Math.min(4, st.k * 1.2); dibujar(); }; $("#ciZo").onclick = () => { st.k = Math.max(0.2, st.k / 1.2); dibujar(); };
