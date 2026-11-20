@@ -110,7 +110,29 @@
    "y": 0
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "res_carbon_14w_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/res_carbon_14w (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/res_carbon_14w/res_carbon_14w_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "res_carbon_14w_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/res_carbon_14w (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/res_carbon_14w/res_carbon_14w_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "res_carbon_14w_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/res_carbon_14w (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/res_carbon_14w/res_carbon_14w_v1_plano.dxf"
+  }
+ },
  "modelo": {
   "version": 1,
   "base": {
@@ -242,5 +264,6 @@
   }
  ],
  "modificado": "2026-11-19T02:55:28.727Z",
- "anexo": "pasivos"
+ "anexo": "pasivos",
+ "bajo_demanda_vence": "2026-11-27"
 }
