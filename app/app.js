@@ -916,6 +916,10 @@ Verifica cada medida con al menos dos fuentes (datasheet/plano y vendedor), dime
       if (k === "especificaciones" && Array.isArray(v)) { const ex = c.especificaciones || []; for (const nv of v) { const i = ex.findIndex(x => x.param === nv.param); if (i >= 0) ex[i] = nv; else ex.push(nv); } c.especificaciones = ex; continue; }
       if (k === "etiquetas" && Array.isArray(v)) { c.etiquetas = [...new Set([...(c.etiquetas || []), ...v])]; continue; }
       if (k === "imagen.src" || k === "imagen") { c.imagen = { src: typeof v === "string" ? v : (v && v.src), origen: "web (" + (fuente || "propuesta") + ")" }; continue; }
+      if (k === "pines" && Array.isArray(v) && base && (c.pines || []).some(q => q.x != null) && v.every(q => q.x == null)) {
+        // pines sin posición: solo se actualizan nombre y función de los existentes, en orden; las posiciones se conservan
+        const ex = c.pines; v.forEach((q, i) => { if (ex[i]) { if (q.n) ex[i].n = /^\d+$/.test(String(q.n)) && /^\d+\s/.test(ex[i].n) ? ex[i].n : q.n; if (q.func) ex[i].func = q.func; } }); continue; }
+      if (k === "montaje" && v && base && c.montaje) v = Object.assign({}, c.montaje, v, { agujeros: (v.agujeros && v.agujeros.length) ? v.agujeros : (c.montaje.agujeros || []) });
       if (k === "montaje" && v) { v = Object.assign({ origen: "centro", fijacion: (v.agujeros || []).length ? "tornillo" : "guia_deslizante", agujeros: [], altura_superior: 0, altura_inferior: 0, holgura_inferior_cableado: 0 }, v); v.nota = (v.nota ? v.nota + " " : "") + "Propuesto por el asistente a partir del datasheet: verificar con calibrador."; }
       if (k === "pines" && Array.isArray(v)) v = v.map(p => Object.assign({ x: null, y: null }, p));
       setPath(c, k, v);
@@ -945,7 +949,8 @@ Verifica cada medida con al menos dos fuentes (datasheet/plano y vendedor), dime
     const base = p._nuevo ? null : comp(p.componente), crear = !base;
     const filas = Object.entries(p.cambios).map(([k, v]) => {
       const f = (p.fuentes || {})[k], cf = (p.confianza || {})[k];
-      return `<tr><td><input type="checkbox" data-pk="${i}" data-k="${esc(k)}" ${cf === "baja" ? "" : "checked"} style="width:auto" ${estado ? "disabled" : ""}></td><td><b>${esc(k)}</b>${cf ? ` <span class="tag ${cf === "alta" ? "ok" : cf === "media" ? "warn" : "bad"}">${esc(cf)}</span>` : ""}${GEO.includes(k.split(".")[0]) ? ' <span class="tag warn">verificar</span>' : ""}</td>
+      const peor = k === "modelo" && base && base.modelo && ((v && v.piezas) || []).length < (base.modelo.piezas || []).length;
+      return `<tr><td><input type="checkbox" data-pk="${i}" data-k="${esc(k)}" ${cf === "baja" || peor ? "" : "checked"} style="width:auto" ${estado ? "disabled" : ""}></td><td><b>${esc(k)}</b>${cf ? ` <span class="tag ${cf === "alta" ? "ok" : cf === "media" ? "warn" : "bad"}">${esc(cf)}</span>` : ""}${GEO.includes(k.split(".")[0]) ? ' <span class="tag warn">verificar</span>' : ""}</td>
         ${crear ? "" : `<td class="small">${corto(getPath(base, k))}</td>`}<td class="small">${corto(v)}</td><td class="small">${f ? `<a href="${esc(f)}" target="_blank" rel="noopener">fuente ↗</a>` : '<span class="muted">—</span>'}</td></tr>`;
     }).join("");
     return `<div class="panel" style="margin-top:8px;padding:12px;background:var(--bg2)">
@@ -971,7 +976,7 @@ Verifica cada medida con al menos dos fuentes (datasheet/plano y vendedor), dime
   function asignarPines(c) {
     const P = c.pines || [], auto = P.filter(p => p.pieza), libres = P.filter(p => !p.pieza);
     if (!auto.length || !libres.length) return c;
-    const hdr = ((c.modelo && c.modelo.piezas) || []).filter(q => /header|jst|bornera/.test(q.plantilla)).map(q => q.id);
+    const hdr = ((c.modelo && c.modelo.piezas) || []).filter(q => /header|jst|bornera|patas/.test(q.plantilla)).map(q => q.id);
     const dest = auto.filter(p => hdr.includes(p.pieza)), D = dest.length ? dest : auto, usados = new Set();
     // 1) los que traen x/y: al pin automático más cercano (≤0.6 mm)
     libres.filter(p => p.x != null && p.y != null).forEach(p => { const m = D.filter(d => !usados.has(d)).map(d => [d, Math.hypot(d.x - p.x, d.y - p.y)]).sort((a, b) => a[1] - b[1])[0]; if (m && m[1] <= 0.6) { m[0].n = p.n; m[0].func = p.func || ""; usados.add(m[0]); p._ok = true; } });
@@ -984,14 +989,16 @@ Verifica cada medida con al menos dos fuentes (datasheet/plano y vendedor), dime
   function verificarPropuesta(p) {
     const out = [], ok = m => out.push({ n: "ok", m }), av = m => out.push({ n: "warn", m }), mal = m => out.push({ n: "bad", m });
     try {
-      const base = p._nuevo ? null : comp(p.componente), ch = p.cambios || {}, keys = Object.keys(ch);
+      const base = p._nuevo ? null : comp(p.componente), ch = p.cambios || {};
+      const degrada = !!(base && base.modelo && ch.modelo && ((ch.modelo.piezas || []).length < (base.modelo.piezas || []).length));
+      const keys = Object.keys(ch).filter(k => !(degrada && k === "modelo"));
       const c = aplicarCambios(base, p.componente, ch, keys.filter(k => k !== "imagen" || !String(ch.imagen).startsWith("data:")), "revisión");
       if (keys.includes("modelo")) c.modelo = modeloLimpio(ch.modelo);
       if (!c.modelo && c.montaje && c.montaje.pcb && keys.includes("montaje")) c.modelo = MLPlant.desdeMontaje(c);
       if (c.modelo) { MLPlant.sincronizar(c); asignarPines(c); MLPlant.sincronizar(c); }
       const f = c.ficha || {};
       if (!base) { const falta = ["descripcion", "voltaje", "corriente", "interfaz", "dimensiones", "datasheet"].filter(k => !f[k]); falta.length ? av("Faltan en la ficha: " + falta.join(", ") + ".") : ok("Ficha completa (descripción, voltaje, corriente, interfaz, dimensiones, datasheet)."); }
-      if (f.datasheet && !/\.pdf(\?|#|$)/i.test(f.datasheet)) av("El datasheet no parece un PDF directo: GitHub no podrá guardar la copia.");
+      if (f.datasheet && !/\.pdf(\?|#|$)/i.test(f.datasheet) && !((c.archivos || {}).datasheet || {}).subido) av("El datasheet no parece un PDF directo: GitHub no podrá guardar la copia.");
       const m = c.montaje;
       if (!m || !m.pcb) { if (!base || keys.some(k => GEO.includes(k))) av("Sin medidas de placa: no se generarán modelo 3D, DXF ni STEP."); }
       else {
@@ -1004,9 +1011,12 @@ Verifica cada medida con al menos dos fuentes (datasheet/plano y vendedor), dime
         if (fuera.length) mal(`${fuera.length} agujero(s) se salen o quedan pegados al borde (coordenadas desde el centro: |x| ≤ ${L / 2}, |y| ≤ ${W / 2}).`);
         else if ((m.agujeros || []).length) ok(`${m.agujeros.length} agujero(s) Ø${m.agujeros[0].d} dentro de la placa.`);
       }
+      const pzBase = ((base && base.modelo && base.modelo.piezas) || []).length, pzNuevo = ((ch.modelo && ch.modelo.piezas) || []).length;
+      if (degrada) mal(`El modelo propuesto (${pzNuevo} pieza(s)) reemplazaría tu modelo actual de ${pzBase} piezas: lo desmarqué.`);
+      if (keys.includes("pines") && base && (base.pines || []).some(q => q.x != null) && (ch.pines || []).every(q => q.x == null)) ok("Los pines propuestos solo actualizan nombre/función; se conservan las posiciones actuales.");
       if (c.modelo) {
         const rv = MLPlant.revisar(c); rv.forEach(r => (r.nivel === "rojo" ? mal : av)(r.msg)); if (!rv.length) ok("Modelo 3D sin piezas fuera de la placa ni encima de agujeros.");
-        const hdr = (c.modelo.piezas || []).filter(q => /header/.test(q.plantilla)), nH = hdr.reduce((s, q) => s + (+q.params.n || 0) * (+q.params.filas || 1), 0), nP = (ch.pines || []).length;
+        const hdr = (c.modelo.piezas || []).filter(q => /header|patas/.test(q.plantilla)), nH = hdr.reduce((s, q) => s + (+q.params.n || 0) * (+q.params.filas || 1), 0), nP = (ch.pines || []).length;
         if (nP && nH && nP !== nH) av(`La IA listó ${nP} pines pero el header del modelo tiene ${nH}.`); else if (nP && nH) ok(`${nP} pines asignados al header en orden físico.`);
         if (nP && !nH && !(c.pines || []).some(q => q.x != null)) av("Hay pines pero ningún header en el modelo: no tendrán posición en el DXF.");
       }
@@ -1259,6 +1269,9 @@ PROTOCOLO PARA CREAR/COMPLETAR (síguelo siempre):
 a) Identifica bien la pieza: ¿chip suelto o módulo/breakout (p. ej. GY-521 = módulo del MPU-6050)? Para un módulo, las medidas, pines y agujeros son las del MÓDULO, no las del chip.
 b) Coordenadas: mm, ORIGEN EN EL CENTRO de la placa, X a lo largo (lado más largo), Y a lo ancho, vista desde arriba (cara A). Agujeros y piezas deben quedar DENTRO de la placa (|x| ≤ L/2, |y| ≤ W/2) y el borde del agujero a ≥0.3 mm del borde.
 c) Pines: lista "pines" en el ORDEN FÍSICO del conector (pin 1 primero) con nombre y función, SIN x/y; y en "modelo" pon la pieza header (header_macho/header_hembra) con params.n = número de pines, paso real y su posición (x,y) — la app asigna los nombres a los pines del header en ese orden. Header soldado hacia abajo = cara "B".
+c2) Chip suelto (DIP, SOIC, SOP, TSSOP…): base "prisma" con las medidas del CUERPO (L = largo, W = ancho, espesor = alto del cuerpo, color "#1f2937") y una pieza de patas en la cara "B", x 0, y 0: "patas_dip" {n, paso 2.54, fila (separación entre filas, p. ej. 7.62), largo 3.8} o "patas_smd" {n, paso (1.27 SOIC), ancho (punta a punta de las patas), cuerpo (ancho del cuerpo)}. Numeración estándar: pin 1 abajo a la izquierda, antihorario. montaje.pcb = [largo, ancho, alto] del cuerpo.
+c3) VARIANTES: si John pide otro encapsulado, versión o tamaño de algo que ya existe (p. ej. la versión SOIC de un chip que está en DIP), CREA un componente nuevo con id distinto (p. ej. dm74ls08_soic14); nunca conviertas el existente en otra cosa.
+c4) Al ACTUALIZAR uno que ya tiene modelo 3D, pines con posición o montaje, NO propongas "modelo", "montaje" ni "pines" salvo que John lo pida o estén mal; si cambias pines, da solo nombre y función en el mismo orden.
 d) "modelo" es obligatorio si conoces las medidas: base con L, W y espesor, y las piezas principales (chip, regulador, conectores, LED) en su posición aproximada. Sin medidas confiables, omite montaje y modelo y dilo.
 e) Verificación: compara cada medida con al menos dos fuentes (datasheet/plano del fabricante y vendedor o foto con regla); llena "verificacion" con lo que comprobaste y marca confianza "baja" a lo que no coincide o tiene una sola fuente. No mezcles medidas de versiones distintas del módulo.
 f) Precios en pesos colombianos (convierte de USD si hace falta y dilo en el resumen).
@@ -1284,7 +1297,7 @@ ARCHIVOS ADJUNTOS — John adjuntó ${adj.map(a => `“${a.nombre}” (${a.kind 
 2. ${buscar ? "Luego busca en internet SOLO lo que el archivo no trae: medidas y agujeros del módulo comercial, precios en Colombia, URL directa del datasheet oficial e imagen." : "No tienes búsqueda web: usa solo lo que trae el archivo."}
 3. Si ya existe en la biblioteca, propón ACTUALIZARLO; si no, propón CREARLO. Incluye montaje y además el campo "modelo" (modelo 3D paramétrico) con este formato:
 "modelo":{"base":{"tipo":"placa|prisma|cilindro","forma":"rect|redondeada|redonda","L":largo,"W":ancho,"d":diametro,"espesor":espesor_o_altura,"radio":0,"color":"#166534"},"piezas":[{"plantilla":"id","cara":"A|B","x":0,"y":0,"rot":0,"params":{}}]}
-Para un chip suelto usa base "prisma" con las medidas del encapsulado (color "#1f2937") y "montaje.pcb" = [largo, ancho, alto]. Para un módulo usa "placa" y coloca sus piezas principales con estas plantillas (ids): ${MLPlant.todas().map(t => t.id).join(", ")}. Coordenadas en mm desde el centro de la placa.
+Para un chip suelto usa base "prisma" con las medidas del CUERPO del encapsulado (color "#1f2937"), "montaje.pcb" = [largo, ancho, alto] y la pieza "patas_dip" o "patas_smd" en la cara "B" (regla c2). Si el datasheet trae varios encapsulados, usa el que John pidió y menciona los otros. Para un módulo usa "placa" y coloca sus piezas principales con estas plantillas (ids): ${MLPlant.todas().map(t => t.id).join(", ")}. Coordenadas en mm desde el centro de la placa.
 4. En el resumen di qué datos salieron del archivo y cuáles de internet.` : ""}`;
       const last = S.chat[S.chat.length - 1];
       try {

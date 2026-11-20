@@ -24,6 +24,17 @@
     }
     return { prim, pines, zona: { tipo: "pines", cx: 0, cy: 0, w: L, h: W, z0: 0, z1: p.alto, salida: "+Z", holgura: hembra ? 12 : 22 } };
   }
+  function patas(p, dip) {
+    const n = Math.max(2, (p.n | 0) - ((p.n | 0) % 2)), m = n / 2, pas = +p.paso, prim = [], pines = [];
+    const yF = dip ? p.fila / 2 : (p.cuerpo / 2 + p.ancho / 2) / 2, largoS = dip ? 0 : (p.ancho - p.cuerpo) / 2;
+    for (let k = 0; k < n; k++) {
+      const abajo = k < m, i = abajo ? k : n - 1 - k, x = (i - (m - 1) / 2) * pas, y = abajo ? -yF : yF;
+      if (dip) { prim.push(caja(x, y, 0.46, 0.3, 0, p.largo, C.metal), caja(x, y - Math.sign(y) * 0.3, 1.0, 0.85, 0, 0.6, C.metal)); }
+      else prim.push(caja(x, y, Math.min(0.45, pas * 0.6), largoS, 0, 0.25, C.metal));
+      pines.push({ n: String(k + 1), x, y });
+    }
+    return { prim, pines, zona: { tipo: "pines", cx: 0, cy: 0, w: m * pas, h: dip ? p.fila : p.ancho, z0: 0, z1: dip ? p.largo : 0.25, salida: "+Z", holgura: dip ? 5 : 1 } };
+  }
   function conectorPaso(p, color, alto, prof) {
     const n = Math.max(1, p.n | 0), L = n * p.paso + 1.5, pines = [];
     for (let i = 0; i < n; i++) pines.push({ n: String(i + 1), x: (i - (n - 1) / 2) * p.paso, y: 0 });
@@ -44,6 +55,9 @@
     // Chips
     { id: "soic", g: "Chips", n: "SOIC / SOP", params: [P("n", "Pines", 8, 4, 28, 2), P("ancho", "Ancho cuerpo", 3.9, 3, 8)], gen: p => { const L = (p.n / 2) * 1.27 + 0.4; return { prim: [caja(0, 0, L, p.ancho, 0, 1.6, C.negro), caja(0, 0, L - 0.4, p.ancho + 2, 0, 0.3, C.metal)] }; } },
     { id: "tssop", g: "Chips", n: "TSSOP", params: [P("n", "Pines", 16, 8, 38, 2)], gen: p => { const L = (p.n / 2) * 0.65 + 0.6; return { prim: [caja(0, 0, L, 4.4, 0, 1.1, C.negro), caja(0, 0, L - 0.4, 6.4, 0, 0.25, C.metal)] }; } },
+    // patas de un chip suelto: se ponen en la cara B del prisma (cuerpo), en x 0, y 0; numeración DIP/SOIC (pin 1 abajo-izquierda, antihorario)
+    { id: "patas_dip", g: "Chips", n: "Patas DIP (chip THT)", params: [P("n", "Pines", 14, 4, 64, 2), P("paso", "Paso", 2.54, 1.27, 5, 0.01), P("fila", "Separación de filas", 7.62, 5, 25, 0.01), P("largo", "Largo bajo el cuerpo", 3.8, 1, 10)], gen: p => patas(p, true) },
+    { id: "patas_smd", g: "Chips", n: "Patas SMD gull-wing (SOIC/SOP/TSSOP)", params: [P("n", "Pines", 14, 4, 64, 2), P("paso", "Paso", 1.27, 0.4, 2.54, 0.01), P("ancho", "Ancho punta a punta", 6.0, 3, 15, 0.01), P("cuerpo", "Ancho del cuerpo", 3.9, 2, 12, 0.01)], gen: p => patas(p, false) },
     { id: "qfn", g: "Chips", n: "QFN", params: [P("lado", "Lado", 5, 2, 12)], gen: p => ({ prim: [caja(0, 0, p.lado, p.lado, 0, 0.9, C.negro)] }) },
     { id: "tqfp", g: "Chips", n: "TQFP / LQFP", params: [P("lado", "Lado cuerpo", 7, 5, 20)], gen: p => ({ prim: [caja(0, 0, p.lado, p.lado, 0, 1.2, C.negro), caja(0, 0, p.lado + 2, p.lado + 2, 0, 0.2, C.metal)] }) },
     { id: "wroom", g: "Chips", n: "Módulo ESP32-WROOM", params: [], gen: () => ({ prim: [caja(0, -3.2, 18, 19.2, 0, 3.1, C.metal), caja(0, 0, 18, 25.5, 0, 0.8, C.azulPcb)], zona: { tipo: "antena", cx: 0, cy: 9.5, w: 18, h: 6.4, z0: 0, z1: 3.1, salida: "+Y", holgura: 10 } }) },
@@ -201,7 +215,7 @@
     const hs = (M.piezas || []).map(pz => ({ pz, h: huella(pz) })).filter(x => x.h);
     for (const { pz, h } of hs) {
       const fuera = b.forma === "redonda" ? [[h.x0, h.y0], [h.x1, h.y0], [h.x0, h.y1], [h.x1, h.y1]].some(([x, y]) => Math.hypot(x, y) > b.d / 2 + 0.01) : (h.x0 < -L / 2 - 0.01 || h.x1 > L / 2 + 0.01 || h.y0 < -W / 2 - 0.01 || h.y1 > W / 2 + 0.01);
-      const tp = plantilla(pz.plantilla), sobresaleOk = (tp && ["micro_usb", "usb_c", "jack_dc"].includes(tp.id)) || /^zona:(usb|conector|antena)/.test(pz.origen || "") || !!pz.sobresale;
+      const tp = plantilla(pz.plantilla), sobresaleOk = (tp && ["micro_usb", "usb_c", "jack_dc", "patas_dip", "patas_smd"].includes(tp.id)) || /^zona:(usb|conector|antena)/.test(pz.origen || "") || !!pz.sobresale;
       if (fuera && !sobresaleOk) out.push({ nivel: "amarillo", pieza: pz.id, msg: `${pz.nombre || tp?.n} sale de la placa.` });
       for (const a of (c.montaje && c.montaje.agujeros) || []) {
         const m = a.d / 2 + 1.5; if (a.x + m > h.x0 && a.x - m < h.x1 && a.y + m > h.y0 && a.y - m < h.y1 && !(tp && ["separador", "tornillo", "tuerca"].includes(tp.id))) out.push({ nivel: "rojo", pieza: pz.id, msg: `${pz.nombre || tp?.n} queda sobre el agujero (x ${a.x}, y ${a.y}) o sin espacio para la cabeza del tornillo.` });
