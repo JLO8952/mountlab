@@ -1,0 +1,72 @@
+{
+ "id": "modulo_conversor_ttl_a_usb_pl2303hx_seri",
+ "nombre": "Módulo conversor USB a UART TTL PL2303HX",
+ "tipo": "electronico",
+ "categoria": "Comunicación",
+ "etiquetas": [
+  "USB",
+  "UART",
+  "TTL",
+  "Serial",
+  "PL2303HX",
+  "Conversor USB",
+  "Arduino",
+  "Microcontroladores",
+  "USB 2.0",
+  "Comunicación cableada"
+ ],
+ "fabricante": "Prolific Technology Inc. (fabricante del circuito integrado; módulo genérico)",
+ "referencia": "PL-2303HX",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Adaptador electrónico USB a UART TTL con conector USB tipo A macho y cabecera de 5 pines. Integra el controlador PL2303HX, que permite comunicar un computador con dispositivos electrónicos mediante un puerto serial virtual COM. Dispone de conexiones TXD, RXD, GND y alimentación de 3.3 V y 5 V según la variante del módulo.",
+  "funcionamiento": "El circuito integrado PL2303HX funciona como puente entre el protocolo USB y una interfaz serial UART. Recibe datos USB del computador, los convierte en señales seriales TXD y RXD y realiza la conversión inversa para transmitir datos hacia el computador. El controlador permite comunicación full-duplex, configuración de velocidad de transmisión, bits de datos, paridad y bits de parada. El computador reconoce el dispositivo mediante un controlador que crea un puerto COM virtual.",
+  "voltaje": "Alimentación desde USB de 5 V. El módulo comercial ofrece salidas de alimentación de 3.3 V y 5 V. El circuito integrado incorpora un regulador interno de 3.3 V. Verificar el nivel lógico real de TXD y RXD antes de conectar a un microcontrolador.",
+  "corriente": "El circuito integrado consume aproximadamente 20 mA típicos y 25 mA máximos en las condiciones indicadas por su datasheet, sin dispositivo conectado. Una variante comercial del módulo incorpora fusible rearmable de 500 mA; este valor no representa el consumo normal ni garantiza esa capacidad de salida en todas las versiones.",
+  "interfaz": "USB 2.0 Full-Speed hacia el computador y UART TTL hacia el dispositivo externo. Comunicación serial asíncrona TXD/RXD, full-duplex. No utiliza dirección I2C.",
+  "entradas": "USB tipo A macho para conexión al computador. RXD para recibir datos provenientes del TX del dispositivo externo. Alimentación de 5 V procedente del puerto USB.",
+  "salidas": "TXD para transmitir datos hacia el RX del dispositivo externo. Salidas de alimentación de 3.3 V y 5 V disponibles en el conector de pines según la variante comercial.",
+  "dimensiones": "No determinadas con confianza. Las fuentes consultadas muestran dimensiones de 41 × 14 mm y 50 × 14 mm para módulos PL2303HX de distintas variantes. No se confirma que correspondan a la placa de la fotografía. No se identificaron medidas verificadas de espesor, agujeros de montaje ni paso físico de los pines de esta unidad.",
+  "datasheet": "https://robu-prod-media.s3.ap-south-1.amazonaws.com/uploads/2025/03/PL-2303HX.pdf",
+  "notas": "IMPORTANTE: Este dispositivo proporciona señales UART TTL y NO niveles eléctricos RS232. Para conectar equipos con interfaz RS232 real se necesita un transceptor externo como MAX232 o MAX3232, según los niveles de alimentación. No conectar directamente a un puerto RS232 DB9. Verificar el orden de los cinco pines antes de alimentar o conectar el circuito. Las salidas de 3.3 V y 5 V son de alimentación y no implican necesariamente que el nivel lógico de TXD sea seleccionable entre ambos voltajes. La capacidad de corriente de las salidas depende del diseño específico del módulo. La compatibilidad con sistemas operativos depende de la versión del chip y del controlador instalado; algunas versiones antiguas pueden presentar problemas con Windows modernos. No confundir PL2303HX con PL2303GS, HXD u otras revisiones."
+ },
+ "especificaciones": [],
+ "imagen": {
+  "src": "img/modulo_conversor_ttl_a_usb_pl2303hx_seri.jpg?v=1795205683318",
+  "origen": "foto subida en el chat"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": null,
+ "zonas": [],
+ "pines": [],
+ "archivos": {},
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas"
+   ]
+  }
+ ],
+ "modificado": "2026-11-20T20:14:41.159Z"
+}
