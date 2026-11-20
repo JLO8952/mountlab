@@ -1,6 +1,6 @@
 {
  "id": "modulo_conversor_ttl_a_usb_pl2303hx_seri",
- "nombre": "Módulo conversor USB a UART TTL PL2303HX",
+ "nombre": "Módulo conversor USB a TTL UART PL2303HX",
  "tipo": "electronico",
  "categoria": "Comunicación",
  "etiquetas": [
@@ -13,45 +13,174 @@
   "Arduino",
   "Microcontroladores",
   "USB 2.0",
-  "Comunicación cableada"
+  "Comunicación cableada",
+  "Conversor",
+  "3.3V",
+  "5V"
  ],
- "fabricante": "Prolific Technology Inc. (fabricante del circuito integrado; módulo genérico)",
- "referencia": "PL-2303HX",
+ "fabricante": "Prolific Technology (IC) / Genérico (módulo)",
+ "referencia": "PL2303HX",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
-  "descripcion": "Adaptador electrónico USB a UART TTL con conector USB tipo A macho y cabecera de 5 pines. Integra el controlador PL2303HX, que permite comunicar un computador con dispositivos electrónicos mediante un puerto serial virtual COM. Dispone de conexiones TXD, RXD, GND y alimentación de 3.3 V y 5 V según la variante del módulo.",
-  "funcionamiento": "El circuito integrado PL2303HX funciona como puente entre el protocolo USB y una interfaz serial UART. Recibe datos USB del computador, los convierte en señales seriales TXD y RXD y realiza la conversión inversa para transmitir datos hacia el computador. El controlador permite comunicación full-duplex, configuración de velocidad de transmisión, bits de datos, paridad y bits de parada. El computador reconoce el dispositivo mediante un controlador que crea un puerto COM virtual.",
-  "voltaje": "Alimentación desde USB de 5 V. El módulo comercial ofrece salidas de alimentación de 3.3 V y 5 V. El circuito integrado incorpora un regulador interno de 3.3 V. Verificar el nivel lógico real de TXD y RXD antes de conectar a un microcontrolador.",
-  "corriente": "El circuito integrado consume aproximadamente 20 mA típicos y 25 mA máximos en las condiciones indicadas por su datasheet, sin dispositivo conectado. Una variante comercial del módulo incorpora fusible rearmable de 500 mA; este valor no representa el consumo normal ni garantiza esa capacidad de salida en todas las versiones.",
-  "interfaz": "USB 2.0 Full-Speed hacia el computador y UART TTL hacia el dispositivo externo. Comunicación serial asíncrona TXD/RXD, full-duplex. No utiliza dirección I2C.",
-  "entradas": "USB tipo A macho para conexión al computador. RXD para recibir datos provenientes del TX del dispositivo externo. Alimentación de 5 V procedente del puerto USB.",
-  "salidas": "TXD para transmitir datos hacia el RX del dispositivo externo. Salidas de alimentación de 3.3 V y 5 V disponibles en el conector de pines según la variante comercial.",
-  "dimensiones": "No determinadas con confianza. Las fuentes consultadas muestran dimensiones de 41 × 14 mm y 50 × 14 mm para módulos PL2303HX de distintas variantes. No se confirma que correspondan a la placa de la fotografía. No se identificaron medidas verificadas de espesor, agujeros de montaje ni paso físico de los pines de esta unidad.",
-  "datasheet": "https://robu-prod-media.s3.ap-south-1.amazonaws.com/uploads/2025/03/PL-2303HX.pdf",
-  "notas": "IMPORTANTE: Este dispositivo proporciona señales UART TTL y NO niveles eléctricos RS232. Para conectar equipos con interfaz RS232 real se necesita un transceptor externo como MAX232 o MAX3232, según los niveles de alimentación. No conectar directamente a un puerto RS232 DB9. Verificar el orden de los cinco pines antes de alimentar o conectar el circuito. Las salidas de 3.3 V y 5 V son de alimentación y no implican necesariamente que el nivel lógico de TXD sea seleccionable entre ambos voltajes. La capacidad de corriente de las salidas depende del diseño específico del módulo. La compatibilidad con sistemas operativos depende de la versión del chip y del controlador instalado; algunas versiones antiguas pueden presentar problemas con Windows modernos. No confundir PL2303HX con PL2303GS, HXD u otras revisiones."
+  "descripcion": "Adaptador compacto de puerto USB tipo A a interfaz serial UART TTL basado en el chip PL2303HX. Permite comunicar microcontroladores, placas Arduino y módulos seriales directamente con un PC sin requerir circuito MAX232, ofreciendo además salidas de alimentación de 3.3 V y 5 V.",
+  "funcionamiento": "Emula un puerto serial virtual (COM/TTY) a través del bus USB 2.0 Full-Speed (12 Mbps) mediante el puente USB-UART PL2303HX y un cristal oscilador de 12 MHz. Convierte las tramas USB en señales serie asíncronas TXD y RXD a niveles TTL, integrando un regulador interno de 3.3 V para la lógica y alimentación auxiliar.",
+  "voltaje": "Entrada 5 V DC vía USB; salidas de alimentación 5 V y 3.3 V; lógica TTL compatible con 3.3 V y 5 V",
+  "corriente": "Consumo típico en operación ~20 mA; salida 5 V hasta ~500 mA (limitada por puerto USB); salida 3.3 V regulada interna ~50-100 mA máx.",
+  "interfaz": "USB 2.0 Full-Speed (12 Mbps) a UART TTL (75 bps hasta 12 Mbps, estándar 300 bps - 115200 bps)",
+  "entradas": "Conector USB tipo A macho (5 V, D+, D-, GND); pin RXD (recepción UART)",
+  "salidas": "Pin TXD (transmisión UART); pines de alimentación 5 V y 3.3 V",
+  "dimensiones": "PCB aprox. 31.0 x 15.5 x 1.6 mm (largo total con USB-A y pines aprox. 51.0 x 15.5 x 7.5 mm), sin agujeros de montaje, paso de pines 2.54 mm",
+  "datasheet": "https://www.prolific.com.tw/UserFiles/files/ds_pl2303HXD_v1_4_4.pdf",
+  "notas": "La versión PL2303HX (Rev. A/D) suele presentar incompatibilidad con los drivers oficiales más recientes de Prolific en Windows 10/11 (error Código 10), requiriendo en muchos casos instalar la versión de driver 3.3.2.102 o 3.3.11.152. En Linux y macOS suele funcionar con el driver nativo pl2303. El módulo no incluye pin DTR para auto-reset en Arduino Pro Mini."
  },
- "especificaciones": [],
+ "especificaciones": [
+  {
+   "param": "Circuito integrado",
+   "valor": "Prolific PL2303HX (encapsulado SSOP-28)"
+  },
+  {
+   "param": "Estándar USB",
+   "valor": "USB 1.1 / 2.0 Full-Speed (12 Mbps)"
+  },
+  {
+   "param": "Velocidad UART (Baud rate)",
+   "valor": "75 bps a 12 Mbps"
+  },
+  {
+   "param": "Buffer FIFO",
+   "valor": "512 bytes bidireccional (256 B TX / 256 B RX)"
+  },
+  {
+   "param": "Cristal oscilador",
+   "valor": "12 MHz (HC-49S)"
+  },
+  {
+   "param": "Conector lado PC",
+   "valor": "USB Tipo A macho"
+  },
+  {
+   "param": "Conector lado TTL",
+   "valor": "Header macho 5 pines a 90°, paso 2.54 mm"
+  },
+  {
+   "param": "Protección física",
+   "valor": "Funda termocontraíble transparente"
+  },
+  {
+   "param": "Sistemas operativos",
+   "valor": "Windows 98SE/ME/2000/XP/Vista/7/8/10, macOS, Linux, Android"
+  }
+ ],
  "imagen": {
   "src": "img/modulo_conversor_ttl_a_usb_pl2303hx_seri.jpg?v=1795205683318",
   "origen": "foto subida en el chat"
  },
  "precios": [],
  "busquedas": {},
- "montaje": null,
- "zonas": [],
- "pines": [],
- "archivos": {
-  "datasheet": {
-   "nombre": "modulo_conversor_ttl_a_usb_pl2303hx_seri_datasheet.pdf",
-   "fuente": "https://robu-prod-media.s3.ap-south-1.amazonaws.com/uploads/2025/03/PL-2303HX.pdf",
-   "fecha": "2026-11-20",
-   "carpeta": "archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri/modulo_conversor_ttl_a_usb_pl2303hx_seri_datasheet.pdf",
-   "kb": 1146
-  }
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 11,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   31,
+   15.5,
+   1.6
+  ],
+  "forma": "rect"
  },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Header UART 5 pines",
+   "cx": -14,
+   "cy": 0,
+   "w": 2.54,
+   "h": 12.7,
+   "z": [
+    1.6,
+    12.6
+   ],
+   "salida": "+Z",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "p1"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED indicador",
+   "cx": -9.5,
+   "cy": -3.5,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "p5"
+  }
+ ],
+ "pines": [
+  {
+   "n": "3V3",
+   "func": "Salida de alimentación regulada de 3.3 V DC",
+   "x": -14,
+   "y": -5.08,
+   "conector": "Header UART 5 pines",
+   "pieza": "p1",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "TXD",
+   "func": "Transmisión de datos serie UART TTL (conectar al RX del microcontrolador)",
+   "x": -14,
+   "y": -2.54,
+   "conector": "Header UART 5 pines",
+   "pieza": "p1",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "RXD",
+   "func": "Recepción de datos serie UART TTL (conectar al TX del microcontrolador)",
+   "x": -14,
+   "y": 0,
+   "conector": "Header UART 5 pines",
+   "pieza": "p1",
+   "idx": 2,
+   "cara": "A"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra común (0 V)",
+   "x": -14,
+   "y": 2.54,
+   "conector": "Header UART 5 pines",
+   "pieza": "p1",
+   "idx": 3,
+   "cara": "A"
+  },
+  {
+   "n": "5V",
+   "func": "Salida de alimentación de 5 V DC directa del puerto USB",
+   "x": -14,
+   "y": 5.08,
+   "conector": "Header UART 5 pines",
+   "pieza": "p1",
+   "idx": 4,
+   "cara": "A"
+  }
+ ],
+ "archivos": {},
  "historial": [
   {
    "v": 1,
@@ -75,7 +204,282 @@
     "ficha.datasheet",
     "ficha.notas"
    ]
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo"
+   ]
   }
  ],
- "modificado": "2026-11-20T20:14:41.159Z"
+ "modificado": "2026-11-20T20:16:37.604Z",
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 31,
+   "W": 15.5,
+   "d": 30,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "header_macho",
+    "nombre": "Header UART 5 pines",
+    "cara": "A",
+    "x": -14,
+    "y": 0,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "n": 5,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 11
+    }
+   },
+   {
+    "id": "p2",
+    "plantilla": "f_caja",
+    "nombre": "IC PL2303HX (SSOP-28)",
+    "cara": "A",
+    "x": -2,
+    "y": -2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 10.2,
+     "h": 5.3,
+     "alto": 1.8,
+     "r": 0.2,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p3",
+    "plantilla": "cristal",
+    "nombre": "Cristal 12 MHz",
+    "cara": "A",
+    "x": -2,
+    "y": 4.2,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "p4",
+    "plantilla": "f_caja",
+    "nombre": "Conector USB-A macho",
+    "cara": "A",
+    "x": 11.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 8,
+     "h": 12,
+     "alto": 4.5,
+     "r": 0,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p5",
+    "plantilla": "led_smd",
+    "nombre": "LED indicador",
+    "cara": "A",
+    "x": -9.5,
+    "y": -3.5,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "p6",
+    "plantilla": "smd",
+    "nombre": "Capacitor desacoplo",
+    "cara": "A",
+    "x": 5.5,
+    "y": -3.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -14,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#1f2937",
+    "pieza": "p1",
+    "w": 2.54,
+    "h": 12.7
+   },
+   {
+    "f": "caja",
+    "cx": -14,
+    "cy": -5.08,
+    "z0": 4.1,
+    "z1": 12.6,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -14,
+    "cy": -2.54,
+    "z0": 4.1,
+    "z1": 12.6,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -14,
+    "cy": 0,
+    "z0": 4.1,
+    "z1": 12.6,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -14,
+    "cy": 2.54,
+    "z0": 4.1,
+    "z1": 12.6,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -14,
+    "cy": 5.08,
+    "z0": 4.1,
+    "z1": 12.6,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -2,
+    "cy": -2,
+    "z0": 1.6,
+    "z1": 3.4,
+    "color": "#64748b",
+    "pieza": "p2",
+    "w": 10.2,
+    "h": 5.3,
+    "r": 0.2
+   },
+   {
+    "f": "caja",
+    "cx": -2,
+    "cy": 4.2,
+    "z0": 1.6,
+    "z1": 5.1,
+    "color": "#cbd5e1",
+    "pieza": "p3",
+    "w": 11,
+    "h": 4.6,
+    "r": 2.2
+   },
+   {
+    "f": "caja",
+    "cx": 11.5,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 6.1,
+    "color": "#64748b",
+    "pieza": "p4",
+    "w": 8,
+    "h": 12
+   },
+   {
+    "f": "caja",
+    "cx": -9.5,
+    "cy": -3.5,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "p5",
+    "w": 2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 5.5,
+    "cy": -3.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "p6",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 4.7,
+    "cy": -3.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "p6",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 6.3,
+    "cy": -3.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "p6",
+    "w": 0.4,
+    "h": 1.25
+   }
+  ]
+ },
+ "cad_pendiente": true
 }
