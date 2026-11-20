@@ -28,7 +28,7 @@
   const comp = id => Store.db.componentes.find(c => c.id === id);
   function imgHtml(c, big) {
     const src = c.imagen && Store.imgUrl(c.imagen.src);
-    if (src) return `<img src="${esc(src)}" alt="${esc(c.nombre)}" loading="lazy">`;
+    if (src) { const alt = Store.imgAlt ? Store.imgAlt(c.imagen.src) : ""; return `<img src="${esc(src)}" alt="${esc(c.nombre)}" loading="lazy"${alt && alt !== src ? ` data-alt="${esc(alt)}" onerror="if(this.dataset.alt){this.src=this.dataset.alt;this.dataset.alt=''}"` : ""}>`; }
     const t = MLEditor.thumb(c, big ? 280 : 200, big ? 190 : 130); if (t) return t;
     return `<div class="muted small" style="padding:30px">Sin imagen</div>`;
   }

@@ -139,14 +139,25 @@
       if (this.mode !== "github") return dataUrl;
       const bin = atob(dataUrl.split(",")[1]); const u8 = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
       await this.putFile(path, b64bytes(u8), `Imagen de ${id}`);
+      this._imgCache[path] = dataUrl;   // se ve al instante, sin esperar a que GitHub Pages publique el archivo
       return path + "?v=" + Date.now();
     },
+    /** Imágenes recién subidas en esta sesión (ruta sin ?v → dataURL). */
+    _imgCache: {},
+    /** URL para mostrar una imagen del repositorio.
+       GitHub Pages tarda 1–3 min en publicar cada cambio (y cada guardado reinicia la publicación), así que una imagen
+       recién subida daba 404. Orden: 1) copia en memoria de lo que se acaba de subir; 2) raw.githubusercontent.com
+       (sirve el archivo apenas se hace el commit; el ?v evita la caché); 3) la ruta relativa de Pages como respaldo. */
     imgUrl(src) {
       if (!src) return null;
-      if (/^(data:|https?:)/.test(src)) return src;
-      // repo privado: GitHub Pages no sirve la imagen si no hay Pages; usar raw por la API no es posible en <img>, así que se sirve desde Pages
+      if (/^(data:|https?:|blob:)/.test(src)) return src;
+      const ruta = String(src).replace(/^\.?\//, ""), sinQ = ruta.split("?")[0];
+      if (this._imgCache[sinQ]) return this._imgCache[sinQ];
+      if (this.cfg.owner && this.cfg.repo) return `https://raw.githubusercontent.com/${this.cfg.owner}/${this.cfg.repo}/${this.cfg.branch || "main"}/${ruta}`;
       return src;
     },
+    /** Ruta de respaldo (GitHub Pages) para usar si raw falla, p. ej. repositorio privado. */
+    imgAlt(src) { return src && !/^(data:|https?:|blob:)/.test(src) ? src : ""; },
     async dispatch(workflow, inputs) {
       const r = await fetch(this.api(`actions/workflows/${workflow}/dispatches`), { method: "POST", headers: this.headers({ "Content-Type": "application/json" }), body: JSON.stringify({ ref: this.cfg.branch, inputs: inputs || {} }) });
       if (!r.ok) throw new Error(`GitHub ${r.status}: ${(await r.text()).slice(0, 160)}`);
