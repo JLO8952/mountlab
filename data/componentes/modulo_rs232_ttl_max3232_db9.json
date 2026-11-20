@@ -272,7 +272,37 @@
    "cara": "A"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "modulo_rs232_ttl_max3232_db9_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_rs232_ttl_max3232_db9 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_rs232_ttl_max3232_db9/modulo_rs232_ttl_max3232_db9_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "modulo_rs232_ttl_max3232_db9_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_rs232_ttl_max3232_db9 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_rs232_ttl_max3232_db9/modulo_rs232_ttl_max3232_db9_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "modulo_rs232_ttl_max3232_db9_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_rs232_ttl_max3232_db9 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_rs232_ttl_max3232_db9/modulo_rs232_ttl_max3232_db9_v1_plano.dxf"
+  },
+  "datasheet": {
+   "nombre": "modulo_rs232_ttl_max3232_db9_datasheet.pdf",
+   "fuente": "https://www.ti.com/lit/ds/symlink/max3232.pdf",
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_rs232_ttl_max3232_db9 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_rs232_ttl_max3232_db9/modulo_rs232_ttl_max3232_db9_datasheet.pdf",
+   "kb": 1742
+  }
+ },
  "modelo": {
   "version": 1,
   "base": {
@@ -842,6 +872,5 @@
    "nota": "Creado desde la página del vendedor enviada por John (MAX3232, DB9 hembra, VCC/GND/TX/RX, 3.3–5 V). Placa 30.8 × 28.8 mm (Phipps Electronics 30.8 × 28.8; Robozar 29 × 32: coinciden ±2 mm). Agujeros, orden del header y posición de piezas estimados de la foto (confianza baja). Datasheet del chip: TI MAX3232."
   }
  ],
- "modificado": "2026-11-20T03:39:33.465Z",
- "cad_pendiente": true
+ "modificado": "2026-11-20T03:39:33.465Z"
 }
