@@ -1,6 +1,6 @@
 {
  "id": "modulo_conversor_ttl_a_usb_pl2303hx_seri",
- "nombre": "Módulo conversor USB a TTL UART PL2303HX",
+ "nombre": "Módulo conversor USB a TTL (UART) PL2303HX",
  "tipo": "electronico",
  "categoria": "Comunicación",
  "etiquetas": [
@@ -16,24 +16,28 @@
   "Comunicación cableada",
   "Conversor",
   "3.3V",
-  "5V"
+  "5V",
+  "serial",
+  "PL2303",
+  "programador",
+  "conversor"
  ],
- "fabricante": "Prolific Technology (IC) / Genérico (módulo)",
- "referencia": "PL2303HX",
+ "fabricante": "Genérico (chip Prolific Technology)",
+ "referencia": "PL2303HX USB-TTL 5 pines",
  "estado": "borrador",
- "version": 2,
+ "version": 3,
  "unidad": "und",
  "ficha": {
-  "descripcion": "Adaptador compacto de puerto USB tipo A a interfaz serial UART TTL basado en el chip PL2303HX. Permite comunicar microcontroladores, placas Arduino y módulos seriales directamente con un PC sin requerir circuito MAX232, ofreciendo además salidas de alimentación de 3.3 V y 5 V.",
-  "funcionamiento": "Emula un puerto serial virtual (COM/TTY) a través del bus USB 2.0 Full-Speed (12 Mbps) mediante el puente USB-UART PL2303HX y un cristal oscilador de 12 MHz. Convierte las tramas USB en señales serie asíncronas TXD y RXD a niveles TTL, integrando un regulador interno de 3.3 V para la lógica y alimentación auxiliar.",
-  "voltaje": "Entrada 5 V DC vía USB; salidas de alimentación 5 V y 3.3 V; lógica TTL compatible con 3.3 V y 5 V",
-  "corriente": "Consumo típico en operación ~20 mA; salida 5 V hasta ~500 mA (limitada por puerto USB); salida 3.3 V regulada interna ~50-100 mA máx.",
-  "interfaz": "USB 2.0 Full-Speed (12 Mbps) a UART TTL (75 bps hasta 12 Mbps, estándar 300 bps - 115200 bps)",
-  "entradas": "Conector USB tipo A macho (5 V, D+, D-, GND); pin RXD (recepción UART)",
-  "salidas": "Pin TXD (transmisión UART); pines de alimentación 5 V y 3.3 V",
-  "dimensiones": "PCB aprox. 31.0 x 15.5 x 1.6 mm (largo total con USB-A y pines aprox. 51.0 x 15.5 x 7.5 mm), sin agujeros de montaje, paso de pines 2.54 mm",
-  "datasheet": "https://www.prolific.com.tw/UserFiles/files/ds_pl2303HXD_v1_4_4.pdf",
-  "notas": "La versión PL2303HX (Rev. A/D) suele presentar incompatibilidad con los drivers oficiales más recientes de Prolific en Windows 10/11 (error Código 10), requiriendo en muchos casos instalar la versión de driver 3.3.2.102 o 3.3.11.152. En Linux y macOS suele funcionar con el driver nativo pl2303. El módulo no incluye pin DTR para auto-reset en Arduino Pro Mini."
+  "descripcion": "Adaptador USB-A macho a puerto serie UART con niveles TTL, basado en el PL-2303HX. Sirve para comunicar o programar microcontroladores (Arduino Pro Mini, ESP8266/ESP32, STM32, módulos GPS/Bluetooth) desde el PC sin usar un MAX232.",
+  "funcionamiento": "El PL-2303HX lleva integrados el transceptor USB 1.1 full-speed, un regulador de 5 V a 3.3 V y el oscilador. En el PC aparece como puerto COM virtual y convierte los datos USB en tramas UART (TXD/RXD). La placa incluye un fusible rearmable de 500 mA y LEDs de alimentación y de actividad de datos.",
+  "voltaje": "Se alimenta por USB (5 V). Tiene salidas de 5 V (VBUS a través del fusible) y de 3.3 V (regulador interno del chip). Señales TTL: 3.3 V, que en general toleran 5 V.",
+  "corriente": "Salida de 5 V limitada por el fusible rearmable de 500 mA. La salida de 3.3 V solo sirve para cargas pequeñas (unas decenas de mA, la da el regulador interno del chip).",
+  "interfaz": "USB 1.1 Full-Speed (USB-A macho) ↔ UART TTL (TXD, RXD). Velocidad programable de 75 bps a 12 Mbps según el datasheet; en la práctica, hasta 115200–921600 bps.",
+  "entradas": "USB-A (VBUS, D+, D−, GND); RXD (datos serie que llegan desde el TX del microcontrolador)",
+  "salidas": "TXD (datos serie hacia el RX del microcontrolador); 5 V; 3.3 V",
+  "dimensiones": "≈ 52 × 15.5 × 6.5 mm incluido el conector USB-A. Sin agujeros de montaje (va en termoencogible). Header de 5 pines con paso de 2.54 mm que sale en línea por el extremo opuesto al USB.",
+  "datasheet": "https://voltiq.ru/datasheets/pl2303hxd_v1_4_4.pdf",
+  "notas": "Conexión cruzada: TXD del módulo → RX del MCU y RXD del módulo → TX del MCU, con GND común. No conectar directo a un puerto RS-232 real (±12 V): hace falta un MAX232. Ojo: muchos módulos baratos traen PL2303HX 'HXA/XA' antiguos o clonados, y los drivers actuales de Prolific en Windows 8/10/11 los rechazan con el aviso 'PL2303HXA PHASED OUT' o el error código 10. En ese caso hay que instalar un driver antiguo (v3.3.2.x). No trae pines DTR/RTS, así que para Arduino Pro Mini hay que pulsar reset a mano y para el ESP32 hay que poner GPIO0 a GND a mano."
  },
  "especificaciones": [
   {
@@ -70,25 +74,69 @@
   },
   {
    "param": "Sistemas operativos",
-   "valor": "Windows 98SE/ME/2000/XP/Vista/7/8/10, macOS, Linux, Android"
+   "valor": "Windows 98SE–10, macOS, Linux (driver pl2303 en el kernel), Android"
+  },
+  {
+   "param": "Chip",
+   "valor": "Prolific PL-2303HX (SSOP28)"
+  },
+  {
+   "param": "USB",
+   "valor": "1.1 Full-Speed, conector USB-A macho"
+  },
+  {
+   "param": "Velocidad UART",
+   "valor": "75 bps – 12 Mbps (datasheet)"
+  },
+  {
+   "param": "Niveles lógicos",
+   "valor": "TTL 3.3 V (tolera 5 V)"
+  },
+  {
+   "param": "Salidas de alimentación",
+   "valor": "5 V y 3.3 V"
+  },
+  {
+   "param": "Protección",
+   "valor": "Fusible rearmable de 500 mA"
+  },
+  {
+   "param": "Indicadores",
+   "valor": "LED de alimentación y LEDs de TX/RX"
+  },
+  {
+   "param": "Temperatura de operación",
+   "valor": "-40 a 85 °C"
+  },
+  {
+   "param": "Peso",
+   "valor": "≈ 5 g"
   }
  ],
  "imagen": {
   "src": "img/modulo_conversor_ttl_a_usb_pl2303hx_seri.jpg?v=1795205683318",
   "origen": "foto subida en el chat"
  },
- "precios": [],
+ "precios": [
+  {
+   "proveedor": "Zamux (Colombia)",
+   "precio_cop": 5900,
+   "url": "https://www.zamux.co/modulo-conversor-ttl-a-usb-pl2303hx-serial",
+   "fecha": "2026-11",
+   "estimado": false
+  }
+ ],
  "busquedas": {},
  "montaje": {
   "origen": "centro",
   "fijacion": "guia_deslizante",
   "agujeros": [],
-  "altura_superior": 11,
+  "altura_superior": 6,
   "altura_inferior": 0,
   "holgura_inferior_cableado": 0,
-  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador. Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
   "pcb": [
-   31,
+   52,
    15.5,
    1.6
   ],
@@ -97,14 +145,14 @@
  "zonas": [
   {
    "tipo": "pines",
-   "nombre": "Header UART 5 pines",
-   "cx": -14,
+   "nombre": "Header 5 pines (3V3, TXD, RXD, GND, 5V)",
+   "cx": -24.5,
    "cy": 0,
    "w": 2.54,
    "h": 12.7,
    "z": [
     1.6,
-    12.6
+    7.6
    ],
    "salida": "+Z",
    "holgura": 22,
@@ -112,10 +160,26 @@
    "pieza": "p1"
   },
   {
+   "tipo": "pines",
+   "nombre": "PL-2303HX (SSOP28)",
+   "cx": -11,
+   "cy": -1.5,
+   "w": 9.1,
+   "h": 7.8,
+   "z": [
+    1.6,
+    1.85
+   ],
+   "salida": "+Z",
+   "holgura": 1,
+   "auto": true,
+   "pieza": "p2"
+  },
+  {
    "tipo": "led",
-   "nombre": "LED indicador",
-   "cx": -9.5,
-   "cy": -3.5,
+   "nombre": "LED PWR",
+   "cx": 0,
+   "cy": 5,
    "w": 2,
    "h": 1.25,
    "z": [
@@ -126,88 +190,357 @@
    "holgura": 2,
    "auto": true,
    "pieza": "p5"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED TX/RX",
+   "cx": 2.5,
+   "cy": 5,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "p6"
   }
  ],
  "pines": [
   {
    "n": "3V3",
-   "func": "Salida de alimentación regulada de 3.3 V DC",
-   "x": -14,
+   "func": "Salida de 3.3 V (carga baja)",
+   "x": -24.5,
    "y": -5.08,
-   "conector": "Header UART 5 pines",
+   "conector": "Header 5 pines (3V3, TXD, RXD, GND, 5V)",
    "pieza": "p1",
    "idx": 0,
    "cara": "A"
   },
   {
    "n": "TXD",
-   "func": "Transmisión de datos serie UART TTL (conectar al RX del microcontrolador)",
-   "x": -14,
+   "func": "Salida de datos serie → RX del microcontrolador",
+   "x": -24.5,
    "y": -2.54,
-   "conector": "Header UART 5 pines",
+   "conector": "Header 5 pines (3V3, TXD, RXD, GND, 5V)",
    "pieza": "p1",
    "idx": 1,
    "cara": "A"
   },
   {
    "n": "RXD",
-   "func": "Recepción de datos serie UART TTL (conectar al TX del microcontrolador)",
-   "x": -14,
+   "func": "Entrada de datos serie ← TX del microcontrolador",
+   "x": -24.5,
    "y": 0,
-   "conector": "Header UART 5 pines",
+   "conector": "Header 5 pines (3V3, TXD, RXD, GND, 5V)",
    "pieza": "p1",
    "idx": 2,
    "cara": "A"
   },
   {
    "n": "GND",
-   "func": "Tierra común (0 V)",
-   "x": -14,
+   "func": "Tierra común",
+   "x": -24.5,
    "y": 2.54,
-   "conector": "Header UART 5 pines",
+   "conector": "Header 5 pines (3V3, TXD, RXD, GND, 5V)",
    "pieza": "p1",
    "idx": 3,
    "cara": "A"
   },
   {
    "n": "5V",
-   "func": "Salida de alimentación de 5 V DC directa del puerto USB",
-   "x": -14,
+   "func": "Salida de 5 V desde el USB (fusible de 500 mA)",
+   "x": -24.5,
    "y": 5.08,
-   "conector": "Header UART 5 pines",
+   "conector": "Header 5 pines (3V3, TXD, RXD, GND, 5V)",
    "pieza": "p1",
    "idx": 4,
    "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).1",
+   "func": "",
+   "x": -15.225,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).2",
+   "func": "",
+   "x": -14.575,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).3",
+   "func": "",
+   "x": -13.925,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 2,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).4",
+   "func": "",
+   "x": -13.275,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 3,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).5",
+   "func": "",
+   "x": -12.625,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 4,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).6",
+   "func": "",
+   "x": -11.975,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 5,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).7",
+   "func": "",
+   "x": -11.325,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 6,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).8",
+   "func": "",
+   "x": -10.675,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 7,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).9",
+   "func": "",
+   "x": -10.025,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 8,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).10",
+   "func": "",
+   "x": -9.375,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 9,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).11",
+   "func": "",
+   "x": -8.725,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 10,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).12",
+   "func": "",
+   "x": -8.075,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 11,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).13",
+   "func": "",
+   "x": -7.425,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 12,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).14",
+   "func": "",
+   "x": -6.775,
+   "y": -4.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 13,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).15",
+   "func": "",
+   "x": -6.775,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 14,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).16",
+   "func": "",
+   "x": -7.425,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 15,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).17",
+   "func": "",
+   "x": -8.075,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 16,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).18",
+   "func": "",
+   "x": -8.725,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 17,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).19",
+   "func": "",
+   "x": -9.375,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 18,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).20",
+   "func": "",
+   "x": -10.025,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 19,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).21",
+   "func": "",
+   "x": -10.675,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 20,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).22",
+   "func": "",
+   "x": -11.325,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 21,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).23",
+   "func": "",
+   "x": -11.975,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 22,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).24",
+   "func": "",
+   "x": -12.625,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 23,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).25",
+   "func": "",
+   "x": -13.275,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 24,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).26",
+   "func": "",
+   "x": -13.925,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 25,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).27",
+   "func": "",
+   "x": -14.575,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 26,
+   "cara": "A"
+  },
+  {
+   "n": "PL-2303HX (SSOP28).28",
+   "func": "",
+   "x": -15.225,
+   "y": 1.775,
+   "conector": "PL-2303HX (SSOP28)",
+   "pieza": "p2",
+   "idx": 27,
+   "cara": "A"
   }
  ],
- "archivos": {
-  "dxf_huella": {
-   "nombre": "modulo_conversor_ttl_a_usb_pl2303hx_seri_v2_huella.dxf",
-   "version": 2,
-   "fecha": "2026-11-20",
-   "carpeta": "archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri/modulo_conversor_ttl_a_usb_pl2303hx_seri_v2_huella.dxf"
-  },
-  "step_montaje": {
-   "nombre": "modulo_conversor_ttl_a_usb_pl2303hx_seri_v2_montaje.step",
-   "version": 2,
-   "fecha": "2026-11-20",
-   "carpeta": "archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri/modulo_conversor_ttl_a_usb_pl2303hx_seri_v2_montaje.step"
-  },
-  "dxf_plano": {
-   "nombre": "modulo_conversor_ttl_a_usb_pl2303hx_seri_v2_plano.dxf",
-   "version": 2,
-   "fecha": "2026-11-20",
-   "carpeta": "archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_conversor_ttl_a_usb_pl2303hx_seri/modulo_conversor_ttl_a_usb_pl2303hx_seri_v2_plano.dxf"
-  },
-  "datasheet": {
-   "fuente": "https://www.prolific.com.tw/UserFiles/files/ds_pl2303HXD_v1_4_4.pdf",
-   "error": "HTTP Error 404: Not Found",
-   "fecha": "2026-11-20"
-  }
- },
+ "archivos": {},
  "historial": [
   {
    "v": 1,
@@ -258,15 +591,43 @@
     "montaje",
     "modelo"
    ]
+  },
+  {
+   "v": 3,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo, precios",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo",
+    "precios"
+   ]
   }
  ],
- "modificado": "2026-11-20T20:16:37.604Z",
+ "modificado": "2026-11-20T20:18:00.167Z",
  "modelo": {
   "version": 1,
   "base": {
    "tipo": "placa",
    "forma": "rect",
-   "L": 31,
+   "L": 52,
    "W": 15.5,
    "d": 30,
    "espesor": 1.6,
@@ -277,9 +638,9 @@
    {
     "id": "p1",
     "plantilla": "header_macho",
-    "nombre": "Header UART 5 pines",
+    "nombre": "Header 5 pines (3V3, TXD, RXD, GND, 5V)",
     "cara": "A",
-    "x": -14,
+    "x": -24.5,
     "y": 0,
     "rot": 90,
     "z": 0,
@@ -287,24 +648,23 @@
      "n": 5,
      "filas": 1,
      "paso": 2.54,
-     "alto": 11
+     "alto": 6
     }
    },
    {
     "id": "p2",
-    "plantilla": "f_caja",
-    "nombre": "IC PL2303HX (SSOP-28)",
+    "plantilla": "patas_smd",
+    "nombre": "PL-2303HX (SSOP28)",
     "cara": "A",
-    "x": -2,
-    "y": -2,
+    "x": -11,
+    "y": -1.5,
     "rot": 0,
     "z": 0,
     "params": {
-     "w": 10.2,
-     "h": 5.3,
-     "alto": 1.8,
-     "r": 0.2,
-     "color": "#64748b"
+     "n": 28,
+     "paso": 0.65,
+     "ancho": 7.8,
+     "cuerpo": 5.3
     }
    },
    {
@@ -312,8 +672,8 @@
     "plantilla": "cristal",
     "nombre": "Cristal 12 MHz",
     "cara": "A",
-    "x": -2,
-    "y": 4.2,
+    "x": -11,
+    "y": 4.5,
     "rot": 0,
     "z": 0,
     "params": {}
@@ -323,12 +683,12 @@
     "plantilla": "f_caja",
     "nombre": "Conector USB-A macho",
     "cara": "A",
-    "x": 11.5,
+    "x": 18.5,
     "y": 0,
     "rot": 0,
     "z": 0,
     "params": {
-     "w": 8,
+     "w": 15,
      "h": 12,
      "alto": 4.5,
      "r": 0,
@@ -338,32 +698,43 @@
    {
     "id": "p5",
     "plantilla": "led_smd",
-    "nombre": "LED indicador",
+    "nombre": "LED PWR",
     "cara": "A",
-    "x": -9.5,
-    "y": -3.5,
+    "x": 0,
+    "y": 5,
     "rot": 0,
     "z": 0,
     "params": {}
    },
    {
     "id": "p6",
-    "plantilla": "smd",
-    "nombre": "Capacitor desacoplo",
+    "plantilla": "led_smd",
+    "nombre": "LED TX/RX",
     "cara": "A",
-    "x": 5.5,
-    "y": -3.5,
+    "x": 2.5,
+    "y": 5,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "p7",
+    "plantilla": "smd",
+    "nombre": "Fusible rearmable 500 mA",
+    "cara": "A",
+    "x": 4,
+    "y": -4,
     "rot": 0,
     "z": 0,
     "params": {
-     "tam": "0805"
+     "tam": "1206"
     }
    }
   ],
   "cuerpos": [
    {
     "f": "caja",
-    "cx": -14,
+    "cx": -24.5,
     "cy": 0,
     "z0": 1.6,
     "z1": 4.1,
@@ -374,10 +745,10 @@
    },
    {
     "f": "caja",
-    "cx": -14,
+    "cx": -24.5,
     "cy": -5.08,
     "z0": 4.1,
-    "z1": 12.6,
+    "z1": 7.6,
     "color": "#d4a017",
     "pieza": "p1",
     "w": 0.64,
@@ -385,10 +756,10 @@
    },
    {
     "f": "caja",
-    "cx": -14,
+    "cx": -24.5,
     "cy": -2.54,
     "z0": 4.1,
-    "z1": 12.6,
+    "z1": 7.6,
     "color": "#d4a017",
     "pieza": "p1",
     "w": 0.64,
@@ -396,10 +767,10 @@
    },
    {
     "f": "caja",
-    "cx": -14,
+    "cx": -24.5,
     "cy": 0,
     "z0": 4.1,
-    "z1": 12.6,
+    "z1": 7.6,
     "color": "#d4a017",
     "pieza": "p1",
     "w": 0.64,
@@ -407,10 +778,10 @@
    },
    {
     "f": "caja",
-    "cx": -14,
+    "cx": -24.5,
     "cy": 2.54,
     "z0": 4.1,
-    "z1": 12.6,
+    "z1": 7.6,
     "color": "#d4a017",
     "pieza": "p1",
     "w": 0.64,
@@ -418,10 +789,10 @@
    },
    {
     "f": "caja",
-    "cx": -14,
+    "cx": -24.5,
     "cy": 5.08,
     "z0": 4.1,
-    "z1": 12.6,
+    "z1": 7.6,
     "color": "#d4a017",
     "pieza": "p1",
     "w": 0.64,
@@ -429,20 +800,316 @@
    },
    {
     "f": "caja",
-    "cx": -2,
-    "cy": -2,
+    "cx": -15.225,
+    "cy": -4.775,
     "z0": 1.6,
-    "z1": 3.4,
-    "color": "#64748b",
+    "z1": 1.85,
+    "color": "#cbd5e1",
     "pieza": "p2",
-    "w": 10.2,
-    "h": 5.3,
-    "r": 0.2
+    "w": 0.39,
+    "h": 1.25
    },
    {
     "f": "caja",
-    "cx": -2,
-    "cy": 4.2,
+    "cx": -14.575,
+    "cy": -4.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -13.925,
+    "cy": -4.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -13.275,
+    "cy": -4.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -12.625,
+    "cy": -4.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -11.975,
+    "cy": -4.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -11.325,
+    "cy": -4.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -10.675,
+    "cy": -4.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -10.025,
+    "cy": -4.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -9.375,
+    "cy": -4.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -8.725,
+    "cy": -4.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -8.075,
+    "cy": -4.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -7.425,
+    "cy": -4.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -6.775,
+    "cy": -4.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -6.775,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -7.425,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -8.075,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -8.725,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -9.375,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -10.025,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -10.675,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -11.325,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -11.975,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -12.625,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -13.275,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -13.925,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -14.575,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -15.225,
+    "cy": 1.775,
+    "z0": 1.6,
+    "z1": 1.85,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 0.39,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -11,
+    "cy": 4.5,
     "z0": 1.6,
     "z1": 5.1,
     "color": "#cbd5e1",
@@ -453,19 +1120,19 @@
    },
    {
     "f": "caja",
-    "cx": 11.5,
+    "cx": 18.5,
     "cy": 0,
     "z0": 1.6,
     "z1": 6.1,
     "color": "#64748b",
     "pieza": "p4",
-    "w": 8,
+    "w": 15,
     "h": 12
    },
    {
     "f": "caja",
-    "cx": -9.5,
-    "cy": -3.5,
+    "cx": 0,
+    "cy": 5,
     "z0": 1.6,
     "z1": 2.4,
     "color": "#facc15",
@@ -475,37 +1142,49 @@
    },
    {
     "f": "caja",
-    "cx": 5.5,
-    "cy": -3.5,
+    "cx": 2.5,
+    "cy": 5,
     "z0": 1.6,
-    "z1": 2.1,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "p6",
+    "w": 2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 4,
+    "cy": -4,
+    "z0": 1.6,
+    "z1": 2.15,
     "color": "#1f2937",
-    "pieza": "p6",
-    "w": 1.2,
-    "h": 1.25
+    "pieza": "p7",
+    "w": 1.92,
+    "h": 1.6
    },
    {
     "f": "caja",
-    "cx": 4.7,
-    "cy": -3.5,
+    "cx": 2.72,
+    "cy": -4,
     "z0": 1.6,
-    "z1": 2.1,
+    "z1": 2.15,
     "color": "#cbd5e1",
-    "pieza": "p6",
-    "w": 0.4,
-    "h": 1.25
+    "pieza": "p7",
+    "w": 0.6400000000000001,
+    "h": 1.6
    },
    {
     "f": "caja",
-    "cx": 6.3,
-    "cy": -3.5,
+    "cx": 5.28,
+    "cy": -4,
     "z0": 1.6,
-    "z1": 2.1,
+    "z1": 2.15,
     "color": "#cbd5e1",
-    "pieza": "p6",
-    "w": 0.4,
-    "h": 1.25
+    "pieza": "p7",
+    "w": 0.6400000000000001,
+    "h": 1.6
    }
   ]
- }
+ },
+ "cad_pendiente": true
 }
