@@ -81,7 +81,7 @@
   }
  ],
  "imagen": {
-  "src": "img/tarjeta_de_desarrollo_wemos_con_wifi_esp.png?v=1795195559511",
+  "src": "img/tarjeta_de_desarrollo_wemos_con_wifi_esp.png?v=1795195572033",
   "origen": "render del modelo 3D"
  },
  "precios": [
@@ -656,6 +656,14 @@
    "cambios": [
     "imagen"
    ]
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
  "modelo": {
@@ -1047,5 +1055,5 @@
   ]
  },
  "cad_pendiente": true,
- "modificado": "2026-11-20T17:25:57.911Z"
+ "modificado": "2026-11-20T17:26:10.661Z"
 }
