@@ -619,7 +619,37 @@
    "cara": "A"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "tarjeta_de_desarrollo_wemos_con_wifi_esp_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/tarjeta_de_desarrollo_wemos_con_wifi_esp (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/tarjeta_de_desarrollo_wemos_con_wifi_esp/tarjeta_de_desarrollo_wemos_con_wifi_esp_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "tarjeta_de_desarrollo_wemos_con_wifi_esp_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/tarjeta_de_desarrollo_wemos_con_wifi_esp (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/tarjeta_de_desarrollo_wemos_con_wifi_esp/tarjeta_de_desarrollo_wemos_con_wifi_esp_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "tarjeta_de_desarrollo_wemos_con_wifi_esp_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/tarjeta_de_desarrollo_wemos_con_wifi_esp (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/tarjeta_de_desarrollo_wemos_con_wifi_esp/tarjeta_de_desarrollo_wemos_con_wifi_esp_v1_plano.dxf"
+  },
+  "datasheet": {
+   "nombre": "tarjeta_de_desarrollo_wemos_con_wifi_esp_datasheet.pdf",
+   "fuente": "https://documentation.espressif.com/0a-esp8266ex_datasheet_en.pdf",
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/tarjeta_de_desarrollo_wemos_con_wifi_esp (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/tarjeta_de_desarrollo_wemos_con_wifi_esp/tarjeta_de_desarrollo_wemos_con_wifi_esp_datasheet.pdf",
+   "kb": 1215
+  }
+ },
  "historial": [
   {
    "v": 1,
@@ -1070,6 +1100,5 @@
    }
   ]
  },
- "cad_pendiente": true,
  "modificado": "2026-11-20T17:27:48.901Z"
 }
