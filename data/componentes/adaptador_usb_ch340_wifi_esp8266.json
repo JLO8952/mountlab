@@ -58,8 +58,8 @@
   }
  ],
  "imagen": {
-  "src": "img/adaptador_usb_ch340_wifi_esp8266.jpg?v=1795200055632",
-  "origen": "foto subida en el chat"
+  "src": "img/adaptador_usb_ch340_wifi_esp8266.png?v=1795200104746",
+  "origen": "render del modelo 3D"
  },
  "precios": [],
  "busquedas": {},
@@ -302,6 +302,14 @@
     "montaje",
     "modelo"
    ]
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
  "modelo": {
@@ -518,5 +526,5 @@
   ]
  },
  "cad_pendiente": true,
- "modificado": "2026-11-20T18:40:53.508Z"
+ "modificado": "2026-11-20T18:41:42.989Z"
 }
