@@ -1,0 +1,528 @@
+{
+ "id": "max3232_soic16",
+ "nombre": "MAX3232 - Transceptor RS-232 3–5.5 V (TI, SOIC-16)",
+ "tipo": "electronico",
+ "categoria": "Circuitos integrados",
+ "etiquetas": [
+  "RS-232",
+  "UART",
+  "MAX3232",
+  "transceptor",
+  "SOIC-16",
+  "3.3V",
+  "5V",
+  "level shifter"
+ ],
+ "fabricante": "Texas Instruments",
+ "referencia": "MAX3232CDR",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Convertidor de nivel entre UART lógica (3–5.5 V) y RS-232 (±5.4 V típ.) con 2 drivers, 2 receptores y bomba de carga dual. Protección ESD de ±15 kV en los pines de línea (RIN, DOUT y GND). Cumple TIA/EIA-232-F y ITU V.28.",
+  "funcionamiento": "La bomba de carga genera V+ y V− a partir de VCC con 4 capacitores externos. Cada driver invierte DIN a DOUT (nivel RS-232) y cada receptor invierte RIN a ROUT (nivel lógico con histéresis de 0.3 V). Con RIN abierto, ROUT queda en alto. Con VCC = 0 V se puede conectar a un equipo RS-232 activo sin dañarlo. Las entradas DIN deben estar siempre en nivel lógico válido.",
+  "voltaje": "VCC 3–5.5 V (3.3 V ± 0.3 V o 5 V ± 0.5 V). Máx. absoluto VCC 6 V. DIN 0–5.5 V; RIN ±25 V.",
+  "corriente": "ICC sin carga 0.3 mA típ. (1 mA máx.). Corriente de cortocircuito de salida ±35 mA típ. (±60 mA máx.).",
+  "interfaz": "UART TTL/CMOS (lado lógico) ↔ RS-232 (lado línea); hasta 250 kbit/s. Sin I2C.",
+  "entradas": "DIN1 (pin 11) y DIN2 (pin 10) desde la UART; RIN1 (pin 13) y RIN2 (pin 8) desde la línea RS-232",
+  "salidas": "ROUT1 (pin 12) y ROUT2 (pin 9) hacia la UART; DOUT1 (pin 14) y DOUT2 (pin 7) hacia la línea RS-232",
+  "dimensiones": "SOIC-16 (D): cuerpo 9.90 × 3.91 mm (datasheet 9.80–10.00 × 3.80–4.00), altura máx. 1.75 mm, ancho con patas 5.80–6.20 mm, paso 1.27 mm. Otros encapsulados: SSOP-16 (DB) 6.2 × 5.3 mm, SOIC-16 ancho (DW) 10.3 × 7.5 mm, TSSOP-16 (PW) 5.0 × 4.4 mm.",
+  "datasheet": "https://www.ti.com/lit/ds/symlink/max3232.pdf",
+  "notas": "Capacitores externos (Tabla 9-1): a 3.3 V ± 0.3 V, C1–C4 = 0.1 µF; a 5 V ± 0.5 V, C1 = 0.047 µF y C2–C4 = 0.33 µF; de 3 a 5.5 V, C1 = 0.1 µF y C2–C4 = 0.47 µF. Cerámicos no polarizados sirven; si usas tantalio o electrolítico, respeta la polaridad del esquema. C3 puede ir a VCC o a GND. Más 0.1 µF de desacople en VCC. Trazas de C1 y C2 lo más cortas posible. Referencia C = 0–70 °C; la versión I (MAX3232I) = −40–85 °C. Alternativas de 1 Mbit/s: SN65C3232 y SN75C3232. Sensible a ESD: manipular con cuidado."
+ },
+ "especificaciones": [
+  {
+   "param": "Rango de temperatura",
+   "valor": "0 a 70 °C (C); −40 a 85 °C (I)"
+  },
+  {
+   "param": "Velocidad máxima",
+   "valor": "250 kbit/s típ. (150 kbit/s mín.)"
+  },
+  {
+   "param": "Canales",
+   "valor": "2 drivers + 2 receptores"
+  },
+  {
+   "param": "VOH / VOL del driver",
+   "valor": "±5 V mín., ±5.4 V típ. (RL = 3 kΩ)"
+  },
+  {
+   "param": "VOH del receptor",
+   "valor": "VCC − 0.1 V típ. (IOH = −1 mA)"
+  },
+  {
+   "param": "Umbral del receptor (VCC = 3.3 V)",
+   "valor": "VIT+ 1.5 V típ. (máx. 2.4 V); VIT− 1.2 V típ. (mín. 0.6 V); histéresis 0.3 V"
+  },
+  {
+   "param": "Resistencia de entrada RIN",
+   "valor": "5 kΩ típ. (3–7 kΩ)"
+  },
+  {
+   "param": "Slew rate del driver",
+   "valor": "6–30 V/µs (VCC = 5 V)"
+  },
+  {
+   "param": "Retardo de propagación",
+   "valor": "300 ns máx. (CL = 150 pF)"
+  },
+  {
+   "param": "ESD (HBM)",
+   "valor": "±15 kV en RIN, DOUT y GND; ±3 kV en el resto"
+  },
+  {
+   "param": "RθJA (SOIC D)",
+   "valor": "85.9 °C/W"
+  }
+ ],
+ "imagen": null,
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 0.25,
+  "holgura_inferior_cableado": 0,
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   9.9,
+   3.91,
+   1.75
+  ],
+  "forma": "rect",
+  "base_tipo": "prisma"
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Patas SOIC-16",
+   "cx": 0,
+   "cy": 0,
+   "w": 10.16,
+   "h": 6,
+   "z": [
+    -0.25,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 1,
+   "auto": true,
+   "pieza": "p1"
+  }
+ ],
+ "pines": [
+  {
+   "n": "C1+",
+   "func": "Terminal positivo del capacitor C1 (pin 1)",
+   "x": -4.445,
+   "y": -2.477,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 0,
+   "cara": "B"
+  },
+  {
+   "n": "V+",
+   "func": "Salida positiva de la bomba de carga, solo capacitor de almacenamiento (pin 2)",
+   "x": -3.175,
+   "y": -2.477,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 1,
+   "cara": "B"
+  },
+  {
+   "n": "C1−",
+   "func": "Terminal negativo del capacitor C1 (pin 3)",
+   "x": -1.905,
+   "y": -2.477,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 2,
+   "cara": "B"
+  },
+  {
+   "n": "C2+",
+   "func": "Terminal positivo del capacitor C2 (pin 4)",
+   "x": -0.635,
+   "y": -2.477,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 3,
+   "cara": "B"
+  },
+  {
+   "n": "C2−",
+   "func": "Terminal negativo del capacitor C2 (pin 5)",
+   "x": 0.635,
+   "y": -2.477,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 4,
+   "cara": "B"
+  },
+  {
+   "n": "V−",
+   "func": "Salida negativa de la bomba de carga, solo capacitor de almacenamiento (pin 6)",
+   "x": 1.905,
+   "y": -2.477,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 5,
+   "cara": "B"
+  },
+  {
+   "n": "DOUT2",
+   "func": "Salida RS-232 del driver 2, hacia el equipo remoto (pin 7)",
+   "x": 3.175,
+   "y": -2.477,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 6,
+   "cara": "B"
+  },
+  {
+   "n": "RIN2",
+   "func": "Entrada RS-232 del receptor 2, desde el equipo remoto (pin 8)",
+   "x": 4.445,
+   "y": -2.477,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 7,
+   "cara": "B"
+  },
+  {
+   "n": "ROUT2",
+   "func": "Salida lógica del receptor 2, hacia la UART (pin 9)",
+   "x": 4.445,
+   "y": 2.478,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 8,
+   "cara": "B"
+  },
+  {
+   "n": "DIN2",
+   "func": "Entrada lógica del driver 2, desde la UART (pin 10)",
+   "x": 3.175,
+   "y": 2.478,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 9,
+   "cara": "B"
+  },
+  {
+   "n": "DIN1",
+   "func": "Entrada lógica del driver 1, desde la UART (pin 11)",
+   "x": 1.905,
+   "y": 2.478,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 10,
+   "cara": "B"
+  },
+  {
+   "n": "ROUT1",
+   "func": "Salida lógica del receptor 1, hacia la UART (pin 12)",
+   "x": 0.635,
+   "y": 2.478,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 11,
+   "cara": "B"
+  },
+  {
+   "n": "RIN1",
+   "func": "Entrada RS-232 del receptor 1, desde el equipo remoto (pin 13)",
+   "x": -0.635,
+   "y": 2.478,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 12,
+   "cara": "B"
+  },
+  {
+   "n": "DOUT1",
+   "func": "Salida RS-232 del driver 1, hacia el equipo remoto (pin 14)",
+   "x": -1.905,
+   "y": 2.478,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 13,
+   "cara": "B"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra (pin 15)",
+   "x": -3.175,
+   "y": 2.478,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 14,
+   "cara": "B"
+  },
+  {
+   "n": "VCC",
+   "func": "Alimentación 3–5.5 V (pin 16)",
+   "x": -4.445,
+   "y": 2.478,
+   "conector": "Patas SOIC-16",
+   "pieza": "p1",
+   "idx": 15,
+   "cara": "B"
+  }
+ ],
+ "archivos": {
+  "datasheet": {
+   "nombre": "max3232_soic16_datasheet.pdf",
+   "fecha": "2026-11-19",
+   "subido": true,
+   "fuente": "subido desde el chat: max3232.pdf",
+   "carpeta": "archivos/max3232_soic16 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/max3232_soic16/max3232_soic16_datasheet.pdf"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-19",
+   "nota": "Creado con datos de asistente IA · Claude (Anthropic) · claude-haiku-5-5 / claude-sonnet-5-5 (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 9.9,
+   "W": 3.91,
+   "d": 25,
+   "espesor": 1.75,
+   "radio": 0,
+   "color": "#1f2937"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "patas_smd",
+    "nombre": "Patas SOIC-16",
+    "cara": "B",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 16,
+     "paso": 1.27,
+     "ancho": 6,
+     "cuerpo": 3.91
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -4.445,
+    "cy": -2.477,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": -3.175,
+    "cy": -2.477,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": -1.905,
+    "cy": -2.477,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": -0.635,
+    "cy": -2.477,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": 0.635,
+    "cy": -2.477,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": 1.905,
+    "cy": -2.477,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": 3.175,
+    "cy": -2.477,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": 4.445,
+    "cy": -2.477,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": 4.445,
+    "cy": 2.478,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": 3.175,
+    "cy": 2.478,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": 1.905,
+    "cy": 2.478,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": 0.635,
+    "cy": 2.478,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": -0.635,
+    "cy": 2.478,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": -1.905,
+    "cy": 2.478,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": -3.175,
+    "cy": 2.478,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   },
+   {
+    "f": "caja",
+    "cx": -4.445,
+    "cy": 2.478,
+    "z0": -0.25,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.45,
+    "h": 1.045
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-20T03:35:44.405Z"
+}
