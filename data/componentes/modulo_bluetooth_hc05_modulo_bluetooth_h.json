@@ -563,7 +563,37 @@
    "cara": "B"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "modulo_bluetooth_hc05_modulo_bluetooth_h_v3_huella.dxf",
+   "version": 3,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_bluetooth_hc05_modulo_bluetooth_h (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_bluetooth_hc05_modulo_bluetooth_h/modulo_bluetooth_hc05_modulo_bluetooth_h_v3_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "modulo_bluetooth_hc05_modulo_bluetooth_h_v3_montaje.step",
+   "version": 3,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_bluetooth_hc05_modulo_bluetooth_h (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_bluetooth_hc05_modulo_bluetooth_h/modulo_bluetooth_hc05_modulo_bluetooth_h_v3_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "modulo_bluetooth_hc05_modulo_bluetooth_h_v3_plano.dxf",
+   "version": 3,
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_bluetooth_hc05_modulo_bluetooth_h (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_bluetooth_hc05_modulo_bluetooth_h/modulo_bluetooth_hc05_modulo_bluetooth_h_v3_plano.dxf"
+  },
+  "datasheet": {
+   "nombre": "modulo_bluetooth_hc05_modulo_bluetooth_h_datasheet.pdf",
+   "fuente": "https://media.digikey.com/pdf/Data%20Sheets/DFRobot%20PDFs/DFR0602_Web.pdf",
+   "fecha": "2026-11-20",
+   "carpeta": "archivos/modulo_bluetooth_hc05_modulo_bluetooth_h (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_bluetooth_hc05_modulo_bluetooth_h/modulo_bluetooth_hc05_modulo_bluetooth_h_datasheet.pdf",
+   "kb": 1522
+  }
+ },
  "historial": [
   {
    "v": 1,
@@ -1113,6 +1143,5 @@
    }
   ]
  },
- "cad_pendiente": true,
  "modificado": "2026-11-20T15:08:48.028Z"
 }
