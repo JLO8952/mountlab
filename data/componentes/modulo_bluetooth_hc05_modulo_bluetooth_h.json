@@ -1,0 +1,1118 @@
+{
+ "id": "modulo_bluetooth_hc05_modulo_bluetooth_h",
+ "nombre": "Módulo ESP32-CAM Wi-Fi + Bluetooth con Cámara OV2640 (AI-Thinker)",
+ "tipo": "electronico",
+ "categoria": "Microcontroladores",
+ "etiquetas": [
+  "bluetooth",
+  "hc-05",
+  "zs-040",
+  "rf",
+  "2.4ghz",
+  "uart",
+  "spp",
+  "maestro-esclavo",
+  "inalambrico",
+  "bluetooth-5.0",
+  "vhm-314",
+  "audio",
+  "mp3",
+  "decodificador",
+  "receptor",
+  "estereo",
+  "jack-3.5mm",
+  "a2dp",
+  "esp32",
+  "esp32-cam",
+  "ai-thinker",
+  "ov2640",
+  "camara",
+  "wifi",
+  "ble",
+  "microsd",
+  "iot",
+  "vision"
+ ],
+ "fabricante": "Ai-Thinker (SoC Espressif ESP32)",
+ "referencia": "ESP32-CAM (con cámara OV2640)",
+ "estado": "borrador",
+ "version": 3,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Tarjeta de desarrollo IoT ultracompacta con módulo ESP32-S (CPU Xtensa LX6 dual-core de 32 bits hasta 240 MHz, 520 KB SRAM interna, 4 MB PSRAM externa y 4 MB Flash), conectividad Wi-Fi 802.11b/g/n y Bluetooth 4.2 BR/EDR + BLE. Incluye cámara OV2640 de 2 MP (UXGA 1632×1232) por conector FPC, ranura para tarjeta microSD (hasta 4 GB), LED flash blanco de alta potencia, antena PCB integrada y conector u.FL/IPEX para antena externa.",
+  "funcionamiento": "Opera de forma independiente para captura de fotos, streaming de video MJPEG por Wi-Fi, reconocimiento facial y almacenamiento en microSD. Carece de puerto USB y conversor serial integrado, por lo que se programa vía UART0 (pines U0T/U0R) usando un adaptador USB-TTL de 3.3 V o la base programadora ESP32-CAM-MB, puenteando IO0 a GND durante el reinicio para entrar en modo bootloader.",
+  "voltaje": "5 V DC recomendado en pin 5V (fuente estable ≥ 1 A / 2 A para evitar reinicios por brownout); lógica de todos los pines GPIO estrictamente a 3.3 V",
+  "corriente": "180 mA @ 5 V (flash apagado); hasta 310 mA @ 5 V (flash al máximo); Modem-sleep ~20 mA; Light-sleep ~6.7 mA; Deep-sleep mínimo ~6 mA @ 5 V",
+  "interfaz": "Wi-Fi 802.11b/g/n (STA/AP/STA+AP), Bluetooth 4.2 BR/EDR y BLE; UART (115200 bps por defecto), SPI, I2C, PWM, ADC, DAC; bus de cámara DVP/SCCB por FPC de 24 pines",
+  "entradas": "Alimentación 5 V DC (o 3.3 V en pin 3V3), señal de cámara OV2640/OV7670 por conector FPC, recepción serial U0R, botón RESET, entrada GPIO0 (modo flash) y entradas digitales/ADC de 3.3 V",
+  "salidas": "Transmisión serial U0T, salida regulada VCC (3.3 V por defecto, configurable a 5 V por puente de soldadura), LED flash blanco en GPIO4, LED rojo de estado en GPIO33 (lógica invertida) y pines GPIO 3.3 V",
+  "dimensiones": "PCB: 40.5 × 27.0 × 1.6 mm (alto total 4.5 ± 0.2 mm sin pines). Sin agujeros de montaje. Encapsulado DIP-16: dos filas de 8 pines paso 2.54 mm.",
+  "datasheet": "https://media.digikey.com/pdf/Data%20Sheets/DFRobot%20PDFs/DFR0602_Web.pdf",
+  "notas": "Compatibilidad 3.3/5 V: alimentar preferiblemente por el pin 5V con fuente ≥ 1 A (alimentar por 3.3 V suele causar fallos/brownout); los pines GPIO y UART NO toleran 5 V. GPIO4 controla el LED flash y también está conectado a la ranura microSD (usar microSD en modo 1-bit libera GPIO4, GPIO12 y GPIO13). GPIO12 es pin strapping y debe mantenerse en bajo o flotante al arranque. El pin rotulado VCC es una salida de potencia (3.3 V por defecto mediante puente SMD), no una entrada. Para usar antena externa en el conector u.FL se debe reposicionar la resistencia puente de 0 Ω."
+ },
+ "especificaciones": [
+  {
+   "param": "Protocolo Bluetooth",
+   "valor": "Bluetooth v2.0 + EDR (perfil SPP)"
+  },
+  {
+   "param": "Chipset principal",
+   "valor": "SOP-16 AS19AP / AS22BP"
+  },
+  {
+   "param": "Frecuencia de operación",
+   "valor": "2.4 GHz banda ISM (modulación GFSK)"
+  },
+  {
+   "param": "Potencia de transmisión",
+   "valor": "Clase 2, hasta +4 dBm"
+  },
+  {
+   "param": "Sensibilidad",
+   "valor": "-80 dBm a -84 dBm (0.1% BER)"
+  },
+  {
+   "param": "Alcance efectivo",
+   "valor": "Hasta 10 m en área abierta"
+  },
+  {
+   "param": "Voltaje de alimentación (VCC)",
+   "valor": "3.6 V - 6 V DC (máximo absoluto 7 V)"
+  },
+  {
+   "param": "Nivel lógico UART",
+   "valor": "3.3 V"
+  },
+  {
+   "param": "Consumo de corriente",
+   "valor": "180 mA (sin flash) / 310 mA (flash máx.) / 6 mA (deep-sleep)"
+  },
+  {
+   "param": "Roles soportados",
+   "valor": "Maestro (Master) y Esclavo (Slave)"
+  },
+  {
+   "param": "Temperatura de operación",
+   "valor": "-20 °C a +85 °C"
+  },
+  {
+   "param": "Peso",
+   "valor": "10 g"
+  },
+  {
+   "param": "Versión de Bluetooth",
+   "valor": "Bluetooth 5.0 (retrocompatible con 4.0 / 4.1 / 4.2)"
+  },
+  {
+   "param": "Perfiles soportados",
+   "valor": "A2DP, AVCTP, AVDTP, AVRCP, HFP"
+  },
+  {
+   "param": "Formatos de decodificación",
+   "valor": "MP3, WAV, FLAC, APE"
+  },
+  {
+   "param": "Voltaje de alimentación",
+   "valor": "5 V DC (pin 5V); lógica 3.3 V"
+  },
+  {
+   "param": "Corriente de operación",
+   "valor": "~20 mA (carga máx. 300 mA en V2.0/PRO)"
+  },
+  {
+   "param": "Relación señal/ruido (SNR)",
+   "valor": "≥ 90 dB"
+  },
+  {
+   "param": "Distorsión armónica total (THD+N)",
+   "valor": "-70 dB (≤ 0.1%)"
+  },
+  {
+   "param": "Diafonía (Crosstalk)",
+   "valor": "-86 dB"
+  },
+  {
+   "param": "Rango dinámico (DNR)",
+   "valor": "91 dB"
+  },
+  {
+   "param": "Respuesta en frecuencia",
+   "valor": "20 Hz – 20 kHz"
+  },
+  {
+   "param": "Alcance efectivo (LOS)",
+   "valor": "> 15 m en espacio abierto"
+  },
+  {
+   "param": "Salida de audio",
+   "valor": "Estéreo 2 canales (Jack 3.5 mm + pads L/G/R)"
+  },
+  {
+   "param": "Microcontrolador / Módulo",
+   "valor": "ESP32-S (Xtensa LX6 dual-core 32 bits, hasta 240 MHz, 600 DMIPS)"
+  },
+  {
+   "param": "Memoria RAM",
+   "valor": "520 KB SRAM interna + 4 MB PSRAM externa"
+  },
+  {
+   "param": "Memoria Flash SPI",
+   "valor": "32 Mbit (4 MB)"
+  },
+  {
+   "param": "Conectividad Wi-Fi",
+   "valor": "802.11 b/g/n/e/i (2412–2484 MHz, modos STA / AP / STA+AP)"
+  },
+  {
+   "param": "Conectividad Bluetooth",
+   "valor": "Bluetooth 4.2 BR/EDR y BLE"
+  },
+  {
+   "param": "Cámara soportada",
+   "valor": "OV2640 (2 MP, CMOS 1/4\", UXGA 1632×1232) y OV7670"
+  },
+  {
+   "param": "Formatos de imagen",
+   "valor": "JPEG (solo OV2640), BMP, escala de grises"
+  },
+  {
+   "param": "Almacenamiento",
+   "valor": "Ranura microSD (TF) hasta 4 GB (FAT32)"
+  },
+  {
+   "param": "Antena",
+   "valor": "PCB integrada (ganancia 2 dBi) + conector u.FL/IPEX externo"
+  },
+  {
+   "param": "Potencia TX Wi-Fi",
+   "valor": "802.11b: 17±2 dBm; 802.11g: 14±2 dBm; 802.11n: 13±2 dBm"
+  }
+ ],
+ "imagen": {
+  "src": "img/modulo_bluetooth_hc05_modulo_bluetooth_h.png?v=1795195473384",
+  "origen": "render del modelo 3D"
+ },
+ "precios": [
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 30601,
+   "url": "",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Circuitarte CO",
+   "precio_cop": 15000,
+   "url": "",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Servotronik CO",
+   "precio_cop": 18500,
+   "url": "",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Vistronica CO",
+   "precio_cop": 26180,
+   "url": "",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Electronilab CO (versión USB-C)",
+   "precio_cop": 11900,
+   "url": "https://electronilab.co/tienda/modulo-decodificador-receptor-audio-bluetooth-vhm-314-5-0-con-usb-c/",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "SSDIELECT CO",
+   "precio_cop": 11951,
+   "url": "",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "RoosTech CO",
+   "precio_cop": 14000,
+   "url": "",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "JA-Bots CO",
+   "precio_cop": 45000,
+   "url": "https://ja-bots.com",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Ferretrónica CO",
+   "precio_cop": 48000,
+   "url": "",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Dualtronica SAS CO",
+   "precio_cop": 48000,
+   "url": "",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Falabella Colombia Marketplace",
+   "precio_cop": 73500,
+   "url": "",
+   "fecha": "2026-11",
+   "estimado": false
+  }
+ ],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 2.2,
+  "altura_inferior": 11,
+  "holgura_inferior_cableado": 0,
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador. Propuesto por el asistente a partir del datasheet: verificar con calibrador. Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   40.5,
+   27,
+   1.6
+  ],
+  "forma": "rect"
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Header 8 pines (5V a IO4)",
+   "cx": 3.5,
+   "cy": 11.43,
+   "w": 20.32,
+   "h": 2.54,
+   "z": [
+    -11,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "p1"
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Header 8 pines (3V3 a GND)",
+   "cx": 3.5,
+   "cy": -11.43,
+   "w": 20.32,
+   "h": 2.54,
+   "z": [
+    -11,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "p2"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED Flash blanco (IO4)",
+   "cx": -11.5,
+   "cy": -9.5,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "p5"
+  },
+  {
+   "tipo": "calor",
+   "nombre": "Regulador 3.3 V",
+   "cx": -1.5,
+   "cy": -6.5,
+   "w": 6.5,
+   "h": 7,
+   "z": [
+    1.6,
+    3.4
+   ],
+   "salida": "+Z",
+   "holgura": 8,
+   "auto": true,
+   "pieza": "p6"
+  },
+  {
+   "tipo": "antena",
+   "nombre": "Módulo ESP32-S",
+   "cx": -1,
+   "cy": 9.5,
+   "w": 18,
+   "h": 6.4,
+   "z": [
+    -3.1,
+    0
+   ],
+   "salida": "+Y",
+   "holgura": 10,
+   "auto": true,
+   "pieza": "p7"
+  },
+  {
+   "tipo": "boton",
+   "nombre": "Botón RESET",
+   "cx": 15,
+   "cy": 6,
+   "w": 6,
+   "h": 6,
+   "z": [
+    -5,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 3,
+   "auto": true,
+   "pieza": "p8"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED rojo estado (IO33)",
+   "cx": 15,
+   "cy": -5,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    -0.8,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "p9"
+  }
+ ],
+ "pines": [
+  {
+   "n": "5V",
+   "func": "Entrada principal de alimentación 5 V DC (recomendada ≥ 1 A)",
+   "x": -5.39,
+   "y": 11.43,
+   "conector": "Header 8 pines (5V a IO4)",
+   "pieza": "p1",
+   "idx": 0,
+   "cara": "B"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra / referencia negativa",
+   "x": -2.85,
+   "y": 11.43,
+   "conector": "Header 8 pines (5V a IO4)",
+   "pieza": "p1",
+   "idx": 1,
+   "cara": "B"
+  },
+  {
+   "n": "IO12",
+   "func": "GPIO12 / HS2_DATA2 (microSD D2) / ADC2_CH5 / pin strapping (mantener bajo al arranque)",
+   "x": -0.31,
+   "y": 11.43,
+   "conector": "Header 8 pines (5V a IO4)",
+   "pieza": "p1",
+   "idx": 2,
+   "cara": "B"
+  },
+  {
+   "n": "Header 8 pines (5V a IO4).4",
+   "func": "",
+   "x": 2.23,
+   "y": 11.43,
+   "conector": "Header 8 pines (5V a IO4)",
+   "pieza": "p1",
+   "idx": 3,
+   "cara": "B"
+  },
+  {
+   "n": "Header 8 pines (5V a IO4).5",
+   "func": "",
+   "x": 4.77,
+   "y": 11.43,
+   "conector": "Header 8 pines (5V a IO4)",
+   "pieza": "p1",
+   "idx": 4,
+   "cara": "B"
+  },
+  {
+   "n": "Header 8 pines (5V a IO4).6",
+   "func": "",
+   "x": 7.31,
+   "y": 11.43,
+   "conector": "Header 8 pines (5V a IO4)",
+   "pieza": "p1",
+   "idx": 5,
+   "cara": "B"
+  },
+  {
+   "n": "Header 8 pines (5V a IO4).7",
+   "func": "",
+   "x": 9.85,
+   "y": 11.43,
+   "conector": "Header 8 pines (5V a IO4)",
+   "pieza": "p1",
+   "idx": 6,
+   "cara": "B"
+  },
+  {
+   "n": "Header 8 pines (5V a IO4).8",
+   "func": "",
+   "x": 12.39,
+   "y": 11.43,
+   "conector": "Header 8 pines (5V a IO4)",
+   "pieza": "p1",
+   "idx": 7,
+   "cara": "B"
+  },
+  {
+   "n": "IO13",
+   "func": "GPIO13 / HS2_DATA3 (microSD D3) / ADC2_CH4 / Touch4",
+   "x": -5.39,
+   "y": -11.43,
+   "conector": "Header 8 pines (3V3 a GND)",
+   "pieza": "p2",
+   "idx": 0,
+   "cara": "B"
+  },
+  {
+   "n": "IO15",
+   "func": "GPIO15 / HS2_CMD (microSD CMD) / ADC2_CH3 / Touch3",
+   "x": -2.85,
+   "y": -11.43,
+   "conector": "Header 8 pines (3V3 a GND)",
+   "pieza": "p2",
+   "idx": 1,
+   "cara": "B"
+  },
+  {
+   "n": "Header 8 pines (3V3 a GND).3",
+   "func": "",
+   "x": -0.31,
+   "y": -11.43,
+   "conector": "Header 8 pines (3V3 a GND)",
+   "pieza": "p2",
+   "idx": 2,
+   "cara": "B"
+  },
+  {
+   "n": "Header 8 pines (3V3 a GND).4",
+   "func": "",
+   "x": 2.23,
+   "y": -11.43,
+   "conector": "Header 8 pines (3V3 a GND)",
+   "pieza": "p2",
+   "idx": 3,
+   "cara": "B"
+  },
+  {
+   "n": "Header 8 pines (3V3 a GND).5",
+   "func": "",
+   "x": 4.77,
+   "y": -11.43,
+   "conector": "Header 8 pines (3V3 a GND)",
+   "pieza": "p2",
+   "idx": 4,
+   "cara": "B"
+  },
+  {
+   "n": "Header 8 pines (3V3 a GND).6",
+   "func": "",
+   "x": 7.31,
+   "y": -11.43,
+   "conector": "Header 8 pines (3V3 a GND)",
+   "pieza": "p2",
+   "idx": 5,
+   "cara": "B"
+  },
+  {
+   "n": "Header 8 pines (3V3 a GND).7",
+   "func": "",
+   "x": 9.85,
+   "y": -11.43,
+   "conector": "Header 8 pines (3V3 a GND)",
+   "pieza": "p2",
+   "idx": 6,
+   "cara": "B"
+  },
+  {
+   "n": "Header 8 pines (3V3 a GND).8",
+   "func": "",
+   "x": 12.39,
+   "y": -11.43,
+   "conector": "Header 8 pines (3V3 a GND)",
+   "pieza": "p2",
+   "idx": 7,
+   "cara": "B"
+  }
+ ],
+ "archivos": {},
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo, precios",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo",
+    "precios"
+   ]
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo, precios",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo",
+    "precios"
+   ]
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
+  },
+  {
+   "v": 3,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo, precios",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo",
+    "precios"
+   ]
+  },
+  {
+   "v": 3,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 40.5,
+   "W": 27,
+   "d": 30,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#111827"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "header_macho",
+    "nombre": "Header 8 pines (5V a IO4)",
+    "cara": "B",
+    "x": 3.5,
+    "y": 11.43,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 8,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 11
+    }
+   },
+   {
+    "id": "p2",
+    "plantilla": "header_macho",
+    "nombre": "Header 8 pines (3V3 a GND)",
+    "cara": "B",
+    "x": 3.5,
+    "y": -11.43,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 8,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 11
+    }
+   },
+   {
+    "id": "p3",
+    "plantilla": "f_caja",
+    "nombre": "Ranura microSD",
+    "cara": "A",
+    "x": 11.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 15,
+     "h": 14,
+     "alto": 2,
+     "r": 0,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p4",
+    "plantilla": "f_caja",
+    "nombre": "Conector FPC cámara 24 pines",
+    "cara": "A",
+    "x": -6,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 5,
+     "h": 16,
+     "alto": 2.2,
+     "r": 0,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p5",
+    "plantilla": "led_smd",
+    "nombre": "LED Flash blanco (IO4)",
+    "cara": "A",
+    "x": -11.5,
+    "y": -9.5,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "p6",
+    "plantilla": "sot223",
+    "nombre": "Regulador 3.3 V",
+    "cara": "A",
+    "x": -1.5,
+    "y": -6.5,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "p7",
+    "plantilla": "wroom",
+    "nombre": "Módulo ESP32-S",
+    "cara": "B",
+    "x": -1,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "p8",
+    "plantilla": "pulsador",
+    "nombre": "Botón RESET",
+    "cara": "B",
+    "x": 15,
+    "y": 6,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "vastago": 1.5
+    }
+   },
+   {
+    "id": "p9",
+    "plantilla": "led_smd",
+    "nombre": "LED rojo estado (IO33)",
+    "cara": "B",
+    "x": 15,
+    "y": -5,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 3.5,
+    "cy": 11.43,
+    "z0": -2.5,
+    "z1": 0,
+    "color": "#1f2937",
+    "pieza": "p1",
+    "w": 20.32,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -5.39,
+    "cy": 11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -2.85,
+    "cy": 11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -0.31,
+    "cy": 11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 2.23,
+    "cy": 11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 4.77,
+    "cy": 11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 7.31,
+    "cy": 11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 9.85,
+    "cy": 11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 12.39,
+    "cy": 11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 3.5,
+    "cy": -11.43,
+    "z0": -2.5,
+    "z1": 0,
+    "color": "#1f2937",
+    "pieza": "p2",
+    "w": 20.32,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -5.39,
+    "cy": -11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -2.85,
+    "cy": -11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -0.31,
+    "cy": -11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 2.23,
+    "cy": -11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 4.77,
+    "cy": -11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 7.31,
+    "cy": -11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 9.85,
+    "cy": -11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 12.39,
+    "cy": -11.43,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 11.5,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 3.6,
+    "color": "#64748b",
+    "pieza": "p3",
+    "w": 15,
+    "h": 14
+   },
+   {
+    "f": "caja",
+    "cx": -6,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 3.8,
+    "color": "#64748b",
+    "pieza": "p4",
+    "w": 5,
+    "h": 16
+   },
+   {
+    "f": "caja",
+    "cx": -11.5,
+    "cy": -9.5,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "p5",
+    "w": 2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -1.5,
+    "cy": -7.1,
+    "z0": 1.6,
+    "z1": 3.4,
+    "color": "#1f2937",
+    "pieza": "p6",
+    "w": 6.5,
+    "h": 3.5
+   },
+   {
+    "f": "caja",
+    "cx": -1.5,
+    "cy": -4.1,
+    "z0": 1.6,
+    "z1": 1.9,
+    "color": "#cbd5e1",
+    "pieza": "p6",
+    "w": 3,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": -1,
+    "cy": -3.2,
+    "z0": -3.1,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p7",
+    "w": 18,
+    "h": 19.2
+   },
+   {
+    "f": "caja",
+    "cx": -1,
+    "cy": 0,
+    "z0": -0.8,
+    "z1": 0,
+    "color": "#1e3a8a",
+    "pieza": "p7",
+    "w": 18,
+    "h": 25.5
+   },
+   {
+    "f": "caja",
+    "cx": 15,
+    "cy": 6,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#1f2937",
+    "pieza": "p8",
+    "w": 6,
+    "h": 6
+   },
+   {
+    "f": "cil",
+    "cx": 15,
+    "cy": 6,
+    "z0": -5,
+    "z1": -3.5,
+    "color": "#9ca3af",
+    "pieza": "p8",
+    "d": 3.5
+   },
+   {
+    "f": "caja",
+    "cx": 15,
+    "cy": -5,
+    "z0": -0.8,
+    "z1": 0,
+    "color": "#facc15",
+    "pieza": "p9",
+    "w": 2,
+    "h": 1.25
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-20T15:08:48.028Z"
+}
