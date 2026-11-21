@@ -161,7 +161,28 @@
    56,
    1.6
   ],
-  "forma": "rect"
+  "forma": "rect",
+  "conexiones": {
+   "header": "arriba",
+   "header_alto": 8.5,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 15.5,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Sin header: cables soldados en los pads por arriba (≈6 mm para la curva del cable)."
+   },
+   "jumper": {
+    "altura_superior": 15.5,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 16,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "Header macho arriba (8.5 mm): carcasa Dupont hembra + curva ≈16 mm."
+   }
+  }
  },
  "zonas": [
   {
@@ -599,7 +620,37 @@
    "cara": "A"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "raspberry_pi_4_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/raspberry_pi_4 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/raspberry_pi_4/raspberry_pi_4_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "raspberry_pi_4_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/raspberry_pi_4 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/raspberry_pi_4/raspberry_pi_4_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "raspberry_pi_4_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/raspberry_pi_4 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/raspberry_pi_4/raspberry_pi_4_v1_plano.dxf"
+  },
+  "datasheet": {
+   "nombre": "raspberry_pi_4_datasheet.pdf",
+   "fuente": "https://pip.raspberrypi.com/documents/RP-008341-DS-raspberry-pi-4-datasheet.pdf",
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/raspberry_pi_4 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/raspberry_pi_4/raspberry_pi_4_datasheet.pdf",
+   "kb": 403
+  }
+ },
  "historial": [
   {
    "v": 1,
