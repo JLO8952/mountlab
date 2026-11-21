@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 4,
+ "version": 5,
  "unidad": "und",
  "ficha": {
   "descripcion": "Conector DC hembra para PCB tipo DC-005, 5.5 × 2.1 mm.",
@@ -64,23 +64,25 @@
  },
  "montaje": {
   "origen": "centro",
+  "fijacion": "tornillo",
+  "agujeros": [],
+  "altura_superior": 0.5,
+  "altura_inferior": 3.5,
+  "holgura_inferior_cableado": 0,
+  "nota": "DC-005 de PCB: 14.2 × 9 × 11 mm, pines 3.5 mm. La boca va contra la pared. Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
   "pcb": [
    14.2,
    9,
    11
   ],
-  "fijacion": "tornillo",
-  "agujeros": [],
-  "altura_superior": 0,
-  "altura_inferior": 3.5,
-  "holgura_inferior_cableado": 0,
-  "nota": "DC-005 de PCB: 14.2 × 9 × 11 mm, pines 3.5 mm. La boca va contra la pared. Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
+  "forma": "rect",
+  "base_tipo": "prisma",
   "conexiones": {
    "header": "ninguno",
    "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
-    "altura_superior": 0,
+    "altura_superior": 0.5,
     "altura_inferior": 3.5,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
@@ -88,7 +90,7 @@
     "nota": "Pads o terminales: cables soldados directo."
    },
    "jumper": {
-    "altura_superior": 0,
+    "altura_superior": 0.5,
     "altura_inferior": 8.5,
     "holgura_inferior_cableado": 22,
     "holgura_superior_cableado": 0,
@@ -175,6 +177,138 @@
   {
    "fecha": "2026-11-21",
    "nota": "Enlace al datasheet"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 14.2,
+   "W": 9,
+   "d": 14.2,
+   "espesor": 11,
+   "radio": 0,
+   "color": "#111827"
+  },
+  "piezas": [
+   {
+    "id": "m366",
+    "plantilla": "f_cil",
+    "nombre": "Boca 5.5 mm",
+    "cara": "A",
+    "x": -4,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 6.4,
+     "alto": 0.5,
+     "color": "#374151"
+    }
+   },
+   {
+    "id": "m367",
+    "plantilla": "f_caja",
+    "nombre": "Pin central",
+    "cara": "B",
+    "x": -6,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1,
+     "h": 3,
+     "alto": 3.5,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m368",
+    "plantilla": "f_caja",
+    "nombre": "Camisa",
+    "cara": "B",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1,
+     "h": 3,
+     "alto": 3.5,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m369",
+    "plantilla": "f_caja",
+    "nombre": "Conmutación",
+    "cara": "B",
+    "x": -3,
+    "y": 4.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3,
+     "h": 1,
+     "alto": 3.5,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "nota": "Jack DC-005: cuerpo de 14.2 × 9 × 11 mm, pines por debajo.",
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": -4,
+    "cy": 0,
+    "z0": 11,
+    "z1": 11.5,
+    "color": "#374151",
+    "pieza": "m366",
+    "d": 6.4
+   },
+   {
+    "f": "caja",
+    "cx": -6,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m367",
+    "w": 1,
+    "h": 3
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 0,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m368",
+    "w": 1,
+    "h": 3
+   },
+   {
+    "f": "caja",
+    "cx": -3,
+    "cy": 4.7,
+    "z0": -3.5,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m369",
+    "w": 3,
+    "h": 1
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

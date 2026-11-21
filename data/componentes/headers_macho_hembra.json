@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 2,
+ "version": 3,
  "unidad": "juego",
  "ficha": {
   "descripcion": "Regletas de pines paso 2.54 mm, macho y hembra, 1 × 40.",
@@ -72,25 +72,27 @@
  },
  "montaje": {
   "origen": "centro",
-  "pcb": [
-   101.6,
-   2.54,
-   11.5
-  ],
   "fijacion": "adhesivo",
   "agujeros": [],
   "altura_superior": 0,
-  "altura_inferior": 0,
+  "altura_inferior": 3,
   "holgura_inferior_cableado": 0,
   "nota": "Regletas para cortar; se sueldan en las placas (no ocupan lugar propio en la caja).",
+  "pcb": [
+   101.6,
+   2.54,
+   8.5
+  ],
   "accesorio": true,
+  "forma": "rect",
+  "base_tipo": "prisma",
   "conexiones": {
    "header": "ninguno",
    "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
     "altura_superior": 0,
-    "altura_inferior": 0,
+    "altura_inferior": 3,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
     "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
@@ -131,6 +133,1149 @@
   {
    "fecha": "2026-11-21",
    "nota": "Montaje: medidas de las regletas"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 101.6,
+   "W": 2.54,
+   "d": 101.6,
+   "espesor": 8.5,
+   "radio": 0,
+   "color": "#111827"
+  },
+  "piezas": [
+   {
+    "id": "m502",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -49.53,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m503",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -46.99,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m504",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -44.45,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m505",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -41.91,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m506",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -39.37,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m507",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -36.83,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m508",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -34.29,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m509",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -31.75,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m510",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -29.21,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m511",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -26.67,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m512",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -24.13,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m513",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -21.59,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m514",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -19.05,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m515",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -16.51,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m516",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -13.97,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m517",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -11.43,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m518",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -8.89,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m519",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -6.35,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m520",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -3.81,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m521",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": -1.27,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m522",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 1.27,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m523",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 3.81,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m524",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 6.35,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m525",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 8.89,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m526",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 11.43,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m527",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 13.97,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m528",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 16.51,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m529",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 19.05,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m530",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 21.59,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m531",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 24.13,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m532",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 26.67,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m533",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 29.21,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m534",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 31.75,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m535",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 34.29,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m536",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 36.83,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m537",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 39.37,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m538",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 41.91,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m539",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 44.45,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m540",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 46.99,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m541",
+    "plantilla": "f_caja",
+    "nombre": "Pin",
+    "cara": "B",
+    "x": 49.53,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 3,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   }
+  ],
+  "nota": "Regleta hembra de 40 pines (la macho es como la Header macho 40).",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -49.53,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m502",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -46.99,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m503",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -44.45,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m504",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -41.91,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m505",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -39.37,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m506",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -36.83,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m507",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -34.29,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m508",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -31.75,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m509",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -29.21,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m510",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -26.67,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m511",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -24.13,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m512",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -21.59,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m513",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -19.05,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m514",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -16.51,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m515",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -13.97,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m516",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -11.43,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m517",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -8.89,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m518",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -6.35,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m519",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -3.81,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m520",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -1.27,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m521",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 1.27,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m522",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 3.81,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m523",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 6.35,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m524",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 8.89,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m525",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 11.43,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m526",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 13.97,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m527",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 16.51,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m528",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 19.05,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m529",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 21.59,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m530",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 24.13,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m531",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 26.67,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m532",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 29.21,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m533",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 31.75,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m534",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 34.29,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m535",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 36.83,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m536",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 39.37,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m537",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 41.91,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m538",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 44.45,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m539",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 46.99,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m540",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 49.53,
+    "cy": 0,
+    "z0": -3,
+    "z1": 0,
+    "color": "#d4a017",
+    "pieza": "m541",
+    "w": 0.64,
+    "h": 0.64
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

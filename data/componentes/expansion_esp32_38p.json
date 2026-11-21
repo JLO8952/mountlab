@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 2,
+ "version": 3,
  "unidad": "und",
  "ficha": {
   "descripcion": "Base de expansión para el ESP32 DevKit de 38 pines con regleta G-V-S por GPIO y entrada de alimentación.",
@@ -68,11 +68,6 @@
  },
  "montaje": {
   "origen": "centro",
-  "pcb": [
-   70,
-   55,
-   1.6
-  ],
   "fijacion": "tornillo",
   "agujeros": [
    {
@@ -100,9 +95,15 @@
   "altura_inferior": 0,
   "holgura_inferior_cableado": 22,
   "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "pcb": [
+   70,
+   55,
+   1.6
+  ],
+  "forma": "rect",
   "conexiones": {
-   "header": "ninguno",
-   "header_alto": 0,
+   "header": "arriba",
+   "header_alto": 8.5,
    "defecto": "soldado",
    "soldado": {
     "altura_superior": 11,
@@ -110,15 +111,15 @@
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
     "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
-    "nota": "Pads o terminales: cables soldados directo."
+    "nota": "Sin header: cables soldados en los pads por arriba (≈6 mm para la curva del cable)."
    },
    "jumper": {
     "altura_superior": 11,
-    "altura_inferior": 8.5,
-    "holgura_inferior_cableado": 22,
-    "holgura_superior_cableado": 0,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 16,
     "cable": "Jumper Dupont 2.54 mm sobre headers",
-    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+    "nota": "Header macho arriba (8.5 mm): carcasa Dupont hembra + curva ≈16 mm."
    }
   }
  },
@@ -248,6 +249,70 @@
    ],
    "salida": "+X",
    "holgura": 15
+  },
+  {
+   "tipo": "conector",
+   "nombre": "Jack DC",
+   "cx": 29,
+   "cy": 0,
+   "w": 14,
+   "h": 9,
+   "z": [
+    1.6,
+    12.6
+   ],
+   "salida": "+X",
+   "holgura": 25,
+   "auto": true,
+   "pieza": "m349"
+  },
+  {
+   "tipo": "calor",
+   "nombre": "Regulador 5 V",
+   "cx": -29,
+   "cy": -8,
+   "w": 7,
+   "h": 6.5,
+   "z": [
+    1.6,
+    3.4
+   ],
+   "salida": "+Z",
+   "holgura": 8,
+   "auto": true,
+   "pieza": "m350"
+  },
+  {
+   "tipo": "calor",
+   "nombre": "Regulador 3.3 V",
+   "cx": -29,
+   "cy": 8,
+   "w": 7,
+   "h": 6.5,
+   "z": [
+    1.6,
+    3.4
+   ],
+   "salida": "+Z",
+   "holgura": 8,
+   "auto": true,
+   "pieza": "m351"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED",
+   "cx": 27,
+   "cy": 17,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "m353"
   }
  ],
  "pines": [
@@ -320,6 +385,3599 @@
   {
    "fecha": "2026-11-21",
    "nota": "Pines con posición (centro de la pieza)"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 70,
+   "W": 55,
+   "d": 70,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#1f2937"
+  },
+  "piezas": [
+   {
+    "id": "m227",
+    "plantilla": "f_caja",
+    "nombre": "Header hembra ESP32 1",
+    "cara": "A",
+    "x": 0,
+    "y": -12.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 48.26,
+     "h": 2.54,
+     "alto": 8.5,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m228",
+    "plantilla": "f_caja",
+    "nombre": "Header hembra ESP32 2",
+    "cara": "A",
+    "x": 0,
+    "y": 12.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 48.26,
+     "h": 2.54,
+     "alto": 8.5,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m229",
+    "plantilla": "f_caja",
+    "nombre": "GVS",
+    "cara": "A",
+    "x": 0,
+    "y": 17.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 48.26,
+     "h": 2.54,
+     "alto": 2.5,
+     "r": 0,
+     "color": "#facc15"
+    }
+   },
+   {
+    "id": "m230",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -22.86,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m231",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -20.32,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m232",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -17.78,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m233",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -15.24,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m234",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -12.7,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m235",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -10.16,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m236",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -7.62,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m237",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -5.08,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m238",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -2.54,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m239",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 0,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m240",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 2.54,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m241",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 5.08,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m242",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 7.62,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m243",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 10.16,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m244",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 12.7,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m245",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 15.24,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m246",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 17.78,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m247",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 20.32,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m248",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 22.86,
+    "y": 17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m249",
+    "plantilla": "f_caja",
+    "nombre": "GVS",
+    "cara": "A",
+    "x": 0,
+    "y": -17.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 48.26,
+     "h": 2.54,
+     "alto": 2.5,
+     "r": 0,
+     "color": "#facc15"
+    }
+   },
+   {
+    "id": "m250",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -22.86,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m251",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -20.32,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m252",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -17.78,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m253",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -15.24,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m254",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -12.7,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m255",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -10.16,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m256",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -7.62,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m257",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -5.08,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m258",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -2.54,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m259",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 0,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m260",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 2.54,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m261",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 5.08,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m262",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 7.62,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m263",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 10.16,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m264",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 12.7,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m265",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 15.24,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m266",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 17.78,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m267",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 20.32,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m268",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 22.86,
+    "y": -17.7,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m269",
+    "plantilla": "f_caja",
+    "nombre": "GVS",
+    "cara": "A",
+    "x": 0,
+    "y": 20.24,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 48.26,
+     "h": 2.54,
+     "alto": 2.5,
+     "r": 0,
+     "color": "#dc2626"
+    }
+   },
+   {
+    "id": "m270",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -22.86,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m271",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -20.32,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m272",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -17.78,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m273",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -15.24,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m274",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -12.7,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m275",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -10.16,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m276",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -7.62,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m277",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -5.08,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m278",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -2.54,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m279",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 0,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m280",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 2.54,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m281",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 5.08,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m282",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 7.62,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m283",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 10.16,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m284",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 12.7,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m285",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 15.24,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m286",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 17.78,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m287",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 20.32,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m288",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 22.86,
+    "y": 20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m289",
+    "plantilla": "f_caja",
+    "nombre": "GVS",
+    "cara": "A",
+    "x": 0,
+    "y": -20.24,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 48.26,
+     "h": 2.54,
+     "alto": 2.5,
+     "r": 0,
+     "color": "#dc2626"
+    }
+   },
+   {
+    "id": "m290",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -22.86,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m291",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -20.32,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m292",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -17.78,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m293",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -15.24,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m294",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -12.7,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m295",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -10.16,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m296",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -7.62,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m297",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -5.08,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m298",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -2.54,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m299",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 0,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m300",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 2.54,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m301",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 5.08,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m302",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 7.62,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m303",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 10.16,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m304",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 12.7,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m305",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 15.24,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m306",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 17.78,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m307",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 20.32,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m308",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 22.86,
+    "y": -20.24,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m309",
+    "plantilla": "f_caja",
+    "nombre": "GVS",
+    "cara": "A",
+    "x": 0,
+    "y": 22.78,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 48.26,
+     "h": 2.54,
+     "alto": 2.5,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m310",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -22.86,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m311",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -20.32,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m312",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -17.78,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m313",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -15.24,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m314",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -12.7,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m315",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -10.16,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m316",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -7.62,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m317",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -5.08,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m318",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -2.54,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m319",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 0,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m320",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 2.54,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m321",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 5.08,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m322",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 7.62,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m323",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 10.16,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m324",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 12.7,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m325",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 15.24,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m326",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 17.78,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m327",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 20.32,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m328",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 22.86,
+    "y": 22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m329",
+    "plantilla": "f_caja",
+    "nombre": "GVS",
+    "cara": "A",
+    "x": 0,
+    "y": -22.78,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 48.26,
+     "h": 2.54,
+     "alto": 2.5,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m330",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -22.86,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m331",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -20.32,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m332",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -17.78,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m333",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -15.24,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m334",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -12.7,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m335",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -10.16,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m336",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -7.62,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m337",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -5.08,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m338",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": -2.54,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m339",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 0,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m340",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 2.54,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m341",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 5.08,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m342",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 7.62,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m343",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 10.16,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m344",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 12.7,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m345",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 15.24,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m346",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 17.78,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m347",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 20.32,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m348",
+    "plantilla": "f_caja",
+    "nombre": "GVS pin",
+    "cara": "A",
+    "x": 22.86,
+    "y": -22.78,
+    "rot": 0,
+    "z": 2.5,
+    "params": {
+     "w": 0.64,
+     "h": 0.64,
+     "alto": 6,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m349",
+    "plantilla": "jack_dc",
+    "nombre": "Jack DC",
+    "cara": "A",
+    "x": 29,
+    "y": 0,
+    "rot": 270,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m350",
+    "plantilla": "sot223",
+    "nombre": "Regulador 5 V",
+    "cara": "A",
+    "x": -29,
+    "y": -8,
+    "rot": 90,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m351",
+    "plantilla": "sot223",
+    "nombre": "Regulador 3.3 V",
+    "cara": "A",
+    "x": -29,
+    "y": 8,
+    "rot": 90,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m352",
+    "plantilla": "electrolitico",
+    "nombre": "C 100 µF",
+    "cara": "A",
+    "x": 29,
+    "y": -17,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 6.3,
+     "alto": 7.7
+    }
+   },
+   {
+    "id": "m353",
+    "plantilla": "led_smd",
+    "nombre": "LED",
+    "cara": "A",
+    "x": 27,
+    "y": 17,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   }
+  ],
+  "nota": "Placa de expansión para ESP32 de 38 pines con borneras GVS.",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -12.7,
+    "z0": 1.6,
+    "z1": 10.1,
+    "color": "#111827",
+    "pieza": "m227",
+    "w": 48.26,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 12.7,
+    "z0": 1.6,
+    "z1": 10.1,
+    "color": "#111827",
+    "pieza": "m228",
+    "w": 48.26,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 17.7,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#facc15",
+    "pieza": "m229",
+    "w": 48.26,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -22.86,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m230",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -20.32,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m231",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -17.78,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m232",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -15.24,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m233",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -12.7,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m234",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -10.16,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m235",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -7.62,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m236",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -5.08,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m237",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -2.54,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m238",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m239",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 2.54,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m240",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 5.08,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m241",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 7.62,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m242",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 10.16,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m243",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 12.7,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m244",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 15.24,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m245",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 17.78,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m246",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 20.32,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m247",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 22.86,
+    "cy": 17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m248",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -17.7,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#facc15",
+    "pieza": "m249",
+    "w": 48.26,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -22.86,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m250",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -20.32,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m251",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -17.78,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m252",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -15.24,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m253",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -12.7,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m254",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -10.16,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m255",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -7.62,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m256",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -5.08,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m257",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -2.54,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m258",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m259",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 2.54,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m260",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 5.08,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m261",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 7.62,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m262",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 10.16,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m263",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 12.7,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m264",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 15.24,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m265",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 17.78,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m266",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 20.32,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m267",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 22.86,
+    "cy": -17.7,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m268",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 20.24,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#dc2626",
+    "pieza": "m269",
+    "w": 48.26,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -22.86,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m270",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -20.32,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m271",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -17.78,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m272",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -15.24,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m273",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -12.7,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m274",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -10.16,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m275",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -7.62,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m276",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -5.08,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m277",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -2.54,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m278",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m279",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 2.54,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m280",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 5.08,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m281",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 7.62,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m282",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 10.16,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m283",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 12.7,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m284",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 15.24,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m285",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 17.78,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m286",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 20.32,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m287",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 22.86,
+    "cy": 20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m288",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -20.24,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#dc2626",
+    "pieza": "m289",
+    "w": 48.26,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -22.86,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m290",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -20.32,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m291",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -17.78,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m292",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -15.24,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m293",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -12.7,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m294",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -10.16,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m295",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -7.62,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m296",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -5.08,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m297",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -2.54,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m298",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m299",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 2.54,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m300",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 5.08,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m301",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 7.62,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m302",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 10.16,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m303",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 12.7,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m304",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 15.24,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m305",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 17.78,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m306",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 20.32,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m307",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 22.86,
+    "cy": -20.24,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m308",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 22.78,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#111827",
+    "pieza": "m309",
+    "w": 48.26,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -22.86,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m310",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -20.32,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m311",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -17.78,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m312",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -15.24,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m313",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -12.7,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m314",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -10.16,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m315",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -7.62,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m316",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -5.08,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m317",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -2.54,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m318",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m319",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 2.54,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m320",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 5.08,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m321",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 7.62,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m322",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 10.16,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m323",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 12.7,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m324",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 15.24,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m325",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 17.78,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m326",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 20.32,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m327",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 22.86,
+    "cy": 22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m328",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -22.78,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#111827",
+    "pieza": "m329",
+    "w": 48.26,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -22.86,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m330",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -20.32,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m331",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -17.78,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m332",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -15.24,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m333",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -12.7,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m334",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -10.16,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m335",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -7.62,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m336",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -5.08,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m337",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -2.54,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m338",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m339",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 2.54,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m340",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 5.08,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m341",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 7.62,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m342",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 10.16,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m343",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 12.7,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m344",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 15.24,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m345",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 17.78,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m346",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 20.32,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m347",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 22.86,
+    "cy": -22.78,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "m348",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 29,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 12.6,
+    "color": "#1f2937",
+    "pieza": "m349",
+    "w": 14,
+    "h": 9
+   },
+   {
+    "f": "cil",
+    "cx": 36,
+    "cy": 0,
+    "z0": 4.6,
+    "z1": 10.6,
+    "color": "#334155",
+    "pieza": "m349",
+    "d": 6
+   },
+   {
+    "f": "caja",
+    "cx": -28.4,
+    "cy": -8,
+    "z0": 1.6,
+    "z1": 3.4,
+    "color": "#1f2937",
+    "pieza": "m350",
+    "w": 3.5,
+    "h": 6.5
+   },
+   {
+    "f": "caja",
+    "cx": -31.4,
+    "cy": -8,
+    "z0": 1.6,
+    "z1": 1.9,
+    "color": "#cbd5e1",
+    "pieza": "m350",
+    "w": 1.6,
+    "h": 3
+   },
+   {
+    "f": "caja",
+    "cx": -28.4,
+    "cy": 8,
+    "z0": 1.6,
+    "z1": 3.4,
+    "color": "#1f2937",
+    "pieza": "m351",
+    "w": 3.5,
+    "h": 6.5
+   },
+   {
+    "f": "caja",
+    "cx": -31.4,
+    "cy": 8,
+    "z0": 1.6,
+    "z1": 1.9,
+    "color": "#cbd5e1",
+    "pieza": "m351",
+    "w": 1.6,
+    "h": 3
+   },
+   {
+    "f": "cil",
+    "cx": 29,
+    "cy": -17,
+    "z0": 1.6,
+    "z1": 9.3,
+    "color": "#2563eb",
+    "pieza": "m352",
+    "d": 6.3
+   },
+   {
+    "f": "cil",
+    "cx": 29,
+    "cy": -17,
+    "z0": 9.3,
+    "z1": 9.4,
+    "color": "#cbd5e1",
+    "pieza": "m352",
+    "d": 5.04
+   },
+   {
+    "f": "caja",
+    "cx": 27,
+    "cy": 17,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "m353",
+    "w": 2,
+    "h": 1.25
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

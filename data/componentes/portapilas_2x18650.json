@@ -9,7 +9,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 3,
+ "version": 4,
  "unidad": "und",
  "ficha": {
   "descripcion": "Soporte plástico para 2 celdas 18650 en serie (7.4 V) con terminales para PCB o cable.",
@@ -66,34 +66,24 @@
  },
  "montaje": {
   "origen": "centro",
-  "pcb": [
-   77,
-   41,
-   20
-  ],
-  "fijacion": "tornillo",
-  "agujeros": [
-   {
-    "x": -25,
-    "y": 0,
-    "d": 3
-   },
-   {
-    "x": 25,
-    "y": 0,
-    "d": 3
-   }
-  ],
-  "altura_superior": 0,
+  "fijacion": "adhesivo",
+  "agujeros": [],
+  "altura_superior": 14,
   "altura_inferior": 0,
   "holgura_inferior_cableado": 0,
   "nota": "Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
+  "pcb": [
+   77,
+   41,
+   1.2
+  ],
+  "forma": "rect",
   "conexiones": {
    "header": "ninguno",
    "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
-    "altura_superior": 0,
+    "altura_superior": 14,
     "altura_inferior": 0,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
@@ -101,7 +91,7 @@
     "nota": "Pads o terminales: cables soldados directo."
    },
    "jumper": {
-    "altura_superior": 0,
+    "altura_superior": 14,
     "altura_inferior": 8.5,
     "holgura_inferior_cableado": 22,
     "holgura_superior_cableado": 0,
@@ -173,6 +163,367 @@
   {
    "fecha": "2026-11-21",
    "nota": "Pines con posición (centro de la pieza)"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 77,
+   "W": 41,
+   "d": 77,
+   "espesor": 1.2,
+   "radio": 0,
+   "color": "#111827"
+  },
+  "piezas": [
+   {
+    "id": "m416",
+    "plantilla": "f_caja",
+    "nombre": "Pared lateral",
+    "cara": "A",
+    "x": 0,
+    "y": -19.85,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 74,
+     "h": 1.2,
+     "alto": 10,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m417",
+    "plantilla": "f_caja",
+    "nombre": "Pared lateral",
+    "cara": "A",
+    "x": 0,
+    "y": -0.65,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 74,
+     "h": 1.2,
+     "alto": 10,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m418",
+    "plantilla": "f_caja",
+    "nombre": "Tope +",
+    "cara": "A",
+    "x": 37.2,
+    "y": -10.25,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1.6,
+     "h": 19.2,
+     "alto": 14,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m419",
+    "plantilla": "f_caja",
+    "nombre": "Tope −",
+    "cara": "A",
+    "x": -37.2,
+    "y": -10.25,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1.6,
+     "h": 19.2,
+     "alto": 14,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m420",
+    "plantilla": "f_caja",
+    "nombre": "Contacto +",
+    "cara": "A",
+    "x": 35.8,
+    "y": -10.25,
+    "rot": 0,
+    "z": 3,
+    "params": {
+     "w": 0.6,
+     "h": 6,
+     "alto": 8,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m421",
+    "plantilla": "f_caja",
+    "nombre": "Resorte −",
+    "cara": "A",
+    "x": -34.5,
+    "y": -10.25,
+    "rot": 0,
+    "z": 3,
+    "params": {
+     "w": 3.8,
+     "h": 6,
+     "alto": 8,
+     "r": 1,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m422",
+    "plantilla": "f_caja",
+    "nombre": "Pared lateral",
+    "cara": "A",
+    "x": 0,
+    "y": 0.65,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 74,
+     "h": 1.2,
+     "alto": 10,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m423",
+    "plantilla": "f_caja",
+    "nombre": "Pared lateral",
+    "cara": "A",
+    "x": 0,
+    "y": 19.85,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 74,
+     "h": 1.2,
+     "alto": 10,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m424",
+    "plantilla": "f_caja",
+    "nombre": "Tope +",
+    "cara": "A",
+    "x": 37.2,
+    "y": 10.25,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1.6,
+     "h": 19.2,
+     "alto": 14,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m425",
+    "plantilla": "f_caja",
+    "nombre": "Tope −",
+    "cara": "A",
+    "x": -37.2,
+    "y": 10.25,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 1.6,
+     "h": 19.2,
+     "alto": 14,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m426",
+    "plantilla": "f_caja",
+    "nombre": "Contacto +",
+    "cara": "A",
+    "x": 35.8,
+    "y": 10.25,
+    "rot": 0,
+    "z": 3,
+    "params": {
+     "w": 0.6,
+     "h": 6,
+     "alto": 8,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m427",
+    "plantilla": "f_caja",
+    "nombre": "Resorte −",
+    "cara": "A",
+    "x": -34.5,
+    "y": 10.25,
+    "rot": 0,
+    "z": 3,
+    "params": {
+     "w": 3.8,
+     "h": 6,
+     "alto": 8,
+     "r": 1,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "nota": "Portapilas de 2 celdas (vacío).",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -19.85,
+    "z0": 1.2,
+    "z1": 11.2,
+    "color": "#111827",
+    "pieza": "m416",
+    "w": 74,
+    "h": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -0.65,
+    "z0": 1.2,
+    "z1": 11.2,
+    "color": "#111827",
+    "pieza": "m417",
+    "w": 74,
+    "h": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": 37.2,
+    "cy": -10.25,
+    "z0": 1.2,
+    "z1": 15.2,
+    "color": "#111827",
+    "pieza": "m418",
+    "w": 1.6,
+    "h": 19.2
+   },
+   {
+    "f": "caja",
+    "cx": -37.2,
+    "cy": -10.25,
+    "z0": 1.2,
+    "z1": 15.2,
+    "color": "#111827",
+    "pieza": "m419",
+    "w": 1.6,
+    "h": 19.2
+   },
+   {
+    "f": "caja",
+    "cx": 35.8,
+    "cy": -10.25,
+    "z0": 4.2,
+    "z1": 12.2,
+    "color": "#cbd5e1",
+    "pieza": "m420",
+    "w": 0.6,
+    "h": 6
+   },
+   {
+    "f": "caja",
+    "cx": -34.5,
+    "cy": -10.25,
+    "z0": 4.2,
+    "z1": 12.2,
+    "color": "#cbd5e1",
+    "pieza": "m421",
+    "w": 3.8,
+    "h": 6,
+    "r": 1
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 0.65,
+    "z0": 1.2,
+    "z1": 11.2,
+    "color": "#111827",
+    "pieza": "m422",
+    "w": 74,
+    "h": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 19.85,
+    "z0": 1.2,
+    "z1": 11.2,
+    "color": "#111827",
+    "pieza": "m423",
+    "w": 74,
+    "h": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": 37.2,
+    "cy": 10.25,
+    "z0": 1.2,
+    "z1": 15.2,
+    "color": "#111827",
+    "pieza": "m424",
+    "w": 1.6,
+    "h": 19.2
+   },
+   {
+    "f": "caja",
+    "cx": -37.2,
+    "cy": 10.25,
+    "z0": 1.2,
+    "z1": 15.2,
+    "color": "#111827",
+    "pieza": "m425",
+    "w": 1.6,
+    "h": 19.2
+   },
+   {
+    "f": "caja",
+    "cx": 35.8,
+    "cy": 10.25,
+    "z0": 4.2,
+    "z1": 12.2,
+    "color": "#cbd5e1",
+    "pieza": "m426",
+    "w": 0.6,
+    "h": 6
+   },
+   {
+    "f": "caja",
+    "cx": -34.5,
+    "cy": 10.25,
+    "z0": 4.2,
+    "z1": 12.2,
+    "color": "#cbd5e1",
+    "pieza": "m427",
+    "w": 3.8,
+    "h": 6,
+    "r": 1
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

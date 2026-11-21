@@ -891,9 +891,39 @@
     const R = est.sel === "manual" ? RM : (ops.find(o => o.id === est.sel) || ops[0]) || null;
     return { cfg, par, alc, est, usar, varios, inst, pz, ops, RM, R, comp2 };
   }
+  /** Huella de la caja (medidas, posiciones y elementos) para saber si cambió desde que se aprobó. */
+  function firmaCaja(R) {
+    const t = JSON.stringify([R.interior, R.p && R.p.espesor, R.piezas.map(q => [q.ref, q.id, q.x, q.y, q.rot, q.nivel, q.L, q.W]), (R.elementos || []).map(e => [e.tipo, e.cara, e.u, e.v, e.w, e.h, e.prof])]);
+    let h = 5381; for (let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0; return (h >>> 0).toString(36);
+  }
+  function panelAprob(est, R) {
+    const a = est.aprobada, igual = a && a.firma === firmaCaja(R);
+    if (!a) return `<div class="panel cj-aprob"><h3>Aprobar y exportar</h3><div class="small muted">Cuando la caja esté lista, apruébala para exportar el <b>ensamble</b>: caja, tapa, repisas, cada componente con su modelo 3D completo y cada accesorio (ventiladores, prensaestopas, pulsadores, conectores…), un color por pieza.</div>
+      <div class="row" style="margin-top:8px"><button class="pri" id="cjAprobar">✅ Aprobar caja</button></div></div>`;
+    return `<div class="panel cj-aprob ${igual ? "ok" : "warn"}"><h3>${igual ? "✅ Caja aprobada" : "⚠ La caja cambió desde que se aprobó"}</h3><div class="small muted">Aprobada el ${esc(a.fecha)} · ${esc(a.etiqueta || "")} · exterior ${a.ext ? `${a.ext.L} × ${a.ext.W} × ${a.ext.H} mm` : ""}</div>
+      ${igual ? `<div style="margin-top:8px"><label>Colores</label><select id="cjCol"><option value="pieza">Un color distinto por pieza</option><option value="modelo">Colores reales de cada modelo 3D</option></select></div>
+      <div class="row" style="flex-wrap:wrap;gap:6px;margin-top:8px"><button class="pri sm" data-cjx="step">⬇ STEP ensamble</button><button class="sm" data-cjx="xt">⬇ Parasolid (.x_t vía SolidWorks)</button><button class="sm" data-cjx="dxf">⬇ DXF 6 vistas (capa por pieza)</button></div>
+      <div class="small muted" style="margin-top:6px">STEP AP214: cada componente y accesorio es una pieza aparte del ensamble, con su nombre y color; la caja, la tapa y las repisas van separadas.</div>`
+      : `<div class="small" style="margin-top:6px">Moviste piezas o elementos después de aprobarla. Revisa y vuelve a aprobar para exportar.</div><div class="row" style="margin-top:8px"><button class="pri" id="cjAprobar">✅ Aprobar de nuevo</button></div>`}
+      <div class="row" style="margin-top:8px"><button class="sm ghost" id="cjQuitar">Quitar aprobación</button></div></div>`;
+  }
+  /** Exporta la caja aprobada como ensamble: STEP, Parasolid (STEP + macro de SolidWorks) o DXF de 6 vistas con capas. */
+  function exportaCaja(R, comp2, nom, titulo, tipo, colores) {
+    const cache = {}, compS = id => { if (id in cache) return cache[id]; const c = comp2(id); let k = null; if (c) { k = clone(c); try { MLPlant.sincronizar(k); } catch (e) { } } return (cache[id] = k); };
+    const opt = { titulo, archivo: nom, colores: colores === "modelo" ? "modelo" : "pieza" };
+    try {
+      const G = MLCajaExport.escena(R, compS, opt), avisoOm = G.omitidos.length ? ` · sin cortar (se montan sobre otro): ${G.omitidos.join(", ")}` : "";
+      if (tipo === "step") { download(nom + "_ensamble.step", MLCajaExport.step(R, compS, Object.assign({}, opt, { archivo: nom + "_ensamble" })), "application/step"); toast(`STEP ensamble: ${G.length} piezas${avisoOm}`, 5000); }
+      else if (tipo === "dxf") { download(nom + "_6vistas.dxf", MLCajaExport.dxf(R, compS, opt), "application/dxf"); toast(`DXF de 6 vistas: ${G.length} capas, una por pieza${avisoOm}`, 5000); }
+      else {
+        const b = nom + "_ensamble", blob = MLIng.zip([[b + ".step", MLCajaExport.step(R, compS, Object.assign({}, opt, { archivo: b }))], [b + "_a_parasolid.swb", MLCad.macroParasolid(b)], ["LEEME.txt", `MountLab · ${titulo} (caja aprobada)\r\n\r\n1. Descomprime esta carpeta.\r\n2. En SolidWorks: Herramientas > Macro > Ejecutar... y elige ${b}_a_parasolid.swb\r\n3. Queda ${b}.x_t (Parasolid) en la misma carpeta, con el ensamble y los colores de cada pieza.\r\n\r\nTambién puedes abrir ${b}.step y usar Guardar como > Parasolid (*.x_t).\r\n`]]);
+        const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = b + "_parasolid.zip"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 3000); toast("Descargado: STEP del ensamble + macro para Parasolid" + avisoOm, 5000);
+      }
+    } catch (e) { console.error(e); toast("No se pudo exportar: " + e.message, 6000); }
+  }
   function vCaja(P, cabecera) {
     const host = $("#cajaHost"), K = cajaDe(P), { cfg, par, est, usar, varios, pz, ops, RM, R, comp2 } = K, alc = K.alc;
-    const guardarCfg = () => { cfg.por[alc] = { sel: est.sel, manual: est.manual, elementos: est.elementos }; P.caja = { alcance: alc, p: par, por: cfg.por }; cabecera(); };
+    const guardarCfg = () => { cfg.por[alc] = { sel: est.sel, manual: est.manual, elementos: est.elementos }; if (est.aprobada) cfg.por[alc].aprobada = est.aprobada; P.caja = { alcance: alc, p: par, por: cfg.por }; cabecera(); };
     const ui = S.cajaUI || (S.cajaUI = { panel: "vistas", nivel: 0, pz: null });
     const titulo = P.nombre + (alc === "__todo" ? "" : " · " + (P.subs.find(u => u.id === alc) || {}).nombre);
     const campo = (k, n, ayuda, st) => `<div title="${esc(ayuda)}"><label>${n}</label><input type="number" step="${st || 0.5}" min="0" data-cp="${k}" value="${par[k]}"></div>`;
@@ -931,7 +961,8 @@
             <select id="cjAdd"><option value="">＋ Agregar elemento… (${Object.keys(MLCajaEl.ELEMENTOS).length} tipos)</option>${Object.entries(MLCajaEl.GRUPOS).map(([g, L]) => `<optgroup label="${esc(g)}">${L.map(k => { const d = MLCajaEl.ELEMENTOS[k]; return `<option value="${k}">${d.ic} ${esc(d.n)}</option>`; }).join("")}</optgroup>`).join("")}</select>
             <div id="cjEls">${est.elementos.map(filaEl).join("")}</div></div>
           ${R ? `<div class="panel"><div class="caja-kpi"><div><span>Interior · ${esc(R.etiqueta || "")}</span><b>${R.interior.L} × ${R.interior.W} × ${R.interior.H}</b><small>mm (largo × ancho × alto) · ${R.n} nivel${R.n > 1 ? "es" : ""}</small></div><div><span>Exterior</span><b>${R.exterior.L} × ${R.exterior.W} × ${R.exterior.H}</b><small>mm con pared de ${par.espesor} mm</small></div><div><span>Volumen</span><b>${R.volumen} cm³</b><small>ocupación ${R.ocupacion} %</small></div></div>
-            <div class="row" style="margin-top:10px"><button class="sm" id="cjSvg">⬇ SVG</button><button class="sm" id="cjDxf">⬇ DXF</button><button class="sm" id="cjCsv">⬇ CSV</button></div></div>` : ""}
+            <div class="row" style="margin-top:10px"><button class="sm" id="cjSvg">⬇ SVG</button><button class="sm" id="cjDxf">⬇ DXF</button><button class="sm" id="cjCsv">⬇ CSV</button></div></div>
+          ${panelAprob(est, R)}` : ""}
           ${pz.faltan.length ? `<div class="msg warn small">Sin medidas (no entran en el cálculo): ${pz.faltan.map(esc).join(", ")}. Complétalas con el Generador (🩺 Revisión).</div>` : ""}
           ${pz.aberturas.length ? `<div class="msg info small">Aberturas en pared: ${pz.aberturas.map(a => `${esc(a.n)} (${a.w}×${a.h} mm)`).join(", ")}.</div>` : ""}
           ${R && R.piezas.some(q => q.faltaPared) ? `<div class="msg warn small">Conectores que no quedan contra su pared: ${R.piezas.filter(q => q.faltaPared).map(q => esc(q.ref)).join(", ")}.</div>` : ""}
@@ -974,6 +1005,9 @@
     $("#cjSvg").onclick = () => download(nom + ".svg", MLCaja.vistas(R, { titulo, claro: true }), "image/svg+xml");
     $("#cjDxf").onclick = () => download(nom + ".dxf", MLCaja.dxf(R, titulo), "application/dxf");
     $("#cjCsv").onclick = () => download(nom + ".csv", "﻿" + [["Ref", "Componente", "Subproyecto", "Nivel", "Conexión", "X mm", "Y mm", "Largo mm", "Ancho mm", "Alto mm", "Giro", "Necesita"], ...R.piezas.filter(q => q.elemento == null).map(q => [q.ref, q.n, q.sub || "", q.nivel + 1, q.ver || "", q.x, q.y, q.L, q.W, Math.round(q.Ht * 10) / 10, q.rot, [q.paredes.join(" "), q.arribaZ ? "ventana tapa" : ""].filter(Boolean).join("; ")]), ...(R.elementos || []).map(e => [e.ref, e.n, "", "", "", e.u, e.v, e.w, e.h, e.prof, "", MLCaja.CARAS[e.cara]])].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(";")).join("\r\n"), "text/csv");
+    const bAp = $("#cjAprobar", host); if (bAp) bAp.onclick = () => { const ahora = new Date(); est.aprobada = { fecha: `${hoy()} ${String(ahora.getHours()).padStart(2, "0")}:${String(ahora.getMinutes()).padStart(2, "0")}`, firma: firmaCaja(R), etiqueta: R.etiqueta || (est.sel === "manual" ? "a mano" : est.sel), ext: R.exterior }; repinta(); toast("Caja aprobada: ya puedes exportarla como ensamble"); };
+    const bQa = $("#cjQuitar", host); if (bQa) bQa.onclick = () => { delete est.aprobada; if (cfg.por[alc]) delete cfg.por[alc].aprobada; repinta(); };
+    $$("[data-cjx]", host).forEach(b => b.onclick = () => exportaCaja(R, comp2, nom, titulo, b.dataset.cjx, ($("#cjCol", host) || {}).value));
     if (ui.panel !== "mano") return;
     // ---------- edición a mano: arrastrar, girar, cambiar de nivel
     const asegurarManual = () => { if (est.sel !== "manual") { est.manual = MLCaja.aManual(R); est.sel = "manual"; } return est.manual.pos; };
@@ -993,7 +1027,7 @@
   }
 
   function ingInit() {
-    MLIng.init({ esc, comp, cop, precioMin, download, toast, hoy, caja: P => { try { return cajaDe(P); } catch (e) { console.warn(e); return null; } },
+    MLIng.init({ esc, comp, cop, precioMin, download, toast, hoy, caja: P => { try { return cajaDe(P); } catch (e) { console.warn(e); return null; } }, firmaCaja, exportaCaja,
       ia: iaLista() ? (system, user) => llamarIA(system, [{ role: "user", content: user }], false, { potente: true }) : null,
       putFile: (ruta, b64, msg) => Store.putFile(ruta, b64, msg),
       usuario: () => { try { return localStorage.getItem("ml_autor") || "John"; } catch (e) { return "John"; } }, recordarUsuario: n => { try { localStorage.setItem("ml_autor", n); } catch (e) { } } });

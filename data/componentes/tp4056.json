@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Cargador de 1 celda Li-ion 4.2 V a 1 A con protección (DW01A + FS8205A).",
@@ -72,17 +72,18 @@
  },
  "montaje": {
   "origen": "centro",
-  "pcb": [
-   26,
-   17,
-   1.6
-  ],
   "fijacion": "guia_deslizante",
   "agujeros": [],
   "altura_superior": 3.2,
   "altura_inferior": 0,
   "holgura_inferior_cableado": 0,
   "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "pcb": [
+   26,
+   17,
+   1.6
+  ],
+  "forma": "rect",
   "conexiones": {
    "header": "ninguno",
    "header_alto": 0,
@@ -119,6 +120,54 @@
    ],
    "salida": "-X",
    "holgura": 20
+  },
+  {
+   "tipo": "usb",
+   "nombre": "USB-C",
+   "cx": -10.9,
+   "cy": 0,
+   "w": 7.3,
+   "h": 8.9,
+   "z": [
+    1.6,
+    4.8
+   ],
+   "salida": "-X",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "m160"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED carga",
+   "cx": -4,
+   "cy": 5.5,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "m164"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED listo",
+   "cx": -4,
+   "cy": -5.5,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "m165"
   }
  ],
  "pines": [
@@ -198,6 +247,522 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 26,
+   "W": 17,
+   "d": 26,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "m160",
+    "plantilla": "usb_c",
+    "nombre": "USB-C",
+    "cara": "A",
+    "x": -10.4,
+    "y": 0,
+    "rot": 90,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m161",
+    "plantilla": "soic",
+    "nombre": "TP4056",
+    "cara": "A",
+    "x": 1,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 8,
+     "ancho": 3.9
+    }
+   },
+   {
+    "id": "m162",
+    "plantilla": "f_caja",
+    "nombre": "DW01A",
+    "cara": "A",
+    "x": 6.5,
+    "y": -4.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3,
+     "h": 1.6,
+     "alto": 1.1,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m163",
+    "plantilla": "f_caja",
+    "nombre": "FS8205A",
+    "cara": "A",
+    "x": 7.5,
+    "y": 4.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3.2,
+     "h": 3,
+     "alto": 1.1,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m164",
+    "plantilla": "led_smd",
+    "nombre": "LED carga",
+    "cara": "A",
+    "x": -4,
+    "y": 5.5,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m165",
+    "plantilla": "led_smd",
+    "nombre": "LED listo",
+    "cara": "A",
+    "x": -4,
+    "y": -5.5,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m166",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": -2,
+    "y": 3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "m167",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": -2,
+    "y": -3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "m168",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": 4,
+    "y": 3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "m169",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": 4,
+    "y": -3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "m170",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 10.75,
+    "y": -6.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m171",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 13.25,
+    "y": -6.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m172",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 10.75,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m173",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 13.25,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m174",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 10.75,
+    "y": 6.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m175",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 13.25,
+    "y": 6.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   }
+  ],
+  "nota": "Cargador TP4056 con protección y USB-C.",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -10.9,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 4.8,
+    "color": "#cbd5e1",
+    "pieza": "m160",
+    "w": 7.3,
+    "h": 8.9,
+    "r": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": 1,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 3.2,
+    "color": "#1f2937",
+    "pieza": "m161",
+    "w": 5.48,
+    "h": 3.9
+   },
+   {
+    "f": "caja",
+    "cx": 1,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 1.9,
+    "color": "#cbd5e1",
+    "pieza": "m161",
+    "w": 5.08,
+    "h": 5.9
+   },
+   {
+    "f": "caja",
+    "cx": 6.5,
+    "cy": -4.5,
+    "z0": 1.6,
+    "z1": 2.7,
+    "color": "#111827",
+    "pieza": "m162",
+    "w": 3,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": 7.5,
+    "cy": 4.5,
+    "z0": 1.6,
+    "z1": 2.7,
+    "color": "#111827",
+    "pieza": "m163",
+    "w": 3.2,
+    "h": 3
+   },
+   {
+    "f": "caja",
+    "cx": -4,
+    "cy": 5.5,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "m164",
+    "w": 2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -4,
+    "cy": -5.5,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "m165",
+    "w": 2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -2,
+    "cy": 3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "m166",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -2.8,
+    "cy": 3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m166",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -1.2,
+    "cy": 3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m166",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -2,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "m167",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -2.8,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m167",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -1.2,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m167",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 4,
+    "cy": 3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "m168",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 3.2,
+    "cy": 3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m168",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 4.8,
+    "cy": 3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m168",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 4,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "m169",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 3.2,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m169",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 4.8,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m169",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "cil",
+    "cx": 10.75,
+    "cy": -6.5,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m170",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 13.25,
+    "cy": -6.5,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m171",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 10.75,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m172",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 13.25,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m173",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 10.75,
+    "cy": 6.5,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m174",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 13.25,
+    "cy": 6.5,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m175",
+    "d": 1.7
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

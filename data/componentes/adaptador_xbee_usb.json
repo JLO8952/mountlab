@@ -10,7 +10,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 2,
+ "version": 3,
  "unidad": "und",
  "ficha": {
   "descripcion": "Base USB-serial (FT232RL/CH340) para configurar XBee con XCTU.",
@@ -71,36 +71,37 @@
  },
  "montaje": {
   "origen": "centro",
-  "pcb": [
-   42,
-   28,
-   1.6
-  ],
   "fijacion": "guia_deslizante",
   "agujeros": [],
   "altura_superior": 6,
   "altura_inferior": 0,
   "holgura_inferior_cableado": 22,
   "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "pcb": [
+   42,
+   28,
+   1.6
+  ],
+  "forma": "rect",
   "conexiones": {
-   "header": "ninguno",
-   "header_alto": 0,
+   "header": "arriba",
+   "header_alto": 6,
    "defecto": "soldado",
    "soldado": {
-    "altura_superior": 6,
+    "altura_superior": 3.5,
     "altura_inferior": 0,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
     "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
-    "nota": "Pads o terminales: cables soldados directo."
+    "nota": "Sin header: cables soldados en los pads por arriba (≈6 mm para la curva del cable)."
    },
    "jumper": {
     "altura_superior": 6,
-    "altura_inferior": 8.5,
-    "holgura_inferior_cableado": 22,
-    "holgura_superior_cableado": 0,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 16,
     "cable": "Jumper Dupont 2.54 mm sobre headers",
-    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+    "nota": "Header macho arriba (6 mm): carcasa Dupont hembra + curva ≈16 mm."
    }
   }
  },
@@ -146,6 +147,86 @@
    ],
    "salida": "+X",
    "holgura": 20
+  },
+  {
+   "tipo": "usb",
+   "nombre": "Mini USB",
+   "cx": 18.9,
+   "cy": 0,
+   "w": 5.6,
+   "h": 7.5,
+   "z": [
+    1.6,
+    4.2
+   ],
+   "salida": "+X",
+   "holgura": 20,
+   "auto": true,
+   "pieza": "m221"
+  },
+  {
+   "tipo": "calor",
+   "nombre": "Regulador 3.3 V",
+   "cx": 9,
+   "cy": -8,
+   "w": 6.5,
+   "h": 7,
+   "z": [
+    1.6,
+    3.4
+   ],
+   "salida": "+Z",
+   "holgura": 8,
+   "auto": true,
+   "pieza": "m223"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED RX",
+   "cx": 15,
+   "cy": 8,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "m224"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED TX",
+   "cx": 15,
+   "cy": 10,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "m225"
+  },
+  {
+   "tipo": "boton",
+   "nombre": "Reset",
+   "cx": 15,
+   "cy": -9,
+   "w": 6,
+   "h": 6,
+   "z": [
+    1.6,
+    6.6
+   ],
+   "salida": "+Z",
+   "holgura": 3,
+   "auto": true,
+   "pieza": "m226"
   }
  ],
  "pines": [
@@ -224,6 +305,244 @@
   {
    "fecha": "2026-11-21",
    "nota": "Pines con posición (centro de la pieza)"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 42,
+   "W": 28,
+   "d": 42,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#b91c1c"
+  },
+  "piezas": [
+   {
+    "id": "m219",
+    "plantilla": "f_caja",
+    "nombre": "Header hembra izquierdo (2 mm)",
+    "cara": "A",
+    "x": -8,
+    "y": -11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 20,
+     "h": 2,
+     "alto": 6,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m220",
+    "plantilla": "f_caja",
+    "nombre": "Header hembra derecho (2 mm)",
+    "cara": "A",
+    "x": -8,
+    "y": 11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 20,
+     "h": 2,
+     "alto": 6,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m221",
+    "plantilla": "micro_usb",
+    "nombre": "Mini USB",
+    "cara": "A",
+    "x": 18.4,
+    "y": 0,
+    "rot": 270,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m222",
+    "plantilla": "f_caja",
+    "nombre": "FT232RL",
+    "cara": "A",
+    "x": 9,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 10.2,
+     "h": 5.3,
+     "alto": 1.7,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m223",
+    "plantilla": "sot223",
+    "nombre": "Regulador 3.3 V",
+    "cara": "A",
+    "x": 9,
+    "y": -8,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m224",
+    "plantilla": "led_smd",
+    "nombre": "LED RX",
+    "cara": "A",
+    "x": 15,
+    "y": 8,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m225",
+    "plantilla": "led_smd",
+    "nombre": "LED TX",
+    "cara": "A",
+    "x": 15,
+    "y": 10,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m226",
+    "plantilla": "pulsador",
+    "nombre": "Reset",
+    "cara": "A",
+    "x": 15,
+    "y": -9,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   }
+  ],
+  "nota": "Adaptador USB para XBee (zócalos de 2 mm).",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -8,
+    "cy": -11,
+    "z0": 1.6,
+    "z1": 7.6,
+    "color": "#111827",
+    "pieza": "m219",
+    "w": 20,
+    "h": 2
+   },
+   {
+    "f": "caja",
+    "cx": -8,
+    "cy": 11,
+    "z0": 1.6,
+    "z1": 7.6,
+    "color": "#111827",
+    "pieza": "m220",
+    "w": 20,
+    "h": 2
+   },
+   {
+    "f": "caja",
+    "cx": 18.9,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 4.2,
+    "color": "#cbd5e1",
+    "pieza": "m221",
+    "w": 5.6,
+    "h": 7.5
+   },
+   {
+    "f": "caja",
+    "cx": 9,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 3.3,
+    "color": "#111827",
+    "pieza": "m222",
+    "w": 10.2,
+    "h": 5.3
+   },
+   {
+    "f": "caja",
+    "cx": 9,
+    "cy": -8.6,
+    "z0": 1.6,
+    "z1": 3.4,
+    "color": "#1f2937",
+    "pieza": "m223",
+    "w": 6.5,
+    "h": 3.5
+   },
+   {
+    "f": "caja",
+    "cx": 9,
+    "cy": -5.6,
+    "z0": 1.6,
+    "z1": 1.9,
+    "color": "#cbd5e1",
+    "pieza": "m223",
+    "w": 3,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": 15,
+    "cy": 8,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "m224",
+    "w": 2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 15,
+    "cy": 10,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "m225",
+    "w": 2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 15,
+    "cy": -9,
+    "z0": 1.6,
+    "z1": 5.1,
+    "color": "#1f2937",
+    "pieza": "m226",
+    "w": 6,
+    "h": 6
+   },
+   {
+    "f": "cil",
+    "cx": 15,
+    "cy": -9,
+    "z0": 5.1,
+    "z1": 6.6,
+    "color": "#9ca3af",
+    "pieza": "m226",
+    "d": 3.5
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

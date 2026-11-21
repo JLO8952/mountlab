@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 3,
+ "version": 4,
  "unidad": "und",
  "ficha": {
   "descripcion": "Adaptador conmutado de pared 100–240 V AC a 12 V DC 2 A con plug 5.5 × 2.1 mm.",
@@ -68,24 +68,27 @@
  },
  "montaje": {
   "origen": "centro",
+  "fijacion": "ninguna",
+  "agujeros": [],
+  "altura_superior": 8,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Adaptador de pared: queda fuera de la caja (solo entra el cable por el jack). Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
   "pcb": [
    75,
    45,
    35
   ],
-  "fijacion": "ninguna",
-  "agujeros": [],
-  "altura_superior": 0,
-  "altura_inferior": 0,
-  "holgura_inferior_cableado": 0,
-  "nota": "Adaptador de pared: queda fuera de la caja (solo entra el cable por el jack). Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
   "externo": true,
+  "forma": "redondeada",
+  "base_tipo": "prisma",
+  "radio": 4,
   "conexiones": {
    "header": "ninguno",
    "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
-    "altura_superior": 0,
+    "altura_superior": 8,
     "altura_inferior": 0,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
@@ -93,7 +96,7 @@
     "nota": "Pads o terminales: cables soldados directo."
    },
    "jumper": {
-    "altura_superior": 0,
+    "altura_superior": 8,
     "altura_inferior": 8.5,
     "holgura_inferior_cableado": 22,
     "holgura_superior_cableado": 0,
@@ -144,6 +147,82 @@
   {
    "fecha": "2026-11-21",
    "nota": "Pines con posición (centro de la pieza)"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "redondeada",
+   "L": 75,
+   "W": 45,
+   "d": 75,
+   "espesor": 35,
+   "radio": 4,
+   "color": "#111827"
+  },
+  "piezas": [
+   {
+    "id": "m418",
+    "plantilla": "f_cil",
+    "nombre": "Salida del cable",
+    "cara": "A",
+    "x": 30,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 7,
+     "alto": 8,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m419",
+    "plantilla": "f_caja",
+    "nombre": "Etiqueta",
+    "cara": "A",
+    "x": -5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 40,
+     "h": 30,
+     "alto": 0.05,
+     "r": 0,
+     "color": "#e5e7eb"
+    }
+   }
+  ],
+  "nota": "Adaptador de pared 12 V 2 A (exterior).",
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": 30,
+    "cy": 0,
+    "z0": 35,
+    "z1": 43,
+    "color": "#111827",
+    "pieza": "m418",
+    "d": 7
+   },
+   {
+    "f": "caja",
+    "cx": -5,
+    "cy": 0,
+    "z0": 35,
+    "z1": 35.05,
+    "color": "#e5e7eb",
+    "pieza": "m419",
+    "w": 40,
+    "h": 30
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

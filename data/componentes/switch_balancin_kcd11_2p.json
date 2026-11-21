@@ -14,7 +14,7 @@
  "fabricante": "Genérico (Shou Han / Yizhi y otros)",
  "referencia": "KCD11-2P (KCD11-101)",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Mini interruptor de balancín para chasis/panel, 2 pines y 2 posiciones (ON-OFF), un polo un tiro (SPST). Marco negro rectangular con marcas I / O.",
@@ -97,13 +97,17 @@
  },
  "montaje": {
   "origen": "centro",
+  "fijacion": "snap-in en panel",
+  "agujeros": [],
+  "altura_superior": 3,
+  "altura_inferior": 13.5,
+  "holgura_inferior_cableado": 0,
+  "nota": "Aquí 'pcb' es el marco (bezel). Z=0 = cara frontal del panel; el cuerpo (13.2 × 8.6 × 7) y los terminales (6.5 mm) bajan hacia −Z. Borrador, verificar con calibrador.",
   "pcb": [
    15,
    10.5,
    1.5
   ],
-  "fijacion": "snap-in en panel",
-  "agujeros": [],
   "recorte_panel": {
    "w": 13.5,
    "h": 9,
@@ -112,9 +116,7 @@
     2
    ]
   },
-  "altura_superior": 3,
-  "altura_inferior": 13.5,
-  "nota": "Aquí 'pcb' es el marco (bezel). Z=0 = cara frontal del panel; el cuerpo (13.2 × 8.6 × 7) y los terminales (6.5 mm) bajan hacia −Z. Borrador, verificar con calibrador.",
+  "forma": "rect",
   "conexiones": {
    "header": "no_aplica",
    "header_alto": 0,
@@ -247,6 +249,142 @@
    "v": 1,
    "fecha": "2026-11-17",
    "nota": "Creado desde la ficha del proveedor enviada por John (2P, SPST ON-OFF, 120 VAC 6 A / 250 VAC 3 A). Dimensiones KCD11 estándar (marco 15 × 10.5, recorte 13.5 × 9); terminales estimados. STEP y DXF generados con CadQuery/ezdxf."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 15,
+   "W": 10.5,
+   "d": 15,
+   "espesor": 1.5,
+   "radio": 0,
+   "color": "#111827"
+  },
+  "piezas": [
+   {
+    "id": "m354",
+    "plantilla": "f_caja",
+    "nombre": "Balancín I/O",
+    "cara": "A",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 11.5,
+     "h": 7,
+     "alto": 3,
+     "r": 1,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m355",
+    "plantilla": "f_caja",
+    "nombre": "Cuerpo bajo panel",
+    "cara": "B",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 14.3,
+     "h": 10.5,
+     "alto": 7,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m356",
+    "plantilla": "f_caja",
+    "nombre": "Terminal 1",
+    "cara": "B",
+    "x": -2.5,
+    "y": 0,
+    "rot": 0,
+    "z": 7,
+    "params": {
+     "w": 0.8,
+     "h": 3.4,
+     "alto": 6.5,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m357",
+    "plantilla": "f_caja",
+    "nombre": "Terminal 2",
+    "cara": "B",
+    "x": 2.5,
+    "y": 0,
+    "rot": 0,
+    "z": 7,
+    "params": {
+     "w": 0.8,
+     "h": 3.4,
+     "alto": 6.5,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "nota": "Balancín KCD11: marco sobre el panel, cuerpo y terminales por debajo.",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 0,
+    "z0": 1.5,
+    "z1": 4.5,
+    "color": "#111827",
+    "pieza": "m354",
+    "w": 11.5,
+    "h": 7,
+    "r": 1
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 0,
+    "z0": -7,
+    "z1": 0,
+    "color": "#111827",
+    "pieza": "m355",
+    "w": 14.3,
+    "h": 10.5
+   },
+   {
+    "f": "caja",
+    "cx": -2.5,
+    "cy": 0,
+    "z0": -13.5,
+    "z1": -7,
+    "color": "#cbd5e1",
+    "pieza": "m356",
+    "w": 0.8,
+    "h": 3.4
+   },
+   {
+    "f": "caja",
+    "cx": 2.5,
+    "cy": 0,
+    "z0": -13.5,
+    "z1": -7,
+    "color": "#cbd5e1",
+    "pieza": "m357",
+    "w": 0.8,
+    "h": 3.4
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

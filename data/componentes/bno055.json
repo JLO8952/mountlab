@@ -10,7 +10,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "IMU absoluta de 9 ejes de Bosch (acelerómetro, giroscopio, magnetómetro) con fusión de sensores interna.",
@@ -75,11 +75,6 @@
  },
  "montaje": {
   "origen": "centro",
-  "pcb": [
-   26.7,
-   20.3,
-   1.6
-  ],
   "fijacion": "tornillo",
   "agujeros": [
    {
@@ -103,29 +98,35 @@
     "d": 2.5
    }
   ],
-  "altura_superior": 1.1,
-  "altura_inferior": 8.5,
+  "altura_superior": 3.5,
+  "altura_inferior": 0,
   "holgura_inferior_cableado": 22,
   "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "pcb": [
+   26.7,
+   20.3,
+   1.6
+  ],
+  "forma": "rect",
   "conexiones": {
-   "header": "abajo",
-   "header_alto": 8.5,
+   "header": "ninguno",
+   "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
-    "altura_superior": 1.1,
-    "altura_inferior": 2,
+    "altura_superior": 3.5,
+    "altura_inferior": 0,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
     "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
-    "nota": "Sin header: los cables se sueldan en los pads por arriba; puntas recortadas ≈2 mm por debajo."
+    "nota": "Pads o terminales: cables soldados directo."
    },
    "jumper": {
-    "altura_superior": 1.1,
+    "altura_superior": 3.5,
     "altura_inferior": 8.5,
     "holgura_inferior_cableado": 22,
     "holgura_superior_cableado": 0,
     "cable": "Jumper Dupont 2.54 mm sobre headers",
-    "nota": "Header macho hacia abajo (8.5 mm) + carcasa Dupont y curva del cable ≈22 mm."
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
    }
   }
  },
@@ -143,6 +144,22 @@
    ],
    "salida": "-Z",
    "holgura": 22
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED",
+   "cx": 8.5,
+   "cy": -4,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "m123"
   }
  ],
  "pines": [
@@ -249,6 +266,222 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 26.7,
+   "W": 20.3,
+   "d": 26.7,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#1f2937"
+  },
+  "piezas": [
+   {
+    "id": "m118",
+    "plantilla": "f_caja",
+    "nombre": "BNO055",
+    "cara": "A",
+    "x": 0,
+    "y": 2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3.8,
+     "h": 5.2,
+     "alto": 1.13,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m119",
+    "plantilla": "cristal",
+    "nombre": "Cristal 32 kHz",
+    "cara": "A",
+    "x": 5,
+    "y": 1,
+    "rot": 90,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m120",
+    "plantilla": "f_caja",
+    "nombre": "Regulador",
+    "cara": "A",
+    "x": -7,
+    "y": 3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 2.9,
+     "h": 1.6,
+     "alto": 1,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m121",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": -3.5,
+    "y": -3.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "m122",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": 3.5,
+    "y": -3.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "m123",
+    "plantilla": "led_smd",
+    "nombre": "LED",
+    "cara": "A",
+    "x": 8.5,
+    "y": -4,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   }
+  ],
+  "nota": "Breakout BNO055 (pines sin soldar).",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 2,
+    "z0": 1.6,
+    "z1": 2.73,
+    "color": "#111827",
+    "pieza": "m118",
+    "w": 3.8,
+    "h": 5.2
+   },
+   {
+    "f": "caja",
+    "cx": 5,
+    "cy": 1,
+    "z0": 1.6,
+    "z1": 5.1,
+    "color": "#cbd5e1",
+    "pieza": "m119",
+    "w": 4.6,
+    "h": 11,
+    "r": 2.2
+   },
+   {
+    "f": "caja",
+    "cx": -7,
+    "cy": 3,
+    "z0": 1.6,
+    "z1": 2.6,
+    "color": "#111827",
+    "pieza": "m120",
+    "w": 2.9,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": -3.5,
+    "cy": -3.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "m121",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -4.3,
+    "cy": -3.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m121",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -2.7,
+    "cy": -3.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m121",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 3.5,
+    "cy": -3.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "m122",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 2.7,
+    "cy": -3.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m122",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 4.3,
+    "cy": -3.5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m122",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 8.5,
+    "cy": -4,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "m123",
+    "w": 2,
+    "h": 1.25
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

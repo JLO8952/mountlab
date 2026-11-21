@@ -9,7 +9,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 2,
+ "version": 3,
  "unidad": "und",
  "ficha": {
   "descripcion": "Microservo de 9 g con engranajes metálicos y giro de 180°.",
@@ -74,11 +74,6 @@
  },
  "montaje": {
   "origen": "centro",
-  "pcb": [
-   32.5,
-   12.2,
-   2.5
-  ],
   "fijacion": "tornillo",
   "agujeros": [
    {
@@ -92,25 +87,32 @@
     "d": 2
    }
   ],
-  "altura_superior": 13,
-  "altura_inferior": 16,
+  "altura_superior": 7.6,
+  "altura_inferior": 0,
   "holgura_inferior_cableado": 0,
   "nota": "Servo 9 g: cuerpo 22.8 × 12.2 mm, orejas a 32.5 mm (2 × Ø2), 16 mm debajo de las orejas y ≈ 13 mm arriba con el eje. Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
+  "pcb": [
+   32.1,
+   12.2,
+   22.5
+  ],
+  "forma": "rect",
+  "base_tipo": "servo",
   "conexiones": {
    "header": "ninguno",
    "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
-    "altura_superior": 13,
-    "altura_inferior": 16,
+    "altura_superior": 7.6,
+    "altura_inferior": 0,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
     "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
     "nota": "Pads o terminales: cables soldados directo."
    },
    "jumper": {
-    "altura_superior": 13,
-    "altura_inferior": 16,
+    "altura_superior": 7.6,
+    "altura_inferior": 8.5,
     "holgura_inferior_cableado": 22,
     "holgura_superior_cableado": 0,
     "cable": "Jumper Dupont 2.54 mm sobre headers",
@@ -118,7 +120,40 @@
    }
   }
  },
- "zonas": [],
+ "zonas": [
+  {
+   "tipo": "conector",
+   "nombre": "Cable del servo",
+   "cx": -11.4,
+   "cy": 0,
+   "w": 2,
+   "h": 4,
+   "z": [
+    2,
+    6
+   ],
+   "salida": "-X",
+   "holgura": 20,
+   "auto": true,
+   "pieza": "base"
+  },
+  {
+   "tipo": "otra",
+   "nombre": "Giro del brazo (horn)",
+   "cx": 5.4,
+   "cy": 0,
+   "w": 11.8,
+   "h": 11.8,
+   "z": [
+    26.5,
+    30.1
+   ],
+   "salida": "+Z",
+   "holgura": 6,
+   "auto": true,
+   "pieza": "base"
+  }
+ ],
  "pines": [
   {
    "n": "Marrón",
@@ -188,6 +223,74 @@
   {
    "fecha": "2026-11-21",
    "nota": "Montaje: medidas del servo 9 g"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "servo",
+   "modelo": "MG90S",
+   "color": "#1f2937",
+   "L": 32.1,
+   "W": 12.2,
+   "espesor": 22.5,
+   "forma": "rect"
+  },
+  "piezas": [],
+  "nota": "Servo MG90S de engranaje metálico.",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 0,
+    "w": 22.8,
+    "h": 12.2,
+    "z0": 0,
+    "z1": 22.5,
+    "color": "#1f2937",
+    "base": true,
+    "pieza": "base"
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 0,
+    "w": 32.1,
+    "h": 12.2,
+    "z0": 15.6,
+    "z1": 18.1,
+    "color": "#1f2937",
+    "orejas": true,
+    "base": true,
+    "pieza": "base"
+   },
+   {
+    "f": "cil",
+    "cx": 5.4,
+    "cy": 0,
+    "d": 11.8,
+    "z0": 22.5,
+    "z1": 26.5,
+    "color": "#1f2937",
+    "base": true,
+    "pieza": "base"
+   },
+   {
+    "f": "cil",
+    "cx": 5.4,
+    "cy": 0,
+    "d": 4.8,
+    "z0": 26.5,
+    "z1": 30.1,
+    "color": "#f1f5f9",
+    "base": true,
+    "pieza": "base"
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

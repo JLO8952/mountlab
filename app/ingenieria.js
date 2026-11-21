@@ -559,15 +559,19 @@ ${libs.size ? "lib_deps =\n" + [...libs].map(l => "  " + l).join("\n") : ""}
       S.querySelectorAll("[data-fwc]").forEach(b => b.onclick = () => { navigator.clipboard.writeText(FW[+b.dataset.fwc].main).then(() => X.toast("Código copiado")); });
     }
     if (ui.sec === "cad") {
-      S.innerHTML = `<div class="panel"><h3>Caja a CAD (STEP)</h3>${B.R ? `<p class="small">Caja elegida: <b>${cajaInfo}</b>, ${B.R.piezas.filter(q => q.elemento == null).length} piezas, ${(B.R.elementos || []).length} elementos.</p>
+      const KC = B.K || {}, apr = B.R && KC.est && KC.est.aprobada, aOk = apr && X.firmaCaja && apr.firma === X.firmaCaja(B.R), nomC = `caja_${P.id}${KC.alc === "__todo" ? "" : "_" + KC.alc}`;
+      S.innerHTML = `${B.R ? `<div class="panel cj-aprob ${aOk ? "ok" : "warn"}" style="margin-bottom:12px"><h3>Ensamble de la caja aprobada</h3>${aOk ? `<p class="small">Aprobada el ${esc(apr.fecha)}. Se exporta al instante desde el navegador: caja, tapa, repisas, cada componente con su modelo 3D completo y cada accesorio, una pieza y un color por elemento.</p>
+          <div class="row" style="flex-wrap:wrap;gap:6px"><select id="fbCol" style="width:auto"><option value="pieza">Un color por pieza</option><option value="modelo">Colores reales del modelo</option></select><button class="pri sm" data-fbx="step">⬇ STEP ensamble</button><button class="sm" data-fbx="xt">⬇ Parasolid</button><button class="sm" data-fbx="dxf">⬇ DXF 6 vistas</button></div>`
+          : `<p class="small">${apr ? "La caja cambió desde que se aprobó." : "La caja todavía no está aprobada."} Apruébala en la pestaña 📦 Caja para exportar el ensamble (STEP, Parasolid y DXF de 6 vistas).</p>`}</div>` : ""}<div class="panel"><h3>Caja a CAD con CadQuery (GitHub)</h3>${B.R ? `<p class="small">Caja elegida: <b>${cajaInfo}</b>, ${B.R.piezas.filter(q => q.elemento == null).length} piezas, ${(B.R.elementos || []).length} elementos.</p>
           <p class="small muted">Se genera en GitHub con CadQuery: base hueca con pared de ${B.R.p.espesor} mm, tapa, repisas de cada nivel, los agujeros y ventanas de los elementos ya cortados, y cada componente como un bloque con su referencia. Se abre directo en SolidWorks, Fusion o Rhino (Archivo → Abrir → .step).</p>
-          <div class="row" style="flex-wrap:wrap;gap:8px"><button class="pri" id="cadPedir">⚙ Generar STEP de esta caja</button><button id="cadJson">⬇ Datos de la caja (JSON)</button></div>
+          <div class="row" id="cadFila" style="flex-wrap:wrap;gap:8px"><button class="pri" id="cadPedir">⚙ Generar STEP de esta caja</button><button id="cadJson">⬇ Datos de la caja (JSON)</button></div>
           <div class="small muted" style="margin-top:8px">El STEP tarda 1–2 minutos en estar listo después de pedirlo (lo hace la Action de GitHub). Mientras tanto puedes usar el DXF de la pestaña Caja.</div>` : '<div class="muted">Primero elige una caja en la pestaña 📦 Caja.</div>'}</div>`;
       if (B.R) fetch(`data/cajas/${P.id}.json?nc=${Date.now()}`).then(r => r.ok ? r.json() : null).then(j => {
-        const fila = S.querySelector(".row"); if (!j || !fila) return;
+        const fila = S.querySelector("#cadFila"); if (!j || !fila) return;
         const a = j.generado ? `<a class="btn" href="${stepRuta}?v=${encodeURIComponent(j.generado)}" download>⬇ Descargar STEP (${esc(j.generado)})</a>` : `<span class="tag warn">⏳ STEP en proceso…</span>`;
         if (!fila.querySelector("a.btn")) fila.insertAdjacentHTML("beforeend", a);
       }).catch(() => { });
+      S.querySelectorAll("[data-fbx]").forEach(b => b.onclick = () => X.exportaCaja(B.R, KC.comp2, nomC, P.nombre, b.dataset.fbx, (S.querySelector("#fbCol") || {}).value));
       const datos = () => ({ id: P.id, nombre: P.nombre, fecha: new Date().toISOString(), pendiente: true, interior: B.R.interior, exterior: B.R.exterior, p: B.R.p, niveles: B.R.niveles, piezas: B.R.piezas.map(q => ({ ref: q.ref, n: q.n, elemento: q.elemento, nivel: q.nivel, x: q.x, y: q.y, L: q.L, W: q.W, z0: q.z0, bajo: q.bajo, esp: q.esp, Ht: q.Ht, Hc: q.Hc })), elementos: B.R.elementos });
       const bJ = S.querySelector("#cadJson"); if (bJ) bJ.onclick = () => X.download(`caja_${P.id}.json`, JSON.stringify(datos(), null, 1), "application/json");
       const bP = S.querySelector("#cadPedir");

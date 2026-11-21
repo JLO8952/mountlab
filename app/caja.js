@@ -31,12 +31,12 @@
     const m = (c && c.montaje) || {}; if (!m.pcb) return null;
     if (m.conexiones && m.conexiones.soldado && m.conexiones.jumper) return m.conexiones;
     const sup = +m.altura_superior || 0, inf = +m.altura_inferior || 0, hol = +m.holgura_inferior_cableado || 0;
-    const pzs = ((c.modelo || {}).piezas) || [], hd = pzs.filter(p => /header/.test(p.plantilla || ""));
-    const alto = p => +((p.params || {}).alto) || 8.5, hB = hd.filter(p => p.cara === "B"), hA = hd.filter(p => p.cara !== "B");
+    const pzs = ((c.modelo || {}).piezas) || [], hd = pzs.filter(p => /header/.test(p.plantilla || "") || /^header/i.test(p.nombre || ""));
+    const alto = p => (+p.z || 0) + (+((p.params || {}).alto) || 8.5), hB = hd.filter(p => p.cara === "B"), hA = hd.filter(p => p.cara !== "B");
     let header = "ninguno", hAlt = 0, hembra = false;
     if (/Circuitos integrados|Interruptores/.test(c.categoria || "")) header = "no_aplica";
     else if (hB.length) { header = "abajo"; hAlt = Math.max(...hB.map(alto)); }
-    else if (hA.length) { header = "arriba"; hAlt = Math.max(...hA.map(alto)); hembra = hA.some(p => /hembra/.test(p.plantilla)); }
+    else if (hA.length) { header = "arriba"; hAlt = Math.max(...hA.map(alto)); hembra = hA.some(p => /hembra/i.test((p.plantilla || "") + " " + (p.nombre || ""))); }
     else if (inf >= 6 && hol >= 15) { header = "abajo"; hAlt = inf; }
     const base = { altura_superior: r1(sup), altura_inferior: r1(inf), holgura_inferior_cableado: 0, holgura_superior_cableado: 0 };
     let soldado, jumper;

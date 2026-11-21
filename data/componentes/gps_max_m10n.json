@@ -11,7 +11,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Receptor GNSS u-blox M10 de ultra bajo consumo (GPS, Galileo, GLONASS, BeiDou, QZSS).",
@@ -80,11 +80,6 @@
  },
  "montaje": {
   "origen": "centro",
-  "pcb": [
-   26,
-   30,
-   1.6
-  ],
   "fijacion": "tornillo",
   "agujeros": [
    {
@@ -98,29 +93,35 @@
     "d": 3
    }
   ],
-  "altura_superior": 2.5,
-  "altura_inferior": 8.5,
+  "altura_superior": 2.4,
+  "altura_inferior": 4.7,
   "holgura_inferior_cableado": 22,
   "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "pcb": [
+   26,
+   30,
+   1.6
+  ],
+  "forma": "rect",
   "conexiones": {
-   "header": "abajo",
-   "header_alto": 8.5,
+   "header": "ninguno",
+   "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
-    "altura_superior": 2.5,
-    "altura_inferior": 2,
+    "altura_superior": 2.4,
+    "altura_inferior": 4.7,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
     "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
-    "nota": "Sin header: los cables se sueldan en los pads por arriba; puntas recortadas ≈2 mm por debajo."
+    "nota": "Pads o terminales: cables soldados directo."
    },
    "jumper": {
-    "altura_superior": 2.5,
+    "altura_superior": 2.4,
     "altura_inferior": 8.5,
     "holgura_inferior_cableado": 22,
     "holgura_superior_cableado": 0,
     "cable": "Jumper Dupont 2.54 mm sobre headers",
-    "nota": "Header macho hacia abajo (8.5 mm) + carcasa Dupont y curva del cable ≈22 mm."
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
    }
   }
  },
@@ -152,6 +153,22 @@
    ],
    "salida": "-Z",
    "holgura": 22
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED PPS",
+   "cx": -8,
+   "cy": 2,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "m139"
   }
  ],
  "pines": [
@@ -240,6 +257,384 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 26,
+   "W": 30,
+   "d": 26,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#111827"
+  },
+  "piezas": [
+   {
+    "id": "m134",
+    "plantilla": "f_caja",
+    "nombre": "u-blox MAX-M10",
+    "cara": "A",
+    "x": 0,
+    "y": -3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 9.7,
+     "h": 10.1,
+     "alto": 2.4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m135",
+    "plantilla": "f_caja",
+    "nombre": "Antena cerámica",
+    "cara": "B",
+    "x": 0,
+    "y": 1,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 14,
+     "h": 14,
+     "alto": 4.5,
+     "r": 0,
+     "color": "#d6c7a1"
+    }
+   },
+   {
+    "id": "m136",
+    "plantilla": "f_caja",
+    "nombre": "Antena (plata)",
+    "cara": "B",
+    "x": 0,
+    "y": 1,
+    "rot": 0,
+    "z": 4.5,
+    "params": {
+     "w": 11,
+     "h": 11,
+     "alto": 0.2,
+     "r": 0,
+     "color": "#e5e7eb"
+    }
+   },
+   {
+    "id": "m137",
+    "plantilla": "f_cil",
+    "nombre": "Batería de respaldo",
+    "cara": "A",
+    "x": 9,
+    "y": -9,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 6.8,
+     "alto": 1.6,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m138",
+    "plantilla": "f_caja",
+    "nombre": "Regulador",
+    "cara": "A",
+    "x": -8,
+    "y": 6,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 2.9,
+     "h": 1.6,
+     "alto": 1,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m139",
+    "plantilla": "led_smd",
+    "nombre": "LED PPS",
+    "cara": "A",
+    "x": -8,
+    "y": 2,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m140",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": 7,
+    "y": -3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "m141",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": -6.35,
+    "y": -13.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m142",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": -3.81,
+    "y": -13.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m143",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": -1.27,
+    "y": -13.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m144",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 1.27,
+    "y": -13.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m145",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 3.81,
+    "y": -13.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m146",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 6.35,
+    "y": -13.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   }
+  ],
+  "nota": "GPS con antena cerámica por debajo (pines sin soldar).",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 4,
+    "color": "#cbd5e1",
+    "pieza": "m134",
+    "w": 9.7,
+    "h": 10.1
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 1,
+    "z0": -4.5,
+    "z1": 0,
+    "color": "#d6c7a1",
+    "pieza": "m135",
+    "w": 14,
+    "h": 14
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 1,
+    "z0": -4.7,
+    "z1": -4.5,
+    "color": "#e5e7eb",
+    "pieza": "m136",
+    "w": 11,
+    "h": 11
+   },
+   {
+    "f": "cil",
+    "cx": 9,
+    "cy": -9,
+    "z0": 1.6,
+    "z1": 3.2,
+    "color": "#cbd5e1",
+    "pieza": "m137",
+    "d": 6.8
+   },
+   {
+    "f": "caja",
+    "cx": -8,
+    "cy": 6,
+    "z0": 1.6,
+    "z1": 2.6,
+    "color": "#111827",
+    "pieza": "m138",
+    "w": 2.9,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": -8,
+    "cy": 2,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "m139",
+    "w": 2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 7,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "m140",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 6.2,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m140",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 7.8,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m140",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "cil",
+    "cx": -6.35,
+    "cy": -13.7,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m141",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": -3.81,
+    "cy": -13.7,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m142",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": -1.27,
+    "cy": -13.7,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m143",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 1.27,
+    "cy": -13.7,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m144",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 3.81,
+    "cy": -13.7,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m145",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 6.35,
+    "cy": -13.7,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m146",
+    "d": 1.7
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 4,
+ "version": 5,
  "unidad": "und",
  "ficha": {
   "descripcion": "Interruptor de palanca DPDT (2 polos, 2 posiciones) tipo MTS-202.",
@@ -68,23 +68,25 @@
  },
  "montaje": {
   "origen": "centro",
+  "fijacion": "panel",
+  "agujeros": [],
+  "altura_superior": 18,
+  "altura_inferior": 4.6,
+  "holgura_inferior_cableado": 0,
+  "nota": "MTS-202: cuerpo 13.2 × 12.7 × 9.5 mm debajo del panel, agujero de panel Ø6 mm, palanca ≈ 10 mm por fuera, terminales 4.6 mm. Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
   "pcb": [
    13.2,
    12.7,
    9.5
   ],
-  "fijacion": "panel",
-  "agujeros": [],
-  "altura_superior": 1.5,
-  "altura_inferior": 4.6,
-  "holgura_inferior_cableado": 0,
-  "nota": "MTS-202: cuerpo 13.2 × 12.7 × 9.5 mm debajo del panel, agujero de panel Ø6 mm, palanca ≈ 10 mm por fuera, terminales 4.6 mm. Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
+  "forma": "rect",
+  "base_tipo": "prisma",
   "conexiones": {
    "header": "no_aplica",
    "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
-    "altura_superior": 1.5,
+    "altura_superior": 18,
     "altura_inferior": 4.6,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 0,
@@ -92,7 +94,7 @@
     "nota": "Se suelda directo en la tarjeta: misma medida en las dos versiones."
    },
    "jumper": {
-    "altura_superior": 1.5,
+    "altura_superior": 18,
     "altura_inferior": 4.6,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 0,
@@ -205,6 +207,247 @@
   {
    "fecha": "2026-11-21",
    "nota": "Enlace al datasheet"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 13.2,
+   "W": 12.7,
+   "d": 13.2,
+   "espesor": 9.5,
+   "radio": 0,
+   "color": "#1f2937"
+  },
+  "piezas": [
+   {
+    "id": "m358",
+    "plantilla": "f_cil",
+    "nombre": "Buje roscado M6",
+    "cara": "A",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 6,
+     "alto": 8,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m359",
+    "plantilla": "f_cil",
+    "nombre": "Palanca",
+    "cara": "A",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 8,
+    "params": {
+     "d": 2.5,
+     "alto": 10,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m360",
+    "plantilla": "f_caja",
+    "nombre": "Terminal",
+    "cara": "B",
+    "x": -4.7,
+    "y": -2.35,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.8,
+     "h": 2,
+     "alto": 4.6,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m361",
+    "plantilla": "f_caja",
+    "nombre": "Terminal",
+    "cara": "B",
+    "x": -4.7,
+    "y": 2.35,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.8,
+     "h": 2,
+     "alto": 4.6,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m362",
+    "plantilla": "f_caja",
+    "nombre": "Terminal",
+    "cara": "B",
+    "x": 0,
+    "y": -2.35,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.8,
+     "h": 2,
+     "alto": 4.6,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m363",
+    "plantilla": "f_caja",
+    "nombre": "Terminal",
+    "cara": "B",
+    "x": 0,
+    "y": 2.35,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.8,
+     "h": 2,
+     "alto": 4.6,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m364",
+    "plantilla": "f_caja",
+    "nombre": "Terminal",
+    "cara": "B",
+    "x": 4.7,
+    "y": -2.35,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.8,
+     "h": 2,
+     "alto": 4.6,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m365",
+    "plantilla": "f_caja",
+    "nombre": "Terminal",
+    "cara": "B",
+    "x": 4.7,
+    "y": 2.35,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.8,
+     "h": 2,
+     "alto": 4.6,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "nota": "MTS-202: cuerpo, buje M6 y palanca; 6 terminales por debajo.",
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": 0,
+    "cy": 0,
+    "z0": 9.5,
+    "z1": 17.5,
+    "color": "#cbd5e1",
+    "pieza": "m358",
+    "d": 6
+   },
+   {
+    "f": "cil",
+    "cx": 0,
+    "cy": 0,
+    "z0": 17.5,
+    "z1": 27.5,
+    "color": "#cbd5e1",
+    "pieza": "m359",
+    "d": 2.5
+   },
+   {
+    "f": "caja",
+    "cx": -4.7,
+    "cy": -2.35,
+    "z0": -4.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m360",
+    "w": 0.8,
+    "h": 2
+   },
+   {
+    "f": "caja",
+    "cx": -4.7,
+    "cy": 2.35,
+    "z0": -4.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m361",
+    "w": 0.8,
+    "h": 2
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -2.35,
+    "z0": -4.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m362",
+    "w": 0.8,
+    "h": 2
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 2.35,
+    "z0": -4.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m363",
+    "w": 0.8,
+    "h": 2
+   },
+   {
+    "f": "caja",
+    "cx": 4.7,
+    "cy": -2.35,
+    "z0": -4.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m364",
+    "w": 0.8,
+    "h": 2
+   },
+   {
+    "f": "caja",
+    "cx": 4.7,
+    "cy": 2.35,
+    "z0": -4.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m365",
+    "w": 0.8,
+    "h": 2
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

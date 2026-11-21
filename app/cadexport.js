@@ -42,89 +42,96 @@
   }
 
   // ------------------------------------------------------------ escritor STEP (AP214)
-  function step(W, titulo) {
+  const nmS = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\x20-\x7e]/g, "_").replace(/'/g, "");
+  /** Crea un emisor de entidades STEP con contexto de unidades (mm). */
+  function emisor() {
     const L = []; let n = 0;
     const E = s => { n++; L.push(`#${n}=${s};`); return n; };
-    const nm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^\x20-\x7e]/g, "_").replace(/'/g, "");
+    const app = E("APPLICATION_CONTEXT('core data for automotive mechanical design processes')");
+    E(`APPLICATION_PROTOCOL_DEFINITION('international standard','automotive_design',2000,#${app})`);
+    const pc = E(`PRODUCT_CONTEXT('',#${app},'mechanical')`), pdc = E(`PRODUCT_DEFINITION_CONTEXT('part definition',#${app},'design')`);
+    const u1 = E("( LENGTH_UNIT() NAMED_UNIT(*) SI_UNIT(.MILLI.,.METRE.) )"), u2 = E("( NAMED_UNIT(*) PLANE_ANGLE_UNIT() SI_UNIT($,.RADIAN.) )"), u3 = E("( NAMED_UNIT(*) SI_UNIT($,.STERADIAN.) SOLID_ANGLE_UNIT() )");
+    const un = E(`UNCERTAINTY_MEASURE_WITH_UNIT(LENGTH_MEASURE(1.E-06),#${u1},'distance_accuracy_value','confusion accuracy')`);
+    const gc = E(`( GEOMETRIC_REPRESENTATION_CONTEXT(3) GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT((#${un})) GLOBAL_UNIT_ASSIGNED_CONTEXT((#${u1},#${u2},#${u3})) REPRESENTATION_CONTEXT('Context3D','3D Context with UNIT and UNCERTAINTY') )`);
     const pt = (x, y, z) => E(`CARTESIAN_POINT('',(${fx(x)},${fx(y)},${fx(z)}))`);
     const dir = (x, y, z) => E(`DIRECTION('',(${fx(x)},${fx(y)},${fx(z)}))`);
     const ax = (o, z, xr) => E(`AXIS2_PLACEMENT_3D('',#${pt(...o)},#${dir(...z)},#${dir(...xr)})`);
-    const ctx0 = (() => {
-      const app = E("APPLICATION_CONTEXT('core data for automotive mechanical design processes')");
-      E(`APPLICATION_PROTOCOL_DEFINITION('international standard','automotive_design',2000,#${app})`);
-      const pc = E(`PRODUCT_CONTEXT('',#${app},'mechanical')`);
-      const pr = E(`PRODUCT('${nm(W.id)}','${nm(titulo || W.nombre)}','',(#${pc}))`);
-      E(`PRODUCT_RELATED_PRODUCT_CATEGORY('part','',(#${pr}))`);
-      const pdf = E(`PRODUCT_DEFINITION_FORMATION('','',#${pr})`);
-      const pdc = E(`PRODUCT_DEFINITION_CONTEXT('part definition',#${app},'design')`);
-      const pd = E(`PRODUCT_DEFINITION('design','',#${pdf},#${pdc})`);
-      const pds = E(`PRODUCT_DEFINITION_SHAPE('','',#${pd})`);
-      const u1 = E("( LENGTH_UNIT() NAMED_UNIT(*) SI_UNIT(.MILLI.,.METRE.) )");
-      const u2 = E("( NAMED_UNIT(*) PLANE_ANGLE_UNIT() SI_UNIT($,.RADIAN.) )");
-      const u3 = E("( NAMED_UNIT(*) SI_UNIT($,.STERADIAN.) SOLID_ANGLE_UNIT() )");
-      const un = E(`UNCERTAINTY_MEASURE_WITH_UNIT(LENGTH_MEASURE(1.E-06),#${u1},'distance_accuracy_value','confusion accuracy')`);
-      const gc = E(`( GEOMETRIC_REPRESENTATION_CONTEXT(3) GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT((#${un})) GLOBAL_UNIT_ASSIGNED_CONTEXT((#${u1},#${u2},#${u3})) REPRESENTATION_CONTEXT('Context3D','3D Context with UNIT and UNCERTAINTY') )`);
-      return { pds, gc };
-    })();
-    const origen = ax([0, 0, 0], [0, 0, 1], [1, 0, 0]);
-    const solidosIds = [], estilos = [];
-    const rgb = h => { const m = String(h || "#888888").replace("#", ""), v = m.length === 3 ? m.split("").map(c => c + c).join("") : m.padEnd(6, "8"); return [0, 2, 4].map(i => parseInt(v.slice(i, i + 2), 16) / 255); };
-
-    for (const S of solidos(W)) {
-      const caras = [];
-      const bucles = [S.ext, ...S.huecos];
-      // vértices, aristas inferiores/superiores y verticales de cada bucle
-      const B = bucles.map(seg => {
-        const vb = seg.map(s => E(`VERTEX_POINT('',#${pt(s.p[0], s.p[1], S.z0)})`)), vt = seg.map(s => E(`VERTEX_POINT('',#${pt(s.p[0], s.p[1], S.z1)})`));
-        const curva = (s, s2, z) => {
-          if (s.t === "L") { const dx = s2.p[0] - s.p[0], dy = s2.p[1] - s.p[1], l = Math.hypot(dx, dy) || 1; return E(`LINE('',#${pt(s.p[0], s.p[1], z)},#${E(`VECTOR('',#${dir(dx / l, dy / l, 0)},${fx(l)})`)})`); }
-          return E(`CIRCLE('',#${ax([s.c[0], s.c[1], z], [0, 0, 1], [1, 0, 0])},${fx(s.r)})`);
-        };
-        const eb = seg.map((s, i) => { const s2 = seg[(i + 1) % seg.length]; return E(`EDGE_CURVE('',#${vb[i]},#${vb[(i + 1) % seg.length]},#${curva(s, s2, S.z0)},${s.t === "A" && !s.ccw ? ".F." : ".T."})`); });
-        const et = seg.map((s, i) => { const s2 = seg[(i + 1) % seg.length]; return E(`EDGE_CURVE('',#${vt[i]},#${vt[(i + 1) % seg.length]},#${curva(s, s2, S.z1)},${s.t === "A" && !s.ccw ? ".F." : ".T."})`); });
-        const ev = seg.map((s, i) => E(`EDGE_CURVE('',#${vb[i]},#${vt[i]},#${E(`LINE('',#${pt(s.p[0], s.p[1], S.z0)},#${E(`VECTOR('',#${dir(0, 0, 1)},${fx(S.z1 - S.z0)})`)})`)},.T.)`));
-        return { seg, eb, et, ev };
-      });
-      const oe = (e, sentido) => E(`ORIENTED_EDGE('',*,*,#${e},${sentido ? ".T." : ".F."})`);
-      // tapa superior (normal +Z): bucles en su sentido
-      const topB = B.map((b, k) => E(`${k ? "FACE_BOUND" : "FACE_OUTER_BOUND"}('',#${E(`EDGE_LOOP('',(${b.et.map(e => "#" + oe(e, true)).join(",")}))`)},.T.)`));
-      caras.push(E(`ADVANCED_FACE('',(${topB.map(i => "#" + i).join(",")}),#${E(`PLANE('',#${ax([0, 0, S.z1], [0, 0, 1], [1, 0, 0])})`)},.T.)`));
-      // tapa inferior (normal −Z): bucles recorridos al revés
-      const botB = B.map((b, k) => E(`${k ? "FACE_BOUND" : "FACE_OUTER_BOUND"}('',#${E(`EDGE_LOOP('',(${b.eb.slice().reverse().map(e => "#" + oe(e, false)).join(",")}))`)},.T.)`));
-      caras.push(E(`ADVANCED_FACE('',(${botB.map(i => "#" + i).join(",")}),#${E(`PLANE('',#${ax([0, 0, S.z0], [0, 0, 1], [1, 0, 0])})`)},.F.)`));
-      // caras laterales: el material queda a la izquierda del recorrido, la normal exterior a la derecha
-      for (const b of B) b.seg.forEach((s, i) => {
-        const j = (i + 1) % b.seg.length, s2 = b.seg[j];
-        const lazo = E(`EDGE_LOOP('',(#${oe(b.eb[i], true)},#${oe(b.ev[j], true)},#${oe(b.et[i], false)},#${oe(b.ev[i], false)}))`);
-        const fb = E(`FACE_OUTER_BOUND('',#${lazo},.T.)`);
-        let sup, mismo = ".T.";
-        if (s.t === "L") { const dx = s2.p[0] - s.p[0], dy = s2.p[1] - s.p[1], l = Math.hypot(dx, dy) || 1; sup = E(`PLANE('',#${ax([s.p[0], s.p[1], S.z0], [dy / l, -dx / l, 0], [dx / l, dy / l, 0])})`); }
-        else { sup = E(`CYLINDRICAL_SURFACE('',#${ax([s.c[0], s.c[1], S.z0], [0, 0, 1], [1, 0, 0])},${fx(s.r)})`); mismo = s.ccw ? ".T." : ".F."; }
-        caras.push(E(`ADVANCED_FACE('',(#${fb}),#${sup},${mismo})`));
-      });
-      const shell = E(`CLOSED_SHELL('',(${caras.map(i => "#" + i).join(",")}))`);
-      const sol = E(`MANIFOLD_SOLID_BREP('${nm(S.nombre)}',#${shell})`);
-      solidosIds.push(sol);
-      const [r, g, bl] = rgb(S.color);
-      const col = E(`COLOUR_RGB('',${fx(r)},${fx(g)},${fx(bl)})`);
+    const producto = (id, nombre) => { const pr = E(`PRODUCT('${nmS(id)}','${nmS(nombre)}','',(#${pc}))`); E(`PRODUCT_RELATED_PRODUCT_CATEGORY('part','',(#${pr}))`); const pdf = E(`PRODUCT_DEFINITION_FORMATION('','',#${pr})`); const pd = E(`PRODUCT_DEFINITION('design','',#${pdf},#${pdc})`); return { pd, pds: E(`PRODUCT_DEFINITION_SHAPE('','',#${pd})`) }; };
+    const estilos = [];
+    const color = (sol, hex) => { const m = String(hex || "#888888").replace("#", ""), v = m.length === 3 ? m.split("").map(c => c + c).join("") : m.padEnd(6, "8"), [r, g, b] = [0, 2, 4].map(i => parseInt(v.slice(i, i + 2), 16) / 255);
+      const col = E(`COLOUR_RGB('',${fx(r)},${fx(g)},${fx(b)})`);
       const est = E(`PRESENTATION_STYLE_ASSIGNMENT((#${E(`SURFACE_STYLE_USAGE(.BOTH.,#${E(`SURFACE_SIDE_STYLE('',(#${E(`SURFACE_STYLE_FILL_AREA(#${E(`FILL_AREA_STYLE('',(#${E(`FILL_AREA_STYLE_COLOUR('',#${col})`)}))`)})`)}))`)})`)}))`);
-      estilos.push(E(`STYLED_ITEM('color',(#${est}),#${sol})`));
+      estilos.push(E(`STYLED_ITEM('color',(#${est}),#${sol})`)); };
+    const texto = (titulo, archivo) => {
+      if (estilos.length) E(`MECHANICAL_DESIGN_GEOMETRIC_PRESENTATION_REPRESENTATION('',(${estilos.map(i => "#" + i).join(",")}),#${gc})`);
+      return `ISO-10303-21;\nHEADER;\nFILE_DESCRIPTION(('MountLab: ${nmS(titulo)}'),'2;1');\nFILE_NAME('${nmS(archivo)}','${new Date().toISOString().slice(0, 19)}',('MountLab'),(''),'MountLab','MountLab','');\nFILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 }'));\nENDSEC;\nDATA;\n${L.join("\n")}\nENDSEC;\nEND-ISO-10303-21;\n`; };
+    return { E, gc, pt, dir, ax, producto, color, texto };
+  }
+  // transformación local → padre: { O: [x,y,z], X: [..], Y: [..], Z: [..] } (ortonormal, Z = X × Y)
+  const ID = { O: [0, 0, 0], X: [1, 0, 0], Y: [0, 1, 0], Z: [0, 0, 1] };
+  const tP = (T, x, y, z) => [0, 1, 2].map(i => T.O[i] + x * T.X[i] + y * T.Y[i] + z * T.Z[i]);
+  const tD = (T, x, y, z) => [0, 1, 2].map(i => x * T.X[i] + y * T.Y[i] + z * T.Z[i]);
+  /** Escribe un sólido extruido (perfil con huecos, de z0 a z1) como MANIFOLD_SOLID_BREP; T lo ubica en el padre. */
+  function brep(K, S, T) {
+    T = T || ID; const { E } = K;
+    const pt = (x, y, z) => K.pt(...tP(T, x, y, z)), dir = (x, y, z) => K.dir(...tD(T, x, y, z));
+    const ax = (o, z, xr) => E(`AXIS2_PLACEMENT_3D('',#${pt(...o)},#${dir(...z)},#${dir(...xr)})`);
+    const caras = [], bucles = [S.ext, ...S.huecos];
+    const B = bucles.map(seg => {
+      const vb = seg.map(s => E(`VERTEX_POINT('',#${pt(s.p[0], s.p[1], S.z0)})`)), vt = seg.map(s => E(`VERTEX_POINT('',#${pt(s.p[0], s.p[1], S.z1)})`));
+      const curva = (s, s2, z) => {
+        if (s.t === "L") { const dx = s2.p[0] - s.p[0], dy = s2.p[1] - s.p[1], l = Math.hypot(dx, dy) || 1; return E(`LINE('',#${pt(s.p[0], s.p[1], z)},#${E(`VECTOR('',#${dir(dx / l, dy / l, 0)},${fx(l)})`)})`); }
+        return E(`CIRCLE('',#${ax([s.c[0], s.c[1], z], [0, 0, 1], [1, 0, 0])},${fx(s.r)})`);
+      };
+      const eb = seg.map((s, i) => { const s2 = seg[(i + 1) % seg.length]; return E(`EDGE_CURVE('',#${vb[i]},#${vb[(i + 1) % seg.length]},#${curva(s, s2, S.z0)},${s.t === "A" && !s.ccw ? ".F." : ".T."})`); });
+      const et = seg.map((s, i) => { const s2 = seg[(i + 1) % seg.length]; return E(`EDGE_CURVE('',#${vt[i]},#${vt[(i + 1) % seg.length]},#${curva(s, s2, S.z1)},${s.t === "A" && !s.ccw ? ".F." : ".T."})`); });
+      const ev = seg.map((s, i) => E(`EDGE_CURVE('',#${vb[i]},#${vt[i]},#${E(`LINE('',#${pt(s.p[0], s.p[1], S.z0)},#${E(`VECTOR('',#${dir(0, 0, 1)},${fx(S.z1 - S.z0)})`)})`)},.T.)`));
+      return { seg, eb, et, ev };
+    });
+    const oe = (e, sentido) => E(`ORIENTED_EDGE('',*,*,#${e},${sentido ? ".T." : ".F."})`);
+    const topB = B.map((b, k) => E(`${k ? "FACE_BOUND" : "FACE_OUTER_BOUND"}('',#${E(`EDGE_LOOP('',(${b.et.map(e => "#" + oe(e, true)).join(",")}))`)},.T.)`));
+    caras.push(E(`ADVANCED_FACE('',(${topB.map(i => "#" + i).join(",")}),#${E(`PLANE('',#${ax([0, 0, S.z1], [0, 0, 1], [1, 0, 0])})`)},.T.)`));
+    const botB = B.map((b, k) => E(`${k ? "FACE_BOUND" : "FACE_OUTER_BOUND"}('',#${E(`EDGE_LOOP('',(${b.eb.slice().reverse().map(e => "#" + oe(e, false)).join(",")}))`)},.T.)`));
+    caras.push(E(`ADVANCED_FACE('',(${botB.map(i => "#" + i).join(",")}),#${E(`PLANE('',#${ax([0, 0, S.z0], [0, 0, 1], [1, 0, 0])})`)},.F.)`));
+    for (const b of B) b.seg.forEach((s, i) => {
+      const j = (i + 1) % b.seg.length, s2 = b.seg[j];
+      const lazo = E(`EDGE_LOOP('',(#${oe(b.eb[i], true)},#${oe(b.ev[j], true)},#${oe(b.et[i], false)},#${oe(b.ev[i], false)}))`), fb = E(`FACE_OUTER_BOUND('',#${lazo},.T.)`);
+      let sup, mismo = ".T.";
+      if (s.t === "L") { const dx = s2.p[0] - s.p[0], dy = s2.p[1] - s.p[1], l = Math.hypot(dx, dy) || 1; sup = E(`PLANE('',#${ax([s.p[0], s.p[1], S.z0], [dy / l, -dx / l, 0], [dx / l, dy / l, 0])})`); }
+      else { sup = E(`CYLINDRICAL_SURFACE('',#${ax([s.c[0], s.c[1], S.z0], [0, 0, 1], [1, 0, 0])},${fx(s.r)})`); mismo = s.ccw ? ".T." : ".F."; }
+      caras.push(E(`ADVANCED_FACE('',(#${fb}),#${sup},${mismo})`));
+    });
+    return E(`MANIFOLD_SOLID_BREP('${nmS(S.nombre)}',#${E(`CLOSED_SHELL('',(${caras.map(i => "#" + i).join(",")}))`)})`);
+  }
+  function step(W, titulo) {
+    const K = emisor(), pr = K.producto(W.id, titulo || W.nombre), origen = K.ax([0, 0, 0], [0, 0, 1], [1, 0, 0]), ids = [];
+    for (const S of solidos(W)) { const sol = brep(K, S); ids.push(sol); K.color(sol, S.color); }
+    const rep = K.E(`ADVANCED_BREP_SHAPE_REPRESENTATION('${nmS(W.nombre)}',(#${origen}${ids.map(i => ",#" + i).join("")}),#${K.gc})`);
+    K.E(`SHAPE_DEFINITION_REPRESENTATION(#${pr.pds},#${rep})`);
+    return K.texto("modelo 3D de " + W.nombre, W.id + ".step");
+  }
+  /** Ensamble STEP: grupos = [{ id, nombre, T (ubicación en el ensamble), solidos: [{…perfil, T?, color}] }]. */
+  function stepEnsamble(grupos, titulo, archivo) {
+    const K = emisor(), raiz = K.producto(archivo || "ensamble", titulo), origen = K.ax([0, 0, 0], [0, 0, 1], [1, 0, 0]);
+    const lugares = [], hijos = [];
+    grupos.forEach((g, i) => {
+      const hp = K.producto(g.id, g.nombre), o = K.ax([0, 0, 0], [0, 0, 1], [1, 0, 0]), ids = [];
+      for (const S of g.solidos) { const sol = brep(K, S, S.T); ids.push(sol); K.color(sol, S.color); }
+      const rep = K.E(`ADVANCED_BREP_SHAPE_REPRESENTATION('${nmS(g.nombre)}',(#${o}${ids.map(x => ",#" + x).join("")}),#${K.gc})`);
+      K.E(`SHAPE_DEFINITION_REPRESENTATION(#${hp.pds},#${rep})`);
+      const T = g.T || ID, lugar = K.ax(T.O, T.Z, T.X); lugares.push(lugar);
+      hijos.push({ hp, rep, o, lugar, i, g });
+    });
+    const repR = K.E(`SHAPE_REPRESENTATION('${nmS(titulo)}',(#${origen}${lugares.map(x => ",#" + x).join("")}),#${K.gc})`);
+    K.E(`SHAPE_DEFINITION_REPRESENTATION(#${raiz.pds},#${repR})`);
+    for (const h of hijos) {
+      const nauo = K.E(`NEXT_ASSEMBLY_USAGE_OCCURRENCE('NAUO${h.i + 1}','${nmS(h.g.nombre)}','',#${raiz.pd},#${h.hp.pd},$)`);
+      const pdsN = K.E(`PRODUCT_DEFINITION_SHAPE('Placement','',#${nauo})`);
+      const idt = K.E(`ITEM_DEFINED_TRANSFORMATION('','',#${h.o},#${h.lugar})`);
+      const rr = K.E(`( REPRESENTATION_RELATIONSHIP('','',#${h.rep},#${repR}) REPRESENTATION_RELATIONSHIP_WITH_TRANSFORMATION(#${idt}) SHAPE_REPRESENTATION_RELATIONSHIP() )`);
+      K.E(`CONTEXT_DEPENDENT_SHAPE_REPRESENTATION(#${rr},#${pdsN})`);
     }
-    const rep = E(`ADVANCED_BREP_SHAPE_REPRESENTATION('${nm(W.nombre)}',(#${origen}${solidosIds.map(i => ",#" + i).join("")}),#${ctx0.gc})`);
-    E(`SHAPE_DEFINITION_REPRESENTATION(#${ctx0.pds},#${rep})`);
-    if (estilos.length) E(`MECHANICAL_DESIGN_GEOMETRIC_PRESENTATION_REPRESENTATION('',(${estilos.map(i => "#" + i).join(",")}),#${ctx0.gc})`);
-    const fecha = new Date().toISOString().slice(0, 19);
-    return `ISO-10303-21;
-HEADER;
-FILE_DESCRIPTION(('MountLab: modelo 3D de ${nm(W.nombre)}'),'2;1');
-FILE_NAME('${nm(W.id)}.step','${fecha}',('MountLab'),(''),'MountLab','MountLab','');
-FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 }'));
-ENDSEC;
-DATA;
-${L.join("\n")}
-ENDSEC;
-END-ISO-10303-21;
-`;
+    return K.texto(titulo, archivo || "ensamble.step");
   }
 
   // ------------------------------------------------------------ DXF con 6 vistas (tercer diedro)
@@ -210,5 +217,5 @@ End Sub
 `).replace(/\r?\n/g, "\r\n");
   }
 
-  window.MLCad = { solidos, step, dxf6, macroParasolid };
+  window.MLCad = { solidos, step, stepEnsamble, dxf6, macroParasolid, rectP, circP, tP, tD, ID };
 })();

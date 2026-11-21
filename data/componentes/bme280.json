@@ -10,7 +10,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 2,
+ "version": 3,
  "unidad": "und",
  "ficha": {
   "descripcion": "Sensor Bosch de presión, humedad y temperatura (sin gas).",
@@ -75,11 +75,6 @@
  },
  "montaje": {
   "origen": "centro",
-  "pcb": [
-   15,
-   11.5,
-   1.6
-  ],
   "fijacion": "tornillo",
   "agujeros": [
    {
@@ -88,29 +83,35 @@
     "d": 3
    }
   ],
-  "altura_superior": 0.93,
-  "altura_inferior": 8.5,
+  "altura_superior": 1,
+  "altura_inferior": 0,
   "holgura_inferior_cableado": 22,
   "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "pcb": [
+   15,
+   11.5,
+   1.6
+  ],
+  "forma": "rect",
   "conexiones": {
-   "header": "abajo",
-   "header_alto": 8.5,
+   "header": "ninguno",
+   "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
-    "altura_superior": 0.9,
-    "altura_inferior": 2,
+    "altura_superior": 1,
+    "altura_inferior": 0,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
     "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
-    "nota": "Sin header: los cables se sueldan en los pads por arriba; puntas recortadas ≈2 mm por debajo."
+    "nota": "Pads o terminales: cables soldados directo."
    },
    "jumper": {
-    "altura_superior": 0.9,
+    "altura_superior": 1,
     "altura_inferior": 8.5,
     "holgura_inferior_cableado": 22,
     "holgura_superior_cableado": 0,
     "cable": "Jumper Dupont 2.54 mm sobre headers",
-    "nota": "Header macho hacia abajo (8.5 mm) + carcasa Dupont y curva del cable ≈22 mm."
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
    }
   }
  },
@@ -224,7 +225,374 @@
    "cambios": [
     "montaje"
    ]
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
  ],
- "modificado": "2026-11-17T03:43:02.228Z"
+ "modificado": "2026-11-17T03:43:02.228Z",
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 15,
+   "W": 11.5,
+   "d": 15,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#6d28d9"
+  },
+  "piezas": [
+   {
+    "id": "m97",
+    "plantilla": "f_caja",
+    "nombre": "BME280",
+    "cara": "A",
+    "x": -1.5,
+    "y": 0.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 2.5,
+     "h": 2.5,
+     "alto": 0.93,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m98",
+    "plantilla": "f_caja",
+    "nombre": "Regulador",
+    "cara": "A",
+    "x": -5,
+    "y": 2.2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 2.9,
+     "h": 1.6,
+     "alto": 1,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m99",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": 2.5,
+    "y": -1.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0603"
+    }
+   },
+   {
+    "id": "m100",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": 5,
+    "y": -1.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0603"
+    }
+   },
+   {
+    "id": "m101",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": -1.5,
+    "y": -2.2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0603"
+    }
+   },
+   {
+    "id": "m102",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": -6.35,
+    "y": -4.25,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m103",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": -3.81,
+    "y": -4.25,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m104",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": -1.27,
+    "y": -4.25,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m105",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 1.27,
+    "y": -4.25,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m106",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 3.81,
+    "y": -4.25,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m107",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 6.35,
+    "y": -4.25,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   }
+  ],
+  "nota": "Breakout BME280 (pines sin soldar).",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -1.5,
+    "cy": 0.5,
+    "z0": 1.6,
+    "z1": 2.53,
+    "color": "#cbd5e1",
+    "pieza": "m97",
+    "w": 2.5,
+    "h": 2.5
+   },
+   {
+    "f": "caja",
+    "cx": -5,
+    "cy": 2.2,
+    "z0": 1.6,
+    "z1": 2.6,
+    "color": "#111827",
+    "pieza": "m98",
+    "w": 2.9,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": 2.5,
+    "cy": -1.5,
+    "z0": 1.6,
+    "z1": 2.05,
+    "color": "#1f2937",
+    "pieza": "m99",
+    "w": 0.96,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": 1.86,
+    "cy": -1.5,
+    "z0": 1.6,
+    "z1": 2.05,
+    "color": "#cbd5e1",
+    "pieza": "m99",
+    "w": 0.32000000000000006,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": 3.14,
+    "cy": -1.5,
+    "z0": 1.6,
+    "z1": 2.05,
+    "color": "#cbd5e1",
+    "pieza": "m99",
+    "w": 0.32000000000000006,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": 5,
+    "cy": -1.5,
+    "z0": 1.6,
+    "z1": 2.05,
+    "color": "#1f2937",
+    "pieza": "m100",
+    "w": 0.96,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": 4.36,
+    "cy": -1.5,
+    "z0": 1.6,
+    "z1": 2.05,
+    "color": "#cbd5e1",
+    "pieza": "m100",
+    "w": 0.32000000000000006,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": 5.64,
+    "cy": -1.5,
+    "z0": 1.6,
+    "z1": 2.05,
+    "color": "#cbd5e1",
+    "pieza": "m100",
+    "w": 0.32000000000000006,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": -1.5,
+    "cy": -2.2,
+    "z0": 1.6,
+    "z1": 2.05,
+    "color": "#1f2937",
+    "pieza": "m101",
+    "w": 0.96,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": -2.14,
+    "cy": -2.2,
+    "z0": 1.6,
+    "z1": 2.05,
+    "color": "#cbd5e1",
+    "pieza": "m101",
+    "w": 0.32000000000000006,
+    "h": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": -0.86,
+    "cy": -2.2,
+    "z0": 1.6,
+    "z1": 2.05,
+    "color": "#cbd5e1",
+    "pieza": "m101",
+    "w": 0.32000000000000006,
+    "h": 0.8
+   },
+   {
+    "f": "cil",
+    "cx": -6.35,
+    "cy": -4.25,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m102",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": -3.81,
+    "cy": -4.25,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m103",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": -1.27,
+    "cy": -4.25,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m104",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 1.27,
+    "cy": -4.25,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m105",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 3.81,
+    "cy": -4.25,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m106",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 6.35,
+    "cy": -4.25,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m107",
+    "d": 1.7
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

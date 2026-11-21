@@ -4,6 +4,17 @@
    corte = { t: "c", x, y, r } | { t: "r", x, y, w, h, r } (r = radio de esquina) | { t: "p", pts: [[x, y], …] } */
 (function () {
   const r2 = v => Math.round(v * 100) / 100;
+  // anillo partido en 4 ranuras curvas (deja 4 radios de 2 mm para que el centro no se caiga)
+  function anillo(cx, cy, rm, ancho) {
+    const out = [], ri = rm - ancho / 2, re = rm + ancho / 2, gap = 2 / rm, N = 10;
+    for (let q = 0; q < 4; q++) {
+      const a0 = q * Math.PI / 2 + gap / 2 + Math.PI / 4, a1 = (q + 1) * Math.PI / 2 - gap / 2 + Math.PI / 4, pts = [];
+      for (let k = 0; k <= N; k++) { const a = a0 + (a1 - a0) * k / N; pts.push([r2(cx + re * Math.cos(a)), r2(cy + re * Math.sin(a))]); }
+      for (let k = N; k >= 0; k--) { const a = a0 + (a1 - a0) * k / N; pts.push([r2(cx + ri * Math.cos(a)), r2(cy + ri * Math.sin(a))]); }
+      out.push({ t: "p", pts });
+    }
+    return out;
+  }
   // ---------------- generadores de corte (en orientación horizontal)
   const F = {
     circ: p => [{ t: "c", x: 0, y: 0, r: p.d / 2 }],
@@ -19,7 +30,7 @@
         out.push({ t: "p", pts: [0, 1, 2, 3, 4, 5].map(k => { const a = Math.PI / 6 + k * Math.PI / 3; return [r2(cx + s * Math.cos(a)), r2(cy + s * Math.sin(a))]; }) }); }
       return out; },
     ventilador: p => { const out = [], s = p.sep / 2, rt = p.tornillo / 2;
-      if (p.rejilla === "anillos") { for (let r = p.d / 2; r > 4; r -= 4.5) out.push({ t: "anillo", x: 0, y: 0, r, ancho: 2.2 }); out.push({ t: "c", x: 0, y: 0, r: 3 }); }
+      if (p.rejilla === "anillos") { for (let r = p.d / 2; r > 5; r -= 4.5) out.push(...anillo(0, 0, r - 1.1, 2.2)); out.push({ t: "c", x: 0, y: 0, r: 3 }); }
       else out.push({ t: "c", x: 0, y: 0, r: p.d / 2 });
       [[-s, -s], [s, -s], [s, s], [-s, s]].forEach(([x, y]) => out.push({ t: "c", x, y, r: rt })); return out; },
     dsub: p => { const a = p.arriba / 2, b = p.abajo / 2, h = p.alto / 2, s = p.sep / 2;
@@ -145,7 +156,7 @@
       ["agujero", "Agujero libre", "○", "circ", { d: 10 }, 0, "-Y", { libre: true }], ["rect_libre", "Rectángulo libre", "▭", "rect", { w: 20, h: 10, radio: 0 }, 0, "-Y", { libre: true, orientable: true }],
     ],
   };
-  F.anillo_ventana = p => [{ t: "anillo", x: 0, y: 0, r: p.d / 2, ancho: (p.d - p.di) / 2 }];
+  F.anillo_ventana = p => anillo(0, 0, (p.d + p.di) / 4, (p.d - p.di) / 2);
   // ---------------- índice plano: clave → definición
   const ELEMENTOS = {}, GRUPOS = {};
   for (const [g, L] of Object.entries(G)) { GRUPOS[g] = []; for (const [k, n, ic, forma, par, prof, cara, extra] of L) {

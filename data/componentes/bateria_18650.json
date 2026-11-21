@@ -9,7 +9,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 3,
+ "version": 4,
  "unidad": "und",
  "ficha": {
   "descripcion": "Celda cilíndrica de ion-litio 18650, 3.7 V nominal, 1000 mAh.",
@@ -74,32 +74,34 @@
  },
  "montaje": {
   "origen": "centro",
-  "pcb": [
-   65.2,
-   18.4,
-   18.4
-  ],
   "fijacion": "abrazadera",
   "agujeros": [],
-  "altura_superior": 0,
-  "altura_inferior": 0,
+  "altura_superior": 6.134,
+  "altura_inferior": 9.2,
   "holgura_inferior_cableado": 0,
   "nota": "Celda cilíndrica Ø18.4 × 65.2 mm acostada. Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
+  "pcb": [
+   65.2,
+   18.143,
+   3.067
+  ],
+  "forma": "rect",
+  "base_tipo": "prisma",
   "conexiones": {
    "header": "ninguno",
    "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
-    "altura_superior": 0,
-    "altura_inferior": 0,
+    "altura_superior": 6.1,
+    "altura_inferior": 9.2,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
     "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
     "nota": "Pads o terminales: cables soldados directo."
    },
    "jumper": {
-    "altura_superior": 0,
-    "altura_inferior": 8.5,
+    "altura_superior": 6.1,
+    "altura_inferior": 9.2,
     "holgura_inferior_cableado": 22,
     "holgura_superior_cableado": 0,
     "cable": "Jumper Dupont 2.54 mm sobre headers",
@@ -170,6 +172,225 @@
   {
    "fecha": "2026-11-21",
    "nota": "Pines con posición (centro de la pieza)"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 65.2,
+   "W": 18.142644668172153,
+   "d": 65.2,
+   "espesor": 3.0666666666666664,
+   "radio": 0,
+   "color": "#2563eb"
+  },
+  "piezas": [
+   {
+    "id": "m396",
+    "plantilla": "f_caja",
+    "nombre": "Celda",
+    "cara": "B",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 6.133,
+    "params": {
+     "w": 63.6,
+     "h": 10.171,
+     "alto": 3.067,
+     "r": 0,
+     "color": "#2563eb"
+    }
+   },
+   {
+    "id": "m397",
+    "plantilla": "f_caja",
+    "nombre": "Celda",
+    "cara": "B",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 3.067,
+    "params": {
+     "w": 63.6,
+     "h": 15.935,
+     "alto": 3.067,
+     "r": 0,
+     "color": "#2563eb"
+    }
+   },
+   {
+    "id": "m398",
+    "plantilla": "f_caja",
+    "nombre": "Celda",
+    "cara": "B",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 63.6,
+     "h": 18.143,
+     "alto": 3.067,
+     "r": 0,
+     "color": "#2563eb"
+    }
+   },
+   {
+    "id": "m399",
+    "plantilla": "f_caja",
+    "nombre": "Celda",
+    "cara": "A",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 63.6,
+     "h": 15.935,
+     "alto": 3.067,
+     "r": 0,
+     "color": "#2563eb"
+    }
+   },
+   {
+    "id": "m400",
+    "plantilla": "f_caja",
+    "nombre": "Celda",
+    "cara": "A",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 3.067,
+    "params": {
+     "w": 63.6,
+     "h": 10.171,
+     "alto": 3.067,
+     "r": 0,
+     "color": "#2563eb"
+    }
+   },
+   {
+    "id": "m401",
+    "plantilla": "f_caja",
+    "nombre": "Polo +",
+    "cara": "A",
+    "x": 32.2,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.8,
+     "h": 9.071,
+     "alto": 3.067,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m402",
+    "plantilla": "f_caja",
+    "nombre": "Polo −",
+    "cara": "A",
+    "x": -32.2,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.8,
+     "h": 16.328,
+     "alto": 3.067,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "nota": "Celda 18650 acostada (cilindro aproximado por franjas).",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 0,
+    "z0": -9.2,
+    "z1": -6.133,
+    "color": "#2563eb",
+    "pieza": "m396",
+    "w": 63.6,
+    "h": 10.171
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 0,
+    "z0": -6.134,
+    "z1": -3.067,
+    "color": "#2563eb",
+    "pieza": "m397",
+    "w": 63.6,
+    "h": 15.935
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 0,
+    "z0": -3.067,
+    "z1": 0,
+    "color": "#2563eb",
+    "pieza": "m398",
+    "w": 63.6,
+    "h": 18.143
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 0,
+    "z0": 3.067,
+    "z1": 6.134,
+    "color": "#2563eb",
+    "pieza": "m399",
+    "w": 63.6,
+    "h": 15.935
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 0,
+    "z0": 6.134,
+    "z1": 9.201,
+    "color": "#2563eb",
+    "pieza": "m400",
+    "w": 63.6,
+    "h": 10.171
+   },
+   {
+    "f": "caja",
+    "cx": 32.2,
+    "cy": 0,
+    "z0": 3.067,
+    "z1": 6.134,
+    "color": "#cbd5e1",
+    "pieza": "m401",
+    "w": 0.8,
+    "h": 9.071
+   },
+   {
+    "f": "caja",
+    "cx": -32.2,
+    "cy": 0,
+    "z0": 3.067,
+    "z1": 6.134,
+    "color": "#cbd5e1",
+    "pieza": "m402",
+    "w": 0.8,
+    "h": 16.328
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

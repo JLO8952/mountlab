@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Regulador conmutado step-down ajustable (multivuelta) de 3 A.",
@@ -72,11 +72,6 @@
  },
  "montaje": {
   "origen": "centro",
-  "pcb": [
-   43,
-   21,
-   1.6
-  ],
   "fijacion": "tornillo",
   "agujeros": [
    {
@@ -90,16 +85,22 @@
     "d": 3
    }
   ],
-  "altura_superior": 11,
+  "altura_superior": 11.1,
   "altura_inferior": 0,
   "holgura_inferior_cableado": 0,
   "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "pcb": [
+   43,
+   21,
+   1.6
+  ],
+  "forma": "rect",
   "conexiones": {
    "header": "ninguno",
    "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
-    "altura_superior": 11,
+    "altura_superior": 11.1,
     "altura_inferior": 0,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
@@ -107,7 +108,7 @@
     "nota": "Pads o terminales: cables soldados directo."
    },
    "jumper": {
-    "altura_superior": 11,
+    "altura_superior": 11.1,
     "altura_inferior": 8.5,
     "holgura_inferior_cableado": 22,
     "holgura_superior_cableado": 0,
@@ -172,6 +173,22 @@
    ],
    "salida": "+Z",
    "holgura": 5
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED",
+   "cx": 18,
+   "cy": 4,
+   "w": 1.25,
+   "h": 2,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "m155"
   }
  ],
  "pines": [
@@ -248,6 +265,385 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 43,
+   "W": 21,
+   "d": 43,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "m147",
+    "plantilla": "f_caja",
+    "nombre": "Inductor 33 µH",
+    "cara": "A",
+    "x": -1,
+    "y": -0.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 11,
+     "h": 12,
+     "alto": 7,
+     "r": 1,
+     "color": "#374151"
+    }
+   },
+   {
+    "id": "m148",
+    "plantilla": "f_caja",
+    "nombre": "LM2596 (TO-263)",
+    "cara": "A",
+    "x": 10,
+    "y": -3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 10,
+     "h": 9,
+     "alto": 4.5,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m149",
+    "plantilla": "f_caja",
+    "nombre": "Disipador del TO-263",
+    "cara": "A",
+    "x": 10,
+    "y": 0.6,
+    "rot": 0,
+    "z": 4.5,
+    "params": {
+     "w": 10,
+     "h": 1.5,
+     "alto": 0.3,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m150",
+    "plantilla": "f_caja",
+    "nombre": "Trimmer 10 kΩ",
+    "cara": "A",
+    "x": 10.25,
+    "y": 4.75,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 9.5,
+     "h": 4.5,
+     "alto": 10,
+     "r": 0,
+     "color": "#2563eb"
+    }
+   },
+   {
+    "id": "m151",
+    "plantilla": "f_cil",
+    "nombre": "Tornillo del trimmer",
+    "cara": "A",
+    "x": 14,
+    "y": 4.75,
+    "rot": 0,
+    "z": 10,
+    "params": {
+     "d": 2.4,
+     "alto": 1,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m152",
+    "plantilla": "electrolitico",
+    "nombre": "C entrada 220 µF",
+    "cara": "A",
+    "x": -12.5,
+    "y": -5.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 6.3,
+     "alto": 11
+    }
+   },
+   {
+    "id": "m153",
+    "plantilla": "electrolitico",
+    "nombre": "C salida 220 µF",
+    "cara": "A",
+    "x": -11,
+    "y": 1.2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 6.3,
+     "alto": 11
+    }
+   },
+   {
+    "id": "m154",
+    "plantilla": "f_caja",
+    "nombre": "Diodo SS34",
+    "cara": "A",
+    "x": 3.5,
+    "y": -8,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 4.5,
+     "h": 2.7,
+     "alto": 2.2,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m155",
+    "plantilla": "led_smd",
+    "nombre": "LED",
+    "cara": "A",
+    "x": 18,
+    "y": 4,
+    "rot": 90,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m156",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": -20.77,
+    "y": -7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m157",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": -18.23,
+    "y": -7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m158",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 18.23,
+    "y": 7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m159",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 20.77,
+    "y": 7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   }
+  ],
+  "nota": "Módulo DC-DC LM2596 (pads de entrada/salida).",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -1,
+    "cy": -0.5,
+    "z0": 1.6,
+    "z1": 8.6,
+    "color": "#374151",
+    "pieza": "m147",
+    "w": 11,
+    "h": 12,
+    "r": 1
+   },
+   {
+    "f": "caja",
+    "cx": 10,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 6.1,
+    "color": "#111827",
+    "pieza": "m148",
+    "w": 10,
+    "h": 9
+   },
+   {
+    "f": "caja",
+    "cx": 10,
+    "cy": 0.6,
+    "z0": 6.1,
+    "z1": 6.4,
+    "color": "#cbd5e1",
+    "pieza": "m149",
+    "w": 10,
+    "h": 1.5
+   },
+   {
+    "f": "caja",
+    "cx": 10.25,
+    "cy": 4.75,
+    "z0": 1.6,
+    "z1": 11.6,
+    "color": "#2563eb",
+    "pieza": "m150",
+    "w": 9.5,
+    "h": 4.5
+   },
+   {
+    "f": "cil",
+    "cx": 14,
+    "cy": 4.75,
+    "z0": 11.6,
+    "z1": 12.6,
+    "color": "#d4a017",
+    "pieza": "m151",
+    "d": 2.4
+   },
+   {
+    "f": "cil",
+    "cx": -12.5,
+    "cy": -5.5,
+    "z0": 1.6,
+    "z1": 12.6,
+    "color": "#2563eb",
+    "pieza": "m152",
+    "d": 6.3
+   },
+   {
+    "f": "cil",
+    "cx": -12.5,
+    "cy": -5.5,
+    "z0": 12.6,
+    "z1": 12.7,
+    "color": "#cbd5e1",
+    "pieza": "m152",
+    "d": 5.04
+   },
+   {
+    "f": "cil",
+    "cx": -11,
+    "cy": 1.2,
+    "z0": 1.6,
+    "z1": 12.6,
+    "color": "#2563eb",
+    "pieza": "m153",
+    "d": 6.3
+   },
+   {
+    "f": "cil",
+    "cx": -11,
+    "cy": 1.2,
+    "z0": 12.6,
+    "z1": 12.7,
+    "color": "#cbd5e1",
+    "pieza": "m153",
+    "d": 5.04
+   },
+   {
+    "f": "caja",
+    "cx": 3.5,
+    "cy": -8,
+    "z0": 1.6,
+    "z1": 3.8,
+    "color": "#111827",
+    "pieza": "m154",
+    "w": 4.5,
+    "h": 2.7
+   },
+   {
+    "f": "caja",
+    "cx": 18,
+    "cy": 4,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "m155",
+    "w": 1.25,
+    "h": 2
+   },
+   {
+    "f": "cil",
+    "cx": -20.77,
+    "cy": -7,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m156",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": -18.23,
+    "cy": -7,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m157",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 18.23,
+    "cy": 7,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m158",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 20.77,
+    "cy": 7,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m159",
+    "d": 1.7
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

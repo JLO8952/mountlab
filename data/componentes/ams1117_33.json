@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Regulador lineal LDO de 3.3 V y 1 A (módulo con condensadores).",
@@ -68,36 +68,37 @@
  },
  "montaje": {
   "origen": "centro",
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 1.9,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 22,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
   "pcb": [
    22,
    11,
    1.6
   ],
-  "fijacion": "guia_deslizante",
-  "agujeros": [],
-  "altura_superior": 1.6,
-  "altura_inferior": 8.5,
-  "holgura_inferior_cableado": 22,
-  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "forma": "rect",
   "conexiones": {
-   "header": "abajo",
-   "header_alto": 8.5,
+   "header": "ninguno",
+   "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
-    "altura_superior": 1.6,
-    "altura_inferior": 2,
+    "altura_superior": 1.9,
+    "altura_inferior": 0,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
     "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
-    "nota": "Sin header: los cables se sueldan en los pads por arriba; puntas recortadas ≈2 mm por debajo."
+    "nota": "Pads o terminales: cables soldados directo."
    },
    "jumper": {
-    "altura_superior": 1.6,
+    "altura_superior": 1.9,
     "altura_inferior": 8.5,
     "holgura_inferior_cableado": 22,
     "holgura_superior_cableado": 0,
     "cable": "Jumper Dupont 2.54 mm sobre headers",
-    "nota": "Header macho hacia abajo (8.5 mm) + carcasa Dupont y curva del cable ≈22 mm."
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
    }
   }
  },
@@ -129,6 +130,38 @@
    ],
    "salida": "-Z",
    "holgura": 22
+  },
+  {
+   "tipo": "calor",
+   "nombre": "AMS1117-3.3",
+   "cx": 0,
+   "cy": 0.5,
+   "w": 6.5,
+   "h": 7,
+   "z": [
+    1.6,
+    3.4
+   ],
+   "salida": "+Z",
+   "holgura": 8,
+   "auto": true,
+   "pieza": "m176"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED",
+   "cx": 0,
+   "cy": -4,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "m179"
   }
  ],
  "pines": [
@@ -199,6 +232,290 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 22,
+   "W": 11,
+   "d": 22,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "m176",
+    "plantilla": "sot223",
+    "nombre": "AMS1117-3.3",
+    "cara": "A",
+    "x": 0,
+    "y": 0.5,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m177",
+    "plantilla": "f_caja",
+    "nombre": "C tantalio entrada",
+    "cara": "A",
+    "x": -6.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3.5,
+     "h": 2.8,
+     "alto": 1.9,
+     "r": 0,
+     "color": "#f59e0b"
+    }
+   },
+   {
+    "id": "m178",
+    "plantilla": "f_caja",
+    "nombre": "C tantalio salida",
+    "cara": "A",
+    "x": 6.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3.5,
+     "h": 2.8,
+     "alto": 1.9,
+     "r": 0,
+     "color": "#f59e0b"
+    }
+   },
+   {
+    "id": "m179",
+    "plantilla": "led_smd",
+    "nombre": "LED",
+    "cara": "A",
+    "x": 0,
+    "y": -4,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m180",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": -9.5,
+    "y": -2.54,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m181",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": -9.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m182",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": -9.5,
+    "y": 2.54,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m183",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 9.5,
+    "y": -2.54,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m184",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 9.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m185",
+    "plantilla": "f_cil",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 9.5,
+    "y": 2.54,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1.7,
+     "alto": 0.05,
+     "color": "#d4a017"
+    }
+   }
+  ],
+  "nota": "Módulo regulador AMS1117-3.3.",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -0.1,
+    "z0": 1.6,
+    "z1": 3.4,
+    "color": "#1f2937",
+    "pieza": "m176",
+    "w": 6.5,
+    "h": 3.5
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 2.9,
+    "z0": 1.6,
+    "z1": 1.9,
+    "color": "#cbd5e1",
+    "pieza": "m176",
+    "w": 3,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": -6.5,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 3.5,
+    "color": "#f59e0b",
+    "pieza": "m177",
+    "w": 3.5,
+    "h": 2.8
+   },
+   {
+    "f": "caja",
+    "cx": 6.5,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 3.5,
+    "color": "#f59e0b",
+    "pieza": "m178",
+    "w": 3.5,
+    "h": 2.8
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -4,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "m179",
+    "w": 2,
+    "h": 1.25
+   },
+   {
+    "f": "cil",
+    "cx": -9.5,
+    "cy": -2.54,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m180",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": -9.5,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m181",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": -9.5,
+    "cy": 2.54,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m182",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 9.5,
+    "cy": -2.54,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m183",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 9.5,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m184",
+    "d": 1.7
+   },
+   {
+    "f": "cil",
+    "cx": 9.5,
+    "cy": 2.54,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m185",
+    "d": 1.7
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

@@ -10,7 +10,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 2,
+ "version": 3,
  "unidad": "und",
  "ficha": {
   "descripcion": "Módulo Digi XBee 3/S2C Zigbee 2.4 GHz, 2 mW (+3 dBm), antena de cable (XB24CZ7WIT-004).",
@@ -83,23 +83,24 @@
  },
  "montaje": {
   "origen": "centro",
+  "fijacion": "zocalo",
+  "agujeros": [],
+  "altura_superior": 25,
+  "altura_inferior": 4,
+  "holgura_inferior_cableado": 0,
+  "nota": "XBee THT 24.38 × 27.61 mm, pines 2 mm de paso (4 mm). La antena de cable sube ≈ 25 mm: dejar espacio o doblarla. Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
   "pcb": [
    27.61,
    24.38,
    1
   ],
-  "fijacion": "zocalo",
-  "agujeros": [],
-  "altura_superior": 3.2,
-  "altura_inferior": 4,
-  "holgura_inferior_cableado": 0,
-  "nota": "XBee THT 24.38 × 27.61 mm, pines 2 mm de paso (4 mm). La antena de cable sube ≈ 25 mm: dejar espacio o doblarla. Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
+  "forma": "rect",
   "conexiones": {
    "header": "ninguno",
    "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
-    "altura_superior": 3.2,
+    "altura_superior": 25,
     "altura_inferior": 4,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
@@ -107,7 +108,7 @@
     "nota": "Pads o terminales: cables soldados directo."
    },
    "jumper": {
-    "altura_superior": 3.2,
+    "altura_superior": 25,
     "altura_inferior": 8.5,
     "holgura_inferior_cableado": 22,
     "holgura_superior_cableado": 0,
@@ -291,6 +292,670 @@
   {
    "fecha": "2026-11-21",
    "nota": "Montaje: medidas XBee THT (24.38 × 27.61 mm)"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 27.61,
+   "W": 24.38,
+   "d": 27.61,
+   "espesor": 1,
+   "radio": 0,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "m370",
+    "plantilla": "f_caja",
+    "nombre": "Blindaje RF",
+    "cara": "A",
+    "x": 2,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 18,
+     "h": 17,
+     "alto": 2.2,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m371",
+    "plantilla": "f_cil",
+    "nombre": "Antena de cable",
+    "cara": "A",
+    "x": -11.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 1,
+     "alto": 25,
+     "color": "#e5e7eb"
+    }
+   },
+   {
+    "id": "m372",
+    "plantilla": "f_caja",
+    "nombre": "Etiqueta",
+    "cara": "A",
+    "x": 2,
+    "y": 0,
+    "rot": 0,
+    "z": 2.2,
+    "params": {
+     "w": 14,
+     "h": 12,
+     "alto": 0.05,
+     "r": 0,
+     "color": "#e5e7eb"
+    }
+   },
+   {
+    "id": "m373",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": -9,
+    "y": 11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m374",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": -7,
+    "y": 11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m375",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": -5,
+    "y": 11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m376",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": -3,
+    "y": 11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m377",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": -1,
+    "y": 11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m378",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": 1,
+    "y": 11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m379",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": 3,
+    "y": 11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m380",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": 5,
+    "y": 11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m381",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": 7,
+    "y": 11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m382",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": 9,
+    "y": 11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m383",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": -9,
+    "y": -11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m384",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": -7,
+    "y": -11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m385",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": -5,
+    "y": -11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m386",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": -3,
+    "y": -11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m387",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": -1,
+    "y": -11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m388",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": 1,
+    "y": -11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m389",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": 3,
+    "y": -11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m390",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": 5,
+    "y": -11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m391",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": 7,
+    "y": -11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m392",
+    "plantilla": "f_caja",
+    "nombre": "Pin 2 mm",
+    "cara": "B",
+    "x": 9,
+    "y": -11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 0.5,
+     "h": 0.5,
+     "alto": 4,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   }
+  ],
+  "nota": "XBee S2C THT con antena de cable (20 pines de 2 mm por debajo).",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 2,
+    "cy": 0,
+    "z0": 1,
+    "z1": 3.2,
+    "color": "#cbd5e1",
+    "pieza": "m370",
+    "w": 18,
+    "h": 17
+   },
+   {
+    "f": "cil",
+    "cx": -11.5,
+    "cy": 0,
+    "z0": 1,
+    "z1": 26,
+    "color": "#e5e7eb",
+    "pieza": "m371",
+    "d": 1
+   },
+   {
+    "f": "caja",
+    "cx": 2,
+    "cy": 0,
+    "z0": 3.2,
+    "z1": 3.25,
+    "color": "#e5e7eb",
+    "pieza": "m372",
+    "w": 14,
+    "h": 12
+   },
+   {
+    "f": "caja",
+    "cx": -9,
+    "cy": 11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m373",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": -7,
+    "cy": 11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m374",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": -5,
+    "cy": 11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m375",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": -3,
+    "cy": 11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m376",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": -1,
+    "cy": 11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m377",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": 1,
+    "cy": 11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m378",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": 3,
+    "cy": 11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m379",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": 5,
+    "cy": 11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m380",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": 7,
+    "cy": 11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m381",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": 9,
+    "cy": 11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m382",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": -9,
+    "cy": -11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m383",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": -7,
+    "cy": -11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m384",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": -5,
+    "cy": -11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m385",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": -3,
+    "cy": -11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m386",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": -1,
+    "cy": -11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m387",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": 1,
+    "cy": -11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m388",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": 3,
+    "cy": -11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m389",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": 5,
+    "cy": -11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m390",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": 7,
+    "cy": -11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m391",
+    "w": 0.5,
+    "h": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": 9,
+    "cy": -11,
+    "z0": -4,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "m392",
+    "w": 0.5,
+    "h": 0.5
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

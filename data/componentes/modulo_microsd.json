@@ -9,7 +9,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 2,
+ "version": 3,
  "unidad": "und",
  "ficha": {
   "descripcion": "Lector de tarjetas MicroSD por SPI con regulador 3.3 V y adaptador de nivel.",
@@ -74,11 +74,6 @@
  },
  "montaje": {
   "origen": "centro",
-  "pcb": [
-   42,
-   24,
-   1.6
-  ],
   "fijacion": "tornillo",
   "agujeros": [
    {
@@ -103,20 +98,26 @@
    }
   ],
   "altura_superior": 1.8,
-  "altura_inferior": 8.5,
+  "altura_inferior": 0,
   "holgura_inferior_cableado": 22,
   "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "pcb": [
+   42,
+   24,
+   1.6
+  ],
+  "forma": "rect",
   "conexiones": {
-   "header": "abajo",
-   "header_alto": 8.5,
+   "header": "ninguno",
+   "header_alto": 0,
    "defecto": "soldado",
    "soldado": {
     "altura_superior": 1.8,
-    "altura_inferior": 2,
+    "altura_inferior": 0,
     "holgura_inferior_cableado": 0,
     "holgura_superior_cableado": 6,
     "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
-    "nota": "Sin header: los cables se sueldan en los pads por arriba; puntas recortadas ≈2 mm por debajo."
+    "nota": "Pads o terminales: cables soldados directo."
    },
    "jumper": {
     "altura_superior": 1.8,
@@ -124,7 +125,7 @@
     "holgura_inferior_cableado": 22,
     "holgura_superior_cableado": 0,
     "cable": "Jumper Dupont 2.54 mm sobre headers",
-    "nota": "Header macho hacia abajo (8.5 mm) + carcasa Dupont y curva del cable ≈22 mm."
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
    }
   }
  },
@@ -156,6 +157,22 @@
    ],
    "salida": "-Z",
    "holgura": 22
+  },
+  {
+   "tipo": "calor",
+   "nombre": "AMS1117-3.3",
+   "cx": -6,
+   "cy": -5,
+   "w": 6.5,
+   "h": 7,
+   "z": [
+    1.6,
+    3.4
+   ],
+   "salida": "+Z",
+   "holgura": 8,
+   "auto": true,
+   "pieza": "m188"
   }
  ],
  "pines": [
@@ -245,6 +262,210 @@
   {
    "fecha": "2026-11-21",
    "nota": "Enlace al datasheet"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 42,
+   "W": 24,
+   "d": 42,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "m186",
+    "plantilla": "f_caja",
+    "nombre": "Zócalo microSD",
+    "cara": "A",
+    "x": 11.5,
+    "y": -0.25,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 14,
+     "h": 12.5,
+     "alto": 1.8,
+     "r": 0,
+     "color": "#cbd5e1"
+    }
+   },
+   {
+    "id": "m187",
+    "plantilla": "f_caja",
+    "nombre": "74LVC125A",
+    "cara": "A",
+    "x": -6,
+    "y": 4.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 5,
+     "h": 4.4,
+     "alto": 1.1,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m188",
+    "plantilla": "sot223",
+    "nombre": "AMS1117-3.3",
+    "cara": "A",
+    "x": -6,
+    "y": -5,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "m189",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": 1,
+    "y": 5,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "m190",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": 1,
+    "y": -5,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   }
+  ],
+  "nota": "Módulo lector microSD por SPI.",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 11.5,
+    "cy": -0.25,
+    "z0": 1.6,
+    "z1": 3.4,
+    "color": "#cbd5e1",
+    "pieza": "m186",
+    "w": 14,
+    "h": 12.5
+   },
+   {
+    "f": "caja",
+    "cx": -6,
+    "cy": 4.5,
+    "z0": 1.6,
+    "z1": 2.7,
+    "color": "#111827",
+    "pieza": "m187",
+    "w": 5,
+    "h": 4.4
+   },
+   {
+    "f": "caja",
+    "cx": -6,
+    "cy": -5.6,
+    "z0": 1.6,
+    "z1": 3.4,
+    "color": "#1f2937",
+    "pieza": "m188",
+    "w": 6.5,
+    "h": 3.5
+   },
+   {
+    "f": "caja",
+    "cx": -6,
+    "cy": -2.6,
+    "z0": 1.6,
+    "z1": 1.9,
+    "color": "#cbd5e1",
+    "pieza": "m188",
+    "w": 3,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": 1,
+    "cy": 5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "m189",
+    "w": 1.25,
+    "h": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": 1,
+    "cy": 4.2,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m189",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": 1,
+    "cy": 5.8,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m189",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": 1,
+    "cy": -5,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "m190",
+    "w": 1.25,
+    "h": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": 1,
+    "cy": -5.8,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m190",
+    "w": 1.25,
+    "h": 0.4
+   },
+   {
+    "f": "caja",
+    "cx": 1,
+    "cy": -4.2,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m190",
+    "w": 1.25,
+    "h": 0.4
+   }
+  ]
+ },
+ "cad_pendiente": true
 }
