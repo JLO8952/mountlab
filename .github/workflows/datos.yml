@@ -43,9 +43,11 @@ jobs:
         run: |
           if [ -n "${{ inputs.id }}" ] || grep -lq '"cad_pendiente": true' data/componentes/*.json 2>/dev/null; then
             echo "cad=1" >> "$GITHUB_OUTPUT"; else echo "cad=0" >> "$GITHUB_OUTPUT"; fi
+          if grep -lq '"pendiente": true' data/cajas/*.json 2>/dev/null; then
+            echo "cajas=1" >> "$GITHUB_OUTPUT"; else echo "cajas=0" >> "$GITHUB_OUTPUT"; fi
 
       - name: Instalar CadQuery
-        if: steps.pend.outputs.cad == '1'
+        if: steps.pend.outputs.cad == '1' || steps.pend.outputs.cajas == '1'
         run: pip install cadquery ezdxf
 
       - name: Configurar rclone (Google Drive)
@@ -62,6 +64,10 @@ jobs:
         env:
           DRIVE_REMOTE: ${{ env.HAS_DRIVE == 'true' && (vars.DRIVE_REMOTE || 'gdrive:MountLab/biblioteca/archivos') || '' }}
         run: python cad/regenerar.py ${{ inputs.id }}
+
+      - name: STEP de cajas de proyectos
+        if: steps.pend.outputs.cajas == '1'
+        run: python cad/caja_step.py
 
       - name: Copiar datasheets (PDF)
         run: python tools/datasheets.py

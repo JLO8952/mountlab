@@ -420,3 +420,18 @@ body.rol-lectura :is(#bSave,#bUndo,#bDup,#bVar,#bProj,#bDel,#bNew,#hNew,#pSv,#pD
 #cjEd svg [data-pz]{cursor:grab}#cjEd svg [data-pz]:active{cursor:grabbing}
 .ci-ver{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:6px}
 @media (max-width:900px){.caja-grid>.caja-vistas{order:-1}.cj-el-g{grid-template-columns:repeat(3,1fr)}}
+/* ingeniería, fabricación y versiones */
+.ptabs{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:thin}.ptabs button{white-space:nowrap}
+.ing-ks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.ing-k{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border-radius:14px;padding:10px 12px;border:1px solid var(--line);background:var(--bg2)}
+.ing-k span{font-size:12px;color:var(--ink2)}.ing-k b{font-size:19px}.ing-k small{font-size:11px;color:var(--ink3)}
+.ing-k.ok{border-color:rgba(34,197,94,.45)}.ing-k.warn{border-color:rgba(234,179,8,.55)}.ing-k.bad{border-color:rgba(239,68,68,.6);background:rgba(127,29,29,.18)}
+.ing-bar{position:relative;height:6px;border-radius:4px;background:var(--line);min-width:70px;margin-bottom:2px}.ing-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px}.ing-bar s{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink2)}
+.ing-req textarea,.ing-req select,.ing-req input{font-size:12px}
+tr.fm-r td{background:rgba(127,29,29,.18)}tr.fm-a td{background:rgba(133,77,14,.15)}
+table.t textarea{padding:4px 6px;font-size:12px;min-height:0}
+.ing-code{background:#0b1220;border:1px solid var(--line);border-radius:12px;padding:12px;overflow:auto;max-height:480px;font:12px/1.45 Consolas,"Cascadia Code",monospace;white-space:pre}
+.ing-ver{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:var(--bg2)}
+a.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);text-decoration:none}
+.scan-btn{background:var(--pri2);border-color:rgba(56,189,248,.4);color:#bae6fd;font-weight:600;white-space:nowrap}
+@media (max-width:860px){.scan-btn .lbl{display:none}}

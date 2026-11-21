@@ -819,7 +819,7 @@
     }
     function ajustar() {
       info(); const svg = $("#ciSvg"); if (!svg) return; const r = svg.getBoundingClientRect(); if (!C.inst.length) { st.k = 1; st.ox = -40; st.oy = -40; return; }
-      const xs = [], ys = []; for (const it of C.inst) { const I = INFO.get(it.ref); if (!I) continue; xs.push(it.x - 60, it.x + I.w + 60); ys.push(it.y - 40, it.y + I.h + 30); }
+      const xs = [], ys = []; for (const it of C.inst) { const I = INFO.get(it.ref); if (!I) continue; xs.push(it.x - 60, it.x + I.w + 60); ys.push(it.y - 90, it.y + I.h + 60); }
       const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
       st.k = Math.max(0.25, Math.min(1.6, Math.min(r.width / (x1 - x0), r.height / (y1 - y0)))); st.ox = x0 - (r.width / st.k - (x1 - x0)) / 2; st.oy = y0 - (r.height / st.k - (y1 - y0)) / 2;
     }
@@ -831,6 +831,8 @@
     function rehacer() { if (!st.fut.length) return; st.hist.push(JSON.stringify(C)); Object.assign(C, JSON.parse(st.fut.pop())); cambio(); }
     function cambio() { sincronizarBom(); dibujar(); opt.onChange && opt.onChange(); }
 
+    // ---------- modo sin interfaz: solo cálculo (lo usa la pestaña Ingeniería y el informe)
+    if (opt.headless) { info(); return { calcular: () => calcular(), info: () => info(), redes: () => redes(), pinPos, partir, C, INFO: () => INFO, comp }; }
     // ---------- interfaz
     host.innerHTML = `<div class="ci-layout">
       <div class="ci-lib panel"><input id="ciQ" placeholder="Buscar componente…"><div id="ciLib" class="ci-libl"></div></div>
@@ -931,7 +933,7 @@
 
     // ---------- exportar e informe
     function svgLimpio(fondo) {
-      info(); const xs = [], ys = []; for (const it of C.inst) { const I = INFO.get(it.ref); if (!I) continue; xs.push(it.x - 80, it.x + I.w + 80); ys.push(it.y - 40, it.y + I.h + 30); }
+      info(); const xs = [], ys = []; for (const it of C.inst) { const I = INFO.get(it.ref); if (!I) continue; xs.push(it.x - 80, it.x + I.w + 80); ys.push(it.y - 90, it.y + I.h + 60); }
       if (!xs.length) return "<svg xmlns='http://www.w3.org/2000/svg'/>";
       const x0 = Math.min(...xs), y0 = Math.min(...ys), W = Math.max(...xs) - x0, H = Math.max(...ys) - y0;
       const k0 = [st.k, st.ox, st.oy, st.sel, st.selC, st.sug]; st.k = 1; st.ox = x0; st.oy = y0; st.sel = null; st.selC = null; st.sug = [];
@@ -948,8 +950,9 @@
       if (tipo === "csv") bajar("﻿" + [["#", "Desde", "Hasta", "Red", "Voltaje (V)", "Corriente"], ...filasCables(calc)].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(";")).join("\r\n"), nom + "_conexiones.csv", "text/csv");
       if (tipo === "net") bajar(`* Netlist MountLab · ${P.nombre}\n* Componentes\n${C.inst.map(it => `${it.ref}\t${it.id}${it.valor ? "\t" + it.valor : ""}`).join("\n")}\n* Redes\n${calc.R.map(r => `NET ${nombreRed(r).replace(/\s/g, "_")}\t${r.pins.join(" ")}`).join("\n")}\n`, nom + ".net.txt", "text/plain");
     }
+    function svgClaro() { return svgLimpio("#ffffff").replace(/fill="#0f172a"/g, 'fill="#f8fafc"').replace(/fill="#cbd5e1" font-size="1([01])"/g, 'fill="#1e293b" font-size="1$1"').replace(/fill="#e2e8f0"/g, 'fill="#f1f5f9"').replace(/stroke="#334155"/g, 'stroke="#64748b"').replace(/fill="#1e2a3d"/g, 'fill="#e2e8f0"'); }
     function informe() {
-      const calc = calcular(), dia = svgLimpio("#ffffff").replace(/fill="#0f172a"/g, 'fill="#f8fafc"').replace(/fill="#cbd5e1" font-size="1([01])"/g, 'fill="#1e293b" font-size="1$1"').replace(/fill="#e2e8f0"/g, 'fill="#f1f5f9"').replace(/stroke="#334155"/g, 'stroke="#64748b"').replace(/fill="#1e2a3d"/g, 'fill="#e2e8f0"');
+      const calc = calcular(), dia = svgClaro();
       const bom = (P.bom || []).map(b => { const c = Store.db.componentes.find(x => x.id === b.id) || {}; const pm = (c.precios || []).filter(p => +p.precio_cop > 0).sort((a, b) => a.precio_cop - b.precio_cop)[0]; return { b, c, pm }; });
       const total = bom.reduce((s, x) => s + (x.pm ? x.pm.precio_cop * x.b.cantidad : 0), 0);
       const cop = v => "$" + Math.round(v).toLocaleString("es-CO");
@@ -997,10 +1000,10 @@
       st.sug = L.filter(g => (entre(g) && (!bus || g.grupo === bus || g.grupo === "Alimentación")) || (g.grupo === "Alimentación" && (en(g.a) || en(g.b))));
       const n = st.sug.length; if (n) aceptar(st.sug.map((_, i) => i)); return n;
     }
-    const api = { conectarPar, dibujar, colocar, conectar, sugerir: () => { st.sug = sugerir(); st.tab = "sug"; dibujar(); return st.sug.length; }, aceptarTodas: () => { const n = st.sug.length; aceptar(st.sug.map((_, i) => i)); return n; }, ordenar, informe, exportar, aplicarPropuesta, calcular: () => calcular(), circuito: () => C, VIRT, buscarInst: q => C.inst.map(it => ({ it, s: window.MLAgent ? MLAgent.sim(q, it.ref + " " + (INFO.get(it.ref)?.c.nombre || "") + " " + it.id) : 0 })).sort((a, b) => b.s - a.s)[0], pinesDe: ref => INFO.get(ref)?.pins || [], verTab: t => { st.tab = t; panel(ULT || calcular()); }, destroy: () => document.removeEventListener("keydown", onKey) };
+    const api = { svgClaro, conectarPar, dibujar, colocar, conectar, sugerir: () => { st.sug = sugerir(); st.tab = "sug"; dibujar(); return st.sug.length; }, aceptarTodas: () => { const n = st.sug.length; aceptar(st.sug.map((_, i) => i)); return n; }, ordenar, informe, exportar, aplicarPropuesta, calcular: () => calcular(), circuito: () => C, VIRT, buscarInst: q => C.inst.map(it => ({ it, s: window.MLAgent ? MLAgent.sim(q, it.ref + " " + (INFO.get(it.ref)?.c.nombre || "") + " " + it.id) : 0 })).sort((a, b) => b.s - a.s)[0], pinesDe: ref => INFO.get(ref)?.pins || [], verTab: t => { st.tab = t; panel(ULT || calcular()); }, destroy: () => document.removeEventListener("keydown", onKey) };
     libreria(); setTimeout(() => { ajustar(); dibujar(); }, 30);
     return api;
   }
 
-  window.MLCircuito = { montar, pinesDe, perfil, VIRT, partes, tipoPin };
+  window.MLCircuito = { montar, pinesDe, perfil, VIRT, partes, tipoPin, ESP32, analizar: circ => montar(null, { circuito: JSON.parse(JSON.stringify(circ || {})) }, { headless: true }) };
 })();

@@ -74,7 +74,7 @@
     if (r === "ajustes") return vAjustes();
     return vInicio();
   }
-  window.addEventListener("hashchange", route);
+  window.addEventListener("hashchange", route); setTimeout(() => iniciarEscaner(), 0);
 
   // =====================================================================  GENERADOR (agregar componentes con la IA que prefieras)
   const GEN_K = "ml_gen";
@@ -85,6 +85,28 @@
   function genGuardar() {
     const g = genEstado(), lig = Object.assign({}, g, { archivos: g.archivos.filter(a => a.kind === "imagen").slice(0, 6).map(a => ({ id: a.id, nombre: a.nombre, kind: a.kind, dataUrl: a.dataUrl, b64: a.b64, mime: a.mime })) });
     try { localStorage.setItem(GEN_K, JSON.stringify(lig)); } catch (e) { try { lig.archivos = []; localStorage.setItem(GEN_K, JSON.stringify(lig)); } catch (e2) { } }
+  }
+  // ---------- escanear: foto de un módulo o de su etiqueta → Generador (con nombre sugerido por la IA si está conectada)
+  function iniciarEscaner() {
+    const b = $("#btnScan"), inp = $("#scanIn"); if (!b || !inp) return;
+    b.onclick = () => { inp.value = ""; inp.click(); };
+    inp.onchange = async () => {
+      const f = inp.files && inp.files[0]; if (!f) return;
+      toast("Leyendo la foto…");
+      let a; try { a = await MLArchivos.leer(f); a.nombre = "escaneo_" + new Date().toISOString().slice(11, 19).replace(/:/g, ""); } catch (e) { toast("No pude leer la foto: " + e.message, 5000); return; }
+      let nombre = "";
+      if (iaLista()) {
+        try {
+          toast("La IA está identificando el componente…", 8000);
+          const r = await llamarIA("Identificas componentes y módulos electrónicos por foto. Responde SOLO una línea con el nombre comercial más probable y su referencia (p. ej. «Módulo MPU-6050 GY-521» o «Regulador AMS1117-3.3»). Si no se ve claro, responde «desconocido».", [{ role: "user", content: [{ type: "text", text: "¿Qué componente es?" }, { type: "img", mime: a.mime, b64: a.b64 }] }], false, {});
+          nombre = String(r.text || "").split("\n")[0].replace(/^[«"'\s]+|[»"'.\s]+$/g, "").slice(0, 80); if (/desconocido/i.test(nombre)) nombre = "";
+        } catch (e) { console.warn(e); }
+      }
+      const ya = nombre && Store.db.componentes.find(c => slug(c.nombre).includes(slug(nombre).slice(0, 14)) || slug(nombre).includes(slug(c.nombre).slice(0, 14)));
+      if (ya && await confirmar(`La foto parece ser <b>${esc(ya.nombre)}</b>, que ya está en la biblioteca. ¿Abrir su ficha?`, "Abrir ficha")) { location.hash = "#/c/" + ya.id; return; }
+      abrirGenerador({ nombre: nombre || undefined, archivos: [a] });
+      toast(nombre ? `Foto lista en el Generador: «${nombre}» (revisa el nombre)` : "Foto lista en el Generador: escribe el nombre del componente", 6000);
+    };
   }
   function abrirGenerador({ nombre, archivos, completar } = {}) {
     const g = genEstado();
@@ -834,13 +856,12 @@
   }
 
   // ---------- caja mínima (envolvente) del proyecto o de un subproyecto
-  function vCaja(P, cabecera) {
-    const host = $("#cajaHost"), cfg = Object.assign({ por: {} }, P.caja || {}); cfg.por = Object.assign({}, cfg.por || {});
+  // caja calculada de un proyecto (o subproyecto): la usa la pestaña Caja, Ingeniería, el arnés y el informe
+  function cajaDe(P, alcPedido) {
+    const cfg = Object.assign({ por: {} }, P.caja || {}); cfg.por = Object.assign({}, cfg.por || {});
     const par = Object.assign({}, MLCaja.PDEF, { bom: true, conexion: "soldado" }, cfg.p || {});
-    let alc = cfg.alcance || "__todo"; if (alc !== "__todo" && !P.subs.some(u => u.id === alc)) alc = "__todo";
+    let alc = alcPedido || cfg.alcance || "__todo"; if (alc !== "__todo" && !P.subs.some(u => u.id === alc)) alc = "__todo";
     const est = Object.assign({ sel: "op0", manual: null, elementos: [] }, cfg.por[alc] || {}); est.elementos = (est.elementos || []).slice();
-    const guardarCfg = () => { cfg.por[alc] = { sel: est.sel, manual: est.manual, elementos: est.elementos }; P.caja = { alcance: alc, p: par, por: cfg.por }; cabecera(); };
-    const ui = S.cajaUI || (S.cajaUI = { panel: "vistas", nivel: 0, pz: null });
     const comp2 = id => Store.db.componentes.find(c => c.id === id);
     const usar = alc === "__todo" ? P.subs : P.subs.filter(u => u.id === alc), varios = usar.length > 1;
     let inst = usar.flatMap((u, i) => u.circuito.inst.map(it => Object.assign({}, it, { ref: varios ? `${i + 1}·${it.ref}` : it.ref, _sub: u.nombre })));
@@ -851,7 +872,13 @@
     const pz = MLCaja.piezas(inst, comp2, P, par.conexion), ops = MLCaja.opciones(pz.piezas, par, est.elementos);
     const RM = est.manual ? MLCaja.manual(pz.piezas, par, est.elementos, est.manual) : null;
     if (est.sel === "manual" && !RM) est.sel = "op0";
-    const R = est.sel === "manual" ? RM : (ops.find(o => o.id === est.sel) || ops[0]);
+    const R = est.sel === "manual" ? RM : (ops.find(o => o.id === est.sel) || ops[0]) || null;
+    return { cfg, par, alc, est, usar, varios, inst, pz, ops, RM, R, comp2 };
+  }
+  function vCaja(P, cabecera) {
+    const host = $("#cajaHost"), K = cajaDe(P), { cfg, par, est, usar, varios, pz, ops, RM, R, comp2 } = K, alc = K.alc;
+    const guardarCfg = () => { cfg.por[alc] = { sel: est.sel, manual: est.manual, elementos: est.elementos }; P.caja = { alcance: alc, p: par, por: cfg.por }; cabecera(); };
+    const ui = S.cajaUI || (S.cajaUI = { panel: "vistas", nivel: 0, pz: null });
     const titulo = P.nombre + (alc === "__todo" ? "" : " · " + (P.subs.find(u => u.id === alc) || {}).nombre);
     const campo = (k, n, ayuda, st) => `<div title="${esc(ayuda)}"><label>${n}</label><input type="number" step="${st || 0.5}" min="0" data-cp="${k}" value="${par[k]}"></div>`;
     const tarj = o => `<button class="cj-op ${R === o ? "on" : ""}" data-op="${o.manual ? "manual" : o.id}"><div class="cj-op-h"><b>${o.manual ? "✋" : o.letra}</b> ${esc(o.etiqueta)}</div>
@@ -885,6 +912,7 @@
           ${pz.faltan.length ? `<div class="msg warn small">Sin medidas (no entran en el cálculo): ${pz.faltan.map(esc).join(", ")}. Complétalas con el Generador (🩺 Revisión).</div>` : ""}
           ${pz.aberturas.length ? `<div class="msg info small">Aberturas en pared: ${pz.aberturas.map(a => `${esc(a.n)} (${a.w}×${a.h} mm)`).join(", ")}.</div>` : ""}
           ${R && R.piezas.some(q => q.faltaPared) ? `<div class="msg warn small">Conectores que no quedan contra su pared: ${R.piezas.filter(q => q.faltaPared).map(q => esc(q.ref)).join(", ")}.</div>` : ""}
+          ${R && (R.avisosEl || []).length ? `<div class="msg warn small">${R.avisosEl.map(esc).join("<br>")}</div>` : ""}
           ${R && (R.choques || []).length ? `<div class="msg bad small">Piezas que chocan (o sin la separación mínima): ${R.choques.map(c => esc(c.join(" ↔ "))).join(", ")}.</div>` : ""}
         </div>
         <div class="panel caja-vistas">${R ? `<div class="tabs" style="margin-bottom:8px"><button data-cpn="vistas" class="${ui.panel === "vistas" ? "on" : ""}">📐 Vistas</button><button data-cpn="mano" class="${ui.panel === "mano" ? "on" : ""}">✋ Acomodar a mano</button></div>
@@ -932,6 +960,12 @@
     $$("[data-cmv]", host).forEach(b => b.onclick = () => mod(s => { const f = b.dataset.cmv; if (f === "←") s.x -= 1; if (f === "→") s.x += 1; if (f === "↑") s.y += 1; if (f === "↓") s.y -= 1; }));
   }
 
+  function ingInit() {
+    MLIng.init({ esc, comp, cop, precioMin, download, toast, hoy, caja: P => { try { return cajaDe(P); } catch (e) { console.warn(e); return null; } },
+      ia: iaLista() ? (system, user) => llamarIA(system, [{ role: "user", content: user }], false, { potente: true }) : null,
+      putFile: (ruta, b64, msg) => Store.putFile(ruta, b64, msg),
+      usuario: () => { try { return localStorage.getItem("ml_autor") || "John"; } catch (e) { return "John"; } }, recordarUsuario: n => { try { localStorage.setItem("ml_autor", n); } catch (e) { } } });
+  }
   function vProyecto(id) {
     const o = Store.db.proyectos.find(p => p.id === id);
     if (!o) { app.innerHTML = `<div class="panel">No existe el proyecto. <a href="#/proyectos">Volver</a></div>`; return; }
@@ -941,12 +975,12 @@
     const cabecera = () => { const sucio = JSON.stringify(P) !== O, d = $("#pDirty"), b = $("#pSv"); if (d) d.innerHTML = sucio ? '<span class="dirty">Cambios sin guardar</span>' : ""; if (b) b.disabled = !sucio; };
     S.proySucio = () => JSON.stringify(P) !== O;
     const pinta = () => {
-      const t = totalesBom(P), sucio = JSON.stringify(P) !== O, diag = S.ptabP === "diagrama", cajaT = S.ptabP === "caja";
+      const t = totalesBom(P), sucio = JSON.stringify(P) !== O, diag = S.ptabP === "diagrama", cajaT = S.ptabP === "caja", ingT = ["ingenieria", "fabricacion", "versiones"].includes(S.ptabP), otra = diag || cajaT || ingT;
       if (S.circ) { S.circ.destroy(); S.circ = null; }
       app.innerHTML = `<div class="det-head"><div><div class="small"><a href="#/proyectos">← Proyectos</a></div><input id="pNm" value="${esc(P.nombre)}" style="font-size:20px;font-weight:700;border:none;padding:4px 0;background:none"></div>
         <div class="row"><span id="pDirty">${sucio ? '<span class="dirty">Cambios sin guardar</span>' : ""}</span><button class="pri" id="pSv" ${sucio ? "" : "disabled"}>Guardar</button><button id="pCsv">Exportar BOM (CSV)</button><button id="pDup">Duplicar</button><button class="danger" id="pDel">Eliminar</button></div></div>
-        <div class="tabs"><button data-pt2="resumen" class="${diag || cajaT ? "" : "on"}">Resumen y BOM</button><button data-pt2="diagrama" class="${diag ? "on" : ""}">⚡ Circuitos <span class="tag">${P.subs.length}</span></button><button data-pt2="caja" class="${cajaT ? "on" : ""}">📦 Caja</button></div>
-        ${diag ? '<div id="subBar"></div><div id="circHost"></div>' : cajaT ? '<div id="cajaHost"></div>' : `
+        <div class="tabs ptabs"><button data-pt2="resumen" class="${otra ? "" : "on"}">Resumen y BOM</button><button data-pt2="diagrama" class="${diag ? "on" : ""}">⚡ Circuitos <span class="tag">${P.subs.length}</span></button><button data-pt2="caja" class="${cajaT ? "on" : ""}">📦 Caja</button><button data-pt2="ingenieria" class="${S.ptabP === "ingenieria" ? "on" : ""}">🛡 Ingeniería</button><button data-pt2="fabricacion" class="${S.ptabP === "fabricacion" ? "on" : ""}">🔧 Fabricación</button><button data-pt2="versiones" class="${S.ptabP === "versiones" ? "on" : ""}">🕓 Versiones${(P.versiones || []).length ? ` <span class="tag">${P.versiones.length}</span>` : ""}</button></div>
+        ${diag ? '<div id="subBar"></div><div id="circHost"></div>' : cajaT ? '<div id="cajaHost"></div>' : ingT ? '<div id="ingHost"></div>' : `
         <div class="grid2" style="grid-template-columns:2fr 1fr;align-items:start">
           <div class="side">
             <div class="panel"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Lista de materiales (BOM)</h3><div class="picker" style="width:320px"><input id="pk" placeholder="+ Añadir componente: buscar…"><div class="res hide" id="pkR"></div></div></div>
@@ -969,12 +1003,19 @@
       $$("[data-pt2]").forEach(b => b.onclick = () => { S.ptabP = b.dataset.pt2; pinta(); if (window.MLAgent) MLAgent.refrescar(); });
       if (diag) subproyectos(P, cabecera, pinta);
       if (cajaT) vCaja(P, cabecera);
+      if (ingT) {
+        ingInit();
+        const h = $("#ingHost");
+        if (S.ptabP === "ingenieria") MLIng.vista(h, P, cabecera);
+        if (S.ptabP === "fabricacion") MLIng.vistaFab(h, P, cabecera);
+        if (S.ptabP === "versiones") MLIng.vistaVersiones(h, P, cabecera, v => { confirmar(`¿Restaurar la versión <b>${esc(v.nombre)}</b>? Los cambios actuales sin congelar se pierden (puedes congelarlos antes).`, "Restaurar").then(ok => { if (!ok) return; const keep = { versiones: P.versiones, historial: P.historial, id: P.id }; Object.keys(P).forEach(k => delete P[k]); Object.assign(P, clone(v.snap), keep); P.historial.push({ fecha: hoy(), nota: `Restaurada la versión ${v.nombre}` }); migrarSubs(P); pinta(); toast("Versión restaurada: pulsa Guardar para confirmarla"); }); });
+      }
       const set = () => { pinta(); };
       $("#pNm").oninput = e => { P.nombre = e.target.value; };
-      $("#pNm").onchange = () => diag || cajaT ? cabecera() : set();
-      if (!diag && !cajaT) $("#pEs").onchange = e => { P.estado = e.target.value; set(); };
-      if (!diag && !cajaT) $("#pDs").onchange = e => { P.descripcion = e.target.value; set(); };
-      if (!diag && !cajaT) $("#pDoc").onchange = e => { P.documentacion = e.target.value; set(); };
+      $("#pNm").onchange = () => otra ? cabecera() : set();
+      if (!otra) $("#pEs").onchange = e => { P.estado = e.target.value; set(); };
+      if (!otra) $("#pDs").onchange = e => { P.descripcion = e.target.value; set(); };
+      if (!otra) $("#pDoc").onchange = e => { P.documentacion = e.target.value; set(); };
       $$("[data-b]").forEach(i => i.onchange = () => { const b = P.bom[+i.dataset.b]; b[i.dataset.k] = i.dataset.k === "cantidad" ? Math.max(0, +i.value) : i.dataset.k === "valor" ? valorBonito(comp(b.id), i.value) : i.value; if (i.dataset.k === "valor") i.value = b.valor; set(); });
       $$("[data-bx]").forEach(x => x.onclick = () => { const b = P.bom.splice(+x.dataset.bx, 1)[0]; P.historial.push({ fecha: hoy(), nota: "Quitado " + b.id }); set(); });
       const pk = $("#pk"), res = $("#pkR");

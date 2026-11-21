@@ -206,18 +206,27 @@
     const piezasPos = pos.map(q => ({ ref: q.ref, sub: q.sub, n: q.n, id: q.id, ver: q.ver, elemento: q.elemento, nivel: q.nivel, x: r1(q.x), y: r1(q.y), L: r1(q.L2), W: r1(q.W2), rot: q.rot, bajo: q.bajo, esp: q.esp, arriba: q.arriba, Ht: q.Ht, Hc: q.Hc, z0: niveles[q.nivel].z,
       paredes: q.mundo || [], panel: (q.paredes || []).includes("*"), faltaPared: q.faltaPared || 0, arribaZ: q.arribaZ, notas: q.notas || [] }));
     // posición de los elementos: los que ocupan espacio interior toman la posición de su rectángulo reservado
+    const auto = {}; (elems || []).forEach((e, i) => { if (e.u == null && !(+e.prof > 0 && /^[+-][XY]$/.test(e.cara))) (auto[e.cara] = auto[e.cara] || []).push(i); });
     const elementos = (elems || []).map((e, i) => {
       const d = ELEMENTOS[e.tipo] || {}, pz = piezasPos.find(q => q.elemento === i);
-      const largoCara = /Y$/.test(e.cara) ? Lint : /X$/.test(e.cara) ? Wint : Lint;
-      let u = e.u != null ? +e.u : largoCara / 2;   // posición a lo largo de la cara (centro), mm desde la esquina −X / −Y
+      const largoCara = /Y$/.test(e.cara) ? Lint : /X$/.test(e.cara) ? Wint : Lint, A = auto[e.cara] || [];
+      let u = e.u != null ? +e.u : A.includes(i) ? largoCara * (A.indexOf(i) + 1) / (A.length + 1) : largoCara / 2;   // los automáticos se reparten a lo largo de la cara   // posición a lo largo de la cara (centro), mm desde la esquina −X / −Y
       if (pz) u = /Y$/.test(e.cara) ? pz.x + pz.L / 2 : pz.y + pz.W / 2;
       const nv = niveles[Math.min(n - 1, Math.max(0, +e.nivel || 0))];
       const v = e.v != null ? +e.v : (/^[+-][XY]$/.test(e.cara) ? nv.z + Math.min(nv.h, Math.max(+e.h, 8)) / 2 + 2 : Wint / 2);   // altura del centro (pared) o Y (tapa/fondo)
       return { i, ref: "E" + (i + 1), tipo: e.tipo, n: e.nombre || d.n || "Elemento", cara: e.cara, w: +e.w, h: +e.h, prof: +e.prof || 0, forma: e.forma || d.forma || "rect", u: r1(u), v: r1(v), nivel: +e.nivel || 0 };
     });
+    // elementos que no caben en su cara o que se montan uno sobre otro
+    const avisosEl = [], tam = c => /Y$/.test(c) ? [Lint, Hi] : /X$/.test(c) ? [Wint, Hi] : [Lint, Wint];
+    elementos.forEach((e, i) => {
+      const [A, B] = tam(e.cara);
+      if (e.w > A + 0.01 || e.h > B + 0.01) avisosEl.push(`${e.ref} (${e.n}) mide ${e.w}×${e.h} mm y la cara ${CARAS[e.cara]} solo tiene ${r1(A)}×${r1(B)} mm`);
+      else if (e.u - e.w / 2 < -0.01 || e.u + e.w / 2 > A + 0.01 || e.v - e.h / 2 < -0.01 || e.v + e.h / 2 > B + 0.01) avisosEl.push(`${e.ref} se sale del borde de la cara ${CARAS[e.cara]}: ajusta su posición`);
+      elementos.slice(i + 1).forEach(f => { if (f.cara === e.cara && Math.abs(f.u - e.u) < (f.w + e.w) / 2 && Math.abs(f.v - e.v) < (f.h + e.h) / 2) avisosEl.push(`${e.ref} y ${f.ref} se montan uno sobre otro en la cara ${CARAS[e.cara]}: mueve uno`); });
+    });
     const ext = { L: r1(Lint + 2 * p.espesor), W: r1(Wint + 2 * p.espesor), H: r1(Hi + 2 * p.espesor) };
     const aPl = piezasPos.filter(q => q.elemento == null).reduce((s, q) => s + q.L * q.W, 0);
-    return Object.assign({ p, n, niveles, interior: { L: r1(Lint), W: r1(Wint), H: Hi }, exterior: ext, volumen: r1(Lint * Wint * Hi / 1000), ocupacion: Math.round(100 * aPl / (Lint * Wint * n)), piezas: piezasPos, elementos }, extra || {});
+    return Object.assign({ p, n, niveles, interior: { L: r1(Lint), W: r1(Wint), H: Hi }, exterior: ext, volumen: r1(Lint * Wint * Hi / 1000), ocupacion: Math.round(100 * aPl / (Lint * Wint * n)), piezas: piezasPos, elementos, avisosEl }, extra || {});
   }
 
   function desdeBusqueda(m, elems, p, extra) {
