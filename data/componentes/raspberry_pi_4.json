@@ -1,0 +1,2257 @@
+{
+ "id": "raspberry_pi_4",
+ "nombre": "Computadora Monoplaca Raspberry Pi 4 Modelo B (SBC)",
+ "tipo": "electronico",
+ "categoria": "Microcontroladores",
+ "etiquetas": [
+  "raspberry-pi",
+  "raspberry-pi-4",
+  "rpi4b",
+  "sbc",
+  "arm",
+  "cortex-a72",
+  "bcm2711",
+  "linux",
+  "gpio-40",
+  "wifi-bt"
+ ],
+ "fabricante": "Raspberry Pi Ltd",
+ "referencia": "SC0192 / SC0193 / SC0194 / SC0195 (Serie RPI4-MODBP)",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Computadora monoplaca (SBC) de formato estándar de 85 × 56 mm equipada con procesador quad-core Arm Cortex-A72 de 64 bits (Broadcom BCM2711), GPU VideoCore VI compatible con OpenGL ES 3.0 y memoria LPDDR4-3200. Integra Wi-Fi doble banda 802.11ac, Bluetooth 5.0/BLE, Gigabit Ethernet real con soporte PoE, dos puertos USB 3.0, dos USB 2.0, dos micro-HDMI, jack de audio/video de 3.5 mm y puertos MIPI CSI/DSI.",
+  "funcionamiento": "Opera como una computadora Linux completa (Raspberry Pi OS, Ubuntu, etc.) arrancando desde tarjeta microSD o almacenamiento USB. El SoC BCM2711 integra CPU, GPU, controladores HDMI, MIPI y GPIO, mientras que un controlador dedicado (VIA Labs VL805 sobre PCIe interno) gestiona los puertos USB 3.0 y USB 2.0. La cabecera de 40 pines expone 28 GPIO configurables con interfaces digitales.",
+  "voltaje": "5 V DC vía conector USB-C o pines 5V del GPIO (mínimo 5 V / 3 A o 5.1 V / 3 A); lógica GPIO estrictamente de 3.3 V",
+  "corriente": "Mínimo 3 A recomendados (fuente oficial de 15 W, 5.1 V / 3 A); corriente máxima combinada para periféricos USB de 1.2 A",
+  "interfaz": "GPIO (40 pines), I2C, SPI, UART, PWM, PCM, DPI, 2× micro-HDMI, MIPI CSI-2 (2 carriles), MIPI DSI (2 carriles), 2× USB 3.0, 2× USB 2.0, Gigabit Ethernet, Audio/Video 3.5 mm",
+  "entradas": "Alimentación USB-C (5 V / 3 A), ranura microSD, 2× USB 3.0, 2× USB 2.0, Gigabit Ethernet, puerto cámara MIPI CSI-2 (15 pines, paso 1 mm), 28 pines GPIO programables",
+  "salidas": "2× micro-HDMI (hasta 1× 4Kp60 o 2× 4Kp30), puerto pantalla MIPI DSI (15 pines, paso 1 mm), jack 3.5 mm de 4 polos (audio estéreo y video compuesto), 2× USB 3.0, 2× USB 2.0, Gigabit Ethernet, salidas 3.3 V y 5 V en cabecera GPIO, 28 pines GPIO programables",
+  "dimensiones": "85.0 × 56.0 × 1.6 mm (PCB; altura total con conectores ~19.5 mm); 4 agujeros de montaje Ø2.7 mm (M2.5) en patrón de 58.0 × 49.0 mm (a 3.5 mm del borde izquierdo, superior e inferior); cabecera GPIO 2×20 paso 2.54 mm",
+  "datasheet": "https://pip.raspberrypi.com/documents/RP-008341-DS-raspberry-pi-4-datasheet.pdf",
+  "notas": "ADVERTENCIA: Los pines GPIO operan a 3.3 V y NO son tolerantes a 5 V; conectar señales de 5 V directamente puede dañar el SoC. No es compatible con carcasas de Raspberry Pi 3 ni Raspberry Pi 5 porque la Pi 4 ubica el puerto Ethernet en la esquina superior derecha (junto al GPIO) y cuenta con dos micro-HDMI y jack de 3.5 mm. Se recomienda disipación pasiva o ventilador bajo carga continua (rango térmico 0–50 °C). Variantes de RAM con idéntica mecánica: 1 GB, 2 GB, 3 GB, 4 GB y 8 GB."
+ },
+ "especificaciones": [
+  {
+   "param": "Procesador (SoC)",
+   "valor": "Broadcom BCM2711, Quad-core Arm Cortex-A72 64-bit @ 1.5 GHz (1.8 GHz en revisiones recientes)"
+  },
+  {
+   "param": "Gráficos y multimedia",
+   "valor": "VideoCore VI (OpenGL ES 3.0); decodificación H.265 4Kp60, H.264 1080p60 (codificación 1080p30)"
+  },
+  {
+   "param": "Memoria RAM",
+   "valor": "1 GB, 2 GB, 3 GB, 4 GB u 8 GB LPDDR4-3200 SDRAM"
+  },
+  {
+   "param": "Conectividad inalámbrica",
+   "valor": "Wi-Fi 2.4/5.0 GHz IEEE 802.11b/g/n/ac + Bluetooth 5.0 / BLE"
+  },
+  {
+   "param": "Red cableada",
+   "valor": "Gigabit Ethernet real (compatible con PoE mediante PoE/PoE+ HAT)"
+  },
+  {
+   "param": "Puertos USB",
+   "valor": "2× USB 3.0 + 2× USB 2.0 (controlador VL805)"
+  },
+  {
+   "param": "Video y audio",
+   "valor": "2× micro-HDMI (hasta 4Kp60), 1× MIPI DSI (2 carriles), 1× MIPI CSI-2 (2 carriles), jack 3.5 mm 4 polos"
+  },
+  {
+   "param": "Almacenamiento",
+   "valor": "Ranura para tarjeta microSD"
+  },
+  {
+   "param": "Alimentación recomendada",
+   "valor": "5 V / 3 A (5.1 V / 3 A) DC vía USB-C"
+  },
+  {
+   "param": "Temperatura de operación",
+   "valor": "0 °C a +50 °C"
+  },
+  {
+   "param": "Dimensiones y montaje",
+   "valor": "85.0 × 56.0 mm (alto total ~19.5 mm); 4 agujeros Ø2.7 mm (M2.5) en rejilla 58.0 × 49.0 mm"
+  }
+ ],
+ "imagen": null,
+ "precios": [
+  {
+   "proveedor": "Electronilab CO (8 GB)",
+   "precio_cop": 829900,
+   "url": "https://electronilab.co",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Electrónica I+D SAS CO (8 GB)",
+   "precio_cop": 844900,
+   "url": "https://electronicaimasd.com",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Sigma Electrónica CO (8 GB)",
+   "precio_cop": 856800,
+   "url": "https://www.sigmaelectronica.net/producto/rpi4-8gb/",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Electrónica I+D SAS CO (4 GB)",
+   "precio_cop": 487900,
+   "url": "https://electronicaimasd.com",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Electronilab CO (4 GB)",
+   "precio_cop": 549900,
+   "url": "https://electronilab.co",
+   "fecha": "2026-11",
+   "estimado": false
+  },
+  {
+   "proveedor": "Sigma Electrónica CO (2 GB)",
+   "precio_cop": 267750,
+   "url": "https://www.sigmaelectronica.net/producto/rpi4-8gb/",
+   "fecha": "2026-11",
+   "estimado": false
+  }
+ ],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -39,
+    "y": -24.5,
+    "d": 2.7
+   },
+   {
+    "x": 19,
+    "y": -24.5,
+    "d": 2.7
+   },
+   {
+    "x": -39,
+    "y": 24.5,
+    "d": 2.7
+   },
+   {
+    "x": 19,
+    "y": 24.5,
+    "d": 2.7
+   }
+  ],
+  "altura_superior": 15.5,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   85,
+   56,
+   1.6
+  ],
+  "forma": "rect"
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Cabecera GPIO 40 pines",
+   "cx": -10,
+   "cy": 24.5,
+   "w": 101.6,
+   "h": 5.08,
+   "z": [
+    1.6,
+    10.1
+   ],
+   "salida": "+Z",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "p1"
+  },
+  {
+   "tipo": "usb",
+   "nombre": "USB-C Alimentación 5V/3A",
+   "cx": -31.3,
+   "cy": -25,
+   "w": 8.9,
+   "h": 7.3,
+   "z": [
+    1.6,
+    4.8
+   ],
+   "salida": "-Y",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "p2"
+  }
+ ],
+ "pines": [
+  {
+   "n": "3V3",
+   "func": "Pin 1 - Salida de alimentación regulada 3.3 V",
+   "x": -59.53,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "5V",
+   "func": "Pin 2 - Alimentación 5 V (entrada/salida)",
+   "x": -56.99,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO2",
+   "func": "Pin 3 - I2C1 SDA (pull-up fija de 1.8 kΩ a 3.3 V)",
+   "x": -54.45,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 2,
+   "cara": "A"
+  },
+  {
+   "n": "5V",
+   "func": "Pin 4 - Alimentación 5 V (entrada/salida)",
+   "x": -51.91,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 3,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO3",
+   "func": "Pin 5 - I2C1 SCL (pull-up fija de 1.8 kΩ a 3.3 V)",
+   "x": -49.37,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 4,
+   "cara": "A"
+  },
+  {
+   "n": "GND",
+   "func": "Pin 6 - Tierra (0 V)",
+   "x": -46.83,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 5,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO4",
+   "func": "Pin 7 - GPIO4 / GPCLK0",
+   "x": -44.29,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 6,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO14",
+   "func": "Pin 8 - UART0 TXD",
+   "x": -41.75,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 7,
+   "cara": "A"
+  },
+  {
+   "n": "GND",
+   "func": "Pin 9 - Tierra (0 V)",
+   "x": -39.21,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 8,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO15",
+   "func": "Pin 10 - UART0 RXD",
+   "x": -36.67,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 9,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO17",
+   "func": "Pin 11 - GPIO17 / SPI1 CE1",
+   "x": -34.13,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 10,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO18",
+   "func": "Pin 12 - GPIO18 / PCM_CLK / PWM0",
+   "x": -31.59,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 11,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO27",
+   "func": "Pin 13 - GPIO27",
+   "x": -29.05,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 12,
+   "cara": "A"
+  },
+  {
+   "n": "GND",
+   "func": "Pin 14 - Tierra (0 V)",
+   "x": -26.51,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 13,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO22",
+   "func": "Pin 15 - GPIO22",
+   "x": -23.97,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 14,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO23",
+   "func": "Pin 16 - GPIO23",
+   "x": -21.43,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 15,
+   "cara": "A"
+  },
+  {
+   "n": "3V3",
+   "func": "Pin 17 - Salida de alimentación regulada 3.3 V",
+   "x": -18.89,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 16,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO24",
+   "func": "Pin 18 - GPIO24",
+   "x": -16.35,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 17,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO10",
+   "func": "Pin 19 - SPI0 MOSI",
+   "x": -13.81,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 18,
+   "cara": "A"
+  },
+  {
+   "n": "GND",
+   "func": "Pin 20 - Tierra (0 V)",
+   "x": -11.27,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 19,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO9",
+   "func": "Pin 21 - SPI0 MISO",
+   "x": -8.73,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 20,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO25",
+   "func": "Pin 22 - GPIO25",
+   "x": -6.19,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 21,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO11",
+   "func": "Pin 23 - SPI0 SCLK",
+   "x": -3.65,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 22,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO8",
+   "func": "Pin 24 - SPI0 CE0",
+   "x": -1.11,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 23,
+   "cara": "A"
+  },
+  {
+   "n": "GND",
+   "func": "Pin 25 - Tierra (0 V)",
+   "x": 1.43,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 24,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO7",
+   "func": "Pin 26 - SPI0 CE1",
+   "x": 3.97,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 25,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO0",
+   "func": "Pin 27 - I2C0 ID_SD (EEPROM de HAT)",
+   "x": 6.51,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 26,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO1",
+   "func": "Pin 28 - I2C0 ID_SC (EEPROM de HAT)",
+   "x": 9.05,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 27,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO5",
+   "func": "Pin 29 - GPIO5",
+   "x": 11.59,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 28,
+   "cara": "A"
+  },
+  {
+   "n": "GND",
+   "func": "Pin 30 - Tierra (0 V)",
+   "x": 14.13,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 29,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO6",
+   "func": "Pin 31 - GPIO6",
+   "x": 16.67,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 30,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO12",
+   "func": "Pin 32 - GPIO12 / PWM0",
+   "x": 19.21,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 31,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO13",
+   "func": "Pin 33 - GPIO13 / PWM1",
+   "x": 21.75,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 32,
+   "cara": "A"
+  },
+  {
+   "n": "GND",
+   "func": "Pin 34 - Tierra (0 V)",
+   "x": 24.29,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 33,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO19",
+   "func": "Pin 35 - GPIO19 / PCM_FS / SPI1 MISO",
+   "x": 26.83,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 34,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO16",
+   "func": "Pin 36 - GPIO16 / SPI1 CE2",
+   "x": 29.37,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 35,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO26",
+   "func": "Pin 37 - GPIO26",
+   "x": 31.91,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 36,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO20",
+   "func": "Pin 38 - GPIO20 / PCM_DIN",
+   "x": 34.45,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 37,
+   "cara": "A"
+  },
+  {
+   "n": "GND",
+   "func": "Pin 39 - Tierra (0 V)",
+   "x": 36.99,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 38,
+   "cara": "A"
+  },
+  {
+   "n": "GPIO21",
+   "func": "Pin 40 - GPIO21 / PCM_DOUT",
+   "x": 39.53,
+   "y": 25.77,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 39,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.1",
+   "func": "",
+   "x": -59.53,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 40,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.2",
+   "func": "",
+   "x": -56.99,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 41,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.3",
+   "func": "",
+   "x": -54.45,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 42,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.4",
+   "func": "",
+   "x": -51.91,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 43,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.5",
+   "func": "",
+   "x": -49.37,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 44,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.6",
+   "func": "",
+   "x": -46.83,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 45,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.7",
+   "func": "",
+   "x": -44.29,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 46,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.8",
+   "func": "",
+   "x": -41.75,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 47,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.9",
+   "func": "",
+   "x": -39.21,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 48,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.10",
+   "func": "",
+   "x": -36.67,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 49,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.11",
+   "func": "",
+   "x": -34.13,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 50,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.12",
+   "func": "",
+   "x": -31.59,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 51,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.13",
+   "func": "",
+   "x": -29.05,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 52,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.14",
+   "func": "",
+   "x": -26.51,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 53,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.15",
+   "func": "",
+   "x": -23.97,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 54,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.16",
+   "func": "",
+   "x": -21.43,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 55,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.17",
+   "func": "",
+   "x": -18.89,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 56,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.18",
+   "func": "",
+   "x": -16.35,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 57,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.19",
+   "func": "",
+   "x": -13.81,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 58,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.20",
+   "func": "",
+   "x": -11.27,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 59,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.21",
+   "func": "",
+   "x": -8.73,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 60,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.22",
+   "func": "",
+   "x": -6.19,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 61,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.23",
+   "func": "",
+   "x": -3.65,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 62,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.24",
+   "func": "",
+   "x": -1.11,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 63,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.25",
+   "func": "",
+   "x": 1.43,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 64,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.26",
+   "func": "",
+   "x": 3.97,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 65,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.27",
+   "func": "",
+   "x": 6.51,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 66,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.28",
+   "func": "",
+   "x": 9.05,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 67,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.29",
+   "func": "",
+   "x": 11.59,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 68,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.30",
+   "func": "",
+   "x": 14.13,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 69,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.31",
+   "func": "",
+   "x": 16.67,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 70,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.32",
+   "func": "",
+   "x": 19.21,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 71,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.33",
+   "func": "",
+   "x": 21.75,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 72,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.34",
+   "func": "",
+   "x": 24.29,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 73,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.35",
+   "func": "",
+   "x": 26.83,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 74,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.36",
+   "func": "",
+   "x": 29.37,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 75,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.37",
+   "func": "",
+   "x": 31.91,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 76,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.38",
+   "func": "",
+   "x": 34.45,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 77,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.39",
+   "func": "",
+   "x": 36.99,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 78,
+   "cara": "A"
+  },
+  {
+   "n": "Cabecera GPIO 40 pines.2.40",
+   "func": "",
+   "x": 39.53,
+   "y": 23.23,
+   "conector": "Cabecera GPIO 40 pines",
+   "pieza": "p1",
+   "idx": 79,
+   "cara": "A"
+  }
+ ],
+ "archivos": {},
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo, precios",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo",
+    "precios"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 85,
+   "W": 56,
+   "d": 30,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#15803d"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "header_macho",
+    "nombre": "Cabecera GPIO 40 pines",
+    "cara": "A",
+    "x": -10,
+    "y": 24.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 40,
+     "filas": 2,
+     "paso": 2.54,
+     "alto": 8.5
+    }
+   },
+   {
+    "id": "p2",
+    "plantilla": "usb_c",
+    "nombre": "USB-C Alimentación 5V/3A",
+    "cara": "A",
+    "x": -31.3,
+    "y": -24.5,
+    "rot": 180,
+    "z": 0,
+    "params": {
+     "sal": 1
+    }
+   },
+   {
+    "id": "p3",
+    "plantilla": "f_caja",
+    "nombre": "Micro-HDMI 0",
+    "cara": "A",
+    "x": -16.5,
+    "y": -24.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 7,
+     "h": 7.5,
+     "alto": 3.5,
+     "r": 0,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p4",
+    "plantilla": "f_caja",
+    "nombre": "Micro-HDMI 1",
+    "cara": "A",
+    "x": -3,
+    "y": -24.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 7,
+     "h": 7.5,
+     "alto": 3.5,
+     "r": 0,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p5",
+    "plantilla": "f_caja",
+    "nombre": "Jack 3.5 mm Audio/Video",
+    "cara": "A",
+    "x": 11.5,
+    "y": -22.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 7,
+     "h": 11.5,
+     "alto": 6,
+     "r": 0,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p6",
+    "plantilla": "f_caja",
+    "nombre": "Gigabit Ethernet RJ45",
+    "cara": "A",
+    "x": 32,
+    "y": 17.8,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 21,
+     "h": 16,
+     "alto": 13.5,
+     "r": 0,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p7",
+    "plantilla": "f_caja",
+    "nombre": "Doble USB 3.0",
+    "cara": "A",
+    "x": 34,
+    "y": -1.1,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 17,
+     "h": 13.5,
+     "alto": 15.5,
+     "r": 0,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p8",
+    "plantilla": "f_caja",
+    "nombre": "Doble USB 2.0",
+    "cara": "A",
+    "x": 34,
+    "y": -19,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 17,
+     "h": 13.5,
+     "alto": 15.5,
+     "r": 0,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p9",
+    "plantilla": "f_caja",
+    "nombre": "SoC Broadcom BCM2711",
+    "cara": "A",
+    "x": -13.5,
+    "y": 3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 15,
+     "h": 15,
+     "alto": 2.2,
+     "r": 0,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p10",
+    "plantilla": "f_caja",
+    "nombre": "Memoria LPDDR4",
+    "cara": "A",
+    "x": 4,
+    "y": 5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 10,
+     "h": 14,
+     "alto": 1.2,
+     "r": 0,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p11",
+    "plantilla": "qfn",
+    "nombre": "Controlador USB 3.0 VL805",
+    "cara": "A",
+    "x": 15,
+    "y": -5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "lado": 8
+    }
+   },
+   {
+    "id": "p12",
+    "plantilla": "f_caja",
+    "nombre": "Módulo Wi-Fi/BT",
+    "cara": "A",
+    "x": -31,
+    "y": 11,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 11,
+     "h": 13,
+     "alto": 2.5,
+     "r": 0,
+     "color": "#64748b"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -10,
+    "cy": 24.5,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#1f2937",
+    "pieza": "p1",
+    "w": 101.6,
+    "h": 5.08
+   },
+   {
+    "f": "caja",
+    "cx": -59.53,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -56.99,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -54.45,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -51.91,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -49.37,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -46.83,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -44.29,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -41.75,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -39.21,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -36.67,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -34.13,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -31.59,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -29.05,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -26.51,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -23.97,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -21.43,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -18.89,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -16.35,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -13.81,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -11.27,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -8.73,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -6.19,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -3.65,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -1.11,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 1.43,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 3.97,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 6.51,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 9.05,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 11.59,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 14.13,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 16.67,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 19.21,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 21.75,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 24.29,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 26.83,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 29.37,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 31.91,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 34.45,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 36.99,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 39.53,
+    "cy": 25.77,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -59.53,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -56.99,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -54.45,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -51.91,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -49.37,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -46.83,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -44.29,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -41.75,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -39.21,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -36.67,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -34.13,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -31.59,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -29.05,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -26.51,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -23.97,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -21.43,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -18.89,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -16.35,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -13.81,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -11.27,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -8.73,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -6.19,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -3.65,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -1.11,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 1.43,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 3.97,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 6.51,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 9.05,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 11.59,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 14.13,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 16.67,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 19.21,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 21.75,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 24.29,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 26.83,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 29.37,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 31.91,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 34.45,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 36.99,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 39.53,
+    "cy": 23.23,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -31.3,
+    "cy": -25,
+    "z0": 1.6,
+    "z1": 4.8,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "w": 8.9,
+    "h": 7.3,
+    "r": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": -16.5,
+    "cy": -24.5,
+    "z0": 1.6,
+    "z1": 5.1,
+    "color": "#64748b",
+    "pieza": "p3",
+    "w": 7,
+    "h": 7.5
+   },
+   {
+    "f": "caja",
+    "cx": -3,
+    "cy": -24.5,
+    "z0": 1.6,
+    "z1": 5.1,
+    "color": "#64748b",
+    "pieza": "p4",
+    "w": 7,
+    "h": 7.5
+   },
+   {
+    "f": "caja",
+    "cx": 11.5,
+    "cy": -22.5,
+    "z0": 1.6,
+    "z1": 7.6,
+    "color": "#64748b",
+    "pieza": "p5",
+    "w": 7,
+    "h": 11.5
+   },
+   {
+    "f": "caja",
+    "cx": 32,
+    "cy": 17.8,
+    "z0": 1.6,
+    "z1": 15.1,
+    "color": "#64748b",
+    "pieza": "p6",
+    "w": 21,
+    "h": 16
+   },
+   {
+    "f": "caja",
+    "cx": 34,
+    "cy": -1.1,
+    "z0": 1.6,
+    "z1": 17.1,
+    "color": "#64748b",
+    "pieza": "p7",
+    "w": 17,
+    "h": 13.5
+   },
+   {
+    "f": "caja",
+    "cx": 34,
+    "cy": -19,
+    "z0": 1.6,
+    "z1": 17.1,
+    "color": "#64748b",
+    "pieza": "p8",
+    "w": 17,
+    "h": 13.5
+   },
+   {
+    "f": "caja",
+    "cx": -13.5,
+    "cy": 3,
+    "z0": 1.6,
+    "z1": 3.8,
+    "color": "#64748b",
+    "pieza": "p9",
+    "w": 15,
+    "h": 15
+   },
+   {
+    "f": "caja",
+    "cx": 4,
+    "cy": 5,
+    "z0": 1.6,
+    "z1": 2.8,
+    "color": "#64748b",
+    "pieza": "p10",
+    "w": 10,
+    "h": 14
+   },
+   {
+    "f": "caja",
+    "cx": 15,
+    "cy": -5,
+    "z0": 1.6,
+    "z1": 2.5,
+    "color": "#1f2937",
+    "pieza": "p11",
+    "w": 8,
+    "h": 8
+   },
+   {
+    "f": "caja",
+    "cx": -31,
+    "cy": 11,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#64748b",
+    "pieza": "p12",
+    "w": 11,
+    "h": 13
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-21T03:09:52.177Z"
+}
