@@ -65,7 +65,10 @@
    "valor": "700 mW (encapsulado DIP)"
   }
  ],
- "imagen": null,
+ "imagen": {
+  "src": "img/cd4017.png?v=1795229697117",
+  "origen": "render del modelo 3D"
+ },
  "precios": [
   {
    "proveedor": "Arca Electrónica CO",
@@ -321,6 +324,14 @@
     "montaje",
     "modelo",
     "precios"
+   ]
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
    ]
   }
  ],
@@ -710,5 +721,5 @@
   ]
  },
  "cad_pendiente": true,
- "modificado": "2026-11-21T02:54:45.075Z"
+ "modificado": "2026-11-21T02:54:55.579Z"
 }
