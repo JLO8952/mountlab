@@ -1,0 +1,702 @@
+{
+ "id": "74hc161",
+ "nombre": "Contador Binario Síncrono de 4 Bits Preajustable 74HC161 (PDIP-16)",
+ "tipo": "electronico",
+ "categoria": "Circuitos integrados",
+ "etiquetas": [
+  "74hc161",
+  "sn74hc161n",
+  "cmos",
+  "contador",
+  "binario",
+  "4-bits",
+  "sincrono",
+  "preajustable",
+  "dip-16",
+  "logica-digital"
+ ],
+ "fabricante": "Texas Instruments",
+ "referencia": "SN74HC161N",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Circuito integrado lógico CMOS de alta velocidad (serie 74HC) que funciona como contador binario ascendente síncrono de 4 bits (módulo 16, de 0000 a 1111) con carga paralela síncrona, reinicio maestro asíncrono activo en bajo y salida de acarreo (RCO/TC) para encadenar múltiples etapas.",
+  "funcionamiento": "Todos los flip-flops cambian de estado de forma simultánea en el flanco de subida del reloj (CLK/CP), evitando picos de conteo (glitches). Para contar se requiere ~CLR=ALTO, ~LOAD=ALTO, ENP=ALTO y ENT=ALTO. Al poner ~LOAD en BAJO, el siguiente flanco de subida de CLK carga en QA–QD el valor binario presente en A–D. Al poner ~CLR en BAJO, todas las salidas QA–QD pasan inmediatamente a BAJO sin esperar al reloj (reset asíncrono). La salida RCO pasa a ALTO cuando el conteo llega a 15 (1111) y ENT está en ALTO.",
+  "voltaje": "2 V a 6 V DC (operación recomendada en 3.3 V y 5 V)",
+  "corriente": "±4 mA de salida a 5 V (capaz de manejar hasta 10 cargas LSTTL); corriente de reposo ICC máx. 80 µA; corriente de entrada máx. 1 µA",
+  "interfaz": "Lógica digital CMOS paralela (reloj, carga paralela, habilitación de conteo y reset asíncrono)",
+  "entradas": "~CLR (reset asíncrono activo en bajo), CLK (reloj flanco de subida), A–D / D0–D3 (4 bits de carga paralela), ENP/CEP y ENT/CET (habilitación de conteo), ~LOAD/PE (carga paralela síncrona activa en bajo)",
+  "salidas": "QA–QD / Q0–Q3 (4 salidas binarias) y RCO/TC (salida de acarreo terminal)",
+  "dimensiones": "19.3 × 6.35 × 4.57 mm (cuerpo PDIP-16), paso de pines 2.54 mm, separación entre filas 7.62 mm",
+  "datasheet": "https://www.ti.com/lit/gpn/SN54HC161-SP",
+  "notas": "Totalmente compatible con sistemas de 3.3 V y 5 V (alimentándolo al voltaje del sistema). No dejar entradas CMOS flotantes (conectar a VCC o GND según corresponda). Diferencia clave frente al 74HC163: el 74HC161 tiene reset ASÍNCRONO (inmediato), mientras que el 74HC163 tiene reset síncrono. Sensible a descargas electrostáticas (ESD). Variantes de encapsulado: SN74HC161N (PDIP-16), SN74HC161D / 74HC161D (SOIC-16), SN74HC161PW (TSSOP-16), CD74HC161E y 74HCT161 (entradas compatibles con niveles TTL)."
+ },
+ "especificaciones": [
+  {
+   "param": "Familia lógica",
+   "valor": "CMOS de alta velocidad (Serie 74HC)"
+  },
+  {
+   "param": "Tipo de contador",
+   "valor": "Binario síncrono de 4 bits (módulo 16), preajustable"
+  },
+  {
+   "param": "Tipo de reinicio (Reset)",
+   "valor": "Asíncrono, activo en nivel BAJO (~CLR / MR)"
+  },
+  {
+   "param": "Voltaje de alimentación (VCC)",
+   "valor": "2 V a 6 V DC"
+  },
+  {
+   "param": "Corriente de salida",
+   "valor": "±4 mA @ 5 V (hasta 10 cargas LSTTL)"
+  },
+  {
+   "param": "Retardo de propagación típico (tpd)",
+   "valor": "14 ns @ 5 V"
+  },
+  {
+   "param": "Frecuencia máxima de reloj (fmax)",
+   "valor": "18 MHz mín. @ 4.5 V / 21 MHz mín. @ 6 V (25 °C, TI)"
+  },
+  {
+   "param": "Temperatura de operación",
+   "valor": "-40 °C a +85 °C (SN74HC161N)"
+  },
+  {
+   "param": "Encapsulado",
+   "valor": "PDIP-16 (N), montaje THT"
+  },
+  {
+   "param": "Paso de pines / Entre filas",
+   "valor": "2.54 mm / 7.62 mm (0.300 in)"
+  }
+ ],
+ "imagen": null,
+ "precios": [
+  {
+   "proveedor": "Sigma Electrónica CO",
+   "precio_cop": 3570,
+   "url": "https://www.sigmaelectronica.net/producto/74hc161/",
+   "fecha": "2026-11",
+   "estimado": false
+  }
+ ],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 3.8,
+  "holgura_inferior_cableado": 0,
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   19.3,
+   6.35,
+   4.57
+  ],
+  "forma": "rect",
+  "base_tipo": "prisma"
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Pines PDIP-16",
+   "cx": 0,
+   "cy": 0,
+   "w": 20.32,
+   "h": 7.62,
+   "z": [
+    -3.8,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 5,
+   "auto": true,
+   "pieza": "p1"
+  }
+ ],
+ "pines": [
+  {
+   "n": "~CLR",
+   "func": "Reset maestro asíncrono (MR, activo en BAJO; pone QA–QD en 0)",
+   "x": -8.89,
+   "y": -3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 0,
+   "cara": "B"
+  },
+  {
+   "n": "CLK",
+   "func": "Entrada de reloj (CP, dispara en flanco de subida)",
+   "x": -6.35,
+   "y": -3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 1,
+   "cara": "B"
+  },
+  {
+   "n": "A",
+   "func": "Entrada de datos paralela bit 0 / LSB (D0)",
+   "x": -3.81,
+   "y": -3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 2,
+   "cara": "B"
+  },
+  {
+   "n": "B",
+   "func": "Entrada de datos paralela bit 1 (D1)",
+   "x": -1.27,
+   "y": -3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 3,
+   "cara": "B"
+  },
+  {
+   "n": "C",
+   "func": "Entrada de datos paralela bit 2 (D2)",
+   "x": 1.27,
+   "y": -3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 4,
+   "cara": "B"
+  },
+  {
+   "n": "D",
+   "func": "Entrada de datos paralela bit 3 / MSB (D3)",
+   "x": 3.81,
+   "y": -3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 5,
+   "cara": "B"
+  },
+  {
+   "n": "ENP",
+   "func": "Habilitación de conteo paralelo (CEP, activo en ALTO)",
+   "x": 6.35,
+   "y": -3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 6,
+   "cara": "B"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra / Referencia de alimentación (0 V)",
+   "x": 8.89,
+   "y": -3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 7,
+   "cara": "B"
+  },
+  {
+   "n": "~LOAD",
+   "func": "Habilitación de carga paralela síncrona (PE, activo en BAJO)",
+   "x": 8.89,
+   "y": 3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 8,
+   "cara": "B"
+  },
+  {
+   "n": "ENT",
+   "func": "Habilitación de conteo y acarreo (CET, activo en ALTO)",
+   "x": 6.35,
+   "y": 3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 9,
+   "cara": "B"
+  },
+  {
+   "n": "QD",
+   "func": "Salida binaria bit 3 / MSB (Q3)",
+   "x": 3.81,
+   "y": 3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 10,
+   "cara": "B"
+  },
+  {
+   "n": "QC",
+   "func": "Salida binaria bit 2 (Q2)",
+   "x": 1.27,
+   "y": 3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 11,
+   "cara": "B"
+  },
+  {
+   "n": "QB",
+   "func": "Salida binaria bit 1 (Q1)",
+   "x": -1.27,
+   "y": 3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 12,
+   "cara": "B"
+  },
+  {
+   "n": "QA",
+   "func": "Salida binaria bit 0 / LSB (Q0)",
+   "x": -3.81,
+   "y": 3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 13,
+   "cara": "B"
+  },
+  {
+   "n": "RCO",
+   "func": "Salida de acarreo terminal (TC; ALTO cuando cuenta=15 y ENT=ALTO)",
+   "x": -6.35,
+   "y": 3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 14,
+   "cara": "B"
+  },
+  {
+   "n": "VCC",
+   "func": "Alimentación positiva (+2 V a +6 V DC)",
+   "x": -8.89,
+   "y": 3.81,
+   "conector": "Pines PDIP-16",
+   "pieza": "p1",
+   "idx": 15,
+   "cara": "B"
+  }
+ ],
+ "archivos": {},
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo, precios",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo",
+    "precios"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 19.3,
+   "W": 6.35,
+   "d": 25,
+   "espesor": 4.57,
+   "radio": 0,
+   "color": "#1f2937"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "patas_dip",
+    "nombre": "Pines PDIP-16",
+    "cara": "B",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 16,
+     "paso": 2.54,
+     "fila": 7.62,
+     "largo": 3.8
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -8.89,
+    "cy": -3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": -8.89,
+    "cy": -3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": -6.35,
+    "cy": -3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": -6.35,
+    "cy": -3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": -3.81,
+    "cy": -3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": -3.81,
+    "cy": -3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": -1.27,
+    "cy": -3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": -1.27,
+    "cy": -3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": 1.27,
+    "cy": -3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": 1.27,
+    "cy": -3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": 3.81,
+    "cy": -3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": 3.81,
+    "cy": -3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": 6.35,
+    "cy": -3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": 6.35,
+    "cy": -3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": 8.89,
+    "cy": -3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": 8.89,
+    "cy": -3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": 8.89,
+    "cy": 3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": 8.89,
+    "cy": 3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": 6.35,
+    "cy": 3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": 6.35,
+    "cy": 3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": 3.81,
+    "cy": 3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": 3.81,
+    "cy": 3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": 1.27,
+    "cy": 3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": 1.27,
+    "cy": 3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": -1.27,
+    "cy": 3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": -1.27,
+    "cy": 3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": -3.81,
+    "cy": 3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": -3.81,
+    "cy": 3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": -6.35,
+    "cy": 3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": -6.35,
+    "cy": 3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   },
+   {
+    "f": "caja",
+    "cx": -8.89,
+    "cy": 3.81,
+    "z0": -3.8,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 0.46,
+    "h": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": -8.89,
+    "cy": 3.51,
+    "z0": -0.6,
+    "z1": 0,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "w": 1,
+    "h": 0.85
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-21T02:57:09.566Z"
+}
