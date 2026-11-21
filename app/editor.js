@@ -19,10 +19,10 @@
 
   function create(host, comp, opt) {
     opt = opt || {};
-    const st = { mode: opt.mode || "montaje", tool: "sel", sel: null, k: 8, ox: 0, oy: 0, snap: 0.5, layers: { agujeros: true, zonas: true, pines: true, cotas: true }, drag: null, cursor: [0, 0], fitted: false };
+    const st = { mode: opt.mode || "montaje", tool: "sel", sel: null, k: 8, ox: 0, oy: 0, snap: 0.5, layers: { modelo: true, agujeros: true, zonas: true, pines: true, cotas: true }, drag: null, cursor: [0, 0], fitted: false };
     host.innerHTML = `<div class="canvas-wrap">
       <div class="ed-tools" id="edTools"></div>
-      <div class="ed-layers">${["agujeros", "zonas", "pines", "cotas"].map(l => `<label><input type="checkbox" data-l="${l}" checked>${l}</label>`).join("")}</div>
+      <div class="ed-layers">${["modelo", "agujeros", "zonas", "pines", "cotas"].map(l => `<label><input type="checkbox" data-l="${l}" checked>${l}</label>`).join("")}</div>
       <svg id="edSvg"></svg>
       <div class="ed-info" id="edInfo"></div></div>`;
     const svg = host.querySelector("#edSvg"), info = host.querySelector("#edInfo"), tools = host.querySelector("#edTools");
@@ -83,6 +83,18 @@
       if (!M || !M.pcb) { s += `<text x="${w / 2}" y="${h / 2}" fill="#94a3b8" text-anchor="middle">Este elemento no tiene placa. Activa “Tiene montaje” en la pestaña Montaje.</text>`; svg.innerHTML = s; return; }
       const [L, W] = M.pcb; const [px, py, pw, ph] = rectS(0, 0, L, W);
       s += `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="#14532d55" stroke="#22c55e" stroke-width="1.5" rx="${Math.min(4, st.k * 0.6)}"/>`;
+      // piezas del modelo 3D vistas desde arriba (las de la cara B, punteadas): así coincide con la pestaña Modelo 3D
+      if (st.layers.modelo && comp.modelo && comp.modelo.base && window.MLPlant) {
+        const b = comp.modelo.base, esp = b.espesor || 1.6, bi = MLPlant.baseInfo(b);
+        const lista = bi.prim.map(c => Object.assign({ base: true }, c)).concat((comp.modelo.piezas || []).flatMap(pz => MLPlant.cuerposDe(pz, esp).map(c => Object.assign({ caraB: (pz.cara || "A") === "B" }, c))));
+        lista.sort((a, c) => (a.caraB - c.caraB) || (a.z1 - c.z1));
+        const bajo = lista.filter(c => c.caraB), arriba = lista.filter(c => !c.caraB);
+        for (const c of [...bajo, ...arriba]) {
+          const col = c.color || "#64748b", op = c.caraB ? 0.18 : 0.85, dash = c.caraB ? ' stroke-dasharray="3 2"' : "";
+          if (c.f === "cil") { const [a, b2] = toS(c.cx, c.cy); s += `<circle cx="${a}" cy="${b2}" r="${Math.max(0.5, c.d / 2 * st.k)}" fill="${col}" fill-opacity="${op}" stroke="${col}" stroke-width=".8"${dash} pointer-events="none"/>`; }
+          else { const [a, b2, cw, ch] = rectS(c.cx, c.cy, c.w, c.h); s += `<rect x="${a}" y="${b2}" width="${cw}" height="${ch}" rx="${c.r ? Math.min(c.r * st.k, cw / 2, ch / 2) : 0}" fill="${col}" fill-opacity="${op}" stroke="${col}" stroke-width=".8"${dash} pointer-events="none"/>`; }
+        }
+      }
       // zonas
       if (st.layers.zonas) (comp.zonas || []).forEach((z, i) => {
         const col = (ZT[z.tipo] || ZT.otra).c, sel = st.mode === "zonas" && st.sel === i, dim = st.mode !== "zonas";

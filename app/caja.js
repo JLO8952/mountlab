@@ -20,23 +20,10 @@
 
   // ---------- elementos que se pueden insertar en la caja (agujero en la cara + espacio que ocupan por dentro)
   //  w × h = tamaño del agujero/ventana en la cara (mm); prof = cuánto entra hacia adentro (tuerca, conector, cable doblado)
-  const ELEMENTOS = {
-    cable_pot: { n: "Salida de cable de potencia (prensaestopa PG7)", ic: "🔌", w: 12.5, h: 12.5, prof: 18, cara: "-Y", forma: "circ" },
-    cable_datos: { n: "Salida de cable de datos (pasacables)", ic: "〰", w: 8, h: 8, prof: 12, cara: "-Y", forma: "circ" },
-    usb_c: { n: "Conector USB-C de panel", ic: "⌁", w: 10, h: 4, prof: 22, cara: "-Y", forma: "rect" },
-    jack_dc: { n: "Jack DC de panel (5.5 × 2.1)", ic: "⚡", w: 8, h: 8, prof: 16, cara: "+Y", forma: "circ" },
-    gx16: { n: "Conector de aviación GX16", ic: "◎", w: 16, h: 16, prof: 28, cara: "+Y", forma: "circ" },
-    rj45: { n: "RJ45 de panel", ic: "🖧", w: 16, h: 14, prof: 25, cara: "+Y", forma: "rect" },
-    sma: { n: "Antena SMA (pasamuro)", ic: "📡", w: 6.5, h: 6.5, prof: 10, cara: "+X", forma: "circ" },
-    rejilla: { n: "Rejilla de ventilación", ic: "▤", w: 30, h: 12, prof: 0, cara: "+X", forma: "rejilla" },
-    ventilador: { n: "Ventilador 40 mm", ic: "🌀", w: 38, h: 38, prof: 11, cara: "tapa", forma: "circ" },
-    pantalla: { n: "Ventana para pantalla OLED 0.96\"", ic: "🖥", w: 26, h: 15, prof: 0, cara: "tapa", forma: "rect" },
-    lcd1602: { n: "Ventana para LCD 16×2", ic: "▭", w: 72, h: 25, prof: 0, cara: "tapa", forma: "rect" },
-    pulsador: { n: "Pulsador de panel 12 mm", ic: "●", w: 12, h: 12, prof: 20, cara: "tapa", forma: "circ" },
-    led: { n: "LED de panel 5 mm", ic: "💡", w: 8, h: 8, prof: 12, cara: "tapa", forma: "circ" },
-    balancin: { n: "Interruptor balancín KCD11", ic: "⏻", w: 19, h: 13, prof: 20, cara: "-Y", forma: "rect" },
-    agujero: { n: "Agujero libre", ic: "○", w: 10, h: 10, prof: 0, cara: "-Y", forma: "circ" }
-  };
+  // catálogo de elementos y forma de sus cortes: app/cajaelementos.js (MLCajaEl)
+  const ELEMENTOS = window.MLCajaEl ? MLCajaEl.ELEMENTOS : {};
+  const defEl = e => (window.MLCajaEl && MLCajaEl.def(e.tipo)) || {};
+  const medidaEl = e => window.MLCajaEl ? MLCajaEl.medida(e) : [+e.w, +e.h];
 
   // ---------- dos versiones de conexión por componente: soldado (cables directo a la placa) y jumper (headers + Dupont)
   const CABLE = { soldado: "Cable soldado directo a la placa (AWG 24–28, silicona)", jumper: "Jumper Dupont 2.54 mm sobre headers" };
@@ -153,8 +140,8 @@
     // elementos de pared que entran hacia adentro: reservan un rectángulo contra su pared
     (elems || []).forEach((e, i) => {
       if (!(+e.prof > 0) || !/^[+-][XY]$/.test(e.cara)) return;
-      const ejeX = /Y$/.test(e.cara), L = ejeX ? +e.w : +e.prof, W = ejeX ? +e.prof : +e.w;
-      items.push({ ref: "E" + (i + 1), n: e.nombre || (ELEMENTOS[e.tipo] || {}).n || "Elemento", elemento: i, L, W, esp: 0, w: L + p.gap, h: W + p.gap, bajo: 0, Ht: (+e.h || 10) + 4, Hc: null, paredes: [e.cara], nivelFijo: Math.max(0, +e.nivel || 0), fijo: true, notas: [] });
+      const [ew, eh] = medidaEl(e), ejeX = /Y$/.test(e.cara), L = ejeX ? ew : +e.prof, W = ejeX ? +e.prof : ew;
+      items.push({ ref: "E" + (i + 1), n: e.nombre || defEl(e).n || "Elemento", elemento: i, L, W, esp: 0, w: L + p.gap, h: W + p.gap, bajo: 0, Ht: (eh || 10) + 4, Hc: null, paredes: [e.cara], nivelFijo: Math.max(0, +e.nivel || 0), fijo: true, notas: [] });
     });
     return items;
   }
@@ -209,13 +196,15 @@
     // posición de los elementos: los que ocupan espacio interior toman la posición de su rectángulo reservado
     const auto = {}; (elems || []).forEach((e, i) => { if (e.u == null && !(+e.prof > 0 && /^[+-][XY]$/.test(e.cara))) (auto[e.cara] = auto[e.cara] || []).push(i); });
     const elementos = (elems || []).map((e, i) => {
-      const d = ELEMENTOS[e.tipo] || {}, pz = piezasPos.find(q => q.elemento === i);
+      const d = defEl(e), pz = piezasPos.find(q => q.elemento === i), [ew, eh] = medidaEl(e);
       const largoCara = /Y$/.test(e.cara) ? Lint : /X$/.test(e.cara) ? Wint : Lint, A = auto[e.cara] || [];
       let u = e.u != null ? +e.u : A.includes(i) ? largoCara * (A.indexOf(i) + 1) / (A.length + 1) : largoCara / 2;   // los automáticos se reparten a lo largo de la cara   // posición a lo largo de la cara (centro), mm desde la esquina −X / −Y
       if (pz) u = /Y$/.test(e.cara) ? pz.x + pz.L / 2 : pz.y + pz.W / 2;
       const nv = niveles[Math.min(n - 1, Math.max(0, +e.nivel || 0))];
-      const v = e.v != null ? +e.v : (/^[+-][XY]$/.test(e.cara) ? nv.z + Math.min(nv.h, Math.max(+e.h, 8)) / 2 + 2 : Wint / 2);   // altura del centro (pared) o Y (tapa/fondo)
-      return { i, ref: "E" + (i + 1), tipo: e.tipo, n: e.nombre || d.n || "Elemento", cara: e.cara, w: +e.w, h: +e.h, prof: +e.prof || 0, forma: e.forma || d.forma || "rect", u: r1(u), v: r1(v), nivel: +e.nivel || 0 };
+      const v = e.v != null ? +e.v : (/^[+-][XY]$/.test(e.cara) ? Math.max(eh / 2 + 1, nv.z + nv.h / 2) : Wint / 2);   // altura del centro (pared) o Y (tapa/fondo)
+      const out = { i, ref: "E" + (i + 1), tipo: e.tipo, n: e.nombre || d.n || "Elemento", ic: d.ic || "", cara: e.cara, w: r1(ew), h: r1(eh), prof: +e.prof || 0, forma: d.forma || e.forma || "rect", orient: e.orient || d.orient || "h", u: r1(u), v: r1(v), nivel: +e.nivel || 0 };
+      out.cortes = window.MLCajaEl ? MLCajaEl.cortesAbs(Object.assign({}, e, { u: out.u, v: out.v })) : [{ t: "r", x: out.u, y: out.v, w: out.w, h: out.h, r: 0 }];
+      return out;
     });
     // elementos que no caben en su cara o que se montan uno sobre otro
     const avisosEl = [], tam = c => /Y$/.test(c) ? [Lint, Hi] : /X$/.test(c) ? [Wint, Hi] : [Lint, Wint];
@@ -296,10 +285,11 @@
 
   // ---------- tres vistas (planta por nivel, frente y lateral) en SVG
   const PALETA = ["#38bdf8", "#a78bfa", "#34d399", "#fbbf24", "#f472b6", "#fb923c", "#2dd4bf", "#f87171"];
-  function figura(e, x, y, a, b, col, extra) {
-    if (e.forma === "circ") return `<ellipse cx="${x + a / 2}" cy="${y + b / 2}" rx="${a / 2}" ry="${b / 2}" fill="none" stroke="${col}" stroke-width=".6"${extra || ""}/>`;
-    if (e.forma === "rejilla") { let s = `<rect x="${x}" y="${y}" width="${a}" height="${b}" fill="none" stroke="${col}" stroke-width=".5" rx=".8"${extra || ""}/>`; const horiz = a >= b, n = Math.max(2, Math.floor((horiz ? b : a) / 3)); for (let i = 1; i < n; i++) s += horiz ? `<line x1="${x + 1.5}" y1="${y + i * b / n}" x2="${x + a - 1.5}" y2="${y + i * b / n}" stroke="${col}" stroke-width=".45"/>` : `<line x1="${x + i * a / n}" y1="${y + 1.5}" x2="${x + i * a / n}" y2="${y + b - 1.5}" stroke="${col}" stroke-width=".45"/>`; return s; }
-    return `<rect x="${x}" y="${y}" width="${a}" height="${b}" fill="none" stroke="${col}" stroke-width=".6" rx=".6"${extra || ""}/>`;
+  // dibuja los cortes de un elemento: (cx, cy) = centro del elemento en pantalla; sx/sy = sentido de los ejes (1 o −1)
+  function figura(el, cx, cy, col, extra, sx, sy) {
+    sx = sx || 1; sy = sy || -1;
+    if (!window.MLCajaEl) return `<rect x="${cx - el.w / 2}" y="${cy - el.h / 2}" width="${el.w}" height="${el.h}" fill="none" stroke="${col}" stroke-width=".5"/>`;
+    return MLCajaEl.svg(el.cortes, x => cx + sx * (x - el.u), y => cy + sy * (y - el.v), col, extra);
   }
   function vistas(R, opt) {
     opt = opt || {}; const { L, W, H } = R.interior, e = R.p.espesor, claro = !!opt.claro;
@@ -329,7 +319,7 @@
       }
       // elementos: tapa/fondo dibujados en la planta; los de pared como marca sobre la pared
       for (const el of R.elementos || []) {
-        if ((el.cara === "tapa" && k === n - 1) || (el.cara === "fondo" && k === 0)) s += figura(el, xo + e + el.u - el.w / 2, Y0 + e + (W - el.v - el.h / 2), el.w, el.h, COLE, el.cara === "fondo" ? ' stroke-dasharray="1 1"' : "") + `<text x="${xo + e + el.u}" y="${Y0 + e + (W - el.v) + 1.3}" font-size="3" text-anchor="middle" fill="${COLE}">${esc(el.ref)}</text>`;
+        if ((el.cara === "tapa" && k === n - 1) || (el.cara === "fondo" && k === 0)) s += figura(el, xo + e + el.u, Y0 + e + (W - el.v), COLE, el.cara === "fondo" ? ' stroke-dasharray="1 1"' : "") + `<text x="${xo + e + el.u}" y="${Y0 + e + (W - el.v) + 1.3}" font-size="3" text-anchor="middle" fill="${COLE}">${esc(el.ref)}</text>`;
         else if (/^[+-][XY]$/.test(el.cara) && el.nivel === k) { const pw = pared(el.cara, xo, Y0), a = /Y$/.test(el.cara) ? el.w : e, b = /Y$/.test(el.cara) ? e : el.w, x = /Y$/.test(el.cara) ? xo + e + el.u - el.w / 2 : pw[0], y = /Y$/.test(el.cara) ? pw[1] : Y0 + e + (W - el.u - el.w / 2); s += `<rect x="${x}" y="${y}" width="${a}" height="${b}" fill="${COLE}"><title>${esc(el.ref)} · ${esc(el.n)} · ${CARAS[el.cara]}</title></rect>`; }
       }
       s += cota(xo + e, Y0 - 3, xo + e + L, Y0 - 3, k === 0 ? `${L} mm (int.) · ${R.exterior.L} ext.` : `${L} mm`);
@@ -348,12 +338,12 @@
       if (q.arriba) t += `<rect x="${x + 1}" y="${z0 - q.bajo - q.esp - q.arriba}" width="${a - 2}" height="${q.arriba}" fill="${col}" fill-opacity=".18" stroke="${col}" stroke-width=".35"/>`;
       return t; };
     for (const q of R.piezas) s += alzado(q, X0 + e + q.x, q.L);
-    for (const el of R.elementos || []) if (el.cara === "-Y") s += figura(el, X0 + e + el.u - el.w / 2, base - el.v - el.h / 2, el.w, el.h, COLE) + `<text x="${X0 + e + el.u}" y="${base - el.v - el.h / 2 - 1}" font-size="3" text-anchor="middle" fill="${COLE}">${esc(el.ref)}</text>`;
+    for (const el of R.elementos || []) if (el.cara === "-Y") s += figura(el, X0 + e + el.u, base - el.v, COLE) + `<text x="${X0 + e + el.u}" y="${base - el.v - el.h / 2 - 1}" font-size="3" text-anchor="middle" fill="${COLE}">${esc(el.ref)}</text>`;
     s += cota(X0 + 2 * e + L + 8, Y1 + e, X0 + 2 * e + L + 8, Y1 + e + H, `${H} mm`, true);
     // LATERAL (Y–Z), visto desde +X
     s += `<text x="${X1}" y="${Y1 - 12}" font-size="5.5" font-weight="700" fill="${tinta}">LATERAL (Y–Z) · cara +X</text>` + caja(X1, Y1, W, H) + repisas(X1 + e, W);
     for (const q of R.piezas) s += alzado(q, X1 + e + q.y, q.W);
-    for (const el of R.elementos || []) if (el.cara === "+X") s += figura(el, X1 + e + el.u - el.w / 2, base - el.v - el.h / 2, el.w, el.h, COLE) + `<text x="${X1 + e + el.u}" y="${base - el.v - el.h / 2 - 1}" font-size="3" text-anchor="middle" fill="${COLE}">${esc(el.ref)}</text>`;
+    for (const el of R.elementos || []) if (el.cara === "+X") s += figura(el, X1 + e + el.u, base - el.v, COLE) + `<text x="${X1 + e + el.u}" y="${base - el.v - el.h / 2 - 1}" font-size="3" text-anchor="middle" fill="${COLE}">${esc(el.ref)}</text>`;
     s += cota(X1 + e, Y1 - 3, X1 + e + W, Y1 - 3, `${W} mm`);
     // cajetín
     const yc = base + e + 12;
@@ -382,7 +372,7 @@
       s += `</g>`;
     }
     for (const el of R.elementos || []) {
-      if ((el.cara === "tapa" && nivel === R.n - 1) || (el.cara === "fondo" && nivel === 0)) s += figura(el, el.u - el.w / 2, W - el.v - el.h / 2, el.w, el.h, "#f59e0b", ' stroke-dasharray="1.2 .8" pointer-events="none"');
+      if ((el.cara === "tapa" && nivel === R.n - 1) || (el.cara === "fondo" && nivel === 0)) s += figura(el, el.u, W - el.v, "#f59e0b", ' pointer-events="none"');
       else if (/^[+-][XY]$/.test(el.cara) && el.nivel === nivel) { const hz = /Y$/.test(el.cara); s += `<rect x="${hz ? el.u - el.w / 2 : el.cara === "-X" ? -e : L}" y="${hz ? (el.cara === "+Y" ? -e : W) : W - el.u - el.w / 2}" width="${hz ? el.w : e}" height="${hz ? e : el.w}" fill="#f59e0b" pointer-events="none"/>`; }
     }
     s += `<text x="0" y="${-e - 2}" font-size="3.2" fill="#94a3b8">+Y (atrás)</text><text x="0" y="${W + e + 4.5}" font-size="3.2" fill="#94a3b8">−Y (frente) · ${L} × ${W} mm interior</text>`;
@@ -395,30 +385,41 @@
     const lin = (x1, y1, x2, y2, capa) => out.push("0", "LINE", "8", capa, "10", r1(x1), "20", r1(y1), "11", r1(x2), "21", r1(y2));
     const rect = (x, y, a, b, capa) => { lin(x, y, x + a, y, capa); lin(x + a, y, x + a, y + b, capa); lin(x + a, y + b, x, y + b, capa); lin(x, y + b, x, y, capa); };
     const circ = (x, y, r, capa) => out.push("0", "CIRCLE", "8", capa, "10", r1(x), "20", r1(y), "40", r1(r));
-    const fig = (el, cx, cy, capa) => el.forma === "circ" && Math.abs(el.w - el.h) < 0.01 ? circ(cx, cy, el.w / 2, capa) : rect(cx - el.w / 2, cy - el.h / 2, el.w, el.h, capa);
+    const arcD = (x, y, r, a0, a1, capa) => out.push("0", "ARC", "8", capa, "10", r1(x), "20", r1(y), "40", r1(r), "50", a0, "51", a1);
+    // cortes del elemento en una vista: (u, v) de la cara → dibujo; espejo = la vista se mira desde afuera al revés
+    const fig = (el, ox, oy, capa, espejo) => (el.cortes || []).forEach(c => {
+      const X = x => ox + (espejo ? -x : x), Y = y => oy + y;
+      if (c.t === "c") circ(X(c.x), Y(c.y), c.r, capa);
+      else if (c.t === "anillo") { circ(X(c.x), Y(c.y), c.r, capa); circ(X(c.x), Y(c.y), c.r - c.ancho, capa); }
+      else if (c.t === "p") c.pts.forEach((q, i) => { const q2 = c.pts[(i + 1) % c.pts.length]; lin(X(q[0]), Y(q[1]), X(q2[0]), Y(q2[1]), capa); });
+      else { const x0 = c.x - c.w / 2, x1 = c.x + c.w / 2, y0 = c.y - c.h / 2, y1 = c.y + c.h / 2, r = Math.min(c.r || 0, c.w / 2, c.h / 2);
+        if (r < 0.05) { lin(X(x0), Y(y0), X(x1), Y(y0), capa); lin(X(x1), Y(y0), X(x1), Y(y1), capa); lin(X(x1), Y(y1), X(x0), Y(y1), capa); lin(X(x0), Y(y1), X(x0), Y(y0), capa); }
+        else { lin(X(x0 + r), Y(y0), X(x1 - r), Y(y0), capa); lin(X(x1), Y(y0 + r), X(x1), Y(y1 - r), capa); lin(X(x1 - r), Y(y1), X(x0 + r), Y(y1), capa); lin(X(x0), Y(y1 - r), X(x0), Y(y0 + r), capa);
+          [[x1 - r, y0 + r, 270, 360], [x1 - r, y1 - r, 0, 90], [x0 + r, y1 - r, 90, 180], [x0 + r, y0 + r, 180, 270]].forEach(([cx, cy, a0, a1]) => espejo ? arcD(X(cx), Y(cy), r, 180 - a1, 180 - a0, capa) : arcD(X(cx), Y(cy), r, a0, a1, capa)); } }
+    });
     const txt = (x, y, t, h, capa) => out.push("0", "TEXT", "8", capa || "TEXTO", "10", r1(x), "20", r1(y), "40", h || 3, "1", String(t).normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^\x20-\x7E]/g, ""));
     const dx = L + 2 * e + 30;
     for (let k = 0; k < n; k++) {
       const ox = k * dx;
       rect(ox - e, -e, L + 2 * e, W + 2 * e, "CAJA_EXT"); rect(ox, 0, L, W, "CAJA_INT"); txt(ox, W + e + 4, n > 1 ? `PLANTA NIVEL ${k + 1}` : "PLANTA", 4);
       for (const q of R.piezas.filter(q2 => q2.nivel === k)) { rect(ox + q.x, q.y, q.L, q.W, q.elemento != null ? "ELEMENTOS" : "PIEZAS"); txt(ox + q.x + 1, q.y + 1, q.ref, 2.5, "TEXTO"); }
-      for (const el of R.elementos || []) if ((el.cara === "tapa" && k === n - 1) || (el.cara === "fondo" && k === 0)) { fig(el, ox + el.u, el.v, el.cara === "tapa" ? "AGUJEROS_TAPA" : "AGUJEROS_FONDO"); txt(ox + el.u - el.w / 2, el.v + el.h / 2 + 1, el.ref, 2, "TEXTO"); }
+      for (const el of R.elementos || []) if ((el.cara === "tapa" && k === n - 1) || (el.cara === "fondo" && k === 0)) { fig(el, ox, 0, el.cara === "tapa" ? "AGUJEROS_TAPA" : "AGUJEROS_FONDO"); txt(ox + el.u - el.w / 2, el.v + el.h / 2 + 1, el.ref, 2, "TEXTO"); }
     }
     const oy = -(H + 3 * e + 20); rect(-e, oy - e, L + 2 * e, H + 2 * e, "CAJA_EXT"); rect(0, oy, L, H, "CAJA_INT"); txt(0, oy + H + e + 4, "FRENTE (cara -Y)", 4);
     R.niveles.slice(1).forEach(nv => rect(0, oy + nv.z - R.p.repisa, L, R.p.repisa, "REPISAS"));
     const alto = q => q.Hc != null ? q.Hc : q.elemento != null ? q.Ht : q.esp + (q.arriba || 0);
     for (const q of R.piezas) rect(q.x, oy + (q.z0 || 0) + (q.elemento != null ? 0 : q.bajo), q.L, alto(q), q.elemento != null ? "ELEMENTOS" : "PIEZAS");
-    for (const el of R.elementos || []) if (el.cara === "-Y") { fig(el, el.u, oy + el.v, "AGUJEROS_PARED"); txt(el.u - el.w / 2, oy + el.v + el.h / 2 + 1, el.ref, 2, "TEXTO"); }
+    for (const el of R.elementos || []) if (el.cara === "-Y") { fig(el, 0, oy, "AGUJEROS_PARED"); txt(el.u - el.w / 2, oy + el.v + el.h / 2 + 1, el.ref, 2, "TEXTO"); }
     const ox = L + 3 * e + 20; rect(ox - e, oy - e, W + 2 * e, H + 2 * e, "CAJA_EXT"); rect(ox, oy, W, H, "CAJA_INT"); txt(ox, oy + H + e + 4, "LATERAL (cara +X)", 4);
     R.niveles.slice(1).forEach(nv => rect(ox, oy + nv.z - R.p.repisa, W, R.p.repisa, "REPISAS"));
     for (const q of R.piezas) rect(ox + q.y, oy + (q.z0 || 0) + (q.elemento != null ? 0 : q.bajo), q.W, alto(q), q.elemento != null ? "ELEMENTOS" : "PIEZAS");
-    for (const el of R.elementos || []) if (el.cara === "+X") { fig(el, ox + el.u, oy + el.v, "AGUJEROS_PARED"); txt(ox + el.u - el.w / 2, oy + el.v + el.h / 2 + 1, el.ref, 2, "TEXTO"); }
+    for (const el of R.elementos || []) if (el.cara === "+X") { fig(el, ox, oy, "AGUJEROS_PARED"); txt(ox + el.u - el.w / 2, oy + el.v + el.h / 2 + 1, el.ref, 2, "TEXTO"); }
     // caras con agujeros que no salen en las vistas (+Y y −X): se dibujan desplegadas
     let oy2 = oy - H - 2 * e - 30;
     for (const [cara, largo] of [["+Y", L], ["-X", W]]) {
       const E = (R.elementos || []).filter(el => el.cara === cara); if (!E.length) continue;
       rect(0, oy2, largo, H, "CARAS"); txt(0, oy2 + H + 3, `CARA ${cara} (vista desde afuera)`, 3.5);
-      for (const el of E) { const u = cara === "+Y" ? largo - el.u : el.u; fig(el, u, oy2 + el.v, "AGUJEROS_PARED"); txt(u - el.w / 2, oy2 + el.v + el.h / 2 + 1, el.ref, 2, "TEXTO"); }
+      for (const el of E) { const u = cara === "+Y" ? largo - el.u : el.u; fig(el, cara === "+Y" ? largo : 0, oy2, "AGUJEROS_PARED", cara === "+Y"); txt(u - el.w / 2, oy2 + el.v + el.h / 2 + 1, el.ref, 2, "TEXTO"); }
       oy2 -= H + 25;
     }
     txt(ox, W - 6, `${titulo || "Caja"}: interior ${L} x ${W} x ${H} mm; exterior ${R.exterior.L} x ${R.exterior.W} x ${R.exterior.H} mm${n > 1 ? `; ${n} niveles` : ""}`, 3);

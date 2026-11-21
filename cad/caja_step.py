@@ -24,40 +24,32 @@ def caja(x0, y0, z0, a, b, c):
     return cq.Workplane("XY").box(a, b, c, centered=False).translate((x0, y0, z0))
 
 
-def figura_en_cara(e, d, L, W, H, esp):
-    """Sólido para restar: agujero del elemento e en su cara."""
-    w, h, u, v = float(e["w"]), float(e["h"]), float(e["u"]), float(e["v"])
-    prof = esp * 3 + 2
-    cara, forma = e["cara"], e.get("forma", "rect")
-    def solido(plano, cx, cy, off):
-        wp = cq.Workplane(plano).workplane(offset=off)
-        if forma == "circ" and abs(w - h) < 0.01:
-            return wp.center(cx, cy).circle(w / 2).extrude(prof)
-        if forma == "rejilla":
-            n = max(2, int((h if w >= h else w) // 3))
-            ranuras = None
-            for i in range(n):
-                if w >= h:
-                    s = wp.center(cx, cy - h / 2 + (i + 0.5) * h / n).rect(w - 2, h / n * 0.55).extrude(prof)
-                else:
-                    s = wp.center(cx - w / 2 + (i + 0.5) * w / n, cy).rect(w / n * 0.55, h - 2).extrude(prof)
-                ranuras = s if ranuras is None else ranuras.union(s)
-            return ranuras
-        if forma == "circ":
-            return wp.center(cx, cy).ellipse(w / 2, h / 2).extrude(prof)
-        return wp.center(cx, cy).rect(w, h).extrude(prof)
-    if cara == "-Y":   # plano XZ, normal −Y; centro en x=u, z=v
-        return solido("XZ", u, v, -1)
-    if cara == "+Y":
-        return solido("XZ", u, v, -(W + esp + 1))
-    if cara == "-X":
-        return solido("YZ", u, v, -(esp + 1))
-    if cara == "+X":
-        return solido("YZ", u, v, L - 1)
-    if cara == "tapa":
-        return solido("XY", u, v, H - 1)
-    if cara == "fondo":
-        return solido("XY", u, v, -esp - 1)
+PLANOS = {   # cara → (plano de CadQuery, desplazamiento del plano) ; en el plano: x = u de la cara, y = v
+    "-Y": ("XZ", lambda L, W, H, e: -1),
+    "+Y": ("XZ", lambda L, W, H, e: -(W + e + 1)),
+    "-X": ("YZ", lambda L, W, H, e: -(e + 1)),
+    "+X": ("YZ", lambda L, W, H, e: L - 1),
+    "tapa": ("XY", lambda L, W, H, e: H - 1),
+    "fondo": ("XY", lambda L, W, H, e: -e - 1),
+}
+
+
+def cortador(c, plano, off, prof):
+    """Sólido para restar a partir de un corte {t: c|anillo|r|p} (mismas formas que dibuja la app)."""
+    wp = lambda: cq.Workplane(plano).workplane(offset=off)
+    t = c["t"]
+    if t == "c":
+        return wp().center(c["x"], c["y"]).circle(c["r"]).extrude(prof)
+    if t == "anillo":
+        r, a = c["r"], c["ancho"]
+        return wp().center(c["x"], c["y"]).circle(r).circle(max(0.1, r - a)).extrude(prof)
+    if t == "r":
+        w, h, r = c["w"], c["h"], min(c.get("r") or 0, c["w"] / 2 - 0.01, c["h"] / 2 - 0.01)
+        if r > 0.05:
+            return wp().center(c["x"], c["y"]).sketch().rect(w, h).vertices().fillet(r).finalize().extrude(prof)
+        return wp().center(c["x"], c["y"]).rect(w, h).extrude(prof)
+    if t == "p":
+        return wp().polyline([tuple(q) for q in c["pts"]]).close().extrude(prof)
     return None
 
 
@@ -69,16 +61,20 @@ def generar(ruta):
     base = caja(-e, -e, -e, L + 2 * e, W + 2 * e, H + e).cut(caja(0, 0, 0, L, W, H + 1))
     tapa = caja(-e, -e, H, L + 2 * e, W + 2 * e, e)
     for el in d.get("elementos", []):
-        try:
-            s = figura_en_cara(el, d, L, W, H, e)
-            if s is None:
-                continue
-            if el["cara"] == "tapa":
-                tapa = tapa.cut(s)
-            else:
-                base = base.cut(s)
-        except Exception as ex:   # un elemento raro no debe tumbar todo el ensamble
-            print(f"  ✗ elemento {el.get('ref')}: {ex}")
+        plano, f_off = PLANOS.get(el["cara"], (None, None))
+        if not plano:
+            continue
+        for c in el.get("cortes", []):
+            try:
+                s = cortador(c, plano, f_off(L, W, H, e), e * 3 + 2)
+                if s is None:
+                    continue
+                if el["cara"] == "tapa":
+                    tapa = tapa.cut(s)
+                else:
+                    base = base.cut(s)
+            except Exception as ex:   # un corte raro no debe tumbar todo el ensamble
+                print(f"  ✗ {el.get('ref')} {c.get('t')}: {ex}")
     asm = cq.Assembly(name=f"caja_{d['id']}")
     asm.add(base, name="base", color=cq.Color(0.55, 0.6, 0.68, 1))
     asm.add(tapa, name="tapa", color=cq.Color(0.7, 0.75, 0.82, 1))

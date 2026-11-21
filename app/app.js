@@ -500,8 +500,10 @@
     const bq = encodeURIComponent((W.referencia || W.nombre).replace(/\(.*?\)/g, ""));
     body.innerHTML = `<div class="ficha-grid">
       <div class="side">
-        <div class="imgbox" id="imgB">${imgHtml(W, true)}</div>
-        <div class="small muted" style="text-align:center">${W.imagen ? esc(W.imagen.origen || "") : W.montaje ? "Vista superior generada del montaje" : ""}</div>
+        ${(() => { const con3d = !!(W.modelo && W.modelo.base), foto = W.imagen && !/render del modelo/i.test(W.imagen.origen || ""); const ver = con3d && (S.fichaImg !== "foto" || !foto) ? "3d" : "foto"; S.fichaVer = ver;
+          return `${con3d && foto ? `<div class="row" style="justify-content:center;gap:6px;margin-bottom:6px"><button class="sm ${ver === "3d" ? "pri" : ""}" data-fimg="3d">🧊 Modelo 3D</button><button class="sm ${ver === "foto" ? "pri" : ""}" data-fimg="foto">📷 Foto</button></div>` : ""}
+          <div class="imgbox" id="imgB">${ver === "3d" ? '<div class="muted small" style="padding:30px">Renderizando el modelo 3D…</div>' : imgHtml(W, true)}</div>
+          <div class="small muted" style="text-align:center">${ver === "3d" ? "Render del modelo 3D (isométrico)" : W.imagen ? esc(W.imagen.origen || "") : W.montaje ? "Vista superior generada del montaje" : ""}</div>`; })()}
         <div class="row"><label class="btn" style="margin:0">📷 Foto / imagen<input type="file" accept="image/*" capture="environment" id="imgF" hidden></label>
           ${W.imagen ? '<button id="imgX" class="sm">Quitar</button>' : ""}</div>
         <div class="panel"><h3>Clasificación</h3>
@@ -547,6 +549,8 @@
       toast(Store.mode === "github" ? "La imagen se sube al guardar" : "Imagen lista (modo local)");
     };
     const x = $("#imgX"); if (x) x.onclick = () => { W.imagen = null; ch(); tab(); };
+    $$("[data-fimg]").forEach(b => b.onclick = () => { S.fichaImg = b.dataset.fimg; tab(); });
+    if (S.fichaVer === "3d") MLModelo.iso(W, 560, 380).then(src => { const box = $("#imgB"); if (box && src) box.innerHTML = `<img src="${src}" alt="Modelo 3D de ${esc(W.nombre)}">`; }).catch(e => { const box = $("#imgB"); if (box) box.innerHTML = imgHtml(W, true); console.warn(e); });
   }
   function reducirImagen(file, max) {
     return new Promise((res, rej) => {
@@ -744,6 +748,11 @@
           ? `<div class="msg info" style="margin-top:10px">Los archivos de montaje se guardan en <b>GitHub</b> (<code>archivos/${esc(W.id)}</code>); al hacer clic se descargan. Con el <b>sincronizador de MountLab</b> instalado en tu PC también llegan solos (cada 10 min) a <b>D:\\Mi unidad\\MountLab\\biblioteca\\archivos\\${esc(W.id)}\\</b> para abrirlos en SolidWorks.</div>`
           : `<div class="msg info" style="margin-top:10px">En tu PC los encuentras en <b>D:\\Mi unidad\\MountLab\\biblioteca\\archivos\\${esc(W.id)}\\</b> (Drive para escritorio) para abrirlos directo en SolidWorks.</div>`}
         ${W.cad_pendiente ? '<div class="msg warn">Hay cambios de geometría pendientes de regenerar en CAD.</div>' : ""}</div>
+      <div class="panel" style="grid-column:1/-1"><h3>Exportar desde el modelo 3D</h3>
+        ${W.modelo && W.modelo.base ? `<p class="small muted" style="margin-top:0">Se generan aquí mismo, desde el mismo modelo que ves en la pestaña <b>Modelo 3D</b>: cada pieza es un sólido con su color y nombre. Unidades mm, origen al centro de la placa.</p>
+          <div class="row" style="flex-wrap:wrap;gap:8px"><button class="pri" id="xStep">⬇ STEP (.step)</button><button id="xXt">⬇ Parasolid (.x_t vía SolidWorks)</button><button id="xDxf6">⬇ DXF 6 vistas</button></div>
+          <div class="small muted" style="margin-top:8px"><b>Parasolid:</b> ese formato solo lo escribe un núcleo Parasolid (SolidWorks, NX, Solid Edge). Se descarga un .zip con el STEP y una macro <code>.swb</code>: descomprímelo y en SolidWorks usa <i>Herramientas → Macro → Ejecutar</i>; deja el <code>.x_t</code> junto al STEP. (También sirve tu macro GestionarSolidos o <i>Guardar como → Parasolid</i>.)</div>`
+          : '<div class="small muted">Este componente no tiene modelo 3D paramétrico. Créalo en la pestaña <b>Modelo 3D</b> para exportar STEP, Parasolid y DXF de 6 vistas que coincidan con él. Mientras tanto usa el STEP original de la tabla.</div>'}</div>
       <div class="panel"><h3>Generar</h3>
         ${W.anexo ? `<div class="msg info" style="margin-bottom:10px"><b>Familia del anexo de pasivos:</b> sus archivos 3D no se guardan para no ocupar espacio. Pídelos cuando los necesites: GitHub genera el <b>STEP, DXF y plano</b> en 2–3 minutos y los deja aquí ${W.bajo_demanda_vence ? `hasta el <b>${esc(W.bajo_demanda_vence)}</b>` : "por 7 días"}.<div class="row" style="margin-top:8px"><button class="pri" id="bDem" ${Store.mode === "github" ? "" : "disabled"}>⚙ Generar STEP + DXF ahora</button></div></div>` : ""}
         <p class="small muted">El DXF de huella se puede bajar ya mismo desde aquí (lo genera el navegador). El STEP de montaje y el <b>plano de taller</b> (vista superior, frontal y lateral con cotas generales, agujeros y cajetín, escala 1:1) los genera GitHub con CadQuery al guardar cambios de geometría, como versión nueva.</p>
@@ -751,6 +760,10 @@
         <button id="bCad" ${Store.mode === "github" && W.montaje ? "" : "disabled"}>Regenerar DXF + STEP en GitHub</button></div>
         ${Store.mode !== "github" ? '<div class="small muted" style="margin-top:6px">Para regenerar en GitHub configura el token en Ajustes.</div>' : `<div class="small" style="margin-top:6px"><a href="${gh}/actions" target="_blank" rel="noopener">Ver ejecuciones en GitHub Actions ↗</a></div>`}
         <h3 style="margin-top:16px">Convenciones</h3><ul class="small muted" style="margin:0;padding-left:18px"><li>Unidades en mm; origen (0,0) en el centro de la placa; X a lo largo, Y a lo ancho, Z hacia arriba desde la cara inferior del PCB.</li><li>Capas DXF de huella: PCB, AGUJEROS, ZONAS, ZONAS_HOLGURA, PINES, EJES, TEXTO, PIEZAS_A/B.</li><li>Plano: capas CONTORNO, PIEZAS, OCULTAS, CENTRO, COTAS, TEXTO, MARCO; proyección ISO-E (primer diedro).</li><li>Cada cambio de geometría crea un archivo nuevo: <code>${esc(W.id)}_v${(W.version || 1)}_huella.dxf</code>; las versiones anteriores no se borran.</li></ul></div></div>`;
+    const base = `${W.id}_v${W.version || 1}`, bin = (name, blob) => { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 3000); };
+    const xs = $("#xStep", body); if (xs) xs.onclick = () => { MLPlant.sincronizar(W); download(base + ".step", MLCad.step(W), "application/step"); toast("STEP generado desde el modelo 3D"); };
+    const xx = $("#xXt", body); if (xx) xx.onclick = () => { MLPlant.sincronizar(W); bin(base + "_parasolid.zip", MLIng.zip([[base + ".step", MLCad.step(W)], [base + "_a_parasolid.swb", MLCad.macroParasolid(base)], ["LEEME.txt", `MountLab · ${W.nombre}\r\n\r\n1. Descomprime esta carpeta.\r\n2. En SolidWorks: Herramientas > Macro > Ejecutar... y elige ${base}_a_parasolid.swb\r\n3. Queda ${base}.x_t (Parasolid) en la misma carpeta.\r\n\r\nTambién puedes abrir ${base}.step y usar Guardar como > Parasolid (*.x_t).\r\n`]])); toast("Descargado: STEP + macro para Parasolid"); };
+    const xd = $("#xDxf6", body); if (xd) xd.onclick = () => { MLPlant.sincronizar(W); const t = MLCad.dxf6(W); if (t) download(base + "_6vistas.dxf", t, "application/dxf"); };
     $$("[data-dl]", body).forEach(l => l.onclick = async e => {
       e.preventDefault();
       const raw = l.dataset.dl.replace(/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/raw\//, "https://raw.githubusercontent.com/$1/$2/");
@@ -888,15 +901,22 @@
       <div class="cj-op-d">${o.interior.L} × ${o.interior.W} × ${o.interior.H}</div><div class="small muted">mm int. · ${o.volumen} cm³ · ${o.n} nivel${o.n > 1 ? "es" : ""}</div>
       <div class="cj-op-b">${o.mejorArea ? '<span class="tag ok">menor área</span>' : ""}${o.mejorVol ? '<span class="tag">menor volumen</span>' : ""}${o.manual && (o.choques || []).length ? '<span class="tag bad">choques</span>' : ""}</div></button>`;
     const carasOpt = v => Object.entries(MLCaja.CARAS).map(([k, n]) => `<option value="${k}" ${v === k ? "selected" : ""}>${n}</option>`).join("");
-    const filaEl = (e, i) => { const d = MLCaja.ELEMENTOS[e.tipo] || {}, pared = /^[+-][XY]$/.test(e.cara), rs = R && (R.elementos || [])[i];
-      return `<div class="cj-el"><div class="cj-el-h"><b>E${i + 1}</b> ${d.ic || ""} <span>${esc(e.nombre || d.n || e.tipo)}</span><button class="sm ghost" data-ex="${i}" title="Quitar">✕</button></div>
+    const filaEl = (e, i) => { const d = MLCajaEl.def(e.tipo) || {}, pared = /^[+-][XY]$/.test(e.cara), rs = R && (R.elementos || [])[i], [mw, mh] = MLCajaEl.medida(e), libre = !d.k || d.libre || d.patron;
+      return `<div class="cj-el ${ui.el === i ? "on" : ""}" data-elsel="${i}"><div class="cj-el-h"><b>E${i + 1}</b> ${d.ic || ""} <span>${esc(e.nombre || d.n || e.tipo)}</span><button class="sm ghost" data-ex="${i}" title="Quitar">✕</button></div>
         <div class="cj-el-g"><div><label>Cara</label><select data-ef="cara" data-ei="${i}">${carasOpt(e.cara)}</select></div>
-        <div><label>Ancho</label><input type="number" step="0.5" data-ef="w" data-ei="${i}" value="${e.w}"></div><div><label>Alto</label><input type="number" step="0.5" data-ef="h" data-ei="${i}" value="${e.h}"></div>
+        ${d.orientable || d.patron ? `<div><label>Orientación</label><select data-ef="orient" data-ei="${i}"><option value="h" ${(e.orient || d.orient || "h") === "h" ? "selected" : ""}>Horizontal</option><option value="v" ${(e.orient || d.orient) === "v" ? "selected" : ""}>Vertical</option></select></div>` : ""}
+        ${libre ? `<div><label>Ancho</label><input type="number" step="0.5" data-ef="w" data-ei="${i}" value="${mw}"></div><div><label>Alto</label><input type="number" step="0.5" data-ef="h" data-ei="${i}" value="${mh}"></div>` : `<div><label>Medida</label><div class="small" style="padding:6px 0">${Math.round(mw * 10) / 10} × ${Math.round(mh * 10) / 10}</div></div>`}
         <div title="Lo que entra hacia adentro de la caja (tuerca, cuerpo del conector, cable doblado). 0 = solo el agujero."><label>Fondo int.</label><input type="number" step="0.5" data-ef="prof" data-ei="${i}" value="${e.prof}"></div>
         <div title="Posición del centro a lo largo de la cara (mm desde la esquina −X o −Y). Vacío = automática."><label>Posición</label><input type="number" step="0.5" data-ef="u" data-ei="${i}" value="${e.u ?? ""}" placeholder="${rs ? rs.u : "auto"}" ${pared && e.prof > 0 ? "disabled" : ""}></div>
         <div title="${pared ? "Altura del centro sobre el fondo (mm)" : "Posición en Y del centro (mm)"}. Vacío = automática."><label>${pared ? "Altura" : "Pos. Y"}</label><input type="number" step="0.5" data-ef="v" data-ei="${i}" value="${e.v ?? ""}" placeholder="${rs ? rs.v : "auto"}"></div>
-        ${pared ? `<div><label>Nivel</label><select data-ef="nivel" data-ei="${i}">${[0, 1, 2].map(n => `<option value="${n}" ${(+e.nivel || 0) === n ? "selected" : ""}>${n + 1}</option>`).join("")}</select></div>` : ""}</div></div>`; };
+        ${pared ? `<div><label>Nivel</label><select data-ef="nivel" data-ei="${i}">${[0, 1, 2].map(n => `<option value="${n}" ${(+e.nivel || 0) === n ? "selected" : ""}>${n + 1}</option>`).join("")}</select></div>` : ""}
+        <div class="cj-el-mv">${["←", "↓", "↑", "→"].map(f => `<button class="sm ghost" data-emv="${f}" data-ei="${i}" title="Mover 1 mm en la cara">${f}</button>`).join("")}</div></div></div>`; };
     const selPz = R && ui.pz && R.piezas.find(q => q.ref === ui.pz);
+    ui.tapa = ui.tapa || "transparente"; ui.paredes = ui.paredes || "solidas";
+    const barra3d = () => `<div class="cj3d-bar">${[["iso", "Iso"], ["arriba", "Arriba"], ["frente", "Frente"], ["lado", "Lado"]].map(([k, n]) => `<button class="sm ghost" data-c3v="${k}">${n}</button>`).join("")}
+      <select id="c3Tapa" class="sm">${[["ver", "Tapa puesta"], ["transparente", "Tapa transparente"], ["ocultar", "Sin tapa"]].map(([k, n]) => `<option value="${k}" ${ui.tapa === k ? "selected" : ""}>${n}</option>`).join("")}</select>
+      <select id="c3Par" class="sm">${[["solidas", "Paredes sólidas"], ["transparentes", "Paredes transparentes"]].map(([k, n]) => `<option value="${k}" ${ui.paredes === k ? "selected" : ""}>${n}</option>`).join("")}</select>
+      <button class="sm ghost" id="c3Png" title="Descargar imagen">📷</button></div>`;
     if (R && ui.nivel >= R.n) ui.nivel = 0;
     host.innerHTML = `<div class="sub-bar">${[["__todo", "🗂 Todo el proyecto"], ...P.subs.map(u => [u.id, `${(TIPOS_SUB[u.tipo] || TIPOS_SUB.otro)[0]} ${u.nombre}`])].map(([id, n]) => `<button class="sub-chip ${alc === id ? "on" : ""}" data-ca="${esc(id)}">${esc(n)}</button>`).join("")}</div>
       ${ops.length ? `<div class="small muted" style="margin:2px 0 6px">Opciones de caja de área mínima (elige una; luego puedes acomodar las piezas a mano):</div><div class="cj-ops">${ops.map(tarj).join("")}${RM ? tarj(RM) : ""}</div>` : ""}
@@ -908,7 +928,7 @@
             ${alc === "__todo" ? `<label class="small" style="display:flex;gap:6px;align-items:center;margin-top:4px"><input type="checkbox" data-cp="bom" ${par.bom ? "checked" : ""} style="width:auto"> Incluir piezas del BOM que no están en ningún diagrama</label>` : ""}
           </div>
           <div class="panel"><h3>Elementos de la caja</h3><div class="small muted" style="margin-bottom:6px">Salidas de cable, conectores de panel, rejillas, ventanas… Los que entran hacia adentro reservan su espacio junto a la pared.</div>
-            <select id="cjAdd"><option value="">＋ Agregar elemento…</option>${Object.entries(MLCaja.ELEMENTOS).map(([k, d]) => `<option value="${k}">${d.ic} ${esc(d.n)}</option>`).join("")}</select>
+            <select id="cjAdd"><option value="">＋ Agregar elemento… (${Object.keys(MLCajaEl.ELEMENTOS).length} tipos)</option>${Object.entries(MLCajaEl.GRUPOS).map(([g, L]) => `<optgroup label="${esc(g)}">${L.map(k => { const d = MLCajaEl.ELEMENTOS[k]; return `<option value="${k}">${d.ic} ${esc(d.n)}</option>`; }).join("")}</optgroup>`).join("")}</select>
             <div id="cjEls">${est.elementos.map(filaEl).join("")}</div></div>
           ${R ? `<div class="panel"><div class="caja-kpi"><div><span>Interior · ${esc(R.etiqueta || "")}</span><b>${R.interior.L} × ${R.interior.W} × ${R.interior.H}</b><small>mm (largo × ancho × alto) · ${R.n} nivel${R.n > 1 ? "es" : ""}</small></div><div><span>Exterior</span><b>${R.exterior.L} × ${R.exterior.W} × ${R.exterior.H}</b><small>mm con pared de ${par.espesor} mm</small></div><div><span>Volumen</span><b>${R.volumen} cm³</b><small>ocupación ${R.ocupacion} %</small></div></div>
             <div class="row" style="margin-top:10px"><button class="sm" id="cjSvg">⬇ SVG</button><button class="sm" id="cjDxf">⬇ DXF</button><button class="sm" id="cjCsv">⬇ CSV</button></div></div>` : ""}
@@ -921,11 +941,12 @@
         <div class="panel caja-vistas">${R ? `<div class="tabs" style="margin-bottom:8px"><button data-cpn="vistas" class="${ui.panel === "vistas" ? "on" : ""}">📐 Vistas</button><button data-cpn="mano" class="${ui.panel === "mano" ? "on" : ""}">✋ Acomodar a mano</button></div>
           ${ui.panel === "mano" ? `<div class="row" style="flex-wrap:wrap;gap:6px;margin-bottom:6px">${R.n > 1 ? Array.from({ length: R.n }, (_, k) => `<button class="sub-chip ${ui.nivel === k ? "on" : ""}" data-cnv="${k}">Nivel ${k + 1}</button>`).join("") : ""}
               <span style="flex:1"></span>${est.sel !== "manual" ? '<span class="small muted">Arrastra una pieza para empezar a acomodar esta opción a mano.</span>' : `<button class="sm ghost" id="cjReset" title="Descarta la disposición a mano">↺ Descartar a mano</button>`}</div>
-            <div id="cjEd">${MLCaja.planoEditable(R, ui.nivel, ui.pz)}</div>
+            <div class="cj-split"><div><div class="small muted" style="margin-bottom:4px">Planta (edita aquí)</div><div id="cjEd">${MLCaja.planoEditable(R, ui.nivel, ui.pz)}</div></div>
+            <div><div class="small muted" style="margin-bottom:4px">Vista 3D (se actualiza sola)</div>${barra3d()}<div class="cj3d" id="cj3d"></div></div></div>
             <div class="cj-tool">${selPz ? `<b>${esc(selPz.ref)}</b> <span class="small">${esc(selPz.n)} · ${selPz.L}×${selPz.W} mm · alto ${Math.round(selPz.Ht * 10) / 10}</span><span style="flex:1"></span>
               ${selPz.elemento == null ? `<button class="sm" id="cjRot">⟳ Girar 90°</button>` : ""}<select id="cjNv" style="width:auto">${[0, 1, 2].map(k => `<option value="${k}" ${selPz.nivel === k ? "selected" : ""}>Nivel ${k + 1}</option>`).join("")}</select>
               ${["←", "↑", "↓", "→"].map(f => `<button class="sm ghost" data-cmv="${f}" title="Mover 1 mm">${f}</button>`).join("")}` : '<span class="small muted">Toca una pieza para girarla, cambiarla de nivel o moverla milímetro a milímetro. La caja se ajusta al contorno de todas las piezas.</span>'}</div>`
-          : MLCaja.vistas(R, { titulo })}` : `<div class="muted" style="padding:30px;text-align:center">No hay piezas con medidas en ${alc === "__todo" ? "el proyecto" : "este subproyecto"}.<br>Agrega componentes al diagrama (o al BOM) que tengan montaje en su ficha.</div>`}</div>
+          : `${barra3d()}<div class="cj3d cj3d-g" id="cj3d"></div><div style="margin-top:10px">${MLCaja.vistas(R, { titulo })}</div>`}` : `<div class="muted" style="padding:30px;text-align:center">No hay piezas con medidas en ${alc === "__todo" ? "el proyecto" : "este subproyecto"}.<br>Agrega componentes al diagrama (o al BOM) que tengan montaje en su ficha.</div>`}</div>
       </div>
       ${R ? `<div class="panel" style="margin-top:12px;overflow:auto"><h3>Piezas y elementos</h3><table class="t small"><tr><th>Ref.</th><th>Componente</th>${varios ? "<th>Subproyecto</th>" : ""}<th>Nivel</th><th>Conexión</th><th>Planta (mm)</th><th>Alto</th><th>X, Y</th><th>Giro</th><th>Necesita</th></tr>
         ${R.piezas.filter(q => q.elemento == null).map(q => `<tr><td><b>${esc(q.ref)}</b></td><td>${esc(q.n)}</td>${varios ? `<td>${esc(q.sub || "")}</td>` : ""}<td>${q.nivel + 1}</td><td>${q.ver ? (q.ver === "jumper" ? "📌 jumper" : "🔧 soldado") : "—"}</td><td>${q.L} × ${q.W}</td><td>${Math.round(q.Ht * 10) / 10}</td><td>${q.x}, ${q.y}</td><td>${q.rot}°</td><td>${[q.paredes.length ? "abertura en pared " + q.paredes.join(", ") : "", q.panel ? "montaje en panel" : "", q.arribaZ ? "ventana en tapa" : "", ...q.notas].filter(Boolean).map(esc).join(" · ")}</td></tr>`).join("")}
@@ -935,12 +956,20 @@
     $$("[data-ca]", host).forEach(b => b.onclick = () => { cfg.alcance = b.dataset.ca; P.caja = Object.assign({}, P.caja || {}, { alcance: b.dataset.ca, p: par, por: cfg.por }); cabecera(); vCaja(P, cabecera); });
     $$("[data-op]", host).forEach(b => b.onclick = () => { est.sel = b.dataset.op; ui.pz = null; repinta(); });
     $$("[data-cp]", host).forEach(i => i.onchange = () => { const k = i.dataset.cp; par[k] = i.type === "checkbox" ? i.checked : i.tagName === "SELECT" ? i.value : Math.max(0, +i.value || 0); if (k === "prop") par.prop = Math.max(1, par.prop); if (k === "nivelesMax") par.nivelesMax = Math.min(3, Math.max(1, Math.round(par.nivelesMax))); repinta(); });
-    $("#cjAdd", host).onchange = e => { const t = e.target.value; if (!t) return; const d = MLCaja.ELEMENTOS[t]; est.elementos.push({ tipo: t, cara: d.cara, w: d.w, h: d.h, prof: d.prof, forma: d.forma, nivel: 0 }); repinta(); };
+    $("#cjAdd", host).onchange = e => { const t = e.target.value; if (!t) return; const d = MLCajaEl.ELEMENTOS[t]; const el = { tipo: t, cara: d.cara, prof: d.prof, nivel: 0 }; if (d.orient) el.orient = d.orient; if (d.libre || d.patron) { el.w = d.w; el.h = d.h; } est.elementos.push(el); ui.el = est.elementos.length - 1; repinta(); };
+    $$("[data-emv]", host).forEach(b => b.onclick = () => { const i = +b.dataset.ei, el = est.elementos[i], rs = (R.elementos || [])[i]; if (!rs) return; const f = b.dataset.emv; if (el.u == null) el.u = rs.u; if (el.v == null) el.v = rs.v; if (f === "←") el.u -= 1; if (f === "→") el.u += 1; if (f === "↑") el.v += 1; if (f === "↓") el.v -= 1; ui.el = i; repinta(); });
+    $$("[data-elsel]", host).forEach(d => d.addEventListener("click", ev => { if (ev.target.closest("input,select,button")) return; ui.el = +d.dataset.elsel; $$("[data-elsel]", host).forEach(x => x.classList.toggle("on", x === d)); }));
     $$("[data-ex]", host).forEach(b => b.onclick = () => { est.elementos.splice(+b.dataset.ex, 1); if (est.manual) Object.keys(est.manual.pos || {}).filter(k => /^E\d+$/.test(k)).forEach(k => delete est.manual.pos[k]); repinta(); });
-    $$("[data-ef]", host).forEach(i => i.onchange = () => { const e = est.elementos[+i.dataset.ei], k = i.dataset.ef; if (k === "cara") e.cara = i.value; else if (i.value === "" && (k === "u" || k === "v")) delete e[k]; else e[k] = Math.max(0, +i.value || 0); if (est.manual && (k === "cara" || k === "prof" || k === "w")) delete est.manual.pos["E" + (+i.dataset.ei + 1)]; repinta(); });
+    $$("[data-ef]", host).forEach(i => i.onchange = () => { const e = est.elementos[+i.dataset.ei], k = i.dataset.ef; if (k === "cara" || k === "orient") { e[k] = i.value; if (k === "cara") { delete e.u; delete e.v; } } else if (i.value === "" && (k === "u" || k === "v")) delete e[k]; else e[k] = Math.max(0, +i.value || 0); if (est.manual && (k === "cara" || k === "prof" || k === "w")) delete est.manual.pos["E" + (+i.dataset.ei + 1)]; repinta(); });
     $$("[data-cpn]", host).forEach(b => b.onclick = () => { ui.panel = b.dataset.cpn; vCaja(P, cabecera); });
     $$("[data-cnv]", host).forEach(b => b.onclick = () => { ui.nivel = +b.dataset.cnv; ui.pz = null; vCaja(P, cabecera); });
     if (!R) return;
+    const pinta3d = vista => { const c = $("#cj3d", host); if (c) MLCaja3D.mostrar(c, R, { comp: comp2, tapa: ui.tapa, paredes: ui.paredes, sel: ui.pz, vista }).catch(e => { c.innerHTML = `<div class="small muted" style="padding:20px">No se pudo abrir la vista 3D: ${esc(e.message)}</div>`; }); };
+    pinta3d();
+    $$("[data-c3v]", host).forEach(b => b.onclick = () => pinta3d(b.dataset.c3v));
+    const c3t = $("#c3Tapa", host); if (c3t) c3t.onchange = () => { ui.tapa = c3t.value; pinta3d(); };
+    const c3p = $("#c3Par", host); if (c3p) c3p.onchange = () => { ui.paredes = c3p.value; pinta3d(); };
+    const c3g = $("#c3Png", host); if (c3g) c3g.onclick = () => { const src = MLCaja3D.captura(); if (!src) return; const a = document.createElement("a"); a.href = src; a.download = `caja_${P.id}_3d.png`; a.click(); };
     const nom = `caja_${P.id}${alc === "__todo" ? "" : "_" + alc}`;
     $("#cjSvg").onclick = () => download(nom + ".svg", MLCaja.vistas(R, { titulo, claro: true }), "image/svg+xml");
     $("#cjDxf").onclick = () => download(nom + ".dxf", MLCaja.dxf(R, titulo), "application/dxf");

@@ -24,6 +24,68 @@
     return threeP;
   }
 
+
+  // ---------------- construcción 3D compartida (pestaña Modelo 3D, render de la ficha, caja 3D del proyecto)
+  // Mundo three.js: X = X de la pieza, Y = altura (Z de la pieza), Z = −Y de la pieza.
+  function forma2D(T, b, W) {
+    const s = new T.Shape();
+    if (b.forma === "redonda") s.absarc(0, 0, b.d / 2, 0, Math.PI * 2, false);
+    else { const L = b.L / 2, W2 = b.W / 2, r = b.forma === "redondeada" ? Math.min(b.radio || 0, L - 0.01, W2 - 0.01) : 0;
+      s.moveTo(-L + r, -W2); s.lineTo(L - r, -W2); if (r) s.absarc(L - r, -W2 + r, r, -Math.PI / 2, 0); s.lineTo(L, W2 - r); if (r) s.absarc(L - r, W2 - r, r, 0, Math.PI / 2); s.lineTo(-L + r, W2); if (r) s.absarc(-L + r, W2 - r, r, Math.PI / 2, Math.PI); s.lineTo(-L, -W2 + r); if (r) s.absarc(-L + r, -W2 + r, r, Math.PI, Math.PI * 1.5); }
+    for (const a of (W.montaje && W.montaje.agujeros) || []) { const h = new T.Path(); h.absarc(a.x, a.y, a.d / 2, 0, Math.PI * 2, true); s.holes.push(h); }
+    return s;
+  }
+  /** Agrega al grupo las mallas del componente W (placa/base + piezas). Devuelve el desplazamiento de "explotar". */
+  function construir(T, W, o) {
+    o = o || {}; const grupo = o.grupo || new T.Group(), M = W.modelo; if (!M || !M.base) return 0;
+    const b = M.base, esp = b.espesor, E = o.explotar ? Math.max(6, Math.min(esp, 10) * 4) : 0, bi = MLPlant.baseInfo(b), sel = o.sel || [];
+    const mat = (color, extra) => new T.MeshStandardMaterial(Object.assign({ color: color || "#64748b", roughness: 0.55, metalness: /#c|#d|#9/.test(color || "") ? 0.35 : 0.05 }, extra || {}));
+    if (!bi.prim.length) {
+      const pg = new T.ExtrudeGeometry(forma2D(T, b, W), { depth: esp, bevelEnabled: false, curveSegments: 32 }); pg.rotateX(-Math.PI / 2);
+      grupo.add(new T.Mesh(pg, mat(b.color || "#166534", { roughness: 0.75, metalness: 0 })));
+    }
+    const lista = bi.prim.map(c => Object.assign({}, c, { esBase: true })).concat((M.piezas || []).flatMap(p => MLPlant.cuerposDe(p, esp)));
+    for (const c of lista) {
+      const alto = Math.max(0.05, c.z1 - c.z0), mid = (c.z0 + c.z1) / 2 + (c.esBase ? 0 : c.z0 >= esp - 1e-6 ? E : c.z1 <= 1e-6 ? -E : 0);
+      let g;
+      const hs = c.orejas ? ((W.montaje && W.montaje.agujeros) || []).filter(a => Math.abs(a.x - c.cx) < c.w / 2 && Math.abs(a.y - c.cy) < c.h / 2) : [];
+      if (hs.length) { const s = new T.Shape(), w = c.w / 2, h = c.h / 2; s.moveTo(-w, -h); s.lineTo(w, -h); s.lineTo(w, h); s.lineTo(-w, h); s.lineTo(-w, -h);
+        hs.forEach(a => { const p = new T.Path(); p.absarc(a.x - c.cx, a.y - c.cy, a.d / 2, 0, Math.PI * 2, true); s.holes.push(p); });
+        g = new T.ExtrudeGeometry(s, { depth: alto, bevelEnabled: false, curveSegments: 20 }); g.rotateX(-Math.PI / 2); g.translate(0, -alto / 2, 0); }
+      else if (c.f === "cil") g = new T.CylinderGeometry(c.d / 2, c.d / 2, alto, 28);
+      else if (c.r && c.r > 0.05) { const s = new T.Shape(), w = c.w / 2, h = c.h / 2, r = Math.min(c.r, w - 0.01, h - 0.01); s.moveTo(-w + r, -h); s.lineTo(w - r, -h); s.absarc(w - r, -h + r, r, -Math.PI / 2, 0); s.lineTo(w, h - r); s.absarc(w - r, h - r, r, 0, Math.PI / 2); s.lineTo(-w + r, h); s.absarc(-w + r, h - r, r, Math.PI / 2, Math.PI); s.lineTo(-w, -h + r); s.absarc(-w + r, -h + r, r, Math.PI, Math.PI * 1.5);
+        g = new T.ExtrudeGeometry(s, { depth: alto, bevelEnabled: false, curveSegments: 12 }); g.rotateX(-Math.PI / 2); g.translate(0, -alto / 2, 0); }
+      else g = new T.BoxGeometry(c.w, alto, c.h);
+      const m = new T.Mesh(g, mat(c.color));
+      m.position.set(c.cx, mid, -c.cy);
+      if (sel.includes(c.pieza)) m.material.emissive = new T.Color("#0369a1");
+      grupo.add(m);
+    }
+    return E;
+  }
+  /** Alto total y centro vertical del componente (para encuadrar la cámara). */
+  function encuadre(W) { const bi = MLPlant.baseInfo(W.modelo.base), mt = W.montaje || {}, alto = (bi.top || 0) + (mt.altura_superior || 0) + (mt.altura_inferior || 0), zc = ((bi.top || 0) + (mt.altura_superior || 0) - (mt.altura_inferior || 0)) / 2; return { R: Math.max(bi.L || 20, bi.W || 20, alto, 2.5) * 1.6, zc }; }
+  // render isométrico fuera de pantalla (un solo contexto WebGL reutilizado)
+  let isoR = null; const isoCache = new Map();
+  async function iso(W, ancho, alto, fondo) {
+    if (!W || !W.modelo || !W.modelo.base) return null;
+    const k = JSON.stringify([W.id, W.version, W.modelo, (W.montaje || {}).agujeros, ancho, alto, fondo || ""]); if (isoCache.has(k)) return isoCache.get(k);
+    await cargarThree(); const T = THREE;
+    if (!isoR) isoR = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, alpha: true });
+    const ren = isoR; ren.setPixelRatio(2); ren.setSize(ancho, alto, false);
+    const scene = new T.Scene(); if (fondo) scene.background = new T.Color(fondo);
+    scene.add(new T.HemisphereLight(0xffffff, 0x8899aa, 0.75));
+    const dl = new T.DirectionalLight(0xffffff, 0.75); dl.position.set(60, 120, 80); scene.add(dl);
+    const dl2 = new T.DirectionalLight(0xffffff, 0.35); dl2.position.set(-80, -60, -40); scene.add(dl2);
+    const g = new T.Group(); scene.add(g); construir(T, W, { grupo: g });
+    const { R, zc } = encuadre(W), cam = new T.PerspectiveCamera(35, ancho / alto, 0.1, 5000);
+    cam.position.set(R * 0.75, zc + R * 0.8, R * 0.95); cam.lookAt(0, zc, 0);
+    ren.setClearColor(0x000000, 0); ren.render(scene, cam);
+    const src = ren.domElement.toDataURL("image/png");
+    g.children.forEach(o => { o.geometry && o.geometry.dispose(); o.material && o.material.dispose(); });
+    isoCache.set(k, src); return src;
+  }
+
   function montar(host, W, opt) {
     opt = opt || {};
     const st = { cara: "A", tool: "sel", colocar: null, sel: [], selH: null, k: 8, ox: 0, oy: 0, snap: 0.5, drag: null, fitted: false, explotar: false, filtro: "", grupo: "Conectores", multi: false, varias: false, area: false, ptrs: new Map() };
@@ -414,46 +476,17 @@
       const rej = new T.GridHelper(200, 40, 0x1e3a5f, 0x14203a); rej.position.y = -0.01; scene.add(rej);
       let raf = 0; const loop = () => { raf = requestAnimationFrame(loop); ctl.update(); ren.render(scene, cam); }; loop();
       const resize = () => { const w = cont.clientWidth || 360, h = cont.clientHeight || 280; ren.setSize(w, h); cam.aspect = w / h; cam.updateProjectionMatrix(); };
-      const vista = v => { const bi = MLPlant.baseInfo(M().base), mt = W.montaje || {}, alto = (bi.top || 0) + (mt.altura_superior || 0) + (mt.altura_inferior || 0), zc = ((bi.top || 0) + (mt.altura_superior || 0) - (mt.altura_inferior || 0)) / 2;
-        const R = Math.max(bi.L || 20, bi.W || 20, alto, 2.5) * 1.6; ctl.target.set(0, zc, 0);
+      const vista = v => { const { R, zc } = encuadre(W); ctl.target.set(0, zc, 0);
         if (v === "arriba") cam.position.set(0, R * 1.3, 0.001); else if (v === "abajo") cam.position.set(0, -R * 1.3, 0.001); else cam.position.set(R * 0.75, zc + R * 0.8, R * 0.95); cam.lookAt(0, zc, 0); ctl.update(); };
       v3 = { T, ren, scene, cam, ctl, grupo, rej, resize, vista, stop: () => { cancelAnimationFrame(raf); ren.dispose(); } };
       resize(); vista("iso"); render3d();
     }
-    function forma2D(T, b) {
-      const s = new T.Shape();
-      if (b.forma === "redonda") s.absarc(0, 0, b.d / 2, 0, Math.PI * 2, false);
-      else { const L = b.L / 2, W2 = b.W / 2, r = b.forma === "redondeada" ? Math.min(b.radio || 0, L - 0.01, W2 - 0.01) : 0;
-        s.moveTo(-L + r, -W2); s.lineTo(L - r, -W2); if (r) s.absarc(L - r, -W2 + r, r, -Math.PI / 2, 0); s.lineTo(L, W2 - r); if (r) s.absarc(L - r, W2 - r, r, 0, Math.PI / 2); s.lineTo(-L + r, W2); if (r) s.absarc(-L + r, W2 - r, r, Math.PI / 2, Math.PI); s.lineTo(-L, -W2 + r); if (r) s.absarc(-L + r, -W2 + r, r, Math.PI, Math.PI * 1.5); }
-      for (const a of (W.montaje && W.montaje.agujeros) || []) { const h = new T.Path(); h.absarc(a.x, a.y, a.d / 2, 0, Math.PI * 2, true); s.holes.push(h); }
-      return s;
-    }
     function render3d() {
       if (!v3) return; const { T, grupo } = v3;
       grupo.children.slice().forEach(o => { grupo.remove(o); o.geometry && o.geometry.dispose(); o.material && o.material.dispose(); });
-      const b = M().base, esp = b.espesor, E = st.explotar ? Math.max(6, Math.min(esp, 10) * 4) : 0, bi = MLPlant.baseInfo(b);
-      if (!bi.prim.length) {
-        const pg = new T.ExtrudeGeometry(forma2D(T, b), { depth: esp, bevelEnabled: false, curveSegments: 32 }); pg.rotateX(-Math.PI / 2);
-        grupo.add(new T.Mesh(pg, new T.MeshStandardMaterial({ color: b.color || "#166534", roughness: 0.75 })));
-      }
+      const E = construir(T, W, { explotar: st.explotar, sel: st.sel, grupo });
+      const bi = MLPlant.baseInfo(M().base);
       if (v3.rej) v3.rej.position.y = Math.min(0, ...bi.prim.map(c => c.z0)) - 0.02 - (st.explotar ? E : 0);
-      const lista = bi.prim.map(c => Object.assign({}, c, { esBase: true })).concat((M().piezas || []).flatMap(p => MLPlant.cuerposDe(p, esp)));
-      for (const c of lista) {
-        const alto = Math.max(0.05, c.z1 - c.z0), mid = (c.z0 + c.z1) / 2 + (c.esBase ? 0 : c.z0 >= esp - 1e-6 ? E : c.z1 <= 1e-6 ? -E : 0);
-        let g;
-        const hs = c.orejas ? ((W.montaje && W.montaje.agujeros) || []).filter(a => Math.abs(a.x - c.cx) < c.w / 2 && Math.abs(a.y - c.cy) < c.h / 2) : [];
-        if (hs.length) { const s = new T.Shape(), w = c.w / 2, h = c.h / 2; s.moveTo(-w, -h); s.lineTo(w, -h); s.lineTo(w, h); s.lineTo(-w, h); s.lineTo(-w, -h);
-          hs.forEach(a => { const p = new T.Path(); p.absarc(a.x - c.cx, a.y - c.cy, a.d / 2, 0, Math.PI * 2, true); s.holes.push(p); });
-          g = new T.ExtrudeGeometry(s, { depth: alto, bevelEnabled: false, curveSegments: 20 }); g.rotateX(-Math.PI / 2); g.translate(0, -alto / 2, 0); }
-        else if (c.f === "cil") g = new T.CylinderGeometry(c.d / 2, c.d / 2, alto, 28);
-        else if (c.f !== "cil" && c.r && c.r > 0.05) { const s = new T.Shape(), w = c.w / 2, h = c.h / 2, r = Math.min(c.r, w - 0.01, h - 0.01); s.moveTo(-w + r, -h); s.lineTo(w - r, -h); s.absarc(w - r, -h + r, r, -Math.PI / 2, 0); s.lineTo(w, h - r); s.absarc(w - r, h - r, r, 0, Math.PI / 2); s.lineTo(-w + r, h); s.absarc(-w + r, h - r, r, Math.PI / 2, Math.PI); s.lineTo(-w, -h + r); s.absarc(-w + r, -h + r, r, Math.PI, Math.PI * 1.5);
-          g = new T.ExtrudeGeometry(s, { depth: alto, bevelEnabled: false, curveSegments: 12 }); g.rotateX(-Math.PI / 2); g.translate(0, -alto / 2, 0); }
-        else if (!g) g = new T.BoxGeometry(c.w, alto, c.h);
-        const m = new T.Mesh(g, new T.MeshStandardMaterial({ color: c.color || "#64748b", roughness: 0.55, metalness: /#c|#d|#9/.test(c.color || "") ? 0.35 : 0.05 }));
-        m.position.set(c.cx, mid, -c.cy);
-        if (st.sel.includes(c.pieza)) m.material.emissive = new T.Color("#0369a1");
-        grupo.add(m);
-      }
     }
     async function captura() {
       if (!v3) { opt.toast && opt.toast("La vista 3D aún no está lista"); return null; }
@@ -479,5 +512,5 @@
       },
     };
   }
-  window.MLModelo = { montar };
+  window.MLModelo = { montar, construir, iso, encuadre, cargarThree };
 })();

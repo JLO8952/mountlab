@@ -435,3 +435,14 @@ table.t textarea{padding:4px 6px;font-size:12px;min-height:0}
 a.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);text-decoration:none}
 .scan-btn{background:var(--pri2);border-color:rgba(56,189,248,.4);color:#bae6fd;font-weight:600;white-space:nowrap}
 @media (max-width:860px){.scan-btn .lbl{display:none}}
+/* caja 3D y elementos */
+.cj3d{height:360px;border-radius:12px;overflow:hidden;background:#0b1220;border:1px solid var(--line);touch-action:none}
+.cj3d canvas{display:block;width:100%!important;height:100%!important}
+.cj3d-g{height:440px}
+.cj3d-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:6px}.cj3d-bar select{width:auto;padding:4px 8px;font-size:12px}
+.cj-split{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.cj-el{cursor:pointer}.cj-el.on{border-color:var(--pri);box-shadow:0 0 0 1px var(--pri) inset}
+.cj-el-mv{grid-column:1/-1;display:flex;gap:4px;justify-content:flex-end}
+@media (max-width:1100px){.cj-split{grid-template-columns:1fr}}
+@media (max-width:860px){.cj3d,.cj3d-g{height:300px}}
+.ed-layers{top:auto;bottom:30px;right:8px;flex-wrap:wrap;justify-content:flex-end;max-width:70%}
