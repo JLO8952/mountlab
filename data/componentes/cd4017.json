@@ -114,7 +114,28 @@
    4.57
   ],
   "forma": "rect",
-  "base_tipo": "prisma"
+  "base_tipo": "prisma",
+  "conexiones": {
+   "header": "no_aplica",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 0,
+    "altura_inferior": 3.8,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 0,
+    "cable": "Soldado en la placa",
+    "nota": "Se suelda directo en la tarjeta: misma medida en las dos versiones."
+   },
+   "jumper": {
+    "altura_superior": 0,
+    "altura_inferior": 3.8,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 0,
+    "cable": "Zócalo o protoboard",
+    "nota": "Para pruebas en protoboard o zócalo."
+   }
+  }
  },
  "zonas": [
   {
@@ -296,7 +317,37 @@
    "cara": "B"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "cd4017_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/cd4017 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/cd4017/cd4017_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "cd4017_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/cd4017 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/cd4017/cd4017_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "cd4017_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/cd4017 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/cd4017/cd4017_v1_plano.dxf"
+  },
+  "datasheet": {
+   "nombre": "cd4017_datasheet.pdf",
+   "fuente": "https://www.ti.com/lit/gpn/CD4017B",
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/cd4017 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/cd4017/cd4017_datasheet.pdf",
+   "kb": 991
+  }
+ },
  "historial": [
   {
    "v": 1,
