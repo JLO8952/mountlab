@@ -199,6 +199,11 @@
    "fecha": "2026-11-18",
    "carpeta": "archivos/qmc5883 (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/qmc5883/qmc5883_v1_plano.dxf"
+  },
+  "datasheet": {
+   "fuente": "https://www.lcsc.com/datasheet/C976032.pdf",
+   "error": "la dirección no entrega un PDF directo (es una página web)",
+   "fecha": "2026-11-21"
   }
  },
  "historial": [

@@ -156,6 +156,27 @@
    "fuente": "http://www.ee.ic.ac.uk/pcheung/teaching/DE1_EE/stores/sg90_datasheet.pdf",
    "error": "<urlopen error timed out>",
    "fecha": "2026-11-17"
+  },
+  "dxf_huella": {
+   "nombre": "sg90_metal_v2_huella.dxf",
+   "version": 2,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/sg90_metal (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/sg90_metal/sg90_metal_v2_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "sg90_metal_v2_montaje.step",
+   "version": 2,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/sg90_metal (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/sg90_metal/sg90_metal_v2_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "sg90_metal_v2_plano.dxf",
+   "version": 2,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/sg90_metal (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/sg90_metal/sg90_metal_v2_plano.dxf"
   }
  },
  "historial": [
@@ -168,6 +189,5 @@
    "fecha": "2026-11-21",
    "nota": "Montaje: medidas del servo 9 g"
   }
- ],
- "cad_pendiente": true
+ ]
 }

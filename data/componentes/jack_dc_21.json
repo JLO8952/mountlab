@@ -130,6 +130,32 @@
    "nombre": "15_jack_dc_21.dxf",
    "url": "https://drive.google.com/file/d/14xwy9IjQTjn7HSNMXDK2xm2julCUy22z/view",
    "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "jack_dc_21_v4_huella.dxf",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/jack_dc_21 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/jack_dc_21/jack_dc_21_v4_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "jack_dc_21_v4_montaje.step",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/jack_dc_21 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/jack_dc_21/jack_dc_21_v4_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "jack_dc_21_v4_plano.dxf",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/jack_dc_21 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/jack_dc_21/jack_dc_21_v4_plano.dxf"
+  },
+  "datasheet": {
+   "fuente": "https://jlcpcb.com/partdetail/C16214",
+   "error": "la dirección no entrega un PDF directo (es una página web)",
+   "fecha": "2026-11-21"
   }
  },
  "historial": [
@@ -150,6 +176,5 @@
    "fecha": "2026-11-21",
    "nota": "Enlace al datasheet"
   }
- ],
- "cad_pendiente": true
+ ]
 }

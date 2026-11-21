@@ -229,6 +229,11 @@
    "fecha": "2026-11-18",
    "carpeta": "archivos/modulo_microsd (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_microsd/modulo_microsd_v1_plano.dxf"
+  },
+  "datasheet": {
+   "fuente": "https://ocw.cs.pub.ro/courses/_media/pm/prj2024/rvirtan/robert-baceanu/datasheet_sd_module.pdf",
+   "error": "la dirección no entrega un PDF directo (es una página web)",
+   "fecha": "2026-11-21"
   }
  },
  "historial": [

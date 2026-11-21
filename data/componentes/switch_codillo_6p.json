@@ -152,6 +152,35 @@
    "nombre": "16_switch_codillo_6p.dxf",
    "url": "https://drive.google.com/file/d/1gJ6wRfYZyY89KHU0jjKVIy9oiC-dRWpf/view",
    "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "switch_codillo_6p_v4_huella.dxf",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/switch_codillo_6p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/switch_codillo_6p/switch_codillo_6p_v4_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "switch_codillo_6p_v4_montaje.step",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/switch_codillo_6p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/switch_codillo_6p/switch_codillo_6p_v4_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "switch_codillo_6p_v4_plano.dxf",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/switch_codillo_6p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/switch_codillo_6p/switch_codillo_6p_v4_plano.dxf"
+  },
+  "datasheet": {
+   "nombre": "switch_codillo_6p_datasheet.pdf",
+   "fuente": "https://elab.untidar.ac.id/assets/Datasheets/MTSSeries.pdf",
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/switch_codillo_6p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/switch_codillo_6p/switch_codillo_6p_datasheet.pdf",
+   "kb": 419
   }
  },
  "historial": [
@@ -177,6 +206,5 @@
    "fecha": "2026-11-21",
    "nota": "Enlace al datasheet"
   }
- ],
- "cad_pendiente": true
+ ]
 }

@@ -137,6 +137,27 @@
    "nombre": "10_portapilas_2x18650.dxf",
    "url": "https://drive.google.com/file/d/16dM7foKrB9RxShY4M6wMjBFDBX-jjqdl/view",
    "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "portapilas_2x18650_v3_huella.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/portapilas_2x18650 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/portapilas_2x18650/portapilas_2x18650_v3_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "portapilas_2x18650_v3_montaje.step",
+   "version": 3,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/portapilas_2x18650 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/portapilas_2x18650/portapilas_2x18650_v3_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "portapilas_2x18650_v3_plano.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/portapilas_2x18650 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/portapilas_2x18650/portapilas_2x18650_v3_plano.dxf"
   }
  },
  "historial": [
@@ -153,6 +174,5 @@
    "fecha": "2026-11-21",
    "nota": "Pines con posición (centro de la pieza)"
   }
- ],
- "cad_pendiente": true
+ ]
 }

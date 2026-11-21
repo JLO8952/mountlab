@@ -161,6 +161,14 @@
    "nombre": "37_ov2640.dxf",
    "url": "https://drive.google.com/file/d/1CNB0cHxK4Rct3EB0p4p8VljnVETOaQyR/view",
    "carpeta": "Controladores/DXF"
+  },
+  "datasheet": {
+   "nombre": "ov2640_datasheet.pdf",
+   "fuente": "https://dl.espressif.com/dl/schematics/Camera_OV2640.pdf",
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/ov2640 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/ov2640/ov2640_datasheet.pdf",
+   "kb": 827
   }
  },
  "historial": [

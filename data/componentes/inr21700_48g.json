@@ -207,6 +207,27 @@
    "carpeta": "archivos/inr21700_48g (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/inr21700_48g/inr21700_48g_datasheet.pdf",
    "kb": 420
+  },
+  "dxf_huella": {
+   "nombre": "inr21700_48g_v2_huella.dxf",
+   "version": 2,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/inr21700_48g (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/inr21700_48g/inr21700_48g_v2_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "inr21700_48g_v2_montaje.step",
+   "version": 2,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/inr21700_48g (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/inr21700_48g/inr21700_48g_v2_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "inr21700_48g_v2_plano.dxf",
+   "version": 2,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/inr21700_48g (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/inr21700_48g/inr21700_48g_v2_plano.dxf"
   }
  },
  "historial": [
@@ -219,6 +240,5 @@
    "fecha": "2026-11-21",
    "nota": "Montaje: medidas de la celda (Ø21.2 × 70.2 mm)"
   }
- ],
- "cad_pendiente": true
+ ]
 }
