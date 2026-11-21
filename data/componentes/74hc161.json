@@ -74,7 +74,10 @@
    "valor": "2.54 mm / 7.62 mm (0.300 in)"
   }
  ],
- "imagen": null,
+ "imagen": {
+  "src": "img/74hc161.png?v=1795229840188",
+  "origen": "render del modelo 3D"
+ },
  "precios": [
   {
    "proveedor": "Sigma Electrónica CO",
@@ -309,6 +312,14 @@
     "montaje",
     "modelo",
     "precios"
+   ]
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
    ]
   }
  ],
@@ -698,5 +709,5 @@
   ]
  },
  "cad_pendiente": true,
- "modificado": "2026-11-21T02:57:09.566Z"
+ "modificado": "2026-11-21T02:57:18.726Z"
 }
