@@ -72,8 +72,8 @@
   }
  ],
  "imagen": {
-  "src": "img/hc12_si4463_433.png",
-  "origen": "foto de John (montado sobre el adaptador FT232BL)"
+  "src": "img/hc12_si4463_433.png?v=1795225880300",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -710,7 +710,15 @@
    "v": 1,
    "fecha": "2026-11-19",
    "nota": "Creado desde la foto de John (versión sin blindaje, con resorte e IPEX). Datos del manual HC-12; medidas oficiales 27.8 × 14.4 × 4 mm, posición interna de chips aproximada. Precios estimados."
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
- "modificado": "2026-11-19T20:13:27.358Z"
+ "modificado": "2026-11-21T01:51:17.996Z"
 }
