@@ -9,7 +9,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Magnetómetro de 3 ejes (brújula electrónica), reemplazo del HMC5883L.",
@@ -20,7 +20,7 @@
   "entradas": "SCL, SDA",
   "salidas": "DRDY (dato listo)",
   "dimensiones": "18 × 14 × 3 mm",
-  "datasheet": "",
+  "datasheet": "https://www.lcsc.com/datasheet/C976032.pdf",
   "notas": "La dirección 0x0D identifica al QMC5883L; 0x1E corresponde al HMC5883L original (librerías distintas)."
  },
  "especificaciones": [
@@ -206,6 +206,10 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Enlace al datasheet"
   }
  ]
 }

@@ -9,7 +9,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 2,
+ "version": 3,
  "unidad": "und",
  "ficha": {
   "descripcion": "Sensor digital de temperatura de 9-11 bits por I2C, -55 a 125 C, precision +/-2 C.",
@@ -28,7 +28,22 @@
   "src": "img/lm75_modulo.png?v=1795195513342",
   "origen": "render del modelo 3D"
  },
- "precios": [],
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 5000,
+   "url": "https://es.aliexpress.com/w/wholesale-LM75-module.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 14000,
+   "url": "https://listado.mercadolibre.com.co/sensor-lm75",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
  "busquedas": {},
  "montaje": {
   "origen": "centro",
@@ -195,6 +210,10 @@
     "montaje",
     "imagen"
    ]
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Precios estimados (por confirmar)"
   }
  ],
  "i2c": {

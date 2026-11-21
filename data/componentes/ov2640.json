@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 3,
  "unidad": "und",
  "ficha": {
   "descripcion": "Cámara CMOS de 2 MP con salida JPEG por hardware (formato del ESP32-CAM).",
@@ -18,7 +18,7 @@
   "entradas": "XCLK (6–27 MHz), SIOC, SIOD, PWDN, RESET",
   "salidas": "D0–D7, PCLK, VSYNC, HREF",
   "dimensiones": "Módulo 8.5 × 8.5 × 5 mm + flex ≈21 mm",
-  "datasheet": "",
+  "datasheet": "https://dl.espressif.com/dl/schematics/Camera_OV2640.pdf",
   "notas": ""
  },
  "especificaciones": [
@@ -74,7 +74,42 @@
   "datasheet": "https://www.google.com/search?q=OV2640+camera+module+24pin+datasheet+pdf",
   "imagenes": "https://www.google.com/search?tbm=isch&q=OV2640+camera+module+24pin"
  },
- "montaje": null,
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   8.5,
+   8.5,
+   1
+  ],
+  "fijacion": "adhesivo",
+  "agujeros": [],
+  "altura_superior": 5.5,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Cámara de 8 × 8 mm con cable flexible de 24 pines; va montada en la ESP32-CAM. Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
+  "dentro_de": "modulo_bluetooth_hc05_modulo_bluetooth_h",
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 5.5,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 5.5,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
+ },
  "zonas": [],
  "pines": [
   {
@@ -133,6 +168,14 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Montaje: medidas del módulo de cámara (8 × 8 × 6.5 mm)"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Enlace al datasheet"
   }
  ]
 }

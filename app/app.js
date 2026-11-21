@@ -867,7 +867,10 @@
     let inst = usar.flatMap((u, i) => u.circuito.inst.map(it => Object.assign({}, it, { ref: varios ? `${i + 1}·${it.ref}` : it.ref, _sub: u.nombre })));
     if (alc === "__todo" && par.bom) {   // piezas del BOM que no están en ningún diagrama
       const enDiag = {}; P.subs.forEach(u => u.circuito.inst.forEach(it => enDiag[it.id] = (enDiag[it.id] || 0) + 1)); let k = 1;
-      for (const b of P.bom) { const c = comp2(b.id); if (!c || c.anexo || c.tipo !== "electronico" || /^(Cableado|Prototipado|Herrajes|Materiales)$/.test(c.categoria)) continue; for (let n = enDiag[b.id] || 0; n < (+b.cantidad || 0); n++) inst.push({ ref: "B" + k++, id: b.id, _sub: "BOM (sin diagrama)" }); }
+      // las celdas que caben en los portapilas del BOM no se cuentan aparte
+      let huecos = P.bom.reduce((t, b) => t + (/portapilas_2x/.test(b.id) ? 2 : /portapilas_1x/.test(b.id) ? 1 : 0) * (+b.cantidad || 0), 0);
+      for (const b of P.bom) { const c = comp2(b.id); if (!c || c.anexo || c.tipo !== "electronico" || /^(Cableado|Prototipado|Herrajes|Materiales)$/.test(c.categoria)) continue;
+        for (let n = enDiag[b.id] || 0; n < (+b.cantidad || 0); n++) { if (/18650/.test(b.id) && !/portapilas/.test(b.id) && huecos > 0) { huecos--; continue; } inst.push({ ref: "B" + k++, id: b.id, _sub: "BOM (sin diagrama)" }); } }
     }
     const pz = MLCaja.piezas(inst, comp2, P, par.conexion), ops = MLCaja.opciones(pz.piezas, par, est.elementos);
     const RM = est.manual ? MLCaja.manual(pz.piezas, par, est.elementos, est.manual) : null;

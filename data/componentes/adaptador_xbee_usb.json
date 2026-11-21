@@ -10,7 +10,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Base USB-serial (FT232RL/CH340) para configurar XBee con XCTU.",
@@ -148,7 +148,38 @@
    "holgura": 20
   }
  ],
- "pines": [],
+ "pines": [
+  {
+   "n": "VBUS",
+   "func": "USB 5 V (entrada)",
+   "x": -19,
+   "y": 0
+  },
+  {
+   "n": "3V3",
+   "func": "Salida 3.3 V al XBee",
+   "x": 12,
+   "y": -11
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": 14,
+   "y": -11
+  },
+  {
+   "n": "DOUT",
+   "func": "DOUT (TX) del XBee",
+   "x": 16,
+   "y": -11
+  },
+  {
+   "n": "DIN",
+   "func": "DIN (RX) del XBee",
+   "x": 18,
+   "y": -11
+  }
+ ],
  "archivos": {
   "step": {
    "drive_id": "1GK_DUdJpIysh2U6JAcu-iGptZvt7jJPp",
@@ -189,6 +220,10 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Pines con posición (centro de la pieza)"
   }
  ]
 }

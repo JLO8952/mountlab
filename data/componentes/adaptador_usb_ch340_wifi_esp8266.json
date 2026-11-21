@@ -17,7 +17,7 @@
  "fabricante": "Genérico (IC WCH Nanjing Qinheng)",
  "referencia": "USB-ESP01-CH340G",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Módulo adaptador USB tipo A a interfaz UART con zócalo hembra de 2x4 pines (paso 2.54 mm) para inserción directa de módulos ESP8266 ESP-01/ESP-01S. Integra el conversor USB-Serial CH340G, regulador lineal de 3.3 V y capacitor de filtrado de 1000 uF / 6.3 V.",
@@ -61,7 +61,22 @@
   "src": "img/adaptador_usb_ch340_wifi_esp8266.png?v=1795200124556",
   "origen": "render del modelo 3D"
  },
- "precios": [],
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 6000,
+   "url": "https://es.aliexpress.com/w/wholesale-ESP-01-USB-adapter-CH340.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 16000,
+   "url": "https://listado.mercadolibre.com.co/adaptador-usb-esp8266-esp-01-ch340",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
  "busquedas": {},
  "montaje": {
   "origen": "centro",
@@ -366,6 +381,10 @@
    "cambios": [
     "imagen"
    ]
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Precios estimados (por confirmar)"
   }
  ],
  "modelo": {

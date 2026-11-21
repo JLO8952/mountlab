@@ -13,7 +13,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Placa de desarrollo con modulo ESP-WROOM-32 (WiFi + Bluetooth), USB micro-B y regulador AMS1117.",
@@ -29,7 +29,22 @@
  },
  "especificaciones": [],
  "imagen": null,
- "precios": [],
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 16000,
+   "url": "https://es.aliexpress.com/w/wholesale-ESP32-DevKit-V1-30-pin.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 32000,
+   "url": "https://listado.mercadolibre.com.co/esp32-devkit-v1-30-pines",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
  "busquedas": {},
  "montaje": {
   "pcb": [
@@ -518,6 +533,10 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado a MountLab unificado: origen de coordenadas movido al centro de la placa."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Precios estimados (por confirmar)"
   }
  ]
 }

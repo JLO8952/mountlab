@@ -84,6 +84,7 @@
       }
       const c = comp(it.id); if (!c) continue;
       const m = c.montaje || {};
+      if (m.externo || m.dentro_de || m.accesorio) continue;   // va por fuera, dentro de otra pieza, o es un accesorio que se suelda en otra placa
       if (!m.pcb) { faltan.push(`${it.ref} ${c.nombre}`); continue; }
       const ver = it.conexion || defVer || "soldado", V = versionDe(c, ver) || {};
       const [L, W, esp] = m.pcb;

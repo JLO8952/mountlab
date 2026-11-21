@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 3,
  "unidad": "und",
  "ficha": {
   "descripcion": "Panel solar para cara lateral de un PocketQube 2P, 45 mm de ancho.",
@@ -62,9 +62,57 @@
   "datasheet": "https://www.google.com/search?q=small+solar+cell+panel+45mm+datasheet+pdf",
   "imagenes": "https://www.google.com/search?tbm=isch&q=small+solar+cell+panel+45mm"
  },
- "montaje": null,
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   112,
+   45,
+   1.6
+  ],
+  "fijacion": "adhesivo",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Va por fuera, en la cara lateral del PocketQube 2P; no ocupa volumen interior. Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
+  "externo": true,
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 0,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 0,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
+ },
  "zonas": [],
- "pines": [],
+ "pines": [
+  {
+   "n": "+",
+   "func": "Polo positivo (salida)",
+   "x": -50,
+   "y": -18
+  },
+  {
+   "n": "−",
+   "func": "Polo negativo (GND)",
+   "x": -50,
+   "y": 18
+  }
+ ],
  "archivos": {
   "step": {
    "drive_id": "1GzJ_J5f86_xiLrzC_8FAfW2c0oQXDAi4",
@@ -84,6 +132,14 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Montaje: medidas del panel 112 × 45 × 1.6 mm (exterior)"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Pines con posición (centro de la pieza)"
   }
  ]
 }

@@ -11,7 +11,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Módulo SIMCom cuatribanda GSM/GPRS con GPS y Bluetooth integrados.",
@@ -22,7 +22,7 @@
   "entradas": "RXD, PWRKEY, micrófono",
   "salidas": "TXD, RI, NETLIGHT, parlante",
   "dimensiones": "Chip 24 × 24 × 2.6 mm; placa ≈50 × 45 × 8 mm",
-  "datasheet": "",
+  "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/SIMCom-Wireless-Solutions-SIM808_C126275.pdf",
   "notas": "Es 2G: verificar la cobertura 2G del operador en Colombia antes de usarlo en campo."
  },
  "especificaciones": [
@@ -272,6 +272,10 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Enlace al datasheet"
   }
  ]
 }

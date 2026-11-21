@@ -16,7 +16,7 @@
  "fabricante": "Texas Instruments",
  "referencia": "MAX3232CDR",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Convertidor de nivel entre UART lógica (3–5.5 V) y RS-232 (±5.4 V típ.) con 2 drivers, 2 receptores y bomba de carga dual. Protección ESD de ±15 kV en los pines de línea (RIN, DOUT y GND). Cumple TIA/EIA-232-F y ITU V.28.",
@@ -80,7 +80,22 @@
   "src": "img/max3232_soic16.png?v=1795195501923",
   "origen": "render del modelo 3D"
  },
- "precios": [],
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 1500,
+   "url": "https://es.aliexpress.com/w/wholesale-MAX3232-SOIC16.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 5000,
+   "url": "https://listado.mercadolibre.com.co/max3232",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
  "busquedas": {},
  "montaje": {
   "origen": "centro",
@@ -365,6 +380,10 @@
    "cambios": [
     "imagen"
    ]
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Precios estimados (por confirmar)"
   }
  ],
  "modelo": {

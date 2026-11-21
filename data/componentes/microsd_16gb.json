@@ -9,7 +9,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Tarjeta MicroSDHC de 16 GB, clase 10 / UHS-I.",
@@ -68,7 +68,42 @@
   "datasheet": "https://www.google.com/search?q=microSD+16GB+class+10+datasheet+pdf",
   "imagenes": "https://www.google.com/search?tbm=isch&q=microSD+16GB+class+10"
  },
- "montaje": null,
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   15,
+   11,
+   1
+  ],
+  "fijacion": "adhesivo",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Tarjeta microSD de 15 × 11 × 1 mm; va dentro del módulo MicroSD. ",
+  "dentro_de": "modulo_microsd",
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 0,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 0,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
+ },
  "zonas": [],
  "pines": [
   {
@@ -144,6 +179,10 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Montaje: medidas de la tarjeta (dentro del módulo)"
   }
  ]
 }

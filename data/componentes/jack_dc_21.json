@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 4,
  "unidad": "und",
  "ficha": {
   "descripcion": "Conector DC hembra para PCB tipo DC-005, 5.5 × 2.1 mm.",
@@ -18,7 +18,7 @@
   "entradas": "Plug 5.5 mm (exterior) / 2.1 mm (pin)",
   "salidas": "3 terminales PCB",
   "dimensiones": "14.2 × 9 × 11 mm",
-  "datasheet": "",
+  "datasheet": "https://jlcpcb.com/partdetail/C16214",
   "notas": ""
  },
  "especificaciones": [
@@ -62,26 +62,60 @@
   "datasheet": "https://www.google.com/search?q=DC-005+DC+jack+5.5+2.1+datasheet+pdf",
   "imagenes": "https://www.google.com/search?tbm=isch&q=DC-005+DC+jack+5.5+2.1"
  },
- "montaje": null,
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   14.2,
+   9,
+   11
+  ],
+  "fijacion": "tornillo",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 3.5,
+  "holgura_inferior_cableado": 0,
+  "nota": "DC-005 de PCB: 14.2 × 9 × 11 mm, pines 3.5 mm. La boca va contra la pared. Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 0,
+    "altura_inferior": 3.5,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 0,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
+ },
  "zonas": [],
  "pines": [
   {
    "n": "1",
    "func": "Pin central (+)",
-   "x": null,
-   "y": null
+   "x": -6,
+   "y": 0
   },
   {
    "n": "2",
    "func": "Camisa (−)",
-   "x": null,
-   "y": null
+   "x": 0,
+   "y": 0
   },
   {
    "n": "3",
    "func": "Contacto de conmutación",
-   "x": null,
-   "y": null
+   "x": -3,
+   "y": 4.7
   }
  ],
  "archivos": {
@@ -103,6 +137,19 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Montaje: medidas DC-005 (14.2 × 9 × 11 mm)"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Pines con posición (centro de la pieza)"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Enlace al datasheet"
   }
- ]
+ ],
+ "cad_pendiente": true
 }

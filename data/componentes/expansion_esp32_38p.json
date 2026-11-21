@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Base de expansión para el ESP32 DevKit de 38 pines con regleta G-V-S por GPIO y entrada de alimentación.",
@@ -250,7 +250,32 @@
    "holgura": 15
   }
  ],
- "pines": [],
+ "pines": [
+  {
+   "n": "DC+",
+   "func": "Entrada jack 6.5–16 V",
+   "x": -30,
+   "y": 20
+  },
+  {
+   "n": "5V",
+   "func": "Salida 5 V del regulador",
+   "x": -26,
+   "y": 24
+  },
+  {
+   "n": "3V3",
+   "func": "Salida 3.3 V del regulador",
+   "x": -22,
+   "y": 24
+  },
+  {
+   "n": "GND",
+   "func": "Tierra",
+   "x": -18,
+   "y": 24
+  }
+ ],
  "archivos": {
   "step": {
    "drive_id": "1pLXMAdgxQvxrToarHewhzITYRlSxDmVF",
@@ -291,6 +316,10 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Pines con posición (centro de la pieza)"
   }
  ]
 }

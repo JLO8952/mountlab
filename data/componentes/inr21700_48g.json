@@ -13,7 +13,7 @@
  "fabricante": "Samsung SDI",
  "referencia": "INR21700-48G",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Celda cilíndrica de ion-litio formato 21700 (Ø21 × 70 mm), 3.6 V nominal, 4800 mAh / 17.3 Wh, terminal positivo plano (flat top) y sin circuito de protección.",
@@ -120,18 +120,52 @@
   "datasheet": "https://www.google.com/search?q=INR21700-48G+datasheet+pdf",
   "imagenes": "https://www.google.com/search?tbm=isch&q=Samsung+INR21700-48G"
  },
- "montaje": null,
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   70.2,
+   21.2,
+   21.2
+  ],
+  "fijacion": "abrazadera",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Celda cilíndrica Ø21.2 × 70.2 mm acostada. Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 0,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 0,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
+ },
  "envolvente": {
   "forma": "cilindro",
   "eje": "X",
-  "d": 21.0,
-  "l": 70.0,
+  "d": 21,
+  "l": 70,
   "d_max": 21.1,
   "l_max": 70.15,
   "origen": "centro de la celda en X/Y; Z=0 en la superficie de apoyo (eje a Z=10.5); +X = polo positivo",
   "holgura_recomendada": {
    "radial": 0.5,
-   "por_extremo": 1.0
+   "por_extremo": 1
   }
  },
  "zonas": [],
@@ -139,14 +173,14 @@
   {
    "n": "+",
    "func": "Polo positivo (cabeza plana)",
-   "x": 35.0,
+   "x": 35,
    "y": 0,
    "conector": "cinta de níquel / contacto de portapilas"
   },
   {
    "n": "−",
    "func": "Polo negativo (base de la lata)",
-   "x": -35.0,
+   "x": -35,
    "y": 0,
    "conector": "cinta de níquel / resorte de portapilas"
   }
@@ -180,6 +214,11 @@
    "v": 1,
    "fecha": "2026-11-17",
    "nota": "Creado. Datos del datasheet Samsung SDI INR21700-48G; modelo 3D y DXF generados con CadQuery/ezdxf (Ø21 × 70 nominal; polo + y ranura de engaste estimados, sin verificar con calibrador). Precios estimados."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Montaje: medidas de la celda (Ø21.2 × 70.2 mm)"
   }
- ]
+ ],
+ "cad_pendiente": true
 }

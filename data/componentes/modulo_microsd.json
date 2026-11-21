@@ -9,7 +9,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Lector de tarjetas MicroSD por SPI con regulador 3.3 V y adaptador de nivel.",
@@ -20,7 +20,7 @@
   "entradas": "CS, SCK, MOSI",
   "salidas": "MISO",
   "dimensiones": "42 × 24 × 5 mm",
-  "datasheet": "",
+  "datasheet": "https://ocw.cs.pub.ro/courses/_media/pm/prj2024/rvirtan/robert-baceanu/datasheet_sd_module.pdf",
   "notas": ""
  },
  "especificaciones": [
@@ -236,6 +236,10 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar. Posición de pines estimada sobre el header."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Enlace al datasheet"
   }
  ]
 }

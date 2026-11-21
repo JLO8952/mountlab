@@ -69,7 +69,7 @@
 
   // ---------------------------------------------------------------- masa
   const VMASA = { "@18650": 46, "@lipo": 20, "@2s": 95, "@switch": 5, "@boton": 2, "@led": 0.4, "@diodo": 0.4, "@mosfet": 2, "@rele": 15, "@ventilador": 15, "@motor": 30, "@dc12": 4 };
-  const MASA_ID = [[/18650/, 46], [/21700/, 68], [/portapilas_2x/, 22], [/portapilas_1x/, 12], [/jack_dc/, 3], [/switch|interruptor/, 4], [/header/, 3], [/microsd_\d+gb/, 0.4], [/panel_solar/, 25], [/sg90/, 13], [/xbee_s2c/, 4], [/ov2640/, 2]];
+  const MASA_ID = [[/portapilas_2x/, 22], [/portapilas_1x/, 12], [/18650/, 46], [/21700/, 68], [/jack_dc/, 3], [/switch|interruptor/, 4], [/header/, 3], [/microsd_\d+gb/, 0.4], [/panel_solar/, 25], [/sg90/, 13], [/xbee_s2c/, 4], [/ov2640/, 2]];
   function masaDe(c, P) {
     const man = ((P.ing || {}).masas || {})[c.id]; if (man != null && man !== "") return { g: +man, fuente: "manual" };
     const e = (c.especificaciones || []).find(x => /peso|masa/i.test(x.param || "")), m = e && String(e.valor).match(/(\d+(?:[.,]\d+)?)\s*(kg|g)\b/i);
@@ -82,6 +82,7 @@
     const filas = [];
     for (const b of P.bom || []) {
       const c = X.comp(b.id); if (!c || /^(Herramienta)$/.test(c.tipo) || c.id === "cables_dupont" || /^(Prototipado)$/.test(c.categoria)) continue;
+      if (c.montaje && c.montaje.externo && !/panel/i.test(c.id)) continue;   // el adaptador de pared no viaja con el equipo
       const m = masaDe(c, P), q = +b.cantidad || 0; if (!q) continue;
       filas.push({ id: c.id, nombre: c.nombre, q, g: m ? m.g : null, total: m ? r1(m.g * q) : null, fuente: m ? m.fuente : "sin dato" });
     }
@@ -439,7 +440,7 @@ ${libs.size ? "lib_deps =\n" + [...libs].map(l => "  " + l).join("\n") : ""}
         </div></div>
         <div class="panel" style="margin-top:12px;overflow:auto"><h3>Masa</h3><table class="t small"><tr><th>Pieza</th><th class="num">Cant.</th><th class="num">g c/u</th><th class="num">Total</th><th>Origen del dato</th></tr>
           ${B.masa.filas.map(f => `<tr><td>${esc(f.nombre)}</td><td class="num">${f.q}</td><td class="num">${f.id.startsWith("_") || f.virt ? (f.g ?? "—") : `<input type="number" step="0.1" data-masa="${esc(f.id)}" value="${(P.ing.masas[f.id] ?? f.g) ?? ""}" placeholder="g" style="width:80px;padding:3px 6px;text-align:right">`}</td><td class="num">${f.total ?? "—"}</td><td class="small muted">${f.fuente}</td></tr>`).join("")}
-          <tr><td><b>Total</b></td><td></td><td></td><td class="num"><b>${B.masa.total} g</b></td><td></td></tr></table><div class="small muted">Escribe la masa medida con la báscula para reemplazar las estimadas.</div></div>`;
+          <tr><td><b>Total</b></td><td></td><td></td><td class="num"><b>${B.masa.total} g</b></td><td></td></tr></table><div class="small muted">Usa las cantidades del BOM (si el BOM incluye repuestos, ajusta la cantidad o escribe 0 g). Escribe la masa medida con la báscula para reemplazar las estimadas.</div></div>`;
       S.querySelector("#ingTa").onchange = e => { P.ing.tamb = +e.target.value; repinta(); };
       S.querySelector("#ingRel").onchange = e => { P.ing.relleno = Math.min(1, Math.max(0.1, +e.target.value || 1)); repinta(); };
       S.querySelectorAll("[data-masa]").forEach(i => i.onchange = () => { if (i.value === "") delete P.ing.masas[i.dataset.masa]; else P.ing.masas[i.dataset.masa] = +i.value; repinta(); });

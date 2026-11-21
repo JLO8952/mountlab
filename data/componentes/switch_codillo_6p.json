@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 4,
  "unidad": "und",
  "ficha": {
   "descripcion": "Interruptor de palanca DPDT (2 polos, 2 posiciones) tipo MTS-202.",
@@ -18,7 +18,7 @@
   "entradas": "2 comunes (terminales centrales)",
   "salidas": "2 × 2 terminales",
   "dimensiones": "Cuerpo 13 × 13 × 10 mm; rosca 9 mm; palanca 10 mm",
-  "datasheet": "",
+  "datasheet": "https://elab.untidar.ac.id/assets/Datasheets/MTSSeries.pdf",
   "notas": ""
  },
  "especificaciones": [
@@ -66,20 +66,78 @@
   "datasheet": "https://www.google.com/search?q=MTS-202+toggle+switch+6+pin+datasheet+pdf",
   "imagenes": "https://www.google.com/search?tbm=isch&q=MTS-202+toggle+switch+6+pin"
  },
- "montaje": null,
+ "montaje": {
+  "origen": "centro",
+  "pcb": [
+   13.2,
+   12.7,
+   9.5
+  ],
+  "fijacion": "panel",
+  "agujeros": [],
+  "altura_superior": 1.5,
+  "altura_inferior": 4.6,
+  "holgura_inferior_cableado": 0,
+  "nota": "MTS-202: cuerpo 13.2 × 12.7 × 9.5 mm debajo del panel, agujero de panel Ø6 mm, palanca ≈ 10 mm por fuera, terminales 4.6 mm. Medidas tomadas de la ficha/datasheet o del formato estándar; verificar con calibrador.",
+  "conexiones": {
+   "header": "no_aplica",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 1.5,
+    "altura_inferior": 4.6,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 0,
+    "cable": "Soldado en la placa",
+    "nota": "Se suelda directo en la tarjeta: misma medida en las dos versiones."
+   },
+   "jumper": {
+    "altura_superior": 1.5,
+    "altura_inferior": 4.6,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 0,
+    "cable": "Zócalo o protoboard",
+    "nota": "Para pruebas en protoboard o zócalo."
+   }
+  }
+ },
  "zonas": [],
  "pines": [
   {
-   "n": "1–2–3",
-   "func": "Polo A (2 = común)",
-   "x": null,
-   "y": null
+   "n": "1",
+   "func": "Polo A, posición 1",
+   "x": -4.7,
+   "y": -2.35
   },
   {
-   "n": "4–5–6",
-   "func": "Polo B (5 = común)",
-   "x": null,
-   "y": null
+   "n": "2",
+   "func": "Polo A, común",
+   "x": 0,
+   "y": -2.35
+  },
+  {
+   "n": "3",
+   "func": "Polo A, posición 2",
+   "x": 4.7,
+   "y": -2.35
+  },
+  {
+   "n": "4",
+   "func": "Polo B, posición 1",
+   "x": -4.7,
+   "y": 2.35
+  },
+  {
+   "n": "5",
+   "func": "Polo B, común",
+   "x": 0,
+   "y": 2.35
+  },
+  {
+   "n": "6",
+   "func": "Polo B, posición 2",
+   "x": 4.7,
+   "y": 2.35
   }
  ],
  "archivos": {
@@ -106,6 +164,19 @@
    "v": 1,
    "fecha": "2026-11-20",
    "nota": "Depuración: movido de Conectores a Interruptores."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Montaje: medidas MTS-202 (cuerpo 13.2 × 12.7 × 9.5 mm, agujero Ø6 mm)"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Pines con posición (centro de la pieza)"
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Enlace al datasheet"
   }
- ]
+ ],
+ "cad_pendiente": true
 }

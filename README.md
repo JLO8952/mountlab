@@ -141,3 +141,14 @@ python cad/regenerar.py esp32_38p        # regenera un componente
 python cad/regenerar.py --todos
 python -m http.server 8000               # ver la app en http://localhost:8000
 ```
+
+### Ingeniería «nivel misión», fabricación y versiones (nov 2026)
+- **🛡 Ingeniería** (`app/ingenieria.js`): tarjetas con semáforo y presupuestos del sistema: potencia típica y pico, corriente pico, energía y **autonomía**, **masa** (ficha, típica, estimada o medida a mano), **térmico** de primer orden (convección natural + rejillas + ventilador, contra el límite de la pieza más sensible), volumen y **costo** por subproyecto con frescura de precios.
+  - **Derating** al estilo GSFC EEE-INST-002 adaptado a piezas comerciales: reguladores ≤ 75 % de corriente, LDO ≤ 50 % de disipación, fuentes ≤ 80 %, resistencias ≤ 50 % de potencia, capacitores (cerámico 60 %, electrolítico 80 %, tantalio 50 %), LED ≤ 75 %, cables ≤ 75 %.
+  - **Revisión eléctrica** de todos los circuitos juntos y tabla de pines delicados del ESP32 (arranque, solo entrada, ADC2).
+  - **Requisitos y matriz de verificación** (Análisis / Prueba / Inspección / Demostración): los numéricos se verifican solos con los presupuestos.
+  - **FMEA** con S/O/D y RPN, borrador automático por reglas y «Mejorar con IA».
+- **🔧 Fabricación**: hoja de **arnés para soldar** (W01…, origen/destino pin a pin, calibre con margen, color, largo medido sobre la caja, termoencogible, radio mínimo, compra de cable) con inspección basada en NASA-STD-8739.4 y hoja imprimible para el banco; **firmware base** (proyecto PlatformIO .zip o .ino) con pines, librerías y lectura de cada sensor; **caja a STEP** (la app deja `data/cajas/<id>.json` y la Action corre `cad/caja_step.py` con CadQuery: base con agujeros, tapa, repisas y componentes); **informe** completo imprimible a PDF.
+- **🕓 Versiones**: congelar el proyecto (borrador, aprobado, construido, modificado, probado), ver diferencias entre versiones y restaurar.
+- **📷 Escanear** (barra superior): foto de un módulo o su etiqueta → Generador; si hay IA conectada sugiere el nombre y avisa si ya existe.
+- Biblioteca: medidas, pines, datasheets y precios completados en 23 componentes; `montaje.externo`, `montaje.dentro_de` y `montaje.accesorio` marcan piezas que no ocupan lugar propio en la caja.
