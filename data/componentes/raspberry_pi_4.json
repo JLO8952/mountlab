@@ -18,7 +18,7 @@
  "fabricante": "Raspberry Pi Ltd",
  "referencia": "SC0192 / SC0193 / SC0194 / SC0195 (Serie RPI4-MODBP)",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Computadora monoplaca (SBC) de formato estándar de 85 × 56 mm equipada con procesador quad-core Arm Cortex-A72 de 64 bits (Broadcom BCM2711), GPU VideoCore VI compatible con OpenGL ES 3.0 y memoria LPDDR4-3200. Integra Wi-Fi doble banda 802.11ac, Bluetooth 5.0/BLE, Gigabit Ethernet real con soporte PoE, dos puertos USB 3.0, dos USB 2.0, dos micro-HDMI, jack de audio/video de 3.5 mm y puertos MIPI CSI/DSI.",
@@ -78,7 +78,10 @@
    "valor": "85.0 × 56.0 mm (alto total ~19.5 mm); 4 agujeros Ø2.7 mm (M2.5) en rejilla 58.0 × 49.0 mm"
   }
  ],
- "imagen": null,
+ "imagen": {
+  "src": "data:image/png;base64,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",
+  "origen": "render del modelo 3D"
+ },
  "precios": [
   {
    "proveedor": "Electronilab CO (8 GB)",
@@ -166,7 +169,7 @@
    "nombre": "Cabecera GPIO 40 pines",
    "cx": -10,
    "cy": 24.5,
-   "w": 101.6,
+   "w": 50.8,
    "h": 5.08,
    "z": [
     1.6,
@@ -198,7 +201,7 @@
   {
    "n": "3V3",
    "func": "Pin 1 - Salida de alimentación regulada 3.3 V",
-   "x": -59.53,
+   "x": -34.13,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -208,7 +211,7 @@
   {
    "n": "5V",
    "func": "Pin 2 - Alimentación 5 V (entrada/salida)",
-   "x": -56.99,
+   "x": -31.59,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -218,7 +221,7 @@
   {
    "n": "GPIO2",
    "func": "Pin 3 - I2C1 SDA (pull-up fija de 1.8 kΩ a 3.3 V)",
-   "x": -54.45,
+   "x": -29.05,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -228,7 +231,7 @@
   {
    "n": "5V",
    "func": "Pin 4 - Alimentación 5 V (entrada/salida)",
-   "x": -51.91,
+   "x": -26.51,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -238,7 +241,7 @@
   {
    "n": "GPIO3",
    "func": "Pin 5 - I2C1 SCL (pull-up fija de 1.8 kΩ a 3.3 V)",
-   "x": -49.37,
+   "x": -23.97,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -248,7 +251,7 @@
   {
    "n": "GND",
    "func": "Pin 6 - Tierra (0 V)",
-   "x": -46.83,
+   "x": -21.43,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -258,7 +261,7 @@
   {
    "n": "GPIO4",
    "func": "Pin 7 - GPIO4 / GPCLK0",
-   "x": -44.29,
+   "x": -18.89,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -268,7 +271,7 @@
   {
    "n": "GPIO14",
    "func": "Pin 8 - UART0 TXD",
-   "x": -41.75,
+   "x": -16.35,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -278,7 +281,7 @@
   {
    "n": "GND",
    "func": "Pin 9 - Tierra (0 V)",
-   "x": -39.21,
+   "x": -13.81,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -288,7 +291,7 @@
   {
    "n": "GPIO15",
    "func": "Pin 10 - UART0 RXD",
-   "x": -36.67,
+   "x": -11.27,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -298,7 +301,7 @@
   {
    "n": "GPIO17",
    "func": "Pin 11 - GPIO17 / SPI1 CE1",
-   "x": -34.13,
+   "x": -8.73,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -308,7 +311,7 @@
   {
    "n": "GPIO18",
    "func": "Pin 12 - GPIO18 / PCM_CLK / PWM0",
-   "x": -31.59,
+   "x": -6.19,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -318,7 +321,7 @@
   {
    "n": "GPIO27",
    "func": "Pin 13 - GPIO27",
-   "x": -29.05,
+   "x": -3.65,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -328,7 +331,7 @@
   {
    "n": "GND",
    "func": "Pin 14 - Tierra (0 V)",
-   "x": -26.51,
+   "x": -1.11,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -338,7 +341,7 @@
   {
    "n": "GPIO22",
    "func": "Pin 15 - GPIO22",
-   "x": -23.97,
+   "x": 1.43,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -348,7 +351,7 @@
   {
    "n": "GPIO23",
    "func": "Pin 16 - GPIO23",
-   "x": -21.43,
+   "x": 3.97,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -358,7 +361,7 @@
   {
    "n": "3V3",
    "func": "Pin 17 - Salida de alimentación regulada 3.3 V",
-   "x": -18.89,
+   "x": 6.51,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -368,7 +371,7 @@
   {
    "n": "GPIO24",
    "func": "Pin 18 - GPIO24",
-   "x": -16.35,
+   "x": 9.05,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -378,7 +381,7 @@
   {
    "n": "GPIO10",
    "func": "Pin 19 - SPI0 MOSI",
-   "x": -13.81,
+   "x": 11.59,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -388,7 +391,7 @@
   {
    "n": "GND",
    "func": "Pin 20 - Tierra (0 V)",
-   "x": -11.27,
+   "x": 14.13,
    "y": 25.77,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
@@ -398,8 +401,8 @@
   {
    "n": "GPIO9",
    "func": "Pin 21 - SPI0 MISO",
-   "x": -8.73,
-   "y": 25.77,
+   "x": -34.13,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 20,
@@ -408,8 +411,8 @@
   {
    "n": "GPIO25",
    "func": "Pin 22 - GPIO25",
-   "x": -6.19,
-   "y": 25.77,
+   "x": -31.59,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 21,
@@ -418,8 +421,8 @@
   {
    "n": "GPIO11",
    "func": "Pin 23 - SPI0 SCLK",
-   "x": -3.65,
-   "y": 25.77,
+   "x": -29.05,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 22,
@@ -428,8 +431,8 @@
   {
    "n": "GPIO8",
    "func": "Pin 24 - SPI0 CE0",
-   "x": -1.11,
-   "y": 25.77,
+   "x": -26.51,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 23,
@@ -438,8 +441,8 @@
   {
    "n": "GND",
    "func": "Pin 25 - Tierra (0 V)",
-   "x": 1.43,
-   "y": 25.77,
+   "x": -23.97,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 24,
@@ -448,8 +451,8 @@
   {
    "n": "GPIO7",
    "func": "Pin 26 - SPI0 CE1",
-   "x": 3.97,
-   "y": 25.77,
+   "x": -21.43,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 25,
@@ -458,8 +461,8 @@
   {
    "n": "GPIO0",
    "func": "Pin 27 - I2C0 ID_SD (EEPROM de HAT)",
-   "x": 6.51,
-   "y": 25.77,
+   "x": -18.89,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 26,
@@ -468,8 +471,8 @@
   {
    "n": "GPIO1",
    "func": "Pin 28 - I2C0 ID_SC (EEPROM de HAT)",
-   "x": 9.05,
-   "y": 25.77,
+   "x": -16.35,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 27,
@@ -478,8 +481,8 @@
   {
    "n": "GPIO5",
    "func": "Pin 29 - GPIO5",
-   "x": 11.59,
-   "y": 25.77,
+   "x": -13.81,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 28,
@@ -488,8 +491,8 @@
   {
    "n": "GND",
    "func": "Pin 30 - Tierra (0 V)",
-   "x": 14.13,
-   "y": 25.77,
+   "x": -11.27,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 29,
@@ -498,8 +501,8 @@
   {
    "n": "GPIO6",
    "func": "Pin 31 - GPIO6",
-   "x": 16.67,
-   "y": 25.77,
+   "x": -8.73,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 30,
@@ -508,8 +511,8 @@
   {
    "n": "GPIO12",
    "func": "Pin 32 - GPIO12 / PWM0",
-   "x": 19.21,
-   "y": 25.77,
+   "x": -6.19,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 31,
@@ -518,8 +521,8 @@
   {
    "n": "GPIO13",
    "func": "Pin 33 - GPIO13 / PWM1",
-   "x": 21.75,
-   "y": 25.77,
+   "x": -3.65,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 32,
@@ -528,8 +531,8 @@
   {
    "n": "GND",
    "func": "Pin 34 - Tierra (0 V)",
-   "x": 24.29,
-   "y": 25.77,
+   "x": -1.11,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 33,
@@ -538,8 +541,8 @@
   {
    "n": "GPIO19",
    "func": "Pin 35 - GPIO19 / PCM_FS / SPI1 MISO",
-   "x": 26.83,
-   "y": 25.77,
+   "x": 1.43,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 34,
@@ -548,8 +551,8 @@
   {
    "n": "GPIO16",
    "func": "Pin 36 - GPIO16 / SPI1 CE2",
-   "x": 29.37,
-   "y": 25.77,
+   "x": 3.97,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 35,
@@ -558,8 +561,8 @@
   {
    "n": "GPIO26",
    "func": "Pin 37 - GPIO26",
-   "x": 31.91,
-   "y": 25.77,
+   "x": 6.51,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 36,
@@ -568,8 +571,8 @@
   {
    "n": "GPIO20",
    "func": "Pin 38 - GPIO20 / PCM_DIN",
-   "x": 34.45,
-   "y": 25.77,
+   "x": 9.05,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 37,
@@ -578,8 +581,8 @@
   {
    "n": "GND",
    "func": "Pin 39 - Tierra (0 V)",
-   "x": 36.99,
-   "y": 25.77,
+   "x": 11.59,
+   "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
    "idx": 38,
@@ -588,411 +591,11 @@
   {
    "n": "GPIO21",
    "func": "Pin 40 - GPIO21 / PCM_DOUT",
-   "x": 39.53,
-   "y": 25.77,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 39,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.1",
-   "func": "",
-   "x": -59.53,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 40,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.2",
-   "func": "",
-   "x": -56.99,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 41,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.3",
-   "func": "",
-   "x": -54.45,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 42,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.4",
-   "func": "",
-   "x": -51.91,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 43,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.5",
-   "func": "",
-   "x": -49.37,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 44,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.6",
-   "func": "",
-   "x": -46.83,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 45,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.7",
-   "func": "",
-   "x": -44.29,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 46,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.8",
-   "func": "",
-   "x": -41.75,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 47,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.9",
-   "func": "",
-   "x": -39.21,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 48,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.10",
-   "func": "",
-   "x": -36.67,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 49,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.11",
-   "func": "",
-   "x": -34.13,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 50,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.12",
-   "func": "",
-   "x": -31.59,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 51,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.13",
-   "func": "",
-   "x": -29.05,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 52,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.14",
-   "func": "",
-   "x": -26.51,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 53,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.15",
-   "func": "",
-   "x": -23.97,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 54,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.16",
-   "func": "",
-   "x": -21.43,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 55,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.17",
-   "func": "",
-   "x": -18.89,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 56,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.18",
-   "func": "",
-   "x": -16.35,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 57,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.19",
-   "func": "",
-   "x": -13.81,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 58,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.20",
-   "func": "",
-   "x": -11.27,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 59,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.21",
-   "func": "",
-   "x": -8.73,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 60,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.22",
-   "func": "",
-   "x": -6.19,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 61,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.23",
-   "func": "",
-   "x": -3.65,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 62,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.24",
-   "func": "",
-   "x": -1.11,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 63,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.25",
-   "func": "",
-   "x": 1.43,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 64,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.26",
-   "func": "",
-   "x": 3.97,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 65,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.27",
-   "func": "",
-   "x": 6.51,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 66,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.28",
-   "func": "",
-   "x": 9.05,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 67,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.29",
-   "func": "",
-   "x": 11.59,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 68,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.30",
-   "func": "",
    "x": 14.13,
    "y": 23.23,
    "conector": "Cabecera GPIO 40 pines",
    "pieza": "p1",
-   "idx": 69,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.31",
-   "func": "",
-   "x": 16.67,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 70,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.32",
-   "func": "",
-   "x": 19.21,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 71,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.33",
-   "func": "",
-   "x": 21.75,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 72,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.34",
-   "func": "",
-   "x": 24.29,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 73,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.35",
-   "func": "",
-   "x": 26.83,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 74,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.36",
-   "func": "",
-   "x": 29.37,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 75,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.37",
-   "func": "",
-   "x": 31.91,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 76,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.38",
-   "func": "",
-   "x": 34.45,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 77,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.39",
-   "func": "",
-   "x": 36.99,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 78,
-   "cara": "A"
-  },
-  {
-   "n": "Cabecera GPIO 40 pines.2.40",
-   "func": "",
-   "x": 39.53,
-   "y": 23.23,
-   "conector": "Cabecera GPIO 40 pines",
-   "pieza": "p1",
-   "idx": 79,
+   "idx": 39,
    "cara": "A"
   }
  ],
@@ -1025,6 +628,16 @@
     "modelo",
     "precios"
    ]
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-20",
+   "nota": "Actualizado: modelo 3D, zonas, pines",
+   "cambios": [
+    "modelo",
+    "zonas",
+    "pines"
+   ]
   }
  ],
  "modelo": {
@@ -1050,7 +663,7 @@
     "rot": 0,
     "z": 0,
     "params": {
-     "n": 40,
+     "n": 20,
      "filas": 2,
      "paso": 2.54,
      "alto": 8.5
@@ -1245,121 +858,11 @@
     "z1": 4.1,
     "color": "#1f2937",
     "pieza": "p1",
-    "w": 101.6,
+    "w": 50.8,
     "h": 5.08
    },
    {
     "f": "caja",
-    "cx": -59.53,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -56.99,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -54.45,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -51.91,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -49.37,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -46.83,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -44.29,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -41.75,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -39.21,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -36.67,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
     "cx": -34.13,
     "cy": 25.77,
     "z0": 4.1,
@@ -1580,226 +1083,6 @@
    },
    {
     "f": "caja",
-    "cx": 16.67,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 19.21,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 21.75,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 24.29,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 26.83,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 29.37,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 31.91,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 34.45,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 36.99,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 39.53,
-    "cy": 25.77,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -59.53,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -56.99,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -54.45,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -51.91,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -49.37,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -46.83,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -44.29,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -41.75,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -39.21,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": -36.67,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
     "cx": -34.13,
     "cy": 23.23,
     "z0": 4.1,
@@ -2010,116 +1293,6 @@
    {
     "f": "caja",
     "cx": 14.13,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 16.67,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 19.21,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 21.75,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 24.29,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 26.83,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 29.37,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 31.91,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 34.45,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 36.99,
-    "cy": 23.23,
-    "z0": 4.1,
-    "z1": 10.1,
-    "color": "#d4a017",
-    "pieza": "p1",
-    "w": 0.64,
-    "h": 0.64
-   },
-   {
-    "f": "caja",
-    "cx": 39.53,
     "cy": 23.23,
     "z0": 4.1,
     "z1": 10.1,
@@ -2253,5 +1426,5 @@
   ]
  },
  "cad_pendiente": true,
- "modificado": "2026-11-21T03:09:52.177Z"
+ "modificado": "2026-11-21T03:10:09.553Z"
 }
