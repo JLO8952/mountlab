@@ -173,6 +173,27 @@
    "fuente": "https://www.sdcard.org/downloads/pls/",
    "error": "la dirección no entrega un PDF directo (es una página web)",
    "fecha": "2026-11-17"
+  },
+  "dxf_huella": {
+   "nombre": "microsd_16gb_v3_huella.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/microsd_16gb (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/microsd_16gb/microsd_16gb_v3_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "microsd_16gb_v3_montaje.step",
+   "version": 3,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/microsd_16gb (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/microsd_16gb/microsd_16gb_v3_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "microsd_16gb_v3_plano.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/microsd_16gb (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/microsd_16gb/microsd_16gb_v3_plano.dxf"
   }
  },
  "historial": [
@@ -263,6 +284,5 @@
     "h": 1.5
    }
   ]
- },
- "cad_pendiente": true
+ }
 }

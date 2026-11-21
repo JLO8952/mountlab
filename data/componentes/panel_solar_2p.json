@@ -126,6 +126,27 @@
    "nombre": "38_panel_solar_2p.dxf",
    "url": "https://drive.google.com/file/d/1KBnKVj7KFgQydb3r7TQhnrV4YMEx_1_Z/view",
    "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "panel_solar_2p_v4_huella.dxf",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/panel_solar_2p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/panel_solar_2p/panel_solar_2p_v4_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "panel_solar_2p_v4_montaje.step",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/panel_solar_2p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/panel_solar_2p/panel_solar_2p_v4_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "panel_solar_2p_v4_plano.dxf",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/panel_solar_2p (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/panel_solar_2p/panel_solar_2p_v4_plano.dxf"
   }
  },
  "historial": [
@@ -304,6 +325,5 @@
     "h": 8
    }
   ]
- },
- "cad_pendiente": true
+ }
 }

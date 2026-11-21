@@ -170,6 +170,27 @@
    "carpeta": "archivos/ov2640 (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/ov2640/ov2640_datasheet.pdf",
    "kb": 827
+  },
+  "dxf_huella": {
+   "nombre": "ov2640_v4_huella.dxf",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/ov2640 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/ov2640/ov2640_v4_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "ov2640_v4_montaje.step",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/ov2640 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/ov2640/ov2640_v4_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "ov2640_v4_plano.dxf",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/ov2640 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/ov2640/ov2640_v4_plano.dxf"
   }
  },
  "historial": [
@@ -286,6 +307,5 @@
     "h": 19
    }
   ]
- },
- "cad_pendiente": true
+ }
 }

@@ -279,25 +279,25 @@
    "carpeta": "Controladores/DXF"
   },
   "dxf_huella": {
-   "nombre": "sim808_v1_huella.dxf",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "sim808_v3_huella.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/sim808 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/sim808/sim808_v1_huella.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/sim808/sim808_v3_huella.dxf"
   },
   "step_montaje": {
-   "nombre": "sim808_v1_montaje.step",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "sim808_v3_montaje.step",
+   "version": 3,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/sim808 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/sim808/sim808_v1_montaje.step"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/sim808/sim808_v3_montaje.step"
   },
   "dxf_plano": {
-   "nombre": "sim808_v1_plano.dxf",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "sim808_v3_plano.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/sim808 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/sim808/sim808_v1_plano.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/sim808/sim808_v3_plano.dxf"
   },
   "datasheet": {
    "fuente": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/SIMCom-Wireless-Solutions-SIM808_C126275.pdf",
@@ -759,6 +759,5 @@
     "d": 1.7
    }
   ]
- },
- "cad_pendiente": true
+ }
 }

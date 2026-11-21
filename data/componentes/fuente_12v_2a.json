@@ -132,6 +132,27 @@
    "nombre": "19_fuente_12v_2a.dxf",
    "url": "https://drive.google.com/file/d/1-K3nkH4-4urk78cuV0adt6FJnubnc881/view",
    "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "fuente_12v_2a_v4_huella.dxf",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/fuente_12v_2a (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/fuente_12v_2a/fuente_12v_2a_v4_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "fuente_12v_2a_v4_montaje.step",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/fuente_12v_2a (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/fuente_12v_2a/fuente_12v_2a_v4_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "fuente_12v_2a_v4_plano.dxf",
+   "version": 4,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/fuente_12v_2a (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/fuente_12v_2a/fuente_12v_2a_v4_plano.dxf"
   }
  },
  "historial": [
@@ -223,6 +244,5 @@
     "h": 30
    }
   ]
- },
- "cad_pendiente": true
+ }
 }

@@ -372,18 +372,18 @@
    "carpeta": "Controladores/DXF"
   },
   "dxf_huella": {
-   "nombre": "esp32_38p_v1_huella.dxf",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "esp32_38p_v2_huella.dxf",
+   "version": 2,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/esp32_38p (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_38p/esp32_38p_v1_huella.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_38p/esp32_38p_v2_huella.dxf"
   },
   "step_montaje": {
-   "nombre": "esp32_38p_v1_montaje.step",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "esp32_38p_v2_montaje.step",
+   "version": 2,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/esp32_38p (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_38p/esp32_38p_v1_montaje.step"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_38p/esp32_38p_v2_montaje.step"
   },
   "datasheet": {
    "nombre": "esp32_38p_datasheet.pdf",
@@ -394,11 +394,11 @@
    "kb": 605
   },
   "dxf_plano": {
-   "nombre": "esp32_38p_v1_plano.dxf",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "esp32_38p_v2_plano.dxf",
+   "version": 2,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/esp32_38p (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_38p/esp32_38p_v1_plano.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_38p/esp32_38p_v2_plano.dxf"
   }
  },
  "historial": [
@@ -1877,6 +1877,5 @@
     "h": 0.64
    }
   ]
- },
- "cad_pendiente": true
+ }
 }

@@ -122,6 +122,27 @@
    "nombre": "04_headers_macho_hembra.dxf",
    "url": "https://drive.google.com/file/d/1IS_zuZN5AVlbHZAhkvb1PtQLpiy9I6Ds/view",
    "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "headers_macho_hembra_v3_huella.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/headers_macho_hembra (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/headers_macho_hembra/headers_macho_hembra_v3_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "headers_macho_hembra_v3_montaje.step",
+   "version": 3,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/headers_macho_hembra (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/headers_macho_hembra/headers_macho_hembra_v3_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "headers_macho_hembra_v3_plano.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
+   "carpeta": "archivos/headers_macho_hembra (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/headers_macho_hembra/headers_macho_hembra_v3_plano.dxf"
   }
  },
  "historial": [
@@ -1276,6 +1297,5 @@
     "h": 0.64
    }
   ]
- },
- "cad_pendiente": true
+ }
 }

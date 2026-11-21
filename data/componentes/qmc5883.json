@@ -197,25 +197,25 @@
    "carpeta": "Controladores/DXF"
   },
   "dxf_huella": {
-   "nombre": "qmc5883_v1_huella.dxf",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "qmc5883_v3_huella.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/qmc5883 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/qmc5883/qmc5883_v1_huella.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/qmc5883/qmc5883_v3_huella.dxf"
   },
   "step_montaje": {
-   "nombre": "qmc5883_v1_montaje.step",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "qmc5883_v3_montaje.step",
+   "version": 3,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/qmc5883 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/qmc5883/qmc5883_v1_montaje.step"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/qmc5883/qmc5883_v3_montaje.step"
   },
   "dxf_plano": {
-   "nombre": "qmc5883_v1_plano.dxf",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "qmc5883_v3_plano.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/qmc5883 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/qmc5883/qmc5883_v1_plano.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/qmc5883/qmc5883_v3_plano.dxf"
   },
   "datasheet": {
    "fuente": "https://www.lcsc.com/datasheet/C976032.pdf",
@@ -546,6 +546,5 @@
     "d": 1.7
    }
   ]
- },
- "cad_pendiente": true
+ }
 }

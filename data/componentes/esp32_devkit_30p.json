@@ -575,18 +575,18 @@
    "carpeta": "MountLab/biblioteca/archivos"
   },
   "dxf_huella": {
-   "nombre": "esp32_devkit_30p_v1_huella.dxf",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "esp32_devkit_30p_v3_huella.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/esp32_devkit_30p (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_devkit_30p/esp32_devkit_30p_v1_huella.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_devkit_30p/esp32_devkit_30p_v3_huella.dxf"
   },
   "step_montaje": {
-   "nombre": "esp32_devkit_30p_v1_montaje.step",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "esp32_devkit_30p_v3_montaje.step",
+   "version": 3,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/esp32_devkit_30p (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_devkit_30p/esp32_devkit_30p_v1_montaje.step"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_devkit_30p/esp32_devkit_30p_v3_montaje.step"
   },
   "datasheet": {
    "nombre": "esp32_devkit_30p_datasheet.pdf",
@@ -597,11 +597,11 @@
    "kb": 605
   },
   "dxf_plano": {
-   "nombre": "esp32_devkit_30p_v1_plano.dxf",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "esp32_devkit_30p_v3_plano.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/esp32_devkit_30p (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_devkit_30p/esp32_devkit_30p_v1_plano.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/esp32_devkit_30p/esp32_devkit_30p_v3_plano.dxf"
   }
  },
  "historial": [
@@ -1983,6 +1983,5 @@
     "h": 0.64
    }
   ]
- },
- "cad_pendiente": true
+ }
 }

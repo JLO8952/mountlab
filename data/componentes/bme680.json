@@ -192,18 +192,18 @@
    "carpeta": "Controladores/DXF"
   },
   "dxf_huella": {
-   "nombre": "bme680_v1_huella.dxf",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "bme680_v2_huella.dxf",
+   "version": 2,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/bme680 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme680/bme680_v1_huella.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme680/bme680_v2_huella.dxf"
   },
   "step_montaje": {
-   "nombre": "bme680_v1_montaje.step",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "bme680_v2_montaje.step",
+   "version": 2,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/bme680 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme680/bme680_v1_montaje.step"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme680/bme680_v2_montaje.step"
   },
   "datasheet": {
    "nombre": "bme680_datasheet.pdf",
@@ -214,11 +214,11 @@
    "kb": 1358
   },
   "dxf_plano": {
-   "nombre": "bme680_v1_plano.dxf",
-   "version": 1,
-   "fecha": "2026-11-18",
+   "nombre": "bme680_v2_plano.dxf",
+   "version": 2,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/bme680 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme680/bme680_v1_plano.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme680/bme680_v2_plano.dxf"
   }
  },
  "historial": [
@@ -547,6 +547,5 @@
     "d": 1.7
    }
   ]
- },
- "cad_pendiente": true
+ }
 }

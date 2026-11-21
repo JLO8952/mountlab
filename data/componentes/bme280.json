@@ -183,18 +183,18 @@
    "carpeta": "Controladores/DXF"
   },
   "dxf_huella": {
-   "nombre": "bme280_v2_huella.dxf",
-   "version": 2,
-   "fecha": "2026-11-18",
+   "nombre": "bme280_v3_huella.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/bme280 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme280/bme280_v2_huella.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme280/bme280_v3_huella.dxf"
   },
   "step_montaje": {
-   "nombre": "bme280_v2_montaje.step",
-   "version": 2,
-   "fecha": "2026-11-18",
+   "nombre": "bme280_v3_montaje.step",
+   "version": 3,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/bme280 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme280/bme280_v2_montaje.step"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme280/bme280_v3_montaje.step"
   },
   "datasheet": {
    "nombre": "bme280_datasheet.pdf",
@@ -205,11 +205,11 @@
    "kb": 1625
   },
   "dxf_plano": {
-   "nombre": "bme280_v2_plano.dxf",
-   "version": 2,
-   "fecha": "2026-11-18",
+   "nombre": "bme280_v3_plano.dxf",
+   "version": 3,
+   "fecha": "2026-11-21",
    "carpeta": "archivos/bme280 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme280/bme280_v2_plano.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bme280/bme280_v3_plano.dxf"
   }
  },
  "historial": [
@@ -593,6 +593,5 @@
     "d": 1.7
    }
   ]
- },
- "cad_pendiente": true
+ }
 }
