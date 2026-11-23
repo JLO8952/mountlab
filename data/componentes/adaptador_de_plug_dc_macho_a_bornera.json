@@ -1,0 +1,119 @@
+{
+ "id": "adaptador_de_plug_dc_macho_a_bornera",
+ "nombre": "Adaptador de Plug DC Macho (5.5x2.1 mm) a Bornera",
+ "tipo": "electronico",
+ "categoria": "Conectores",
+ "etiquetas": [
+  "plug-dc",
+  "conector-dc",
+  "macho",
+  "5.5x2.1mm",
+  "bornera",
+  "alimentacion",
+  "adaptador",
+  "cctv"
+ ],
+ "fabricante": "Genérico",
+ "referencia": "Plug DC Macho 5.5x2.1 mm a Bornera (SKU Zamux: C26)",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Conector adaptador de plug DC macho de barril (típico 5.5 mm externo x 2.1 mm interno) a bloque de terminales de tornillo de 2 polos marcados con polaridad (+ y -).",
+  "funcionamiento": "Permite conectar cables desnudos de alimentación DC directamente a una entrada hembra tipo jack DC 2.1 mm (como las de Arduino, cámaras CCTV o fuentes) apretando los tornillos de la bornera, sin necesidad de soldadura.",
+  "voltaje": "Hasta 36 V DC (uso típico 5 V, 12 V y 24 V DC)",
+  "corriente": "Hasta 5 A máx. (recomendado <= 3 A en uso continuo)",
+  "interfaz": "Alimentación DC pasiva (2 polos: + centro, - exterior)",
+  "entradas": "Bornera de tornillo de 2 polos (+ y -)",
+  "salidas": "Plug DC macho coaxial (5.5 x 2.1 mm, centro positivo estándar)",
+  "dimensiones": "38.0 x 14.0 x 13.0 mm aprox. (sin agujeros de montaje; barril 5.5 x 2.1 mm)",
+  "datasheet": "https://www.zamux.co/adaptador-de-plug-dc-macho-a-bornera",
+  "notas": "Verificar siempre la polaridad (+ al centro, - al exterior) con un multímetro antes de energizar el equipo. Asegurar buen apriete de los tornillos y calibre adecuado del cable (típico 16-24 AWG) para evitar falsos contactos o calentamiento."
+ },
+ "especificaciones": [
+  {
+   "param": "Tipo de conector",
+   "valor": "Plug DC macho 5.5 x 2.1 mm (estándar)"
+  },
+  {
+   "param": "Terminación",
+   "valor": "Bornera de tornillo de 2 polos (+ / -)"
+  },
+  {
+   "param": "Polaridad estándar",
+   "valor": "Positivo (+) al centro, Negativo (-) exterior"
+  },
+  {
+   "param": "Voltaje de trabajo",
+   "valor": "5 V - 36 V DC (típico 12 V DC)"
+  },
+  {
+   "param": "Corriente máxima estimada",
+   "valor": "3 A - 5 A"
+  },
+  {
+   "param": "SKU proveedor",
+   "valor": "C26 (Zamux)"
+  }
+ ],
+ "imagen": {
+  "src": "img/adaptador_de_plug_dc_macho_a_bornera.jpg?v=1795403906729",
+  "origen": "foto subida en el chat"
+ },
+ "precios": [
+  {
+   "proveedor": "Zamux",
+   "precio_cop": 1900,
+   "url": "https://www.zamux.co/adaptador-de-plug-dc-macho-a-bornera",
+   "fecha": "2026-11",
+   "estimado": false
+  }
+ ],
+ "busquedas": {},
+ "montaje": null,
+ "zonas": [],
+ "pines": [
+  {
+   "x": null,
+   "y": null,
+   "n": "+",
+   "func": "Terminal positivo (conectado al pin central del plug DC)"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "-",
+   "func": "Terminal negativo / GND (conectado al barril exterior del plug DC)"
+  }
+ ],
+ "archivos": {},
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-22",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, precios",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "precios"
+   ]
+  }
+ ],
+ "modificado": "2026-11-23T03:18:24.705Z"
+}
