@@ -36,8 +36,8 @@
   }
  ],
  "imagen": {
-  "src": "img/14_bms_2s_4a.png",
-  "origen": "render 3D (modelo simplificado)"
+  "src": "img/bms_2s_4a.png?v=1795451823645",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -222,31 +222,23 @@
   "dxf_huella": {
    "nombre": "bms_2s_4a_v2_huella.dxf",
    "version": 2,
-   "fecha": "2026-11-23",
+   "fecha": "2026-11-21",
    "carpeta": "archivos/bms_2s_4a (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_v2_huella.dxf"
   },
   "step_montaje": {
    "nombre": "bms_2s_4a_v2_montaje.step",
    "version": 2,
-   "fecha": "2026-11-23",
+   "fecha": "2026-11-21",
    "carpeta": "archivos/bms_2s_4a (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_v2_montaje.step"
   },
   "dxf_plano": {
    "nombre": "bms_2s_4a_v2_plano.dxf",
    "version": 2,
-   "fecha": "2026-11-23",
+   "fecha": "2026-11-21",
    "carpeta": "archivos/bms_2s_4a (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_v2_plano.dxf"
-  },
-  "datasheet": {
-   "nombre": "bms_2s_4a_datasheet.pdf",
-   "fuente": "https://makerhero.com/img/files/download/HY2120-Datasheet.PDF",
-   "fecha": "2026-11-23",
-   "carpeta": "archivos/bms_2s_4a (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_datasheet.pdf",
-   "kb": 1017
   }
  },
  "historial": [
@@ -265,6 +257,14 @@
    "nota": "Actualizado con datos de datasheet subido (lectura local) (aprobado): ficha.datasheet",
    "cambios": [
     "ficha.datasheet"
+   ]
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
    ]
   }
  ],
@@ -658,5 +658,6 @@
    }
   ]
  },
- "modificado": "2026-11-23T16:35:23.017Z"
+ "modificado": "2026-11-23T16:37:01.551Z",
+ "cad_pendiente": true
 }
