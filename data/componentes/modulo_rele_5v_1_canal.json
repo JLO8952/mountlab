@@ -64,7 +64,10 @@
    "valor": "Header macho 1x3 (2.54 mm) y bornera de tornillo 3 pines (5.0 mm)"
   }
  ],
- "imagen": null,
+ "imagen": {
+  "src": "img/modulo_rele_5v_1_canal.png?v=1795451541940",
+  "origen": "render del modelo 3D"
+ },
  "precios": [
   {
    "proveedor": "Zamux",
@@ -295,6 +298,14 @@
     "modelo",
     "precios"
    ]
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
  "modelo": {
@@ -498,5 +509,5 @@
    }
   ]
  },
- "modificado": "2026-11-23T02:52:50.136Z"
+ "modificado": "2026-11-23T16:32:20.364Z"
 }
