@@ -60,7 +60,7 @@
      {
       "ref": "U1",
       "id": "esp32_devkit_30p",
-      "x": 390,
+      "x": 290,
       "y": 210
      },
      {
@@ -74,9 +74,24 @@
       "id": "modulo_rele_5v_1_canal",
       "x": 50,
       "y": 390
+     },
+     {
+      "ref": "U4",
+      "id": "adaptador_de_plug_dc_macho_a_bornera",
+      "x": 630,
+      "y": 400
      }
     ],
-    "cables": [],
+    "cables": [
+     {
+      "a": "U4.+",
+      "b": "U1.VIN"
+     },
+     {
+      "a": "U4.-",
+      "b": "U1.GND#2"
+     }
+    ],
     "etiquetas": {},
     "notas": ""
    }
