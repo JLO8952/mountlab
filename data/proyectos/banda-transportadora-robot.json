@@ -47,7 +47,26 @@
    "tipo": "logica",
    "circuito": {
     "version": 1,
-    "inst": [],
+    "inst": [
+     {
+      "ref": "U1",
+      "id": "esp32_devkit_30p",
+      "x": 390,
+      "y": 210
+     },
+     {
+      "ref": "U2",
+      "id": "modulo_optoacoplador_pc817_2_canales",
+      "x": 40,
+      "y": 150
+     },
+     {
+      "ref": "U3",
+      "id": "modulo_rele_5v_1_canal",
+      "x": 50,
+      "y": 390
+     }
+    ],
     "cables": [],
     "etiquetas": {},
     "notas": ""
