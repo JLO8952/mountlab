@@ -16,7 +16,7 @@
  "fabricante": "Genérico",
  "referencia": "Plug DC Macho 5.5x2.1 mm a Bornera (SKU Zamux: C26)",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Conector adaptador de plug DC macho de barril (típico 5.5 mm externo x 2.1 mm interno) a bloque de terminales de tornillo de 2 polos marcados con polaridad (+ y -).",
@@ -70,8 +70,58 @@
   }
  ],
  "busquedas": {},
- "montaje": null,
- "zonas": [],
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "adhesivo",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Accesorio de cable: sin agujeros de montaje (se sujeta con abrazadera o adhesivo).",
+  "externo": true,
+  "pcb": [
+   15,
+   13,
+   13
+  ],
+  "forma": "redondeada",
+  "base_tipo": "prisma",
+  "radio": 1.5
+ },
+ "zonas": [
+  {
+   "tipo": "conector",
+   "nombre": "Plug DC 5.5 × 2.1 mm",
+   "cx": -14.25,
+   "cy": 0,
+   "w": 11.5,
+   "h": 9.2,
+   "z": [
+    1.9,
+    11.1
+   ],
+   "salida": "-X",
+   "holgura": 25,
+   "auto": true,
+   "pieza": "plug"
+  },
+  {
+   "tipo": "conector",
+   "nombre": "Bornera 2 polos (+ / −)",
+   "cx": 15.25,
+   "cy": 0,
+   "w": 7.5,
+   "h": 14,
+   "z": [
+    0,
+    12.5
+   ],
+   "salida": "+X",
+   "holgura": 30,
+   "auto": true,
+   "pieza": "bornera"
+  }
+ ],
  "pines": [
   {
    "x": null,
@@ -119,7 +169,400 @@
     "pines",
     "precios"
    ]
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-23",
+   "nota": "Modelo 3D a partir de la foto y las medidas (demostración de modelado desde foto + medidas)",
+   "cambios": [
+    "modelo",
+    "montaje",
+    "zonas"
+   ]
   }
  ],
- "modificado": "2026-11-23T03:18:24.705Z"
+ "modificado": "2026-11-23T03:18:24.705Z",
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "redondeada",
+   "L": 15,
+   "W": 13,
+   "d": 15,
+   "espesor": 13,
+   "radio": 1.5,
+   "color": "#1f2937"
+  },
+  "piezas": [
+   {
+    "id": "plug",
+    "plantilla": "importada",
+    "nombre": "Plug DC 5.5 × 2.1 mm",
+    "cara": "A",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "prim": [
+      {
+       "f": "perfil",
+       "eje": "x",
+       "circ": [
+        0,
+        -6.5,
+        4.6
+       ],
+       "a0": -9.5,
+       "a1": -7.5,
+       "color": "#111827"
+      },
+      {
+       "f": "perfil",
+       "eje": "x",
+       "circ": [
+        0,
+        -6.5,
+        2.75
+       ],
+       "a0": -19,
+       "a1": -9.5,
+       "color": "#cbd5e1"
+      },
+      {
+       "f": "perfil",
+       "eje": "x",
+       "circ": [
+        0,
+        -6.5,
+        1.05
+       ],
+       "a0": -19.05,
+       "a1": -18.95,
+       "color": "#0f172a"
+      }
+     ],
+     "zona": {
+      "tipo": "conector",
+      "cx": -14.25,
+      "cy": 0,
+      "w": 11.5,
+      "h": 9.2,
+      "z0": -11.1,
+      "z1": -1.9,
+      "salida": "-X",
+      "holgura": 25
+     }
+    },
+    "origen": "foto+medidas",
+    "sobresale": true
+   },
+   {
+    "id": "bornera",
+    "plantilla": "importada",
+    "nombre": "Bornera 2 polos (+ / −)",
+    "cara": "A",
+    "x": 12.25,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "prim": [
+      {
+       "f": "caja",
+       "cx": 0,
+       "cy": 0,
+       "w": 13.5,
+       "h": 14,
+       "z0": -13,
+       "z1": -0.5,
+       "color": "#16a34a",
+       "r": 0.6
+      },
+      {
+       "f": "cil",
+       "cx": -1.5,
+       "cy": 3.5,
+       "d": 4.2,
+       "z0": -0.9,
+       "z1": -0.3,
+       "color": "#cbd5e1"
+      },
+      {
+       "f": "cil",
+       "cx": -1.5,
+       "cy": -3.5,
+       "d": 4.2,
+       "z0": -0.9,
+       "z1": -0.3,
+       "color": "#cbd5e1"
+      },
+      {
+       "f": "caja",
+       "cx": -1.5,
+       "cy": 3.5,
+       "w": 0.7,
+       "h": 3.4,
+       "z0": -0.35,
+       "z1": -0.25,
+       "color": "#475569"
+      },
+      {
+       "f": "caja",
+       "cx": -1.5,
+       "cy": -3.5,
+       "w": 0.7,
+       "h": 3.4,
+       "z0": -0.35,
+       "z1": -0.25,
+       "color": "#475569"
+      },
+      {
+       "f": "perfil",
+       "eje": "x",
+       "pts": [
+        [
+         1.6,
+         -9.4
+        ],
+        [
+         5.4,
+         -9.4
+        ],
+        [
+         5.4,
+         -5.6
+        ],
+        [
+         1.6,
+         -5.6
+        ]
+       ],
+       "a0": 6.7,
+       "a1": 6.8,
+       "color": "#052e16"
+      },
+      {
+       "f": "perfil",
+       "eje": "x",
+       "pts": [
+        [
+         -5.4,
+         -9.4
+        ],
+        [
+         -1.6,
+         -9.4
+        ],
+        [
+         -1.6,
+         -5.6
+        ],
+        [
+         -5.4,
+         -5.6
+        ]
+       ],
+       "a0": 6.7,
+       "a1": 6.8,
+       "color": "#052e16"
+      }
+     ],
+     "zona": {
+      "tipo": "conector",
+      "cx": 3,
+      "cy": 0,
+      "w": 7.5,
+      "h": 14,
+      "z0": -13,
+      "z1": -0.5,
+      "salida": "+X",
+      "holgura": 30
+     }
+    },
+    "origen": "foto+medidas",
+    "sobresale": true
+   }
+  ],
+  "nota": "Modelado a partir de la foto y las medidas de la ficha (38 × 14 × 13 mm): cuerpo negro, plug 5.5 × 2.1 mm y bornera verde de 2 polos.",
+  "cuerpos": [
+   {
+    "f": "perfil",
+    "eje": "x",
+    "color": "#111827",
+    "circ": [
+     0,
+     6.5,
+     4.6
+    ],
+    "a0": -9.5,
+    "a1": -7.5,
+    "cx": -8.5,
+    "cy": 0,
+    "w": 2,
+    "h": 9.2,
+    "z0": 1.9,
+    "z1": 11.1,
+    "pieza": "plug"
+   },
+   {
+    "f": "perfil",
+    "eje": "x",
+    "color": "#cbd5e1",
+    "circ": [
+     0,
+     6.5,
+     2.75
+    ],
+    "a0": -19,
+    "a1": -9.5,
+    "cx": -14.25,
+    "cy": 0,
+    "w": 9.5,
+    "h": 5.5,
+    "z0": 3.75,
+    "z1": 9.25,
+    "pieza": "plug"
+   },
+   {
+    "f": "perfil",
+    "eje": "x",
+    "color": "#0f172a",
+    "circ": [
+     0,
+     6.5,
+     1.05
+    ],
+    "a0": -19.05,
+    "a1": -18.95,
+    "cx": -19,
+    "cy": 0,
+    "w": 0.1,
+    "h": 2.1,
+    "z0": 5.45,
+    "z1": 7.55,
+    "pieza": "plug"
+   },
+   {
+    "f": "caja",
+    "cx": 12.25,
+    "cy": 0,
+    "z0": 0,
+    "z1": 12.5,
+    "color": "#16a34a",
+    "pieza": "bornera",
+    "w": 13.5,
+    "h": 14,
+    "r": 0.6
+   },
+   {
+    "f": "cil",
+    "cx": 10.75,
+    "cy": 3.5,
+    "z0": 12.1,
+    "z1": 12.7,
+    "color": "#cbd5e1",
+    "pieza": "bornera",
+    "d": 4.2
+   },
+   {
+    "f": "cil",
+    "cx": 10.75,
+    "cy": -3.5,
+    "z0": 12.1,
+    "z1": 12.7,
+    "color": "#cbd5e1",
+    "pieza": "bornera",
+    "d": 4.2
+   },
+   {
+    "f": "caja",
+    "cx": 10.75,
+    "cy": 3.5,
+    "z0": 12.65,
+    "z1": 12.75,
+    "color": "#475569",
+    "pieza": "bornera",
+    "w": 0.7,
+    "h": 3.4
+   },
+   {
+    "f": "caja",
+    "cx": 10.75,
+    "cy": -3.5,
+    "z0": 12.65,
+    "z1": 12.75,
+    "color": "#475569",
+    "pieza": "bornera",
+    "w": 0.7,
+    "h": 3.4
+   },
+   {
+    "f": "perfil",
+    "eje": "x",
+    "color": "#052e16",
+    "pts": [
+     [
+      1.6,
+      3.6
+     ],
+     [
+      5.4,
+      3.6
+     ],
+     [
+      5.4,
+      7.4
+     ],
+     [
+      1.6,
+      7.4
+     ]
+    ],
+    "a0": 18.95,
+    "a1": 19.05,
+    "cx": 19,
+    "cy": 3.5,
+    "w": 0.1,
+    "h": 3.8,
+    "z0": 3.6,
+    "z1": 7.4,
+    "pieza": "bornera"
+   },
+   {
+    "f": "perfil",
+    "eje": "x",
+    "color": "#052e16",
+    "pts": [
+     [
+      -5.4,
+      3.6
+     ],
+     [
+      -1.6,
+      3.6
+     ],
+     [
+      -1.6,
+      7.4
+     ],
+     [
+      -5.4,
+      7.4
+     ]
+    ],
+    "a0": 18.95,
+    "a1": 19.05,
+    "cx": 19,
+    "cy": -3.5,
+    "w": 0.1,
+    "h": 3.8,
+    "z0": 3.6,
+    "z1": 7.4,
+    "pieza": "bornera"
+   }
+  ]
+ },
+ "cad_pendiente": true
 }

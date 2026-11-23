@@ -78,7 +78,8 @@
     return E;
   }
   /** Alto total y centro vertical del componente (para encuadrar la cámara). */
-  function encuadre(W) { const bi = MLPlant.baseInfo(W.modelo.base), mt = W.montaje || {}, alto = (bi.top || 0) + (mt.altura_superior || 0) + (mt.altura_inferior || 0), zc = ((bi.top || 0) + (mt.altura_superior || 0) - (mt.altura_inferior || 0)) / 2; return { R: Math.max(bi.L || 20, bi.W || 20, alto, 2.5) * 1.6, zc }; }
+  function encuadre(W) { const bi = MLPlant.baseInfo(W.modelo.base), mt = W.montaje || {}, alto = (bi.top || 0) + (mt.altura_superior || 0) + (mt.altura_inferior || 0), zc = ((bi.top || 0) + (mt.altura_superior || 0) - (mt.altura_inferior || 0)) / 2; let ext = 0; for (const c of (W.modelo && W.modelo.cuerpos) || []) { const w = c.f === "cil" ? c.d : c.w, h = c.f === "cil" ? c.d : c.h; if (w != null) ext = Math.max(ext, 2 * (Math.abs(c.cx) + w / 2), 2 * (Math.abs(c.cy) + h / 2)); }   // piezas que salen de la base
+    return { R: Math.max(bi.L || 20, bi.W || 20, alto, 2.5, ext * 0.85) * 1.6, zc }; }
   // render isométrico fuera de pantalla (un solo contexto WebGL reutilizado)
   let isoR = null; const isoCache = new Map();
   async function iso(W, ancho, alto, fondo) {
