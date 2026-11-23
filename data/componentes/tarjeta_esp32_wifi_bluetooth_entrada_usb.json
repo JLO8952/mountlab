@@ -66,7 +66,10 @@
    "valor": "2 pulsadores (EN / Reset y BOOT / IO0)"
   }
  ],
- "imagen": null,
+ "imagen": {
+  "src": "img/tarjeta_esp32_wifi_bluetooth_entrada_usb.png?v=1795451570356",
+  "origen": "render del modelo 3D"
+ },
  "precios": [
   {
    "proveedor": "Zamux",
@@ -605,6 +608,14 @@
     "montaje",
     "modelo",
     "precios"
+   ]
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
    ]
   }
  ],
@@ -1197,5 +1208,5 @@
    }
   ]
  },
- "modificado": "2026-11-23T02:56:56.551Z"
+ "modificado": "2026-11-23T16:32:48.528Z"
 }
