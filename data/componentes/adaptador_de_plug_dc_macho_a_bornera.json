@@ -57,8 +57,8 @@
   }
  ],
  "imagen": {
-  "src": "img/adaptador_de_plug_dc_macho_a_bornera.jpg?v=1795403906729",
-  "origen": "foto subida en el chat"
+  "src": "img/adaptador_de_plug_dc_macho_a_bornera.png?v=1795450187881",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -221,9 +221,17 @@
     "montaje",
     "zonas"
    ]
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
- "modificado": "2026-11-23T03:18:24.705Z",
+ "modificado": "2026-11-23T16:09:45.406Z",
  "modelo": {
   "version": 1,
   "base": {
