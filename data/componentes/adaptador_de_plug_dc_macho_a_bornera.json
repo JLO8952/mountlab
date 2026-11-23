@@ -86,7 +86,13 @@
    "func": "Terminal negativo / GND (conectado al barril exterior del plug DC)"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "datasheet": {
+   "fuente": "https://www.zamux.co/adaptador-de-plug-dc-macho-a-bornera",
+   "error": "la dirección no entrega un PDF directo (es una página web)",
+   "fecha": "2026-11-23"
+  }
+ },
  "historial": [
   {
    "v": 1,
