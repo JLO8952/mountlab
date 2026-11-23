@@ -86,7 +86,28 @@
   ],
   "forma": "redondeada",
   "base_tipo": "prisma",
-  "radio": 1.5
+  "radio": 1.5,
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 0,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 0,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
  },
  "zonas": [
   {
@@ -141,6 +162,27 @@
    "fuente": "https://www.zamux.co/adaptador-de-plug-dc-macho-a-bornera",
    "error": "la dirección no entrega un PDF directo (es una página web)",
    "fecha": "2026-11-23"
+  },
+  "dxf_huella": {
+   "nombre": "adaptador_de_plug_dc_macho_a_bornera_v2_huella.dxf",
+   "version": 2,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/adaptador_de_plug_dc_macho_a_bornera (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/adaptador_de_plug_dc_macho_a_bornera/adaptador_de_plug_dc_macho_a_bornera_v2_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "adaptador_de_plug_dc_macho_a_bornera_v2_montaje.step",
+   "version": 2,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/adaptador_de_plug_dc_macho_a_bornera (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/adaptador_de_plug_dc_macho_a_bornera/adaptador_de_plug_dc_macho_a_bornera_v2_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "adaptador_de_plug_dc_macho_a_bornera_v2_plano.dxf",
+   "version": 2,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/adaptador_de_plug_dc_macho_a_bornera (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/adaptador_de_plug_dc_macho_a_bornera/adaptador_de_plug_dc_macho_a_bornera_v2_plano.dxf"
   }
  },
  "historial": [
@@ -563,6 +605,5 @@
     "pieza": "bornera"
    }
   ]
- },
- "cad_pendiente": true
+ }
 }
