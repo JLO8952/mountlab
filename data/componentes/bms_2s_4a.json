@@ -18,7 +18,7 @@
   "entradas": "B−, BM (punto medio), B+",
   "salidas": "P+ / P− (carga y cargador)",
   "dimensiones": "≈30 × 16 × 3.5 mm",
-  "datasheet": "",
+  "datasheet": "https://makerhero.com/img/files/download/HY2120-Datasheet.PDF",
   "notas": "Un BMS protege pero no regula la carga: usar un cargador de 8.4 V o un módulo de carga 2S."
  },
  "especificaciones": [
@@ -250,6 +250,14 @@
   {
    "fecha": "2026-11-21",
    "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado con datos de datasheet subido (lectura local) (aprobado): ficha.datasheet",
+   "cambios": [
+    "ficha.datasheet"
+   ]
   }
  ],
  "modelo": {
@@ -641,5 +649,7 @@
     "h": 2
    }
   ]
- }
+ },
+ "modificado": "2026-11-23T16:35:23.017Z",
+ "cad_pendiente": true
 }
