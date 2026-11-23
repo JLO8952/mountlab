@@ -1,0 +1,455 @@
+{
+ "id": "modulo_rele_5v_1_canal",
+ "nombre": "Módulo Relé 5V 1 Canal (JQC-3FF-S-Z)",
+ "tipo": "electronico",
+ "categoria": "Actuadores",
+ "etiquetas": [
+  "rele",
+  "5v",
+  "1-canal",
+  "jqc-3ff-s-z",
+  "actuador",
+  "conmutacion",
+  "potencia",
+  "arduino"
+ ],
+ "fabricante": "Genérico (Relé Tongling)",
+ "referencia": "JQC-3FF-S-Z (Módulo 1CH 5V)",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Módulo de conmutación electromecánica de 1 canal alimentado a 5V DC con relé Tongling JQC-3FF-S-Z, bornera de tornillo de 3 polos (NO, COM, NC), cabezal macho de 3 pines (VCC, GND, IN) y LEDs de encendido y activación.",
+  "funcionamiento": "Una señal digital en el pin IN acciona un transistor SMD que energiza la bobina de 5V del relé JQC-3FF-S-Z (protegida por un diodo volante), conmutando el contacto común (COM) entre normalmente cerrado (NC) y normalmente abierto (NO).",
+  "voltaje": "5 V DC (bobina y alimentación de control)",
+  "corriente": "~70-80 mA con bobina energizada (reposo ~5 mA por LED PWR)",
+  "interfaz": "Digital (1 pin de control IN)",
+  "entradas": "VCC (5V), GND, IN (señal lógica de control)",
+  "salidas": "Bornera de 3 terminales: NO (Normalmente Abierto), COM (Común), NC (Normalmente Cerrado); hasta 10A 250VAC / 15A 125VAC / 10A 30VDC",
+  "dimensiones": "43.0 x 17.0 x 18.5 mm aprox. (sin agujeros de montaje; header paso 2.54 mm; bornera paso 5.0 mm)",
+  "datasheet": "https://www.zamux.co/modulo-rele-1-canales",
+  "notas": "Versión compacta sin optoacoplador ni agujeros de fijación. No ofrece aislamiento galvánico en la etapa de entrada aparte del propio relé. Verificar si el disparo de la unidad específica es por nivel bajo (LOW) o alto (HIGH) antes de integrar; con microcontroladores de 3.3V (ESP32/ESP8266) alimentar VCC a 5V y comprobar umbral de disparo."
+ },
+ "especificaciones": [
+  {
+   "param": "Relé integrado",
+   "valor": "Tongling JQC-3FF-S-Z (5VDC)"
+  },
+  {
+   "param": "Voltaje de alimentación",
+   "valor": "5 V DC"
+  },
+  {
+   "param": "Capacidad de contacto AC",
+   "valor": "10 A @ 250 V AC / 15 A @ 125 V AC"
+  },
+  {
+   "param": "Capacidad de contacto DC",
+   "valor": "10 A @ 30 V DC"
+  },
+  {
+   "param": "Número de canales",
+   "valor": "1 (SPDT: NO, COM, NC)"
+  },
+  {
+   "param": "Aislamiento óptico",
+   "valor": "No (etapa de disparo directa por transistor)"
+  },
+  {
+   "param": "Indicadores visuales",
+   "valor": "LED rojo (PWR) y LED verde (estado de relé)"
+  },
+  {
+   "param": "Conectores",
+   "valor": "Header macho 1x3 (2.54 mm) y bornera de tornillo 3 pines (5.0 mm)"
+  }
+ ],
+ "imagen": null,
+ "precios": [
+  {
+   "proveedor": "Zamux",
+   "precio_cop": 4500,
+   "url": "https://www.zamux.co/modulo-rele-1-canales",
+   "fecha": "2026-11",
+   "estimado": false
+  }
+ ],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 15.3,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   43,
+   17,
+   1.6
+  ],
+  "forma": "rect"
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Conector control (VCC, GND, IN)",
+   "cx": -16.5,
+   "cy": 0,
+   "w": 2.54,
+   "h": 7.62,
+   "z": [
+    1.6,
+    12.6
+   ],
+   "salida": "+Z",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "p1"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED estado (verde)",
+   "cx": -18.5,
+   "cy": 5.5,
+   "w": 3,
+   "h": 3,
+   "z": [
+    1.6,
+    6.1
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "p2"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED PWR (rojo)",
+   "cx": -18.5,
+   "cy": -5.5,
+   "w": 3,
+   "h": 3,
+   "z": [
+    1.6,
+    6.1
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "p3"
+  },
+  {
+   "tipo": "conector",
+   "nombre": "Bornera potencia (NO, COM, NC)",
+   "cx": 13.25,
+   "cy": 0,
+   "w": 7.5,
+   "h": 16.5,
+   "z": [
+    1.6,
+    11.6
+   ],
+   "salida": "-X",
+   "holgura": 15,
+   "auto": true,
+   "pieza": "p5"
+  }
+ ],
+ "pines": [
+  {
+   "n": "VCC",
+   "func": "Alimentación positiva 5 V DC",
+   "x": -16.5,
+   "y": -2.54,
+   "conector": "Conector control (VCC, GND, IN)",
+   "pieza": "p1",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra / referencia 0 V",
+   "x": -16.5,
+   "y": 0,
+   "conector": "Conector control (VCC, GND, IN)",
+   "pieza": "p1",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "IN",
+   "func": "Entrada de señal digital de control del relé",
+   "x": -16.5,
+   "y": 2.54,
+   "conector": "Conector control (VCC, GND, IN)",
+   "pieza": "p1",
+   "idx": 2,
+   "cara": "A"
+  },
+  {
+   "n": "Bornera potencia (NO, COM, NC).1",
+   "func": "",
+   "x": 17,
+   "y": -5,
+   "conector": "Bornera potencia (NO, COM, NC)",
+   "pieza": "p5",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "Bornera potencia (NO, COM, NC).2",
+   "func": "",
+   "x": 17,
+   "y": 0,
+   "conector": "Bornera potencia (NO, COM, NC)",
+   "pieza": "p5",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "Bornera potencia (NO, COM, NC).3",
+   "func": "",
+   "x": 17,
+   "y": 5,
+   "conector": "Bornera potencia (NO, COM, NC)",
+   "pieza": "p5",
+   "idx": 2,
+   "cara": "A"
+  }
+ ],
+ "archivos": {},
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-22",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo, precios",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo",
+    "precios"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 43,
+   "W": 17,
+   "d": 30,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "header_macho",
+    "nombre": "Conector control (VCC, GND, IN)",
+    "cara": "A",
+    "x": -16.5,
+    "y": 0,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "n": 3,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 11
+    }
+   },
+   {
+    "id": "p2",
+    "plantilla": "led_th",
+    "nombre": "LED estado (verde)",
+    "cara": "A",
+    "x": -18.5,
+    "y": 5.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 3,
+     "color": "rojo"
+    }
+   },
+   {
+    "id": "p3",
+    "plantilla": "led_th",
+    "nombre": "LED PWR (rojo)",
+    "cara": "A",
+    "x": -18.5,
+    "y": -5.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 3,
+     "color": "rojo"
+    }
+   },
+   {
+    "id": "p4",
+    "plantilla": "rele",
+    "nombre": "Relé Tongling JQC-3FF-S-Z",
+    "cara": "A",
+    "x": 2.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "p5",
+    "plantilla": "bornera",
+    "nombre": "Bornera potencia (NO, COM, NC)",
+    "cara": "A",
+    "x": 17,
+    "y": 0,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "n": 3
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -16.5,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#1f2937",
+    "pieza": "p1",
+    "w": 2.54,
+    "h": 7.62
+   },
+   {
+    "f": "caja",
+    "cx": -16.5,
+    "cy": -2.54,
+    "z0": 4.1,
+    "z1": 12.6,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -16.5,
+    "cy": 0,
+    "z0": 4.1,
+    "z1": 12.6,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -16.5,
+    "cy": 2.54,
+    "z0": 4.1,
+    "z1": 12.6,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "cil",
+    "cx": -18.5,
+    "cy": 5.5,
+    "z0": 1.6,
+    "z1": 6.1,
+    "color": "#dc2626",
+    "pieza": "p2",
+    "d": 3
+   },
+   {
+    "f": "cil",
+    "cx": -18.5,
+    "cy": -5.5,
+    "z0": 1.6,
+    "z1": 6.1,
+    "color": "#dc2626",
+    "pieza": "p3",
+    "d": 3
+   },
+   {
+    "f": "caja",
+    "cx": 2.5,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 16.9,
+    "color": "#2563eb",
+    "pieza": "p4",
+    "w": 19,
+    "h": 15.5
+   },
+   {
+    "f": "caja",
+    "cx": 17,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 11.6,
+    "color": "#2563eb",
+    "pieza": "p5",
+    "w": 7.5,
+    "h": 16.5
+   },
+   {
+    "f": "cil",
+    "cx": 18,
+    "cy": -5,
+    "z0": 11.6,
+    "z1": 12,
+    "color": "#cbd5e1",
+    "pieza": "p5",
+    "d": 3
+   },
+   {
+    "f": "cil",
+    "cx": 18,
+    "cy": 0,
+    "z0": 11.6,
+    "z1": 12,
+    "color": "#cbd5e1",
+    "pieza": "p5",
+    "d": 3
+   },
+   {
+    "f": "cil",
+    "cx": 18,
+    "cy": 5,
+    "z0": 11.6,
+    "z1": 12,
+    "color": "#cbd5e1",
+    "pieza": "p5",
+    "d": 3
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-23T02:52:50.136Z"
+}
