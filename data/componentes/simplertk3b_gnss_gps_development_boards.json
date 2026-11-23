@@ -60,8 +60,8 @@
   }
  ],
  "imagen": {
-  "src": "img/simplertk3b_gnss_gps_development_boards.jpg?v=1795444559992",
-  "origen": "foto subida en el chat"
+  "src": "img/simplertk3b_gnss_gps_development_boards.png?v=1795448312992",
+  "origen": "render del modelo 3D"
  },
  "precios": [],
  "busquedas": {},
@@ -392,9 +392,17 @@
     "montaje",
     "zonas"
    ]
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
- "modificado": "2026-11-23T15:38:18.341Z",
+ "modificado": "2026-11-23T15:38:31.183Z",
  "modelo": {
   "version": 1,
   "base": {
