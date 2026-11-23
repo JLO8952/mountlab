@@ -56,8 +56,8 @@
   }
  ],
  "imagen": {
-  "src": "img/12_esp32_38p.png",
-  "origen": "render 3D (modelo simplificado)"
+  "src": "img/esp32_38p.png?v=1795448597816",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -410,6 +410,14 @@
   {
    "fecha": "2026-11-21",
    "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
  "modelo": {
@@ -1877,5 +1885,6 @@
     "h": 0.64
    }
   ]
- }
+ },
+ "modificado": "2026-11-23T15:43:15.976Z"
 }
