@@ -4,12 +4,36 @@
  "estado": "idea",
  "descripcion": "",
  "creado": "2026-11-22",
- "bom": [],
+ "bom": [
+  {
+   "id": "esp32_devkit_30p",
+   "cantidad": 1,
+   "nota": ""
+  }
+ ],
  "documentacion": "",
  "historial": [
   {
    "fecha": "2026-11-22",
    "nota": "Creado"
+  },
+  {
+   "fecha": "2026-11-22",
+   "nota": "Añadido esp32_devkit_30p"
+  }
+ ],
+ "subs": [
+  {
+   "id": "principal",
+   "nombre": "Circuito principal",
+   "tipo": "logica",
+   "circuito": {
+    "version": 1,
+    "inst": [],
+    "cables": [],
+    "etiquetas": {},
+    "notas": ""
+   }
   }
  ]
 }
