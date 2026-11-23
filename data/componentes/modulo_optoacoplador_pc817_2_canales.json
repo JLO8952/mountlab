@@ -60,7 +60,10 @@
    "valor": "2 jumpers de selección de salida (1 por canal)"
   }
  ],
- "imagen": null,
+ "imagen": {
+  "src": "img/modulo_optoacoplador_pc817_2_canales.png?v=1795451559195",
+  "origen": "render del modelo 3D"
+ },
  "precios": [
   {
    "proveedor": "Zamux",
@@ -403,6 +406,14 @@
     "montaje",
     "modelo",
     "precios"
+   ]
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
    ]
   }
  ],
@@ -755,5 +766,5 @@
    }
   ]
  },
- "modificado": "2026-11-23T02:55:12.357Z"
+ "modificado": "2026-11-23T16:32:37.190Z"
 }
