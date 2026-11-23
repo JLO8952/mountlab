@@ -1,0 +1,712 @@
+{
+ "id": "modulo_optoacoplador_pc817_2_canales",
+ "nombre": "Módulo Optoacoplador PC817 2 Canales",
+ "tipo": "electronico",
+ "categoria": "Circuitos integrados",
+ "etiquetas": [
+  "optoacoplador",
+  "pc817",
+  "aislamiento",
+  "2-canales",
+  "galvanico",
+  "conversor-nivel",
+  "proteccion",
+  "industrial"
+ ],
+ "fabricante": "Genérico (Optoacoplador PC817)",
+ "referencia": "817 Module (2 Channel Isolation)",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Módulo aislador optoacoplado de 2 canales independientes con circuitos PC817 SMD, borneras de tornillo de paso 5.0 mm para entradas y salidas, y jumpers de configuración de salida por canal.",
+  "funcionamiento": "Cada canal convierte la señal eléctrica de entrada en luz infrarroja mediante el LED interno del PC817, activando un fototransistor en el lado de salida sin conexión eléctrica directa entre ambos circuitos, permitiendo aislar ruido y adaptar niveles de voltaje.",
+  "voltaje": "Entrada: 3.6 - 24 V DC / Salida: 3.6 - 30 V DC (típico para módulos PC817 estándar)",
+  "corriente": "Corriente de salida máx. ~10 mA por canal (no apto para cargas directas de potencia)",
+  "interfaz": "Digital aislada (2 canales independientes)",
+  "entradas": "2 borneras de 2 polos: IN1, G (canal 1) e IN2, G (canal 2)",
+  "salidas": "2 borneras de 2 polos aisladas (V1/OUT1, G1 y V2/OUT2, G2) con jumper selector de configuración por canal",
+  "dimensiones": "38.0 x 29.0 x 12.0 mm aprox. (4 agujeros de montaje ~3.0 mm en las esquinas; borneras paso 5.0 mm)",
+  "datasheet": "https://www.zamux.co/modulo-optoacoplador-pc817-2-canales",
+  "notas": "Ideal para aislar microcontroladores de 3.3V/5V frente a señales industriales de 12V o 24V. La frecuencia de conmutación del PC817 está limitada (típico < 4 kHz), por lo que no se recomienda para señales PWM rápidas o comunicación serial de alta velocidad. Verificar la posición de los jumpers amarillos según si se requiere salida en alto o pull-down."
+ },
+ "especificaciones": [
+  {
+   "param": "Optoacoplador integrado",
+   "valor": "2x PC817 (encapsulado SOP-4 SMD)"
+  },
+  {
+   "param": "Número de canales",
+   "valor": "2 canales independientes"
+  },
+  {
+   "param": "Voltaje de señal de entrada",
+   "valor": "3.6 V - 24 V DC (típico)"
+  },
+  {
+   "param": "Voltaje de salida",
+   "valor": "3.6 V - 30 V DC (típico)"
+  },
+  {
+   "param": "Frecuencia máxima recomendada",
+   "valor": "~4 kHz"
+  },
+  {
+   "param": "Conectores",
+   "valor": "4 borneras de tornillo de 2 pines (paso 5.0 mm)"
+  },
+  {
+   "param": "Configuración",
+   "valor": "2 jumpers de selección de salida (1 por canal)"
+  }
+ ],
+ "imagen": null,
+ "precios": [
+  {
+   "proveedor": "Zamux",
+   "precio_cop": 6500,
+   "url": "https://www.zamux.co/modulo-optoacoplador-pc817-2-canales",
+   "fecha": "2026-11",
+   "estimado": false
+  }
+ ],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -15.5,
+    "y": 11,
+    "d": 3
+   },
+   {
+    "x": 15.5,
+    "y": 11,
+    "d": 3
+   },
+   {
+    "x": -15.5,
+    "y": -11,
+    "d": 3
+   },
+   {
+    "x": 15.5,
+    "y": -11,
+    "d": 3
+   }
+  ],
+  "altura_superior": 10.4,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   38,
+   29,
+   1.6
+  ],
+  "forma": "rect"
+ },
+ "zonas": [
+  {
+   "tipo": "conector",
+   "nombre": "Bornera Entrada Canal 1 (IN1, G)",
+   "cx": 10.75,
+   "cy": -5.5,
+   "w": 7.5,
+   "h": 11.5,
+   "z": [
+    1.6,
+    11.6
+   ],
+   "salida": "-X",
+   "holgura": 15,
+   "auto": true,
+   "pieza": "p1"
+  },
+  {
+   "tipo": "conector",
+   "nombre": "Bornera Entrada Canal 2 (IN2, G)",
+   "cx": 10.75,
+   "cy": 5.5,
+   "w": 7.5,
+   "h": 11.5,
+   "z": [
+    1.6,
+    11.6
+   ],
+   "salida": "-X",
+   "holgura": 15,
+   "auto": true,
+   "pieza": "p2"
+  },
+  {
+   "tipo": "conector",
+   "nombre": "Bornera Salida Canal 1",
+   "cx": -18.25,
+   "cy": -5.5,
+   "w": 7.5,
+   "h": 11.5,
+   "z": [
+    1.6,
+    11.6
+   ],
+   "salida": "-X",
+   "holgura": 15,
+   "auto": true,
+   "pieza": "p3"
+  },
+  {
+   "tipo": "conector",
+   "nombre": "Bornera Salida Canal 2",
+   "cx": -18.25,
+   "cy": 5.5,
+   "w": 7.5,
+   "h": 11.5,
+   "z": [
+    1.6,
+    11.6
+   ],
+   "salida": "-X",
+   "holgura": 15,
+   "auto": true,
+   "pieza": "p4"
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Jumper CH1",
+   "cx": -6.5,
+   "cy": -5.5,
+   "w": 5.08,
+   "h": 2.54,
+   "z": [
+    1.6,
+    10.1
+   ],
+   "salida": "+Z",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "p7"
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Jumper CH2",
+   "cx": -6.5,
+   "cy": 5.5,
+   "w": 5.08,
+   "h": 2.54,
+   "z": [
+    1.6,
+    10.1
+   ],
+   "salida": "+Z",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "p8"
+  }
+ ],
+ "pines": [
+  {
+   "n": "IN1",
+   "func": "Entrada de señal positiva canal 1",
+   "x": 14.5,
+   "y": -8,
+   "conector": "Bornera Entrada Canal 1 (IN1, G)",
+   "pieza": "p1",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "G1_IN",
+   "func": "Tierra / referencia de entrada canal 1",
+   "x": 14.5,
+   "y": -3,
+   "conector": "Bornera Entrada Canal 1 (IN1, G)",
+   "pieza": "p1",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "IN2",
+   "func": "Entrada de señal positiva canal 2",
+   "x": 14.5,
+   "y": 3,
+   "conector": "Bornera Entrada Canal 2 (IN2, G)",
+   "pieza": "p2",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "G2_IN",
+   "func": "Tierra / referencia de entrada canal 2",
+   "x": 14.5,
+   "y": 8,
+   "conector": "Bornera Entrada Canal 2 (IN2, G)",
+   "pieza": "p2",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "OUT1",
+   "func": "Salida aislada / alimentación canal 1",
+   "x": -14.5,
+   "y": -8,
+   "conector": "Bornera Salida Canal 1",
+   "pieza": "p3",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "G1_OUT",
+   "func": "Tierra / referencia de salida canal 1",
+   "x": -14.5,
+   "y": -3,
+   "conector": "Bornera Salida Canal 1",
+   "pieza": "p3",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "OUT2",
+   "func": "Salida aislada / alimentación canal 2",
+   "x": -14.5,
+   "y": 3,
+   "conector": "Bornera Salida Canal 2",
+   "pieza": "p4",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "G2_OUT",
+   "func": "Tierra / referencia de salida canal 2",
+   "x": -14.5,
+   "y": 8,
+   "conector": "Bornera Salida Canal 2",
+   "pieza": "p4",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "Jumper CH1.1",
+   "func": "",
+   "x": -7.77,
+   "y": -5.5,
+   "conector": "Jumper CH1",
+   "pieza": "p7",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "Jumper CH1.2",
+   "func": "",
+   "x": -5.23,
+   "y": -5.5,
+   "conector": "Jumper CH1",
+   "pieza": "p7",
+   "idx": 1,
+   "cara": "A"
+  },
+  {
+   "n": "Jumper CH2.1",
+   "func": "",
+   "x": -7.77,
+   "y": 5.5,
+   "conector": "Jumper CH2",
+   "pieza": "p8",
+   "idx": 0,
+   "cara": "A"
+  },
+  {
+   "n": "Jumper CH2.2",
+   "func": "",
+   "x": -5.23,
+   "y": 5.5,
+   "conector": "Jumper CH2",
+   "pieza": "p8",
+   "idx": 1,
+   "cara": "A"
+  }
+ ],
+ "archivos": {},
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-22",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo, precios",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo",
+    "precios"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 38,
+   "W": 29,
+   "d": 30,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#15803d"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "bornera",
+    "nombre": "Bornera Entrada Canal 1 (IN1, G)",
+    "cara": "A",
+    "x": 14.5,
+    "y": -5.5,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "n": 2
+    }
+   },
+   {
+    "id": "p2",
+    "plantilla": "bornera",
+    "nombre": "Bornera Entrada Canal 2 (IN2, G)",
+    "cara": "A",
+    "x": 14.5,
+    "y": 5.5,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "n": 2
+    }
+   },
+   {
+    "id": "p3",
+    "plantilla": "bornera",
+    "nombre": "Bornera Salida Canal 1",
+    "cara": "A",
+    "x": -14.5,
+    "y": -5.5,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "n": 2
+    }
+   },
+   {
+    "id": "p4",
+    "plantilla": "bornera",
+    "nombre": "Bornera Salida Canal 2",
+    "cara": "A",
+    "x": -14.5,
+    "y": 5.5,
+    "rot": 90,
+    "z": 0,
+    "params": {
+     "n": 2
+    }
+   },
+   {
+    "id": "p5",
+    "plantilla": "f_caja",
+    "nombre": "Optoacoplador PC817 CH1",
+    "cara": "A",
+    "x": 2,
+    "y": -5.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 6.5,
+     "h": 4.5,
+     "alto": 3.5,
+     "r": 0.3,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p6",
+    "plantilla": "f_caja",
+    "nombre": "Optoacoplador PC817 CH2",
+    "cara": "A",
+    "x": 2,
+    "y": 5.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 6.5,
+     "h": 4.5,
+     "alto": 3.5,
+     "r": 0.3,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p7",
+    "plantilla": "header_macho",
+    "nombre": "Jumper CH1",
+    "cara": "A",
+    "x": -6.5,
+    "y": -5.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 2,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 8.5
+    }
+   },
+   {
+    "id": "p8",
+    "plantilla": "header_macho",
+    "nombre": "Jumper CH2",
+    "cara": "A",
+    "x": -6.5,
+    "y": 5.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 2,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 8.5
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 14.5,
+    "cy": -5.5,
+    "z0": 1.6,
+    "z1": 11.6,
+    "color": "#2563eb",
+    "pieza": "p1",
+    "w": 7.5,
+    "h": 11.5
+   },
+   {
+    "f": "cil",
+    "cx": 15.5,
+    "cy": -8,
+    "z0": 11.6,
+    "z1": 12,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "d": 3
+   },
+   {
+    "f": "cil",
+    "cx": 15.5,
+    "cy": -3,
+    "z0": 11.6,
+    "z1": 12,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "d": 3
+   },
+   {
+    "f": "caja",
+    "cx": 14.5,
+    "cy": 5.5,
+    "z0": 1.6,
+    "z1": 11.6,
+    "color": "#2563eb",
+    "pieza": "p2",
+    "w": 7.5,
+    "h": 11.5
+   },
+   {
+    "f": "cil",
+    "cx": 15.5,
+    "cy": 3,
+    "z0": 11.6,
+    "z1": 12,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "d": 3
+   },
+   {
+    "f": "cil",
+    "cx": 15.5,
+    "cy": 8,
+    "z0": 11.6,
+    "z1": 12,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "d": 3
+   },
+   {
+    "f": "caja",
+    "cx": -14.5,
+    "cy": -5.5,
+    "z0": 1.6,
+    "z1": 11.6,
+    "color": "#2563eb",
+    "pieza": "p3",
+    "w": 7.5,
+    "h": 11.5
+   },
+   {
+    "f": "cil",
+    "cx": -13.5,
+    "cy": -8,
+    "z0": 11.6,
+    "z1": 12,
+    "color": "#cbd5e1",
+    "pieza": "p3",
+    "d": 3
+   },
+   {
+    "f": "cil",
+    "cx": -13.5,
+    "cy": -3,
+    "z0": 11.6,
+    "z1": 12,
+    "color": "#cbd5e1",
+    "pieza": "p3",
+    "d": 3
+   },
+   {
+    "f": "caja",
+    "cx": -14.5,
+    "cy": 5.5,
+    "z0": 1.6,
+    "z1": 11.6,
+    "color": "#2563eb",
+    "pieza": "p4",
+    "w": 7.5,
+    "h": 11.5
+   },
+   {
+    "f": "cil",
+    "cx": -13.5,
+    "cy": 3,
+    "z0": 11.6,
+    "z1": 12,
+    "color": "#cbd5e1",
+    "pieza": "p4",
+    "d": 3
+   },
+   {
+    "f": "cil",
+    "cx": -13.5,
+    "cy": 8,
+    "z0": 11.6,
+    "z1": 12,
+    "color": "#cbd5e1",
+    "pieza": "p4",
+    "d": 3
+   },
+   {
+    "f": "caja",
+    "cx": 2,
+    "cy": -5.5,
+    "z0": 1.6,
+    "z1": 5.1,
+    "color": "#64748b",
+    "pieza": "p5",
+    "w": 6.5,
+    "h": 4.5,
+    "r": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": 2,
+    "cy": 5.5,
+    "z0": 1.6,
+    "z1": 5.1,
+    "color": "#64748b",
+    "pieza": "p6",
+    "w": 6.5,
+    "h": 4.5,
+    "r": 0.3
+   },
+   {
+    "f": "caja",
+    "cx": -6.5,
+    "cy": -5.5,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#1f2937",
+    "pieza": "p7",
+    "w": 5.08,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -7.77,
+    "cy": -5.5,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p7",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -5.23,
+    "cy": -5.5,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p7",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -6.5,
+    "cy": 5.5,
+    "z0": 1.6,
+    "z1": 4.1,
+    "color": "#1f2937",
+    "pieza": "p8",
+    "w": 5.08,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -7.77,
+    "cy": 5.5,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p8",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -5.23,
+    "cy": 5.5,
+    "z0": 4.1,
+    "z1": 10.1,
+    "color": "#d4a017",
+    "pieza": "p8",
+    "w": 0.64,
+    "h": 0.64
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-23T02:55:12.357Z"
+}
