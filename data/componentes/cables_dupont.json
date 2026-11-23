@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "juego",
  "ficha": {
   "descripcion": "Cables puente con terminal Dupont paso 2.54 mm (M-M, M-H, H-H).",
@@ -19,7 +19,7 @@
   "salidas": "Terminal macho/hembra 2.54 mm",
   "dimensiones": "Carcasa 2.54 × 2.54 × 14 mm",
   "datasheet": "",
-  "notas": ""
+  "notas": "Modelo 3D hecho con IA desde medidas"
  },
  "especificaciones": [
   {
@@ -36,8 +36,8 @@
   }
  ],
  "imagen": {
-  "src": "img/03_cables_dupont.png",
-  "origen": "render 3D (modelo simplificado)"
+  "src": "img/cables_dupont.png?v=1795450516607",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -66,9 +66,65 @@
   "datasheet": "https://www.google.com/search?q=dupont+jumper+wires+40pcs+datasheet+pdf",
   "imagenes": "https://www.google.com/search?tbm=isch&q=dupont+jumper+wires+40pcs"
  },
- "montaje": null,
- "zonas": [],
- "pines": [],
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "ninguna",
+  "agujeros": [],
+  "altura_superior": 0.5,
+  "altura_inferior": 0.05,
+  "holgura_inferior_cableado": 0,
+  "nota": "Conector de cable Dupont individual (paso 2.54 mm); se enchufa directamente en headers o protoboard sin fijación a la carcasa. Dejar al menos 15 mm libres sobre la cara A para el radio de curvatura del cable.",
+  "pcb": [
+   2.54,
+   2.54,
+   14
+  ],
+  "forma": "rect",
+  "base_tipo": "prisma"
+ },
+ "zonas": [
+  {
+   "tipo": "conector",
+   "nombre": "Salida de cable (26 AWG aprox.)",
+   "cx": 0,
+   "cy": 0,
+   "w": 2.54,
+   "h": 2.54,
+   "z": [
+    14,
+    14.5
+   ],
+   "salida": "+Z",
+   "holgura": 15,
+   "auto": true,
+   "pieza": "cable"
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Terminal de acople Dupont (paso 2.54 mm)",
+   "cx": 0,
+   "cy": 0,
+   "w": 2.54,
+   "h": 2.54,
+   "z": [
+    -0.5,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 8,
+   "auto": true,
+   "pieza": "contacto"
+  }
+ ],
+ "pines": [
+  {
+   "n": "1",
+   "func": "",
+   "x": 0,
+   "y": 0,
+   "cara": "B"
+  }
+ ],
  "archivos": {
   "step": {
    "drive_id": "1cRiqdtLJrTcXKN0b6oFi--LR5RT_qlKs",
@@ -88,6 +144,131 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: modelo 3D, montaje/agujeros, zonas, pines, ficha técnica, imagen",
+   "cambios": [
+    "modelo",
+    "montaje",
+    "zonas",
+    "pines",
+    "ficha",
+    "imagen"
+   ]
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 2.54,
+   "W": 2.54,
+   "d": 2.54,
+   "espesor": 14,
+   "radio": 0,
+   "color": "#111827"
+  },
+  "piezas": [
+   {
+    "id": "cable",
+    "nombre": "Salida de cable (26 AWG aprox.)",
+    "cara": "A",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "origen": "ia",
+    "plantilla": "importada",
+    "params": {
+     "prim": [
+      {
+       "f": "cil",
+       "cx": 0,
+       "cy": 0,
+       "d": 1.3,
+       "z0": 0,
+       "z1": 0.5,
+       "color": "#ef4444"
+      }
+     ],
+     "zona": {
+      "tipo": "conector",
+      "cx": 0,
+      "cy": 0,
+      "w": 2.54,
+      "h": 2.54,
+      "z0": 0,
+      "z1": 0.5,
+      "salida": "+Z",
+      "holgura": 15
+     }
+    }
+   },
+   {
+    "id": "contacto",
+    "nombre": "Terminal de acople Dupont (paso 2.54 mm)",
+    "cara": "B",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "origen": "ia",
+    "plantilla": "importada",
+    "params": {
+     "prim": [
+      {
+       "f": "caja",
+       "cx": 0,
+       "cy": 0,
+       "w": 1.1,
+       "h": 1.1,
+       "z0": -0.2,
+       "z1": 0.05,
+       "color": "#cbd5e1"
+      }
+     ],
+     "zona": {
+      "tipo": "pines",
+      "cx": 0,
+      "cy": 0,
+      "w": 2.54,
+      "h": 2.54,
+      "z0": 0,
+      "z1": 0.5,
+      "salida": "+Z",
+      "holgura": 8
+     }
+    }
+   }
+  ],
+  "nota": "Modelado con IA a partir de medidas",
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": 0,
+    "cy": 0,
+    "z0": 14,
+    "z1": 14.5,
+    "color": "#ef4444",
+    "pieza": "cable",
+    "d": 1.3
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 0,
+    "z0": -0.05,
+    "z1": 0.2,
+    "color": "#cbd5e1",
+    "pieza": "contacto",
+    "w": 1.1,
+    "h": 1.1
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-23T16:15:14.392Z"
 }
