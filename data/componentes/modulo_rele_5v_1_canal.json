@@ -88,7 +88,28 @@
    17,
    1.6
   ],
-  "forma": "rect"
+  "forma": "rect",
+  "conexiones": {
+   "header": "arriba",
+   "header_alto": 11,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 15.3,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Sin header: cables soldados en los pads por arriba (≈6 mm para la curva del cable)."
+   },
+   "jumper": {
+    "altura_superior": 15.3,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 16,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "Header macho arriba (11 mm): carcasa Dupont hembra + curva ≈16 mm."
+   }
+  }
  },
  "zonas": [
   {
@@ -218,7 +239,34 @@
    "cara": "A"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "modulo_rele_5v_1_canal_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/modulo_rele_5v_1_canal (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_rele_5v_1_canal/modulo_rele_5v_1_canal_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "modulo_rele_5v_1_canal_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/modulo_rele_5v_1_canal (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_rele_5v_1_canal/modulo_rele_5v_1_canal_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "modulo_rele_5v_1_canal_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/modulo_rele_5v_1_canal (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/modulo_rele_5v_1_canal/modulo_rele_5v_1_canal_v1_plano.dxf"
+  },
+  "datasheet": {
+   "fuente": "https://www.zamux.co/modulo-rele-1-canales",
+   "error": "la dirección no entrega un PDF directo (es una página web)",
+   "fecha": "2026-11-23"
+  }
+ },
  "historial": [
   {
    "v": 1,
@@ -450,6 +498,5 @@
    }
   ]
  },
- "cad_pendiente": true,
  "modificado": "2026-11-23T02:52:50.136Z"
 }
