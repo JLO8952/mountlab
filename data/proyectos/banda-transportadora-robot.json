@@ -19,6 +19,11 @@
    "id": "modulo_optoacoplador_pc817_2_canales",
    "cantidad": 1,
    "nota": ""
+  },
+  {
+   "id": "adaptador_de_plug_dc_macho_a_bornera",
+   "cantidad": 1,
+   "nota": ""
   }
  ],
  "documentacion": "",
@@ -38,6 +43,10 @@
   {
    "fecha": "2026-11-22",
    "nota": "Añadido modulo_optoacoplador_pc817_2_canales"
+  },
+  {
+   "fecha": "2026-11-22",
+   "nota": "Añadido adaptador_de_plug_dc_macho_a_bornera"
   }
  ],
  "subs": [
