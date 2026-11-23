@@ -51,8 +51,8 @@
   }
  ],
  "imagen": {
-  "src": "img/21_xbee_s2c.png",
-  "origen": "render 3D (modelo simplificado)"
+  "src": "img/xbee_s2c.png?v=1795448783659",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -296,6 +296,14 @@
   {
    "fecha": "2026-11-21",
    "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
+  },
+  {
+   "v": 3,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
  "modelo": {
@@ -956,5 +964,6 @@
     "h": 0.5
    }
   ]
- }
+ },
+ "modificado": "2026-11-23T15:46:21.945Z"
 }
