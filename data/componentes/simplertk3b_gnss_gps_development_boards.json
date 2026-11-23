@@ -1,0 +1,137 @@
+{
+ "id": "simplertk3b_gnss_gps_development_boards",
+ "nombre": "Tarjeta de Desarrollo GNSS/GPS RTK Triple Banda simpleRTK3B",
+ "tipo": "electronico",
+ "categoria": "Comunicación RF",
+ "etiquetas": [
+  "gnss",
+  "gps",
+  "rtk",
+  "triple-banda",
+  "ardusimple",
+  "simplertk3b",
+  "um980",
+  "um981",
+  "um982",
+  "xbee",
+  "arduino-shield"
+ ],
+ "fabricante": "ArduSimple",
+ "referencia": "simpleRTK3B (UM980 / UM981 / UM982)",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Tarjeta de evaluación GNSS/GPS RTK multibanda (triple banda) de alta precisión en formato shield tipo Arduino, equipada con módulo Unicorecomm (UM980, UM981 o UM982), conector SMA para antena GNSS activa, puerto USB Tipo C y zócalo XBee para expansión de comunicaciones.",
+  "funcionamiento": "Recibe señales satelitales GNSS en triple banda y procesa correcciones RTK (vía USB, UART o radio/Wi-Fi/Bluetooth/Ethernet en el zócalo XBee) para entregar posicionamiento de precisión centimétrica a plataformas host como Arduino, Raspberry Pi, STM32 Nucleo o NVIDIA Jetson.",
+  "voltaje": "5 V DC (vía USB-C o pines de alimentación del shield) / Lógica compatible con 3.3 V y 5 V según riel IOREF",
+  "corriente": "Dependiente de la variante (UM980/UM981/UM982) y accesorios XBee conectados",
+  "interfaz": "USB Tipo C, UART (pines shield y zócalo XBee), formato Arduino Shield",
+  "entradas": "Conector SMA para antena GNSS multibanda (requerida), alimentación USB-C / 5 V, entrada de correcciones RTCM",
+  "salidas": "Datos GNSS NMEA / RTCM / binarios por USB-C y UART, pulso PPS",
+  "dimensiones": "Formato Arduino Shield estándar (medidas exactas no verificadas sin plano oficial)",
+  "datasheet": "https://co.mouser.com/es/c/?marcom=197924911",
+  "notas": "Requiere obligatoriamente una antena GNSS multibanda activa para lograr el rendimiento RTK óptimo; las antenas GPS estándar de banda única no son adecuadas. Existen múltiples variantes dentro de la familia simpleRTK3B (como Budget y Compass) según el módulo integrado (UM980, UM981 o UM982). El zócalo XBee admite radios, Bluetooth, Wi-Fi, Ethernet y dataloggers de ArduSimple."
+ },
+ "especificaciones": [
+  {
+   "param": "Fabricante",
+   "valor": "ArduSimple"
+  },
+  {
+   "param": "Módulos GNSS soportados (según variante)",
+   "valor": "Unicorecomm UM980 / UM981 / UM982 (Triple Banda RTK)"
+  },
+  {
+   "param": "Plataformas compatibles",
+   "valor": "Arduino, Raspberry Pi, STM32 Nucleo, NVIDIA Jetson"
+  },
+  {
+   "param": "Expansión",
+   "valor": "Zócalo XBee (radios, Bluetooth, Wi-Fi, Ethernet, dataloggers)"
+  },
+  {
+   "param": "Conector de antena",
+   "valor": "SMA hembra (requiere antena GNSS multibanda)"
+  },
+  {
+   "param": "Conector de datos/energía",
+   "valor": "USB Tipo C"
+  }
+ ],
+ "imagen": {
+  "src": "img/simplertk3b_gnss_gps_development_boards.jpg?v=1795444559992",
+  "origen": "foto subida en el chat"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": null,
+ "zonas": [],
+ "pines": [
+  {
+   "x": null,
+   "y": null,
+   "n": "IOREF",
+   "func": "Referencia de voltaje lógico del host (3.3 V / 5 V)"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "5V",
+   "func": "Alimentación 5 V DC"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "3V3",
+   "func": "Alimentación 3.3 V DC"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "GND",
+   "func": "Tierra / referencia 0 V"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "TX",
+   "func": "Transmisión UART (datos GNSS)"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "RX",
+   "func": "Recepción UART (comandos / correcciones RTK)"
+  }
+ ],
+ "archivos": {},
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-23",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines"
+   ]
+  }
+ ],
+ "modificado": "2026-11-23T14:35:57.755Z"
+}
