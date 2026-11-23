@@ -1,0 +1,15 @@
+{
+ "id": "banda-transportadora-robot",
+ "nombre": "BANDA TRANSPORTADORA ROBOT",
+ "estado": "idea",
+ "descripcion": "",
+ "creado": "2026-11-22",
+ "bom": [],
+ "documentacion": "",
+ "historial": [
+  {
+   "fecha": "2026-11-22",
+   "nota": "Creado"
+  }
+ ]
+}
