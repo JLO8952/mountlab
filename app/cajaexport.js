@@ -106,7 +106,13 @@
       G.push({ id: nmC(q.ref + "_" + (c ? c.id : q.n)), nombre: `${q.ref} ${q.n}`, tipo: "componente", T, solidos: S });
     }
     for (const el of R.elementos || []) {
-      const Fc = F[el.cara]; if (!Fc) continue; const P = accesorio(el, e); if (!P.length) continue;
+      const Fc = F[el.cara]; if (!Fc) continue;
+      if (MLCajaEl.enCaja) {   // modelo completo del elemento (app/cajamodelos.js)
+        const m = MLCajaEl.enCaja(R, el); if (!m || !m.prims.length) continue;
+        G.push({ id: nmC(el.ref + "_" + el.tipo), nombre: `${el.ref} ${el.n}`, tipo: "accesorio", T: m.T, solidos: MLCad.solidosPrims(m.prims) });
+        continue;
+      }
+      const P = accesorio(el, e); if (!P.length) continue;
       const [lx, ly] = Fc.uv(el.u, el.v), base = MLCad.tP(Fc.T, lx, ly, e);
       G.push({ id: nmC(el.ref + "_" + el.tipo), nombre: `${el.ref} ${el.n}`, tipo: "accesorio", T: { O: base, X: Fc.T.X, Y: Fc.T.Y, Z: Fc.T.Z }, solidos: P });
     }

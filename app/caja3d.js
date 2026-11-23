@@ -66,15 +66,23 @@
     aristas.position.set(L / 2, H / 2, -W / 2); g.add(aristas);
     // repisas
     R.niveles.slice(1).forEach(nv => { const m = new T.Mesh(new T.BoxGeometry(L - 1, R.p.repisa, W - 1), new T.MeshStandardMaterial({ color: "#475569", roughness: 0.8, transparent: true, opacity: 0.55 })); m.position.set(L / 2, nv.z - R.p.repisa / 2, -W / 2); g.add(m); });
-    // cuerpos internos de los elementos (conectores, ventiladores…)
+    // elementos de la caja con su modelo completo (app/cajamodelos.js) y, si se pide, sus espacios de uso (aire, cable, soldar, llave)
+    const aThree = v3 => [v3[0], v3[2], -v3[1]];
     for (const el of R.elementos || []) {
-      if (!(el.prof > 0)) continue;
-      const mat = new T.MeshStandardMaterial({ color: /vent_/.test(el.tipo) ? "#1f2937" : "#334155", roughness: 0.6 });
-      const cw = Math.min(el.w, 0.9 * el.w + 2), ch = el.h; let m;
-      if (el.cara === "-Y" || el.cara === "+Y") { m = new T.Mesh(new T.BoxGeometry(cw, ch, el.prof), mat); m.position.set(el.u, el.v, el.cara === "-Y" ? -el.prof / 2 : -(W - el.prof / 2)); }
-      else if (el.cara === "-X" || el.cara === "+X") { m = new T.Mesh(new T.BoxGeometry(el.prof, ch, cw), mat); m.position.set(el.cara === "-X" ? el.prof / 2 : L - el.prof / 2, el.v, -el.u); }
-      else { m = new T.Mesh(new T.BoxGeometry(el.w, el.prof, el.h), mat); m.position.set(el.u, el.cara === "tapa" ? H - el.prof / 2 : el.prof / 2, -el.v); }
-      g.add(m);
+      const m = MLCajaEl.enCaja ? MLCajaEl.enCaja(R, el) : null;
+      if (!m) continue;
+      const Tm = m.T, X = aThree(Tm.X), Y = aThree(Tm.Y), Z = aThree(Tm.Z), O = aThree(Tm.O);
+      // local three (a, b, c) = (x, z, −y) → caja = O + X·a + Y·(−c) + Z·b
+      const M4 = new T.Matrix4().set(X[0], Z[0], -Y[0], O[0], X[1], Z[1], -Y[1], O[1], X[2], Z[2], -Y[2], O[2], 0, 0, 0, 1);
+      const gEl = new T.Group(); gEl.matrixAutoUpdate = false; gEl.matrix.copy(M4);
+      MLModelo.mallasPrims(T, m.prims, gEl);
+      if (opt.espacios !== false) for (const sp of m.espacios) {
+        const col = { aire: "#38bdf8", cable: "#f59e0b", soldar: "#f97316", tuerca: "#a78bfa", conector: "#22c55e" }[sp.tipo] || "#f59e0b";
+        const bx = new T.Mesh(new T.BoxGeometry(sp.w, Math.max(0.1, sp.z1 - sp.z0), sp.h), new T.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.12, depthWrite: false }));
+        bx.position.set(sp.cx, (sp.z0 + sp.z1) / 2, -sp.cy); gEl.add(bx);
+        const ed = new T.LineSegments(new T.EdgesGeometry(bx.geometry), new T.LineBasicMaterial({ color: col, transparent: true, opacity: 0.5 })); ed.position.copy(bx.position); gEl.add(ed);
+      }
+      g.add(gEl);
     }
     // componentes: su modelo 3D de la biblioteca, o una placa + volumen si no tiene
     const subs = [...new Set(R.piezas.filter(q => q.elemento == null).map(q => q.sub || ""))];

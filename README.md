@@ -177,3 +177,17 @@ python -m http.server 8000               # ver la app en http://localhost:8000
   - Avisos: piezas que sobresalen del borde, módulo distinto al del nombre del archivo, recortes que no son de montaje.
 - Pantalla de revisión: original y generado lado a lado con cámaras enlazadas (y el original en malla encima), medidas sacadas, tabla de piezas para desmarcar o renombrar.
 - El perfil extruido se soporta en todo: planta 2D, Montaje, vista 3D, render de la ficha, STEP/DXF del navegador, caja 3D y ensamble de la caja, y `cad/regenerar.py` (CadQuery).
+
+### Modelar con IA desde fotos, plano o medidas (nov 2026)
+- `#/modelar-ia` (Generador → «🤖 Modelar con IA») y, en la pestaña Modelo 3D de cada componente, **🤖 Con IA** (`app/modelaria.js`, MLModelIA).
+- Material: fotos (arriba, lado, frente), plano en PDF/imagen (profesional o a mano), medidas generales (se leen de la ficha) y notas. La foto de la ficha se puede usar con un clic.
+- La app arma un **PDF / prompt** para Gemini, ChatGPT o Claude con: sistema de coordenadas, tipos de base, todas las plantillas con sus parámetros, formas libres (caja, cilindro, perfil extruido en x/y/z), montaje (agujeros, fijación), zonas con salida y holgura, pines, reglas de calidad (`supuestos` y `confianza`) y **dos ejemplos reales** de la biblioteca. Respuesta: un bloque ```json.
+- Al pegar la respuesta: se **valida y normaliza** (formas, giros a 90°, plantillas inexistentes → forma libre, agujeros fuera de la base), se arma con `MLPlant.sincronizar`, se **revisa** (piezas fuera de la base, encimadas, sobre agujeros; envolvente contra las medidas y contra la que declaró la IA) y se muestra en 3D y **superpuesto sobre la foto** (vista arriba/frente/lado/iso, opacidad, escala, arrastrar, girar).
+- **📤 Pedir corrección**: PDF con el render del modelo (iso, arriba, frente, lado), las fotos, los problemas encontrados, tu observación y el JSON actual, para que la IA lo corrija.
+- **Aplicar** reemplaza modelo y montaje de un componente (conserva ficha, precios y pines con nombre) o **crea** uno nuevo; queda listo para Guardar.
+
+### Elementos de la caja con modelo completo y volúmenes en los choques (nov 2026)
+- `app/cajamodelos.js` (MLCajaEl.modelo / volumen / marco / enCaja): modelo 3D de cada elemento con medidas reales, en coordenadas de la cara (z = 0 cara exterior): ventilador (marco, buje, 7 aspas, tornillos y tuercas), módulos de pantalla (vidrio, PCB, separadores, header), LED y pilotos, pulsadores metálicos y de 22 mm con bloque de contactos, paro de emergencia con placa amarilla, balancines KCD, palancas, llave, potenciómetros y encoder, USB/HDMI de panel, jacks DC, XT60/XT30, IEC, bananas, portafusible, RJ45/RJ11, D-sub, SMA/BNC/N, GX12/16/20, M8/M12, audio, prensaestopas PG y métricos, pasacables, buzzer y cámara.
+- Cada uno declara sus **espacios de uso**: aire del ventilador, curva del cable (radio ≥ 4 × Ø), espacio para soldar terminales, espacio para la llave de la tuerca, conector de la placa. **Cuerpo + espacios** definen lo que el elemento reserva por dentro (`caja.js`: rectángulo reservado contra la pared, profundidad de tapa/fondo) y entran en el cálculo de choques y del tamaño de la caja.
+- Rango de **espesor de pared** admitido (p. ej. KCD a presión 0.8–2.5 mm): aviso si la caja no cumple.
+- Se ven en la caja 3D (con «espacios de uso» translúcidos, que se pueden ocultar) y salen en el ensamble STEP/Parasolid y en el DXF de 6 vistas con su capa. Verificado: los 110 elementos con cuerpo generan sólidos válidos en OpenCascade.

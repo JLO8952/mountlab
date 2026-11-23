@@ -129,6 +129,8 @@
     return pos;
   }
 
+  /** Lo que ocupa un elemento por dentro según su modelo completo (cuerpo + aire, curva del cable, soldar, llave). */
+  const volEl = (e, p) => { try { return window.MLCajaEl && MLCajaEl.volumen ? MLCajaEl.volumen(e, p.espesor) : { ancho: 0, alto: 0, prof: +e.prof || 0 }; } catch (er) { return { ancho: 0, alto: 0, prof: +e.prof || 0 }; } };
   const PDEF = { gap: 3, pared: 2, espesor: 2, standoff: 5, arriba: 3, rotar: true, prop: 3, repisa: 2, nivelesMax: 3 };
   // alto de cada pieza: separadores (o pines/cables por debajo) + PCB + componentes + cables encima + holgura
   function preparar(lista, elems, p) {
@@ -139,9 +141,10 @@
     });
     // elementos de pared que entran hacia adentro: reservan un rectángulo contra su pared
     (elems || []).forEach((e, i) => {
-      if (!(+e.prof > 0) || !/^[+-][XY]$/.test(e.cara)) return;
-      const [ew, eh] = medidaEl(e), ejeX = /Y$/.test(e.cara), L = ejeX ? ew : +e.prof, W = ejeX ? +e.prof : ew;
-      items.push({ ref: "E" + (i + 1), n: e.nombre || defEl(e).n || "Elemento", elemento: i, L, W, esp: 0, w: L + p.gap, h: W + p.gap, bajo: 0, Ht: (eh || 10) + 4, Hc: null, paredes: [e.cara], nivelFijo: Math.max(0, +e.nivel || 0), fijo: true, notas: [] });
+      if (!/^[+-][XY]$/.test(e.cara)) return;
+      const vol = volEl(e, p), prof = Math.max(+e.prof || 0, vol.prof); if (!(prof > 0)) return;
+      const [ew, eh] = medidaEl(e), largo = Math.max(ew, vol.ancho), ejeX = /Y$/.test(e.cara), L = ejeX ? largo : prof, W = ejeX ? prof : largo;
+      items.push({ ref: "E" + (i + 1), n: e.nombre || defEl(e).n || "Elemento", elemento: i, L, W, esp: 0, w: L + p.gap, h: W + p.gap, bajo: 0, Ht: Math.max((eh || 10) + 4, vol.alto + 2), Hc: null, paredes: [e.cara], nivelFijo: Math.max(0, +e.nivel || 0), fijo: true, notas: [] });
     });
     return items;
   }
@@ -187,7 +190,7 @@
   function armar(pos, Lint, Wint, elems, p, extra) {
     const n = Math.max(1, ...pos.map(q => q.nivel + 1));
     const niveles = []; let z = 0;
-    const fondo = Math.max(0, ...(elems || []).filter(e => e.cara === "fondo").map(e => +e.prof || 0)), tapa = Math.max(0, ...(elems || []).filter(e => e.cara === "tapa").map(e => +e.prof || 0));
+    const fondo = Math.max(0, ...(elems || []).filter(e => e.cara === "fondo").map(e => Math.max(+e.prof || 0, volEl(e, p).prof))), tapa = Math.max(0, ...(elems || []).filter(e => e.cara === "tapa").map(e => Math.max(+e.prof || 0, volEl(e, p).prof)));
     z = fondo;
     for (let k = 0; k < n; k++) { const h = r1(Math.max(5, ...pos.filter(q => q.nivel === k).map(q => q.Ht))); niveles.push({ z: r1(z), h }); z += h + (k < n - 1 ? p.repisa : 0); }
     const Hi = r1(z + p.pared + tapa);
@@ -202,13 +205,16 @@
       if (pz) u = /Y$/.test(e.cara) ? pz.x + pz.L / 2 : pz.y + pz.W / 2;
       const nv = niveles[Math.min(n - 1, Math.max(0, +e.nivel || 0))];
       const v = e.v != null ? +e.v : (/^[+-][XY]$/.test(e.cara) ? Math.max(eh / 2 + 1, nv.z + nv.h / 2) : Wint / 2);   // altura del centro (pared) o Y (tapa/fondo)
-      const out = { i, ref: "E" + (i + 1), tipo: e.tipo, n: e.nombre || d.n || "Elemento", ic: d.ic || "", cara: e.cara, w: r1(ew), h: r1(eh), prof: +e.prof || 0, forma: d.forma || e.forma || "rect", orient: e.orient || d.orient || "h", u: r1(u), v: r1(v), nivel: +e.nivel || 0 };
+      const ve = volEl(e, p);
+      const out = { i, ref: "E" + (i + 1), tipo: e.tipo, n: e.nombre || d.n || "Elemento", ic: d.ic || "", cara: e.cara, w: r1(ew), h: r1(eh), prof: r1(Math.max(+e.prof || 0, ve.prof)), interior: ve.prof ? { ancho: ve.ancho, alto: ve.alto, prof: ve.prof } : null, forma: d.forma || e.forma || "rect", orient: e.orient || d.orient || "h", u: r1(u), v: r1(v), nivel: +e.nivel || 0 };
       out.cortes = window.MLCajaEl ? MLCajaEl.cortesAbs(Object.assign({}, e, { u: out.u, v: out.v })) : [{ t: "r", x: out.u, y: out.v, w: out.w, h: out.h, r: 0 }];
       return out;
     });
     // elementos que no caben en su cara o que se montan uno sobre otro
     const avisosEl = [], tam = c => /Y$/.test(c) ? [Lint, Hi] : /X$/.test(c) ? [Wint, Hi] : [Lint, Wint];
     elementos.forEach((e, i) => {
+      const md = window.MLCajaEl && MLCajaEl.modelo ? (() => { try { return MLCajaEl.modelo(e, p.espesor, false); } catch (er) { return null; } })() : null;
+      if (md && md.pared && (p.espesor < md.pared[0] - 1e-6 || p.espesor > md.pared[1] + 1e-6)) avisosEl.push(`${e.ref} (${e.n}) se monta en paredes de ${md.pared[0]}–${md.pared[1]} mm y la caja tiene ${p.espesor} mm`);
       const [A, B] = tam(e.cara);
       if (e.w > A + 0.01 || e.h > B + 0.01) avisosEl.push(`${e.ref} (${e.n}) mide ${e.w}×${e.h} mm y la cara ${CARAS[e.cara]} solo tiene ${r1(A)}×${r1(B)} mm`);
       else if (e.u - e.w / 2 < -0.01 || e.u + e.w / 2 > A + 0.01 || e.v - e.h / 2 < -0.01 || e.v + e.h / 2 > B + 0.01) avisosEl.push(`${e.ref} se sale del borde de la cara ${CARAS[e.cara]}: ajusta su posición`);

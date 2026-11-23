@@ -59,7 +59,7 @@
     if (S.circ) { S.circ.destroy(); S.circ = null; }
     if (!h.startsWith("#/c/")) { S.W = null; S.orig = null; }
     const [, r, id] = h.split("/");
-    $$("#nav a").forEach(a => a.classList.toggle("act", a.dataset.r === ({ "": "inicio", asistente: "inicio", invitacion: "inicio", c: "catalogo", p: "proyectos", pasivos: "pasivos", nuevo: "catalogo", revision: "catalogo", "importar-step": "catalogo" }[r] ?? r)));
+    $$("#nav a").forEach(a => a.classList.toggle("act", a.dataset.r === ({ "": "inicio", asistente: "inicio", invitacion: "inicio", c: "catalogo", p: "proyectos", pasivos: "pasivos", nuevo: "catalogo", revision: "catalogo", "importar-step": "catalogo", "modelar-ia": "catalogo" }[r] ?? r)));
     window.scrollTo(0, 0);
     if (r !== "asistente" && $("#drawer").classList.contains("wide")) { $("#drawer").classList.remove("wide"); document.body.classList.remove("drawer-wide"); }
     if (r === "asistente") { abrirAsistente(true); history.replaceState(null, "", "#/"); lastHash = "#/"; return vInicio(); }
@@ -67,6 +67,7 @@
     if (r === "pasivos") return vPasivos();
     if (r === "nuevo") return vGenerador();
     if (r === "importar-step") return vImportarStep(id ? decodeURIComponent(id) : null);
+    if (r === "modelar-ia") { miaInit(); return MLModelIA.vista(app, id ? decodeURIComponent(id) : null); }
     if (r === "revision") return vRevision();
     if (r === "c" && id) return vComponente(decodeURIComponent(id));
     if (r === "proyectos") return vProyectos();
@@ -166,7 +167,7 @@
   function vGenerador() {
     const g = genEstado(), ex = g.completar ? comp(g.completar) : null;
     const chipA = (a, i) => a.kind === "imagen" ? `<div class="gen-im"><img src="${a.dataUrl}" alt=""><button class="sm danger" data-gx="${i}" title="Quitar">✕</button></div>` : `<div class="gen-doc">📄 <span>${esc(a.nombre)}</span>${a.paginas ? `<small>${a.paginas} pág.</small>` : ""}<button class="sm danger" data-gx="${i}">✕</button></div>`;
-    app.innerHTML = `<div class="hero"><div><div class="small"><a href="#/catalogo">← Catálogo</a></div><h1>🧩 Agregar <span>componente</span></h1><div class="row" style="margin:6px 0"><a class="btn sm" href="#/importar-step">🧊 Tengo el STEP: crear desde el modelo 3D</a></div>
+    app.innerHTML = `<div class="hero"><div><div class="small"><a href="#/catalogo">← Catálogo</a></div><h1>🧩 Agregar <span>componente</span></h1><div class="row" style="margin:6px 0"><a class="btn sm" href="#/importar-step">🧊 Tengo el STEP: crear desde el modelo 3D</a><a class="btn sm" href="#/modelar-ia">🤖 Modelar con IA (foto, plano o medidas)</a></div>
         <div class="muted">${ex ? `Completar <b>${esc(ex.nombre)}</b>: el prompt pide solo lo que le falta.` : "Describe el componente, pega fotos o el datasheet y lleva el prompt (o el PDF) a la IA que prefieras. Luego pega su respuesta aquí."}</div></div></div>
       <div class="gen-grid">
         <div class="panel">
@@ -231,6 +232,31 @@
   }
 
 
+
+  // =====================================================================  MODELAR CON IA (app/modelaria.js)
+  /** Crea un componente nuevo con un modelo 3D ya armado (desde IA o STEP) y lo abre en «Modelo 3D» para guardarlo. */
+  function crearConModelo({ id, nombre, referencia, c, nota, imagen }) {
+    const nuevo = { id, nombre, tipo: "electronico", categoria: "Otros", etiquetas: [], fabricante: "", referencia: referencia || "", estado: "borrador", version: 1, unidad: "und",
+      ficha: { descripcion: "", funcionamiento: "", voltaje: "", corriente: "", interfaz: "", entradas: "", salidas: "", dimensiones: "", datasheet: "", notas: nota },
+      especificaciones: [], imagen: imagen ? { src: imagen, origen: "foto usada para modelar" } : null, precios: [], busquedas: {}, archivos: {},
+      modelo: c.modelo, montaje: c.montaje, zonas: c.zonas || [], pines: c.pines || [], historial: [{ v: 1, fecha: hoy(), nota }] };
+    MLPlant.sincronizar(nuevo);
+    const m = nuevo.montaje; nuevo.ficha.dimensiones = `${m.pcb[0]} × ${m.pcb[1]} × ${m.pcb[2]} mm (base); alto total ${r2x(m.pcb[2] + (m.altura_superior || 0) + (m.altura_inferior || 0))} mm`;
+    S.nuevo = nuevo; S.tabSig = "modelo"; location.hash = "#/c/" + encodeURIComponent(id); toast("Componente creado: revisa el modelo y pulsa Guardar", 6000);
+  }
+  const r2x = v => Math.round(v * 100) / 100;
+  /** Reemplaza el modelo y el montaje de un componente (conserva ficha, precios y pines con nombre) y lo deja listo para guardar. */
+  function aplicarModelo(destino, c, nota) {
+    const W = clone(S.W && S.W.id === destino.id ? S.W : destino);
+    W.modelo = c.modelo; W.montaje = Object.assign({}, W.montaje || {}, c.montaje); W.zonas = (W.zonas || []).filter(z => !z.auto).concat((c.zonas || []).filter(z => !z.auto));
+    const propios = (W.pines || []).filter(p => !p.pieza); W.pines = propios.length ? propios : (c.pines || []).filter(p => !p.pieza);
+    MLPlant.sincronizar(W); W.ficha = W.ficha || {}; W.ficha.notas = [W.ficha.notas, nota].filter(Boolean).join("\n");
+    const orig = comp(destino.id) ? JSON.stringify(comp(destino.id)) : "{}";
+    if (S.nuevo && S.nuevo.id === destino.id) S.nuevo = W;
+    S.W = W; S.orig = orig; S.tab = "modelo"; location.hash = "#/c/" + encodeURIComponent(W.id); toast("Modelo aplicado: revisa y pulsa Guardar", 6000);
+  }
+  let miaListo = false;
+  function miaInit() { if (miaListo) return; miaListo = true; MLModelIA.init({ esc, toast, comp, slug, hoy, clone, S, cargarPdfLib, pdfTexto, confirmar, guardarNuevo: crearConModelo, aplicarDestino: aplicarModelo }); }
   // =====================================================================  IMPORTAR STEP → componente
   // El STEP solo es materia prima: se lee en el navegador, se convierte al modelo propio y se descarta.
   function vImportarStep(idDestino) {
@@ -620,7 +646,7 @@
     const body = $("#tabBody"), W = S.W; if (S.ed) { S.ed.destroy(); S.ed = null; }
     const ch = () => S.mark();
     if (S.tab === "ficha") return tabFicha(body, W, ch);
-    if (S.tab === "modelo") { S.ed = MLModelo.montar(body, W, { onChange: ch, toast, importarStep: () => { location.hash = "#/importar-step/" + encodeURIComponent(W.id); } }); return; }
+    if (S.tab === "modelo") { S.ed = MLModelo.montar(body, W, { onChange: ch, toast, importarStep: () => { location.hash = "#/importar-step/" + encodeURIComponent(W.id); }, modelarIA: () => { location.hash = "#/modelar-ia/" + encodeURIComponent(W.id); } }); return; }
     if (["montaje", "zonas", "pines"].includes(S.tab)) return tabEditor(body, W, ch);
     if (S.tab === "archivos") return tabArchivos(body, W);
     if (S.tab === "versiones") return tabVersiones(body, W);
@@ -1085,6 +1111,7 @@
     const barra3d = () => `<div class="cj3d-bar">${[["iso", "Iso"], ["arriba", "Arriba"], ["frente", "Frente"], ["lado", "Lado"]].map(([k, n]) => `<button class="sm ghost" data-c3v="${k}">${n}</button>`).join("")}
       <select id="c3Tapa" class="sm">${[["ver", "Tapa puesta"], ["transparente", "Tapa transparente"], ["ocultar", "Sin tapa"]].map(([k, n]) => `<option value="${k}" ${ui.tapa === k ? "selected" : ""}>${n}</option>`).join("")}</select>
       <select id="c3Par" class="sm">${[["solidas", "Paredes sólidas"], ["transparentes", "Paredes transparentes"]].map(([k, n]) => `<option value="${k}" ${ui.paredes === k ? "selected" : ""}>${n}</option>`).join("")}</select>
+      <label class="small" style="display:inline-flex;gap:4px;align-items:center" title="Aire del ventilador, curva del cable, espacio para soldar y para la llave"><input type="checkbox" id="c3Esp" ${ui.espacios !== false ? "checked" : ""} style="width:auto"> espacios de uso</label>
       <button class="sm ghost" id="c3Png" title="Descargar imagen">📷</button></div>`;
     if (R && ui.nivel >= R.n) ui.nivel = 0;
     host.innerHTML = `<div class="sub-bar">${[["__todo", "🗂 Todo el proyecto"], ...P.subs.map(u => [u.id, `${(TIPOS_SUB[u.tipo] || TIPOS_SUB.otro)[0]} ${u.nombre}`])].map(([id, n]) => `<button class="sub-chip ${alc === id ? "on" : ""}" data-ca="${esc(id)}">${esc(n)}</button>`).join("")}</div>
@@ -1134,11 +1161,12 @@
     $$("[data-cpn]", host).forEach(b => b.onclick = () => { ui.panel = b.dataset.cpn; vCaja(P, cabecera); });
     $$("[data-cnv]", host).forEach(b => b.onclick = () => { ui.nivel = +b.dataset.cnv; ui.pz = null; vCaja(P, cabecera); });
     if (!R) return;
-    const pinta3d = vista => { const c = $("#cj3d", host); if (c) MLCaja3D.mostrar(c, R, { comp: comp2, tapa: ui.tapa, paredes: ui.paredes, sel: ui.pz, vista }).catch(e => { c.innerHTML = `<div class="small muted" style="padding:20px">No se pudo abrir la vista 3D: ${esc(e.message)}</div>`; }); };
+    const pinta3d = vista => { const c = $("#cj3d", host); if (c) MLCaja3D.mostrar(c, R, { comp: comp2, tapa: ui.tapa, paredes: ui.paredes, sel: ui.pz, vista, espacios: ui.espacios !== false }).catch(e => { c.innerHTML = `<div class="small muted" style="padding:20px">No se pudo abrir la vista 3D: ${esc(e.message)}</div>`; }); };
     pinta3d();
     $$("[data-c3v]", host).forEach(b => b.onclick = () => pinta3d(b.dataset.c3v));
     const c3t = $("#c3Tapa", host); if (c3t) c3t.onchange = () => { ui.tapa = c3t.value; pinta3d(); };
     const c3p = $("#c3Par", host); if (c3p) c3p.onchange = () => { ui.paredes = c3p.value; pinta3d(); };
+    const c3e = $("#c3Esp", host); if (c3e) c3e.onchange = () => { ui.espacios = c3e.checked; pinta3d(); };
     const c3g = $("#c3Png", host); if (c3g) c3g.onclick = () => { const src = MLCaja3D.captura(); if (!src) return; const a = document.createElement("a"); a.href = src; a.download = `caja_${P.id}_3d.png`; a.click(); };
     const nom = `caja_${P.id}${alc === "__todo" ? "" : "_" + alc}`;
     $("#cjSvg").onclick = () => download(nom + ".svg", MLCaja.vistas(R, { titulo, claro: true }), "image/svg+xml");
@@ -2414,6 +2442,7 @@ Para un chip suelto usa base "prisma" con las medidas del CUERPO del encapsulado
     { id: "abrir_componente", n: "Abrir un componente", ic: "▭", k: "ver ficha", global: true, args: '{"id":"id_del_componente"}', run: a => { const c = comp(a.id) || (a.q && buscarComponente(a.q)?.c); if (!c) return false; location.hash = "#/c/" + encodeURIComponent(c.id); return "Abierto " + c.nombre; } },
     { id: "abrir_proyecto", n: "Abrir un proyecto", ic: "📁", global: true, args: '{"id":"id_del_proyecto"}', run: a => { const p = Store.db.proyectos.find(x => x.id === a.id) || (a.q && buscarProyecto(a.q)?.p); if (!p) return false; location.hash = "#/p/" + encodeURIComponent(p.id); return "Abierto " + p.nombre; } },
     { id: "buscar_catalogo", n: "Buscar en el catálogo", ic: "🔎", k: "filtrar", global: true, args: '{"q":"texto"}', run: a => buscarCatalogo(a.q || "") },
+    { id: "modelar_ia", n: "Modelar un componente con IA (foto, plano o medidas)", ic: "🤖", k: "modelo 3d ia foto plano medidas modelar gemini chatgpt", global: true, run: () => { location.hash = "#/modelar-ia"; } },
     { id: "importar_step", n: "Crear componente desde un STEP (modelo 3D del fabricante)", ic: "🧊", k: "step stp importar modelo 3d solidworks cad fabricante crear componente", global: true, run: () => { location.hash = "#/importar-step"; } },
     { id: "nuevo_componente", n: "Agregar componente (generador para Gemini/ChatGPT/Claude)", ic: "🧩", k: "agregar nuevo elemento ficha crear componente generador", global: true, run: () => { abrirGenerador({}); } },
     { id: "componente_manual", n: "Crear ficha vacía a mano", ic: "＋", k: "manual vacio ficha en blanco", global: true, run: () => { nuevoComponente(); } },

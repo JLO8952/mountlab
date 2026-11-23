@@ -469,3 +469,12 @@ a.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-rad
 @media (max-width:1000px){.si-grid{grid-template-columns:1fr}}
 @media (max-width:640px){.si-dos{grid-template-columns:1fr}.si-3d{height:280px}}
 @media (max-width:640px){.si-tabla th:nth-child(3),.si-tabla td:nth-child(3){display:none}.si-tabla input[data-sin]{min-width:140px!important}}
+/* modelar con IA */
+.mia-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mia-3d{height:360px;border-radius:10px;overflow:hidden;background:#0b1220;border:1px solid var(--line,#1e293b)}
+.mia-3d canvas{display:block;width:100%!important;height:100%!important}
+.mia-sup{position:relative;height:360px;border-radius:10px;overflow:hidden;background:#fff;border:1px solid var(--line,#1e293b);touch-action:none}
+.mia-sup #sFoto{width:100%;height:100%;object-fit:contain;pointer-events:none}
+.mia-sup #sMod{position:absolute;left:50%;top:50%;cursor:move;user-select:none;max-width:none}
+.tag.ok{background:#16a34a22;color:#86efac}
+@media (max-width:900px){.mia-grid{grid-template-columns:1fr}.mia-3d,.mia-sup{height:300px}}

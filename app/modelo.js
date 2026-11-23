@@ -77,6 +77,21 @@
     }
     return E;
   }
+  /** Mallas de una lista de primitivas sueltas (mismas coordenadas que las piezas: x, y en planta, z hacia arriba). */
+  function mallasPrims(T, lista, grupo, o) {
+    o = o || {}; grupo = grupo || new T.Group();
+    for (const c of lista) {
+      const alto = Math.max(0.05, c.z1 - c.z0); let g;
+      if (c.f === "perfil") g = geoPerfil(T, c);
+      else if (c.f === "cil") g = new T.CylinderGeometry(c.d / 2, c.d / 2, alto, 28);
+      else if (c.r && c.r > 0.05) { const s = new T.Shape(), w = c.w / 2, h = c.h / 2, r = Math.min(c.r, w - 0.01, h - 0.01); s.moveTo(-w + r, -h); s.lineTo(w - r, -h); s.absarc(w - r, -h + r, r, -Math.PI / 2, 0); s.lineTo(w, h - r); s.absarc(w - r, h - r, r, 0, Math.PI / 2); s.lineTo(-w + r, h); s.absarc(-w + r, h - r, r, Math.PI / 2, Math.PI); s.lineTo(-w, -h + r); s.absarc(-w + r, -h + r, r, Math.PI, Math.PI * 1.5);
+        g = new T.ExtrudeGeometry(s, { depth: alto, bevelEnabled: false, curveSegments: 10 }); g.rotateX(-Math.PI / 2); g.translate(0, -alto / 2, 0); }
+      else g = new T.BoxGeometry(c.w, alto, c.h);
+      const m = new T.Mesh(g, o.material ? o.material(c) : new T.MeshStandardMaterial({ color: c.color || "#64748b", roughness: 0.55, metalness: /#c|#d|#9/.test(c.color || "") ? 0.35 : 0.05 }));
+      m.position.set(c.cx, (c.z0 + c.z1) / 2, -c.cy); grupo.add(m);
+    }
+    return grupo;
+  }
   /** Alto total y centro vertical del componente (para encuadrar la cámara). */
   function encuadre(W) { const bi = MLPlant.baseInfo(W.modelo.base), mt = W.montaje || {}, alto = (bi.top || 0) + (mt.altura_superior || 0) + (mt.altura_inferior || 0), zc = ((bi.top || 0) + (mt.altura_superior || 0) - (mt.altura_inferior || 0)) / 2; let ext = 0; for (const c of (W.modelo && W.modelo.cuerpos) || []) { const w = c.f === "cil" ? c.d : c.w, h = c.f === "cil" ? c.d : c.h; if (w != null) ext = Math.max(ext, 2 * (Math.abs(c.cx) + w / 2), 2 * (Math.abs(c.cy) + h / 2)); }   // piezas que salen de la base
     return { R: Math.max(bi.L || 20, bi.W || 20, alto, 2.5, ext * 0.85) * 1.6, zc }; }
@@ -117,7 +132,7 @@
     function inicio() {
       const tieneMontaje = W.montaje && W.montaje.pcb;
       host.innerHTML = `<div class="panel" style="max-width:820px">
-        <h3>Modelo 3D</h3>${opt.importarStep ? `<div class="msg info" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between"><span>¿Tienes el <b>STEP</b> del fabricante? La app saca la placa, el contorno, los agujeros y cada pieza, y genera el modelo.</span><button class="pri" id="moStep0">🧊 Importar STEP</button></div>` : ""}<p class="muted" style="margin-top:${opt.importarStep ? 12 : 0}px">Dibuja el componente con formas simples vistas desde arriba y la vista 3D se arma sola. Empieza por la placa:</p>
+        <h3>Modelo 3D</h3>${opt.importarStep ? `<div class="msg info" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between"><span>¿Tienes el <b>STEP</b> del fabricante? La app saca la placa, el contorno, los agujeros y cada pieza. ¿Solo fotos, un plano o medidas? <b>Modélalo con IA</b>.</span><span class="row" style="gap:6px"><button class="pri" id="moStep0">🧊 Importar STEP</button>${opt.modelarIA ? '<button class="pri" id="moIA0">🤖 Modelar con IA</button>' : ""}</span></div>` : ""}<p class="muted" style="margin-top:${opt.importarStep ? 12 : 0}px">Dibuja el componente con formas simples vistas desde arriba y la vista 3D se arma sola. Empieza por la placa:</p>
         ${tieneMontaje ? `<button class="pri" id="moDesde">Crear a partir de su montaje (${W.montaje.pcb[0]} × ${W.montaje.pcb[1]} mm${(W.zonas || []).length ? `, ${W.zonas.length} zonas` : ""})</button><div class="small muted" style="margin:6px 0 14px">Toma la placa, los agujeros y convierte las zonas en piezas que puedes ajustar.</div>` : ""}
         <div class="small" style="margin-bottom:6px"><b>${tieneMontaje ? "O empieza con una placa de plantilla:" : "Placas de plantilla:"}</b></div>
         <div class="row">${PLACAS.map((p, i) => `<button data-pl="${i}">${esc(p.n)}</button>`).join("")}</div>
@@ -125,6 +140,7 @@
         <div class="row">${Object.entries(MLPlant.MOTORES).map(([k, m]) => `<button data-bm="${k}">⚙ ${esc(m.n)}</button>`).join("")}${Object.entries(MLPlant.SERVOS).map(([k, m]) => `<button data-bs="${k}">⛭ Servo ${esc(m.n)}</button>`).join("")}
           <button data-bx="prisma">▣ Prisma / caja</button><button data-bx="cilindro">◉ Cilindro</button></div></div>`;
       const s0 = host.querySelector("#moStep0"); if (s0) s0.onclick = () => opt.importarStep();
+      const i0 = host.querySelector("#moIA0"); if (i0) i0.onclick = () => opt.modelarIA();
       const d = host.querySelector("#moDesde");
       if (d) d.onclick = () => { W.modelo = MLPlant.desdeMontaje(W); armar(); changed(); };
       host.querySelectorAll("[data-pl]").forEach(b => b.onclick = () => {
@@ -158,7 +174,7 @@
         </div>
         <div class="mo-der">
           <div class="mo-3d"><div id="mo3d"><div class="muted small" style="padding:20px">Cargando vista 3D…</div></div>
-            <div class="mo-3dbar"><button class="sm" data-v="iso">Iso</button><button class="sm" data-v="arriba">Arriba</button><button class="sm" data-v="abajo">Abajo</button><button class="sm" id="moEx">Explotar</button><button class="sm" id="moFoto" title="Usar esta vista como imagen del componente">📷 Imagen</button>${opt.importarStep ? '<button class="sm" id="moStep" title="Reemplazar este modelo por uno generado desde un archivo STEP">🧊 Desde STEP</button>' : ""}</div></div>
+            <div class="mo-3dbar"><button class="sm" data-v="iso">Iso</button><button class="sm" data-v="arriba">Arriba</button><button class="sm" data-v="abajo">Abajo</button><button class="sm" id="moEx">Explotar</button><button class="sm" id="moFoto" title="Usar esta vista como imagen del componente">📷 Imagen</button>${opt.importarStep ? '<button class="sm" id="moStep" title="Reemplazar este modelo por uno generado desde un archivo STEP">🧊 Desde STEP</button>' : ""}${opt.modelarIA ? '<button class="sm" id="moIA" title="Rehacer el modelo con una IA a partir de fotos, plano o medidas">🤖 Con IA</button>' : ""}</div></div>
           <div class="panel" id="moPanel"></div>
           <div id="moRev"></div>
         </div></div>`;
@@ -172,6 +188,7 @@
       host.querySelectorAll("[data-v]").forEach(b => b.onclick = () => v3 && v3.vista(b.dataset.v));
       host.querySelector("#moEx").onclick = e => { st.explotar = !st.explotar; e.target.classList.toggle("on", st.explotar); render3d(); };
       const bS = host.querySelector("#moStep"); if (bS) bS.onclick = () => opt.importarStep();
+      const bI = host.querySelector("#moIA"); if (bI) bI.onclick = () => opt.modelarIA();
       host.querySelector("#moFoto").onclick = async () => { const src = await captura(); if (!src) return; W.imagen = { src, origen: "render del modelo 3D" }; opt.onChange && opt.onChange(); opt.toast && opt.toast("Imagen lista: se guarda con el componente"); };
       dibujar();
       cargarThree().then(iniciar3d).catch(e => { host.querySelector("#mo3d").innerHTML = `<div class="small" style="padding:16px;color:#fca5a5">${esc(e.message)}. Recarga la página.</div>`; });
@@ -531,5 +548,5 @@
       },
     };
   }
-  window.MLModelo = { montar, construir, iso, encuadre, cargarThree };
+  window.MLModelo = { montar, construir, iso, encuadre, cargarThree, mallasPrims };
 })();

@@ -32,6 +32,11 @@
       out.push({ nombre: "PCB", color: b.color || "#166534", z0: 0, z1: esp, ext, huecos: ag.map(a => circP(a.x, a.y, a.d / 2, false)), tipo: "placa", cx: 0, cy: 0, w: b.L || b.d, h: b.W || b.d });
     }
     const lista = bi.prim.map(c => Object.assign({ esBase: true, nombreP: "Base" }, c)).concat((M.piezas || []).flatMap(p => MLPlant.cuerposDe(p, esp).map(c => Object.assign({ nombreP: p.nombre || p.plantilla }, c))));
+    return out.concat(solidosPrims(lista, ag));
+  }
+  /** Sólidos extruidos a partir de primitivas sueltas (caja, cilindro, perfil). */
+  function solidosPrims(lista, ag) {
+    const out = []; ag = ag || [];
     lista.forEach((c, i) => {
       if (!(c.z1 > c.z0)) return;
       const nombre = `${c.nombreP || "Pieza"}_${i + 1}`;
@@ -234,5 +239,5 @@ End Sub
 `).replace(/\r?\n/g, "\r\n");
   }
 
-  window.MLCad = { solidos, step, stepEnsamble, dxf6, macroParasolid, rectP, circP, tP, tD, ID };
+  window.MLCad = { solidos, solidosPrims, step, stepEnsamble, dxf6, macroParasolid, rectP, circP, tP, tD, ID };
 })();
