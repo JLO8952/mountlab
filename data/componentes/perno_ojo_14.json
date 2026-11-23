@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Perno con ojo cerrado, rosca 1/4\"-20 UNC.",
@@ -19,7 +19,7 @@
   "salidas": "N/A",
   "dimensiones": "Ø6.35 × 50.8 mm de vástago, ojo de 19 mm",
   "datasheet": "",
-  "notas": ""
+  "notas": "Modelo 3D hecho con IA desde medidas"
  },
  "especificaciones": [
   {
@@ -36,8 +36,8 @@
   }
  ],
  "imagen": {
-  "src": "img/31_perno_ojo_14.png",
-  "origen": "render 3D (modelo simplificado)"
+  "src": "img/perno_ojo_14.png?v=1795450786490",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -66,8 +66,46 @@
   "datasheet": "https://www.google.com/search?q=eye+bolt+1%2F4-20+datasheet+pdf",
   "imagenes": "https://www.google.com/search?tbm=isch&q=eye+bolt+1%2F4-20"
  },
- "montaje": null,
- "zonas": [],
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": 0,
+    "y": 0,
+    "d": 6.8
+   }
+  ],
+  "altura_superior": 19,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Perno de ojo rosca 1/4\"-20 UNC (Ø6.35 mm). Se fija mediante agujero pasante de Ø6.8 mm con tuerca y arandela, o directamente en perforación roscada 1/4\"-20.",
+  "pcb": [
+   6.35,
+   6.35,
+   31.8
+  ],
+  "forma": "redonda",
+  "base_tipo": "cilindro"
+ },
+ "zonas": [
+  {
+   "tipo": "otra",
+   "nombre": "Ojo / argolla (Ø19 mm ext., Ø11 mm int.)",
+   "cx": 0,
+   "cy": 0,
+   "w": 19,
+   "h": 6.35,
+   "z": [
+    31.8,
+    50.8
+   ],
+   "salida": "+Z",
+   "holgura": 20,
+   "auto": true,
+   "pieza": "ojo"
+  }
+ ],
  "pines": [],
  "archivos": {
   "step": {
@@ -88,6 +126,126 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: modelo 3D, montaje/agujeros, zonas, ficha técnica, imagen",
+   "cambios": [
+    "modelo",
+    "montaje",
+    "zonas",
+    "ficha",
+    "imagen"
+   ]
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "cilindro",
+   "forma": "redonda",
+   "L": 6.35,
+   "W": 6.35,
+   "d": 6.35,
+   "espesor": 31.8,
+   "radio": 0,
+   "color": "#cbd5e1"
+  },
+  "piezas": [
+   {
+    "id": "ojo",
+    "nombre": "Ojo / argolla (Ø19 mm ext., Ø11 mm int.)",
+    "cara": "A",
+    "x": 0,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "origen": "ia",
+    "plantilla": "importada",
+    "params": {
+     "prim": [
+      {
+       "f": "perfil",
+       "eje": "y",
+       "a0": -3.18,
+       "a1": 3.18,
+       "color": "#cbd5e1",
+       "circ": [
+        0,
+        9.5,
+        9.5
+       ]
+      },
+      {
+       "f": "perfil",
+       "eje": "y",
+       "a0": -3.25,
+       "a1": 3.25,
+       "color": "#1e293b",
+       "circ": [
+        0,
+        9.5,
+        5.5
+       ]
+      }
+     ],
+     "zona": {
+      "tipo": "otra",
+      "cx": 0,
+      "cy": 0,
+      "w": 19,
+      "h": 6.35,
+      "z0": 0,
+      "z1": 19,
+      "salida": "+Z",
+      "holgura": 20
+     }
+    }
+   }
+  ],
+  "nota": "Modelado con IA a partir de medidas",
+  "cuerpos": [
+   {
+    "f": "perfil",
+    "eje": "y",
+    "color": "#cbd5e1",
+    "circ": [
+     0,
+     41.3,
+     9.5
+    ],
+    "a0": -3.18,
+    "a1": 3.18,
+    "cx": 0,
+    "cy": 0,
+    "w": 19,
+    "h": 6.36,
+    "z0": 31.8,
+    "z1": 50.8,
+    "pieza": "ojo"
+   },
+   {
+    "f": "perfil",
+    "eje": "y",
+    "color": "#1e293b",
+    "circ": [
+     0,
+     41.3,
+     5.5
+    ],
+    "a0": -3.25,
+    "a1": 3.25,
+    "cx": 0,
+    "cy": 0,
+    "w": 11,
+    "h": 6.5,
+    "z0": 35.8,
+    "z1": 46.8,
+    "pieza": "ojo"
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-23T16:19:44.327Z"
 }
