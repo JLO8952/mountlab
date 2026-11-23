@@ -72,5 +72,78 @@
     "notas": ""
    }
   }
- ]
+ ],
+ "caja": {
+  "alcance": "__todo",
+  "p": {
+   "gap": 3,
+   "pared": 2,
+   "espesor": 2,
+   "standoff": 5,
+   "arriba": 3,
+   "rotar": true,
+   "prop": 3,
+   "repisa": 2,
+   "nivelesMax": 3,
+   "bom": true,
+   "conexion": "soldado"
+  },
+  "por": {
+   "__todo": {
+    "sel": "manual",
+    "manual": {
+     "pos": {
+      "U1": {
+       "x": 10,
+       "y": 1.5,
+       "rot": 90,
+       "nivel": 0
+      },
+      "U2": {
+       "x": 47,
+       "y": 2,
+       "rot": 180,
+       "nivel": 0
+      },
+      "U3": {
+       "x": 42,
+       "y": 34,
+       "rot": 180,
+       "nivel": 0
+      },
+      "E1": {
+       "x": 89,
+       "y": 36,
+       "rot": 0,
+       "nivel": 0
+      },
+      "E2": {
+       "x": 91.7,
+       "y": 4,
+       "rot": 0,
+       "nivel": 0
+      }
+     }
+    },
+    "elementos": [
+     {
+      "tipo": "jack_dc022",
+      "cara": "+Y",
+      "prof": 18,
+      "nivel": 0,
+      "v": 8
+     },
+     {
+      "tipo": "agujero",
+      "cara": "-Y",
+      "prof": 10,
+      "nivel": 0,
+      "w": 7,
+      "h": 10,
+      "v": 8
+     }
+    ]
+   }
+  }
+ }
 }
