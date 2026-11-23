@@ -1,0 +1,1154 @@
+{
+ "id": "tarjeta_esp32_wifi_bluetooth_entrada_usb",
+ "nombre": "Tarjeta de Desarrollo ESP32 Wi-Fi Bluetooth USB Tipo C (30 Pines)",
+ "tipo": "electronico",
+ "categoria": "Microcontroladores",
+ "etiquetas": [
+  "esp32",
+  "esp-wroom-32",
+  "wifi",
+  "bluetooth",
+  "ble",
+  "usb-c",
+  "30-pines",
+  "devkit-v1",
+  "iot",
+  "microcontrolador"
+ ],
+ "fabricante": "Genérico (Módulo Espressif ESP-WROOM-32)",
+ "referencia": "ESP32 DevKit V1 30P USB-C (SKU Zamux: mi28)",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Placa de desarrollo basada en el microcontrolador dual-core ESP32 (módulo ESP-WROOM-32) con Wi-Fi 2.4 GHz y Bluetooth/BLE, interfaz USB Tipo C para alimentación y programación, botones EN y BOOT, y 30 pines macho soldados hacia abajo.",
+  "funcionamiento": "Integra un procesador Xtensa LX6 de doble núcleo a 240 MHz con radio Wi-Fi/BT integrada. Se programa mediante el puerto USB Tipo C a través de su conversor USB-UART integrado y opera internamente a 3.3 V mediante un regulador LDO (tipo AMS1117-3.3).",
+  "voltaje": "5 V DC (vía USB-C o pin VIN) / Lógica de operación: 3.3 V DC",
+  "corriente": "Típico 80 mA (picos hasta 500 mA en transmisión Wi-Fi)",
+  "interfaz": "USB-C (UART), Wi-Fi 802.11 b/g/n, Bluetooth 4.2 / BLE, SPI, I2C, I2S, UART, PWM, ADC, DAC",
+  "entradas": "USB Tipo C (5 V), pin VIN (5 V - 12 V máx. recomendado 5 V), pines GPIO/ADC (máx. 3.3 V)",
+  "salidas": "Pin 3V3 regulado, pines GPIO digitales (3.3 V), PWM, DAC (GPIO25, GPIO26)",
+  "dimensiones": "51.5 x 28.0 x 13.0 mm aprox. (4 agujeros de montaje en esquinas; 2 filas de 15 pines paso 2.54 mm, separación entre filas 25.4 mm)",
+  "datasheet": "https://www.zamux.co/tarjeta-esp32-wifi-bluetooth-entrada-usb-tipo-c-30-pines",
+  "notas": "Los pines GPIO NO son tolerantes a 5 V (trabajan exclusivamente a 3.3 V). En algunos clones con chip CH340C es necesario instalar el driver CH340 en Windows. Al programar en protoboard estándar, el ancho de 28 mm suele dejar solo una columna libre por lado (o ninguna en protoboards angostas). Pines GPIO34, GPIO35, VP (GPIO36) y VN (GPIO39) son solo de entrada."
+ },
+ "especificaciones": [
+  {
+   "param": "Módulo principal",
+   "valor": "ESP-WROOM-32 (Dual-Core Xtensa LX6 hasta 240 MHz)"
+  },
+  {
+   "param": "Conectividad inalámbrica",
+   "valor": "Wi-Fi 802.11 b/g/n (2.4 GHz) + Bluetooth v4.2 BR/EDR y BLE"
+  },
+  {
+   "param": "Conector USB",
+   "valor": "USB Tipo C (alimentación y datos)"
+  },
+  {
+   "param": "Puente USB-UART",
+   "valor": "Chip SMD SOIC-16 (típico CH340C sin cristal externo)"
+  },
+  {
+   "param": "Regulador de voltaje",
+   "valor": "LDO 3.3 V en encapsulado SOT-223 (típico AMS1117-3.3)"
+  },
+  {
+   "param": "Cantidad de pines",
+   "valor": "30 pines (2 x 15, paso 2.54 mm)"
+  },
+  {
+   "param": "Voltaje lógico",
+   "valor": "3.3 V DC"
+  },
+  {
+   "param": "Botones integrados",
+   "valor": "2 pulsadores (EN / Reset y BOOT / IO0)"
+  }
+ ],
+ "imagen": null,
+ "precios": [
+  {
+   "proveedor": "Zamux",
+   "precio_cop": 24500,
+   "url": "https://www.zamux.co/tarjeta-esp32-wifi-bluetooth-entrada-usb-tipo-c-30-pines",
+   "fecha": "2026-11",
+   "estimado": false
+  }
+ ],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -23,
+    "y": 11.5,
+    "d": 2.5
+   },
+   {
+    "x": 23,
+    "y": 11.5,
+    "d": 2.5
+   },
+   {
+    "x": -23,
+    "y": -11.5,
+    "d": 2.5
+   },
+   {
+    "x": 23,
+    "y": -11.5,
+    "d": 2.5
+   }
+  ],
+  "altura_superior": 5,
+  "altura_inferior": 11,
+  "holgura_inferior_cableado": 0,
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   51.5,
+   28,
+   1.6
+  ],
+  "forma": "rect"
+ },
+ "zonas": [
+  {
+   "tipo": "pines",
+   "nombre": "Fila pines izquierda (VIN a EN)",
+   "cx": 0,
+   "cy": 12.7,
+   "w": 38.1,
+   "h": 2.54,
+   "z": [
+    -11,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "p1"
+  },
+  {
+   "tipo": "pines",
+   "nombre": "Fila pines derecha (3V3 a D23)",
+   "cx": 0,
+   "cy": -12.7,
+   "w": 38.1,
+   "h": 2.54,
+   "z": [
+    -11,
+    0
+   ],
+   "salida": "-Z",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "p2"
+  },
+  {
+   "tipo": "antena",
+   "nombre": "Módulo ESP-WROOM-32",
+   "cx": 13.5,
+   "cy": 9.5,
+   "w": 18,
+   "h": 6.4,
+   "z": [
+    1.6,
+    4.7
+   ],
+   "salida": "+Y",
+   "holgura": 10,
+   "auto": true,
+   "pieza": "p3"
+  },
+  {
+   "tipo": "usb",
+   "nombre": "Conector USB Tipo C",
+   "cx": -23.5,
+   "cy": -0.5,
+   "w": 8.9,
+   "h": 7.3,
+   "z": [
+    1.6,
+    4.8
+   ],
+   "salida": "-Y",
+   "holgura": 22,
+   "auto": true,
+   "pieza": "p4"
+  },
+  {
+   "tipo": "boton",
+   "nombre": "Botón EN / Reset",
+   "cx": -21,
+   "cy": 7.5,
+   "w": 6,
+   "h": 6,
+   "z": [
+    1.6,
+    6.6
+   ],
+   "salida": "+Z",
+   "holgura": 3,
+   "auto": true,
+   "pieza": "p5"
+  },
+  {
+   "tipo": "boton",
+   "nombre": "Botón BOOT",
+   "cx": -21,
+   "cy": -7.5,
+   "w": 6,
+   "h": 6,
+   "z": [
+    1.6,
+    6.6
+   ],
+   "salida": "+Z",
+   "holgura": 3,
+   "auto": true,
+   "pieza": "p6"
+  },
+  {
+   "tipo": "calor",
+   "nombre": "Regulador LDO 3.3V (AMS1117)",
+   "cx": -13,
+   "cy": 6.5,
+   "w": 6.5,
+   "h": 7,
+   "z": [
+    1.6,
+    3.4
+   ],
+   "salida": "+Z",
+   "holgura": 8,
+   "auto": true,
+   "pieza": "p7"
+  }
+ ],
+ "pines": [
+  {
+   "n": "VIN",
+   "func": "Entrada de alimentación externa 5 V DC",
+   "x": -17.78,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 0,
+   "cara": "B"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra / referencia 0 V",
+   "x": -15.24,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 1,
+   "cara": "B"
+  },
+  {
+   "n": "D13",
+   "func": "GPIO13 / ADC2_CH4 / Touch4 / HSPID",
+   "x": -12.7,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 2,
+   "cara": "B"
+  },
+  {
+   "n": "D12",
+   "func": "GPIO12 / ADC2_CH5 / Touch5 / HSPIQ (strapping)",
+   "x": -10.16,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 3,
+   "cara": "B"
+  },
+  {
+   "n": "D14",
+   "func": "GPIO14 / ADC2_CH6 / Touch6 / HSPICLK",
+   "x": -7.62,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 4,
+   "cara": "B"
+  },
+  {
+   "n": "D27",
+   "func": "GPIO27 / ADC2_CH7 / Touch7",
+   "x": -5.08,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 5,
+   "cara": "B"
+  },
+  {
+   "n": "D26",
+   "func": "GPIO26 / ADC2_CH9 / DAC2",
+   "x": -2.54,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 6,
+   "cara": "B"
+  },
+  {
+   "n": "D25",
+   "func": "GPIO25 / ADC2_CH8 / DAC1",
+   "x": 0,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 7,
+   "cara": "B"
+  },
+  {
+   "n": "D33",
+   "func": "GPIO33 / ADC1_CH5 / Touch8",
+   "x": 2.54,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 8,
+   "cara": "B"
+  },
+  {
+   "n": "D32",
+   "func": "GPIO32 / ADC1_CH4 / Touch9",
+   "x": 5.08,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 9,
+   "cara": "B"
+  },
+  {
+   "n": "D35",
+   "func": "GPIO35 / ADC1_CH7 (solo entrada)",
+   "x": 7.62,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 10,
+   "cara": "B"
+  },
+  {
+   "n": "D34",
+   "func": "GPIO34 / ADC1_CH6 (solo entrada)",
+   "x": 10.16,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 11,
+   "cara": "B"
+  },
+  {
+   "n": "VN",
+   "func": "GPIO39 / SENSOR_VN / ADC1_CH3 (solo entrada)",
+   "x": 12.7,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 12,
+   "cara": "B"
+  },
+  {
+   "n": "VP",
+   "func": "GPIO36 / SENSOR_VP / ADC1_CH0 (solo entrada)",
+   "x": 15.24,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 13,
+   "cara": "B"
+  },
+  {
+   "n": "EN",
+   "func": "Enable / Reset del chip (activo bajo)",
+   "x": 17.78,
+   "y": 12.7,
+   "conector": "Fila pines izquierda (VIN a EN)",
+   "pieza": "p1",
+   "idx": 14,
+   "cara": "B"
+  },
+  {
+   "n": "3V3",
+   "func": "Salida regulada de 3.3 V DC",
+   "x": -17.78,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 0,
+   "cara": "B"
+  },
+  {
+   "n": "GND",
+   "func": "Tierra / referencia 0 V",
+   "x": -15.24,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 1,
+   "cara": "B"
+  },
+  {
+   "n": "D15",
+   "func": "GPIO15 / ADC2_CH3 / Touch3 / HSPICS0 (strapping)",
+   "x": -12.7,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 2,
+   "cara": "B"
+  },
+  {
+   "n": "D2",
+   "func": "GPIO2 / ADC2_CH2 / Touch2 / LED integrado",
+   "x": -10.16,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 3,
+   "cara": "B"
+  },
+  {
+   "n": "D4",
+   "func": "GPIO4 / ADC2_CH0 / Touch0",
+   "x": -7.62,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 4,
+   "cara": "B"
+  },
+  {
+   "n": "RX2",
+   "func": "GPIO16 / UART2 RX",
+   "x": -5.08,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 5,
+   "cara": "B"
+  },
+  {
+   "n": "TX2",
+   "func": "GPIO17 / UART2 TX",
+   "x": -2.54,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 6,
+   "cara": "B"
+  },
+  {
+   "n": "D5",
+   "func": "GPIO5 / VSPICS0 (strapping)",
+   "x": 0,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 7,
+   "cara": "B"
+  },
+  {
+   "n": "D18",
+   "func": "GPIO18 / VSPICLK",
+   "x": 2.54,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 8,
+   "cara": "B"
+  },
+  {
+   "n": "D19",
+   "func": "GPIO19 / VSPIQ",
+   "x": 5.08,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 9,
+   "cara": "B"
+  },
+  {
+   "n": "D21",
+   "func": "GPIO21 / I2C SDA por defecto",
+   "x": 7.62,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 10,
+   "cara": "B"
+  },
+  {
+   "n": "RX0",
+   "func": "GPIO3 / UART0 RX",
+   "x": 10.16,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 11,
+   "cara": "B"
+  },
+  {
+   "n": "TX0",
+   "func": "GPIO1 / UART0 TX",
+   "x": 12.7,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 12,
+   "cara": "B"
+  },
+  {
+   "n": "D22",
+   "func": "GPIO22 / I2C SCL por defecto",
+   "x": 15.24,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 13,
+   "cara": "B"
+  },
+  {
+   "n": "D23",
+   "func": "GPIO23 / VSPID",
+   "x": 17.78,
+   "y": -12.7,
+   "conector": "Fila pines derecha (3V3 a D23)",
+   "pieza": "p2",
+   "idx": 14,
+   "cara": "B"
+  }
+ ],
+ "archivos": {},
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-22",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo, precios",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo",
+    "precios"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 51.5,
+   "W": 28,
+   "d": 30,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#111827"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "header_macho",
+    "nombre": "Fila pines izquierda (VIN a EN)",
+    "cara": "B",
+    "x": 0,
+    "y": 12.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 15,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 11
+    }
+   },
+   {
+    "id": "p2",
+    "plantilla": "header_macho",
+    "nombre": "Fila pines derecha (3V3 a D23)",
+    "cara": "B",
+    "x": 0,
+    "y": -12.7,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "n": 15,
+     "filas": 1,
+     "paso": 2.54,
+     "alto": 11
+    }
+   },
+   {
+    "id": "p3",
+    "plantilla": "wroom",
+    "nombre": "Módulo ESP-WROOM-32",
+    "cara": "A",
+    "x": 13.5,
+    "y": 0,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "p4",
+    "plantilla": "usb_c",
+    "nombre": "Conector USB Tipo C",
+    "cara": "A",
+    "x": -23.5,
+    "y": 0,
+    "rot": 180,
+    "z": 0,
+    "params": {
+     "sal": 1
+    }
+   },
+   {
+    "id": "p5",
+    "plantilla": "pulsador",
+    "nombre": "Botón EN / Reset",
+    "cara": "A",
+    "x": -21,
+    "y": 7.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "vastago": 1.5
+    }
+   },
+   {
+    "id": "p6",
+    "plantilla": "pulsador",
+    "nombre": "Botón BOOT",
+    "cara": "A",
+    "x": -21,
+    "y": -7.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "vastago": 1.5
+    }
+   },
+   {
+    "id": "p7",
+    "plantilla": "sot223",
+    "nombre": "Regulador LDO 3.3V (AMS1117)",
+    "cara": "A",
+    "x": -13,
+    "y": 6.5,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "p8",
+    "plantilla": "f_caja",
+    "nombre": "Puente USB-UART (CH340C)",
+    "cara": "A",
+    "x": -9.5,
+    "y": -2.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 10,
+     "h": 4,
+     "alto": 1.6,
+     "r": 0.2,
+     "color": "#64748b"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 12.7,
+    "z0": -2.5,
+    "z1": 0,
+    "color": "#1f2937",
+    "pieza": "p1",
+    "w": 38.1,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -17.78,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -15.24,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -12.7,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -10.16,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -7.62,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -5.08,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -2.54,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 2.54,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 5.08,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 7.62,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 10.16,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 12.7,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 15.24,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 17.78,
+    "cy": 12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p1",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -12.7,
+    "z0": -2.5,
+    "z1": 0,
+    "color": "#1f2937",
+    "pieza": "p2",
+    "w": 38.1,
+    "h": 2.54
+   },
+   {
+    "f": "caja",
+    "cx": -17.78,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -15.24,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -12.7,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -10.16,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -7.62,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -5.08,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": -2.54,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 2.54,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 5.08,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 7.62,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 10.16,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 12.7,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 15.24,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 17.78,
+    "cy": -12.7,
+    "z0": -11,
+    "z1": -2.5,
+    "color": "#d4a017",
+    "pieza": "p2",
+    "w": 0.64,
+    "h": 0.64
+   },
+   {
+    "f": "caja",
+    "cx": 13.5,
+    "cy": -3.2,
+    "z0": 1.6,
+    "z1": 4.7,
+    "color": "#cbd5e1",
+    "pieza": "p3",
+    "w": 18,
+    "h": 19.2
+   },
+   {
+    "f": "caja",
+    "cx": 13.5,
+    "cy": 0,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#1e3a8a",
+    "pieza": "p3",
+    "w": 18,
+    "h": 25.5
+   },
+   {
+    "f": "caja",
+    "cx": -23.5,
+    "cy": -0.5,
+    "z0": 1.6,
+    "z1": 4.8,
+    "color": "#cbd5e1",
+    "pieza": "p4",
+    "w": 8.9,
+    "h": 7.3,
+    "r": 1.2
+   },
+   {
+    "f": "caja",
+    "cx": -21,
+    "cy": 7.5,
+    "z0": 1.6,
+    "z1": 5.1,
+    "color": "#1f2937",
+    "pieza": "p5",
+    "w": 6,
+    "h": 6
+   },
+   {
+    "f": "cil",
+    "cx": -21,
+    "cy": 7.5,
+    "z0": 5.1,
+    "z1": 6.6,
+    "color": "#9ca3af",
+    "pieza": "p5",
+    "d": 3.5
+   },
+   {
+    "f": "caja",
+    "cx": -21,
+    "cy": -7.5,
+    "z0": 1.6,
+    "z1": 5.1,
+    "color": "#1f2937",
+    "pieza": "p6",
+    "w": 6,
+    "h": 6
+   },
+   {
+    "f": "cil",
+    "cx": -21,
+    "cy": -7.5,
+    "z0": 5.1,
+    "z1": 6.6,
+    "color": "#9ca3af",
+    "pieza": "p6",
+    "d": 3.5
+   },
+   {
+    "f": "caja",
+    "cx": -13,
+    "cy": 5.9,
+    "z0": 1.6,
+    "z1": 3.4,
+    "color": "#1f2937",
+    "pieza": "p7",
+    "w": 6.5,
+    "h": 3.5
+   },
+   {
+    "f": "caja",
+    "cx": -13,
+    "cy": 8.9,
+    "z0": 1.6,
+    "z1": 1.9,
+    "color": "#cbd5e1",
+    "pieza": "p7",
+    "w": 3,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": -9.5,
+    "cy": -2.5,
+    "z0": 1.6,
+    "z1": 3.2,
+    "color": "#64748b",
+    "pieza": "p8",
+    "w": 10,
+    "h": 4,
+    "r": 0.2
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-23T02:56:56.551Z"
+}
