@@ -28,7 +28,10 @@
   "notas": "Medidas y pinout tipicos del DOIT DevKit V1. Medir PCB, agujeros y posicion de headers con calibrador antes de imprimir."
  },
  "especificaciones": [],
- "imagen": null,
+ "imagen": {
+  "src": "img/esp32_devkit_30p.png?v=1795448771729",
+  "origen": "render del modelo 3D"
+ },
  "precios": [
   {
    "proveedor": "AliExpress",
@@ -622,6 +625,14 @@
   {
    "fecha": "2026-11-21",
    "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
+  },
+  {
+   "v": 3,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
  "modelo": {
@@ -1983,5 +1994,6 @@
     "h": 0.64
    }
   ]
- }
+ },
+ "modificado": "2026-11-23T15:46:09.717Z"
 }
