@@ -42,8 +42,8 @@
   }
  ],
  "imagen": {
-  "src": "img/39_sg90_metal.png",
-  "origen": "render 3D (modelo simplificado)"
+  "src": "img/sg90_metal.png?v=1795451854278",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -227,6 +227,14 @@
   {
    "fecha": "2026-11-21",
    "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
+  },
+  {
+   "v": 3,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
  "modelo": {
@@ -291,5 +299,6 @@
     "pieza": "base"
    }
   ]
- }
+ },
+ "modificado": "2026-11-23T16:37:32.709Z"
 }
