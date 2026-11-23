@@ -7,7 +7,7 @@
  "fabricante": "",
  "referencia": "",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Placa de pruebas sin soldadura de 400 puntos con 2 rieles de alimentación por lado.",
@@ -40,8 +40,8 @@
   }
  ],
  "imagen": {
-  "src": "img/02_protoboard_400.png",
-  "origen": "render 3D (modelo simplificado)"
+  "src": "img/protoboard_400.png?v=1795450399050",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -70,7 +70,22 @@
   "datasheet": "https://www.google.com/search?q=breadboard+400+points+datasheet+pdf",
   "imagenes": "https://www.google.com/search?tbm=isch&q=breadboard+400+points"
  },
- "montaje": null,
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "adhesivo",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "",
+  "pcb": [
+   83.3,
+   10.01,
+   55.3
+  ],
+  "forma": "rect",
+  "base_tipo": "prisma"
+ },
  "zonas": [],
  "pines": [],
  "archivos": {
@@ -92,6 +107,34 @@
    "v": 1,
    "fecha": "2026-11-16",
    "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: modelo 3D, montaje/agujeros, imagen",
+   "cambios": [
+    "modelo",
+    "montaje",
+    "imagen"
+   ]
   }
- ]
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 83.3,
+   "W": 10.01,
+   "d": 83.3,
+   "espesor": 55.3,
+   "radio": 0,
+   "color": "#5a5a5a"
+  },
+  "piezas": [],
+  "nota": "Generado desde un modelo STEP (el archivo original no se guarda).",
+  "cuerpos": []
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-23T16:13:17.137Z"
 }
