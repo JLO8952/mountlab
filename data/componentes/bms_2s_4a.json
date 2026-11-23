@@ -222,23 +222,31 @@
   "dxf_huella": {
    "nombre": "bms_2s_4a_v2_huella.dxf",
    "version": 2,
-   "fecha": "2026-11-21",
+   "fecha": "2026-11-23",
    "carpeta": "archivos/bms_2s_4a (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_v2_huella.dxf"
   },
   "step_montaje": {
    "nombre": "bms_2s_4a_v2_montaje.step",
    "version": 2,
-   "fecha": "2026-11-21",
+   "fecha": "2026-11-23",
    "carpeta": "archivos/bms_2s_4a (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_v2_montaje.step"
   },
   "dxf_plano": {
    "nombre": "bms_2s_4a_v2_plano.dxf",
    "version": 2,
-   "fecha": "2026-11-21",
+   "fecha": "2026-11-23",
    "carpeta": "archivos/bms_2s_4a (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_v2_plano.dxf"
+  },
+  "datasheet": {
+   "nombre": "bms_2s_4a_datasheet.pdf",
+   "fuente": "https://makerhero.com/img/files/download/HY2120-Datasheet.PDF",
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/bms_2s_4a (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_datasheet.pdf",
+   "kb": 1017
   }
  },
  "historial": [
@@ -650,6 +658,5 @@
    }
   ]
  },
- "modificado": "2026-11-23T16:35:23.017Z",
- "cad_pendiente": true
+ "modificado": "2026-11-23T16:35:23.017Z"
 }
