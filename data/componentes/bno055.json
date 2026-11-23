@@ -43,8 +43,8 @@
   }
  ],
  "imagen": {
-  "src": "img/25_bno055.png",
-  "origen": "render 3D (modelo simplificado)"
+  "src": "img/bno055.png?v=1795448795550",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -270,6 +270,14 @@
   {
    "fecha": "2026-11-21",
    "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
  "modelo": {
@@ -482,5 +490,6 @@
     "h": 1.25
    }
   ]
- }
+ },
+ "modificado": "2026-11-23T15:46:33.899Z"
 }
