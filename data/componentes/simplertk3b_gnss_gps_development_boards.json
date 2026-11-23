@@ -132,7 +132,28 @@
     -34.29,
     -26.67
    ]
-  ]
+  ],
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 7.8,
+    "altura_inferior": 1.6,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 7.8,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
  },
  "zonas": [
   {
@@ -355,6 +376,27 @@
    "fuente": "https://co.mouser.com/es/c/?marcom=197924911",
    "error": "la dirección no entrega un PDF directo (es una página web)",
    "fecha": "2026-11-23"
+  },
+  "dxf_huella": {
+   "nombre": "simplertk3b_gnss_gps_development_boards_v2_huella.dxf",
+   "version": 2,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/simplertk3b_gnss_gps_development_boards (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/simplertk3b_gnss_gps_development_boards/simplertk3b_gnss_gps_development_boards_v2_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "simplertk3b_gnss_gps_development_boards_v2_montaje.step",
+   "version": 2,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/simplertk3b_gnss_gps_development_boards (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/simplertk3b_gnss_gps_development_boards/simplertk3b_gnss_gps_development_boards_v2_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "simplertk3b_gnss_gps_development_boards_v2_plano.dxf",
+   "version": 2,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/simplertk3b_gnss_gps_development_boards (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/simplertk3b_gnss_gps_development_boards/simplertk3b_gnss_gps_development_boards_v2_plano.dxf"
   }
  },
  "historial": [
@@ -4504,6 +4546,5 @@
     "pieza": "s12"
    }
   ]
- },
- "cad_pendiente": true
+ }
 }
