@@ -111,7 +111,28 @@
    28,
    1.6
   ],
-  "forma": "rect"
+  "forma": "rect",
+  "conexiones": {
+   "header": "abajo",
+   "header_alto": 11,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 5,
+    "altura_inferior": 2,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Sin header: los cables se sueldan en los pads por arriba; puntas recortadas ≈2 mm por debajo."
+   },
+   "jumper": {
+    "altura_superior": 5,
+    "altura_inferior": 11,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "Header macho hacia abajo (11 mm) + carcasa Dupont y curva del cable ≈22 mm."
+   }
+  }
  },
  "zonas": [
   {
@@ -529,7 +550,34 @@
    "cara": "B"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "tarjeta_esp32_wifi_bluetooth_entrada_usb_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/tarjeta_esp32_wifi_bluetooth_entrada_usb (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/tarjeta_esp32_wifi_bluetooth_entrada_usb/tarjeta_esp32_wifi_bluetooth_entrada_usb_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "tarjeta_esp32_wifi_bluetooth_entrada_usb_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/tarjeta_esp32_wifi_bluetooth_entrada_usb (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/tarjeta_esp32_wifi_bluetooth_entrada_usb/tarjeta_esp32_wifi_bluetooth_entrada_usb_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "tarjeta_esp32_wifi_bluetooth_entrada_usb_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/tarjeta_esp32_wifi_bluetooth_entrada_usb (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/tarjeta_esp32_wifi_bluetooth_entrada_usb/tarjeta_esp32_wifi_bluetooth_entrada_usb_v1_plano.dxf"
+  },
+  "datasheet": {
+   "fuente": "https://www.zamux.co/tarjeta-esp32-wifi-bluetooth-entrada-usb-tipo-c-30-pines",
+   "error": "la dirección no entrega un PDF directo (es una página web)",
+   "fecha": "2026-11-23"
+  }
+ },
  "historial": [
   {
    "v": 1,
@@ -1149,6 +1197,5 @@
    }
   ]
  },
- "cad_pendiente": true,
  "modificado": "2026-11-23T02:56:56.551Z"
 }
