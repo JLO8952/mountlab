@@ -36,8 +36,8 @@
   }
  ],
  "imagen": {
-  "src": "img/16_switch_codillo_6p.png",
-  "origen": "render 3D (modelo simplificado)"
+  "src": "img/switch_codillo_6p.png?v=1795450203171",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -211,6 +211,14 @@
   {
    "fecha": "2026-11-21",
    "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
+  },
+  {
+   "v": 5,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
   }
  ],
  "modelo": {
@@ -448,5 +456,6 @@
     "h": 2
    }
   ]
- }
+ },
+ "modificado": "2026-11-23T16:10:01.428Z"
 }
