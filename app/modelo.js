@@ -29,11 +29,24 @@
   // Mundo three.js: X = X de la pieza, Y = altura (Z de la pieza), Z = −Y de la pieza.
   function forma2D(T, b, W) {
     const s = new T.Shape();
-    if (b.forma === "redonda") s.absarc(0, 0, b.d / 2, 0, Math.PI * 2, false);
+    if (b.forma === "contorno" && b.contorno && b.contorno.length > 2) { b.contorno.forEach((p, i) => i ? s.lineTo(p[0], p[1]) : s.moveTo(p[0], p[1])); s.closePath(); }
+    else if (b.forma === "redonda") s.absarc(0, 0, b.d / 2, 0, Math.PI * 2, false);
     else { const L = b.L / 2, W2 = b.W / 2, r = b.forma === "redondeada" ? Math.min(b.radio || 0, L - 0.01, W2 - 0.01) : 0;
       s.moveTo(-L + r, -W2); s.lineTo(L - r, -W2); if (r) s.absarc(L - r, -W2 + r, r, -Math.PI / 2, 0); s.lineTo(L, W2 - r); if (r) s.absarc(L - r, W2 - r, r, 0, Math.PI / 2); s.lineTo(-L + r, W2); if (r) s.absarc(-L + r, W2 - r, r, Math.PI / 2, Math.PI); s.lineTo(-L, -W2 + r); if (r) s.absarc(-L + r, -W2 + r, r, Math.PI, Math.PI * 1.5); }
     for (const a of (W.montaje && W.montaje.agujeros) || []) { const h = new T.Path(); h.absarc(a.x, a.y, a.d / 2, 0, Math.PI * 2, true); s.holes.push(h); }
     return s;
+  }
+  /** Geometría de un perfil extruido (en el eje z, x o y), centrada como las demás primitivas (en cx, centro de altura, −cy). */
+  function geoPerfil(T, c) {
+    const sh = new T.Shape();
+    if (c.circ) sh.absarc(c.circ[0], c.circ[1], c.circ[2], 0, Math.PI * 2, false);
+    else { c.pts.forEach((p, i) => i ? sh.lineTo(p[0], p[1]) : sh.moveTo(p[0], p[1])); sh.closePath(); }
+    const g = new T.ExtrudeGeometry(sh, { depth: Math.max(0.02, c.a1 - c.a0), bevelEnabled: false, curveSegments: 24 });
+    if (c.eje === "x") { g.rotateY(Math.PI / 2); g.translate(c.a0, 0, 0); }        // (u, v, w) = (y, z, x) → (x, z, −y)
+    else if (c.eje === "y") g.translate(0, 0, -c.a1);                              // (u, v, w) = (x, z, y) → (x, z, −y)
+    else { g.rotateX(-Math.PI / 2); g.translate(0, c.a0, 0); }                     // (u, v, w) = (x, y, z) → (x, z, −y)
+    g.translate(-c.cx, -(c.z0 + c.z1) / 2, c.cy);
+    return g;
   }
   /** Agrega al grupo las mallas del componente W (placa/base + piezas). Devuelve el desplazamiento de "explotar". */
   function construir(T, W, o) {
@@ -52,6 +65,7 @@
       if (hs.length) { const s = new T.Shape(), w = c.w / 2, h = c.h / 2; s.moveTo(-w, -h); s.lineTo(w, -h); s.lineTo(w, h); s.lineTo(-w, h); s.lineTo(-w, -h);
         hs.forEach(a => { const p = new T.Path(); p.absarc(a.x - c.cx, a.y - c.cy, a.d / 2, 0, Math.PI * 2, true); s.holes.push(p); });
         g = new T.ExtrudeGeometry(s, { depth: alto, bevelEnabled: false, curveSegments: 20 }); g.rotateX(-Math.PI / 2); g.translate(0, -alto / 2, 0); }
+      else if (c.f === "perfil") g = geoPerfil(T, c);
       else if (c.f === "cil") g = new T.CylinderGeometry(c.d / 2, c.d / 2, alto, 28);
       else if (c.r && c.r > 0.05) { const s = new T.Shape(), w = c.w / 2, h = c.h / 2, r = Math.min(c.r, w - 0.01, h - 0.01); s.moveTo(-w + r, -h); s.lineTo(w - r, -h); s.absarc(w - r, -h + r, r, -Math.PI / 2, 0); s.lineTo(w, h - r); s.absarc(w - r, h - r, r, 0, Math.PI / 2); s.lineTo(-w + r, h); s.absarc(-w + r, h - r, r, Math.PI / 2, Math.PI); s.lineTo(-w, -h + r); s.absarc(-w + r, -h + r, r, Math.PI, Math.PI * 1.5);
         g = new T.ExtrudeGeometry(s, { depth: alto, bevelEnabled: false, curveSegments: 12 }); g.rotateX(-Math.PI / 2); g.translate(0, -alto / 2, 0); }
@@ -102,13 +116,14 @@
     function inicio() {
       const tieneMontaje = W.montaje && W.montaje.pcb;
       host.innerHTML = `<div class="panel" style="max-width:820px">
-        <h3>Modelo 3D</h3><p class="muted" style="margin-top:0">Dibuja el componente con formas simples vistas desde arriba y la vista 3D se arma sola. Empieza por la placa:</p>
+        <h3>Modelo 3D</h3>${opt.importarStep ? `<div class="msg info" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between"><span>¿Tienes el <b>STEP</b> del fabricante? La app saca la placa, el contorno, los agujeros y cada pieza, y genera el modelo.</span><button class="pri" id="moStep0">🧊 Importar STEP</button></div>` : ""}<p class="muted" style="margin-top:${opt.importarStep ? 12 : 0}px">Dibuja el componente con formas simples vistas desde arriba y la vista 3D se arma sola. Empieza por la placa:</p>
         ${tieneMontaje ? `<button class="pri" id="moDesde">Crear a partir de su montaje (${W.montaje.pcb[0]} × ${W.montaje.pcb[1]} mm${(W.zonas || []).length ? `, ${W.zonas.length} zonas` : ""})</button><div class="small muted" style="margin:6px 0 14px">Toma la placa, los agujeros y convierte las zonas en piezas que puedes ajustar.</div>` : ""}
         <div class="small" style="margin-bottom:6px"><b>${tieneMontaje ? "O empieza con una placa de plantilla:" : "Placas de plantilla:"}</b></div>
         <div class="row">${PLACAS.map((p, i) => `<button data-pl="${i}">${esc(p.n)}</button>`).join("")}</div>
         <div class="small" style="margin:16px 0 6px"><b>Otras bases</b> <span class="muted">(motores, servos y cuerpos sólidos: las piezas se montan encima o debajo)</span></div>
         <div class="row">${Object.entries(MLPlant.MOTORES).map(([k, m]) => `<button data-bm="${k}">⚙ ${esc(m.n)}</button>`).join("")}${Object.entries(MLPlant.SERVOS).map(([k, m]) => `<button data-bs="${k}">⛭ Servo ${esc(m.n)}</button>`).join("")}
           <button data-bx="prisma">▣ Prisma / caja</button><button data-bx="cilindro">◉ Cilindro</button></div></div>`;
+      const s0 = host.querySelector("#moStep0"); if (s0) s0.onclick = () => opt.importarStep();
       const d = host.querySelector("#moDesde");
       if (d) d.onclick = () => { W.modelo = MLPlant.desdeMontaje(W); armar(); changed(); };
       host.querySelectorAll("[data-pl]").forEach(b => b.onclick = () => {
@@ -142,7 +157,7 @@
         </div>
         <div class="mo-der">
           <div class="mo-3d"><div id="mo3d"><div class="muted small" style="padding:20px">Cargando vista 3D…</div></div>
-            <div class="mo-3dbar"><button class="sm" data-v="iso">Iso</button><button class="sm" data-v="arriba">Arriba</button><button class="sm" data-v="abajo">Abajo</button><button class="sm" id="moEx">Explotar</button><button class="sm" id="moFoto" title="Usar esta vista como imagen del componente">📷 Imagen</button></div></div>
+            <div class="mo-3dbar"><button class="sm" data-v="iso">Iso</button><button class="sm" data-v="arriba">Arriba</button><button class="sm" data-v="abajo">Abajo</button><button class="sm" id="moEx">Explotar</button><button class="sm" id="moFoto" title="Usar esta vista como imagen del componente">📷 Imagen</button>${opt.importarStep ? '<button class="sm" id="moStep" title="Reemplazar este modelo por uno generado desde un archivo STEP">🧊 Desde STEP</button>' : ""}</div></div>
           <div class="panel" id="moPanel"></div>
           <div id="moRev"></div>
         </div></div>`;
@@ -155,6 +170,7 @@
       host.querySelector("#moQ").oninput = e => { st.filtro = e.target.value; libreria(); };
       host.querySelectorAll("[data-v]").forEach(b => b.onclick = () => v3 && v3.vista(b.dataset.v));
       host.querySelector("#moEx").onclick = e => { st.explotar = !st.explotar; e.target.classList.toggle("on", st.explotar); render3d(); };
+      const bS = host.querySelector("#moStep"); if (bS) bS.onclick = () => opt.importarStep();
       host.querySelector("#moFoto").onclick = async () => { const src = await captura(); if (!src) return; W.imagen = { src, origen: "render del modelo 3D" }; opt.onChange && opt.onChange(); opt.toast && opt.toast("Imagen lista: se guarda con el componente"); };
       dibujar();
       cargarThree().then(iniciar3d).catch(e => { host.querySelector("#mo3d").innerHTML = `<div class="small" style="padding:16px;color:#fca5a5">${esc(e.message)}. Recarga la página.</div>`; });
@@ -231,6 +247,7 @@
       if (bi.prim.length) { for (const c of bi.prim.slice().sort((p, q) => p.z0 - q.z0)) { if (c.z1 <= 0) continue;
           if (c.f === "cil") { const [cx, cy] = toS(c.cx, c.cy); s += `<circle cx="${cx}" cy="${cy}" r="${c.d / 2 * st.k}" fill="${c.color}" fill-opacity=".6" stroke="#cbd5e1" stroke-width="1"/>`; }
           else { const [rx, ry] = toS(c.cx - c.w / 2, c.cy + c.h / 2); s += `<rect x="${rx}" y="${ry}" width="${c.w * st.k}" height="${c.h * st.k}" rx="${(c.r || 0) * st.k}" fill="${c.color}" fill-opacity=".55" stroke="#cbd5e1" stroke-width="1"/>`; } } }
+      else if (bi.forma === "contorno") s += `<path d="${MLPlant.trazoPerfil({ pts: b.contorno }, toS, st.k)}" fill="${b.color || "#166534"}" fill-opacity=".75" stroke="#22c55e" stroke-width="1.5"/>`;
       else if (b.forma === "redonda") s += `<circle cx="${ax}" cy="${ay}" r="${b.d / 2 * st.k}" fill="${b.color || "#166534"}" fill-opacity=".75" stroke="#22c55e" stroke-width="1.5"/>`;
       else { const [px, py] = toS(-b.L / 2, b.W / 2); s += `<rect x="${px}" y="${py}" width="${b.L * st.k}" height="${b.W * st.k}" rx="${(b.forma === "redondeada" ? b.radio || 0 : 0) * st.k}" fill="${b.color || "#166534"}" fill-opacity=".75" stroke="#22c55e" stroke-width="1.5"/>`; }
       // piezas: primero la otra cara (fantasma), luego la activa
@@ -240,7 +257,8 @@
         const sel = st.sel.includes(pz.id);
         for (const c of MLPlant.cuerposDe(pz, esp)) {
           const op = act ? 0.95 : 0.22;
-          if (c.f === "cil") { const [cx, cy] = toS(c.cx, c.cy); s += `<circle data-p="${act ? pz.id : ""}" cx="${cx}" cy="${cy}" r="${Math.max(1.5, c.d / 2 * st.k)}" fill="${c.color}" fill-opacity="${op}" stroke="${act ? "#0b1220" : "#94a3b8"}" ${act ? "" : 'stroke-dasharray="3 3"'} style="cursor:${act ? "move" : "default"}"/>`; }
+          if (c.f === "perfil" && c.eje === "z") { s += `<path data-p="${act ? pz.id : ""}" d="${MLPlant.trazoPerfil(c, toS, st.k)}" fill="${c.color}" fill-opacity="${op}" stroke="${act ? "#0b1220" : "#94a3b8"}" stroke-width=".6" ${act ? "" : 'stroke-dasharray="3 3"'} style="cursor:${act ? "move" : "default"}"/>`; }
+          else if (c.f === "cil") { const [cx, cy] = toS(c.cx, c.cy); s += `<circle data-p="${act ? pz.id : ""}" cx="${cx}" cy="${cy}" r="${Math.max(1.5, c.d / 2 * st.k)}" fill="${c.color}" fill-opacity="${op}" stroke="${act ? "#0b1220" : "#94a3b8"}" ${act ? "" : 'stroke-dasharray="3 3"'} style="cursor:${act ? "move" : "default"}"/>`; }
           else { const [rx, ry] = toS(c.cx - c.w / 2, c.cy + c.h / 2); s += `<rect data-p="${act ? pz.id : ""}" x="${rx}" y="${ry}" width="${Math.max(1, c.w * st.k)}" height="${Math.max(1, c.h * st.k)}" rx="${(c.r || 0) * st.k}" fill="${c.color}" fill-opacity="${op}" stroke="${act ? "#0b1220" : "#94a3b8"}" stroke-width=".6" ${act ? "" : 'stroke-dasharray="3 3"'} style="cursor:${act ? "move" : "default"}"/>`; }
         }
         if (act) { const hb = MLPlant.huella(pz); if (hb) { const [rx, ry] = toS(hb.x0, hb.y1); if (sel) s += `<rect x="${rx - 3}" y="${ry - 3}" width="${(hb.x1 - hb.x0) * st.k + 6}" height="${(hb.y1 - hb.y0) * st.k + 6}" fill="none" stroke="#38bdf8" stroke-width="2" stroke-dasharray="5 3" pointer-events="none"/>`;
@@ -392,8 +410,8 @@
         const tipo = MLPlant.tipoBase(b), bi = MLPlant.baseInfo(b), placaLike = !["motor", "servo"].includes(tipo);
         const tipos = `<div><label>Tipo de base</label><select id="bT">${Object.entries(MLPlant.BASES).map(([k, v]) => `<option value="${k}" ${tipo === k ? "selected" : ""}>${v.ic} ${esc(v.n)}</option>`).join("")}</select></div>`;
         let campos = "";
-        if (placaLike) campos = `<div class="grid2" style="margin-top:8px"><div><label>Forma</label><select id="bF"><option value="rect" ${b.forma === "rect" ? "selected" : ""}>Rectangular</option><option value="redondeada" ${b.forma === "redondeada" ? "selected" : ""}>Esquinas redondeadas</option><option value="redonda" ${b.forma === "redonda" ? "selected" : ""}>Redonda</option></select></div><div><label>Color</label><input type="color" id="bC" value="${esc(b.color || "#166534")}" style="height:34px;padding:2px"></div></div>
-          <div class="kv" style="margin-top:8px">${b.forma === "redonda" ? `<div><label>Diámetro</label><input type="number" step="0.1" id="bD" value="${b.d}"></div>` : `<div><label>Largo X</label><input type="number" step="0.1" id="bL" value="${b.L}"></div><div><label>Ancho Y</label><input type="number" step="0.1" id="bW" value="${b.W}"></div>`}<div><label>${tipo === "placa" ? "Espesor" : "Altura"}</label><input type="number" step="0.1" id="bE" value="${b.espesor}"></div>${b.forma === "redondeada" ? `<div><label>Radio</label><input type="number" step="0.1" id="bR" value="${b.radio || 0}"></div>` : ""}</div>`;
+        if (placaLike) campos = `<div class="grid2" style="margin-top:8px"><div><label>Forma</label><select id="bF"><option value="rect" ${b.forma === "rect" ? "selected" : ""}>Rectangular</option><option value="redondeada" ${b.forma === "redondeada" ? "selected" : ""}>Esquinas redondeadas</option><option value="redonda" ${b.forma === "redonda" ? "selected" : ""}>Redonda</option>${b.contorno && b.contorno.length > 2 ? `<option value="contorno" ${b.forma === "contorno" ? "selected" : ""}>Contorno real (${b.contorno.length} vértices)</option>` : ""}</select></div><div><label>Color</label><input type="color" id="bC" value="${esc(b.color || "#166534")}" style="height:34px;padding:2px"></div></div>
+          <div class="kv" style="margin-top:8px">${b.forma === "redonda" ? `<div><label>Diámetro</label><input type="number" step="0.1" id="bD" value="${b.d}"></div>` : `<div><label>Largo X</label><input type="number" step="0.1" id="bL" value="${b.L}" ${b.forma === "contorno" ? "disabled title=\"Medida del contorno importado\"" : ""}></div><div><label>Ancho Y</label><input type="number" step="0.1" id="bW" value="${b.W}" ${b.forma === "contorno" ? "disabled" : ""}></div>`}<div><label>${tipo === "placa" ? "Espesor" : "Altura"}</label><input type="number" step="0.1" id="bE" value="${b.espesor}"></div>${b.forma === "redondeada" ? `<div><label>Radio</label><input type="number" step="0.1" id="bR" value="${b.radio || 0}"></div>` : ""}</div>`;
         else {
           const cat = tipo === "motor" ? MLPlant.MOTORES : MLPlant.SERVOS, m = bi.medidas;
           const ks = tipo === "motor" ? [["d", "Ø / ancho"], ["plano", "Entre planos"], ["largo", "Largo cuerpo"], ["reductor", "Reductor"], ["eje_d", "Ø eje"], ["eje_l", "Largo eje"]] : [["L", "Largo cuerpo"], ["W", "Ancho"], ["alto", "Alto cuerpo"], ["oL", "Largo orejas"], ["oz0", "Altura orejas"], ["sx", "Eje desde centro"]];
@@ -450,7 +468,7 @@
       const esp = M().base.espesor, cx = S.reduce((a, p) => a + p.x, 0) / S.length, cy = S.reduce((a, p) => a + p.y, 0) / S.length;
       const prim = [], pines = []; let zona = null;
       for (const p of S) {
-        MLPlant.cuerposDe(Object.assign({}, p, { cara: "A", z: p.z || 0 }), 0).forEach(q => { const o = Object.assign({}, q, { cx: r2(q.cx - cx), cy: r2(q.cy - cy) }); delete o.pieza; prim.push(o); });
+        MLPlant.cuerposDe(Object.assign({}, p, { cara: "A", z: p.z || 0 }), 0).forEach(q => { const o = MLPlant.desplazar(q, -cx, -cy); delete o.pieza; prim.push(o); });
         const g = MLPlant.geom(p); g.pines.forEach(q => { const [x, y] = MLPlant.rotar(q.x, q.y, p.rot); pines.push({ n: `${pines.length + 1}`, x: r2(p.x + x - cx), y: r2(p.y + y - cy) }); });
         if (!zona && g.zona && S.length === 1) { const z = g.zona; const [x, y] = MLPlant.rotar(z.cx, z.cy, p.rot); zona = Object.assign({}, z, { cx: r2(x), cy: r2(y) }); }
       }

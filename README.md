@@ -164,3 +164,16 @@ python -m http.server 8000               # ver la app en http://localhost:8000
   - **Parasolid**: .zip con el STEP del ensamble + macro `.swb` que lo guarda como `.x_t` con colores.
   - **DXF 6 vistas** (sin cortes): una **capa y un color ACI por pieza** (`CAJA_…`, `COMP_…`, `ACC_…`), perfiles de frente con arcos y siluetas de lado.
   - Si dos elementos se montan uno sobre otro, el segundo no se corta (el sólido quedaría inválido) y se avisa.
+
+### Crear componentes desde un STEP (nov 2026)
+- **Generador → «🧊 Tengo el STEP»** (o `#/importar-step`), y en la pestaña **Modelo 3D** de cualquier componente el botón **🧊 Desde STEP** para reemplazar su modelo.
+- El STEP se lee **en el navegador** con OpenCascade en WebAssembly (`app/vendor/occt/`, occt-import-js 0.0.23, LGPL) en un Web Worker; **no se sube ni se guarda**: solo es materia prima. Al aprobar queda únicamente el modelo de MountLab.
+- `app/stepimport.js` (MLStepImp) convierte:
+  - **Placa**: la detecta por su gran cara plana y espesor de PCB (o por el nombre); la acuesta (normal → Z, lado largo → X, conserva el sentido del archivo, voltea para que la cara con más piezas quede arriba), origen al centro y cara inferior en z = 0.
+  - **Contorno** sacado de los bordes de la cara superior: rectangular, esquinas redondeadas (radio calculado), redondo o **contorno real** (polígono, base `forma: "contorno"`). Un cuerpo grueso sin PCB queda como base «prisma».
+  - **Agujeros de montaje** (círculos ajustados de Ø1.9–7 mm) → `montaje.agujeros`; los de pines pasantes se cuentan y se ignoran.
+  - **Cada pieza** → plantilla `importada` con primitivas: caja, cilindro o **perfil extruido** en su mejor eje (z, x o y: `{f:"perfil", eje, pts|circ, a0, a1}`), y **escalonado** por secciones cuando la pieza cambia a lo largo del eje (bridas, tuercas, cuerpos de conectores).
+  - **Tipo por nombre** (USB-C, micro USB, SMA/u.FL, JST, headers, LED, pulsadores, módulos GNSS/ESP…) → zona de acceso con su salida (el borde por el que sobresale o ±Z) y holgura.
+  - Avisos: piezas que sobresalen del borde, módulo distinto al del nombre del archivo, recortes que no son de montaje.
+- Pantalla de revisión: original y generado lado a lado con cámaras enlazadas (y el original en malla encima), medidas sacadas, tabla de piezas para desmarcar o renombrar.
+- El perfil extruido se soporta en todo: planta 2D, Montaje, vista 3D, render de la ficha, STEP/DXF del navegador, caja 3D y ensamble de la caja, y `cad/regenerar.py` (CadQuery).

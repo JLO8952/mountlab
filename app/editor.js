@@ -82,7 +82,8 @@
       const M = m();
       if (!M || !M.pcb) { s += `<text x="${w / 2}" y="${h / 2}" fill="#94a3b8" text-anchor="middle">Este elemento no tiene placa. Activa “Tiene montaje” en la pestaña Montaje.</text>`; svg.innerHTML = s; return; }
       const [L, W] = M.pcb; const [px, py, pw, ph] = rectS(0, 0, L, W);
-      s += `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="#14532d55" stroke="#22c55e" stroke-width="1.5" rx="${Math.min(4, st.k * 0.6)}"/>`;
+      s += M.contorno && M.contorno.length > 2 && window.MLPlant ? `<path d="${MLPlant.trazoPerfil({ pts: M.contorno }, toS, st.k)}" fill="#14532d55" stroke="#22c55e" stroke-width="1.5"/>`
+        : `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="#14532d55" stroke="#22c55e" stroke-width="1.5" rx="${Math.min(4, st.k * 0.6)}"/>`;
       // piezas del modelo 3D vistas desde arriba (las de la cara B, punteadas): así coincide con la pestaña Modelo 3D
       if (st.layers.modelo && comp.modelo && comp.modelo.base && window.MLPlant) {
         const b = comp.modelo.base, esp = b.espesor || 1.6, bi = MLPlant.baseInfo(b);
@@ -91,7 +92,8 @@
         const bajo = lista.filter(c => c.caraB), arriba = lista.filter(c => !c.caraB);
         for (const c of [...bajo, ...arriba]) {
           const col = c.color || "#64748b", op = c.caraB ? 0.18 : 0.85, dash = c.caraB ? ' stroke-dasharray="3 2"' : "";
-          if (c.f === "cil") { const [a, b2] = toS(c.cx, c.cy); s += `<circle cx="${a}" cy="${b2}" r="${Math.max(0.5, c.d / 2 * st.k)}" fill="${col}" fill-opacity="${op}" stroke="${col}" stroke-width=".8"${dash} pointer-events="none"/>`; }
+          if (c.f === "perfil" && c.eje === "z") s += `<path d="${MLPlant.trazoPerfil(c, toS, st.k)}" fill="${col}" fill-opacity="${op}" stroke="${col}" stroke-width=".8"${dash} pointer-events="none"/>`;
+          else if (c.f === "cil") { const [a, b2] = toS(c.cx, c.cy); s += `<circle cx="${a}" cy="${b2}" r="${Math.max(0.5, c.d / 2 * st.k)}" fill="${col}" fill-opacity="${op}" stroke="${col}" stroke-width=".8"${dash} pointer-events="none"/>`; }
           else { const [a, b2, cw, ch] = rectS(c.cx, c.cy, c.w, c.h); s += `<rect x="${a}" y="${b2}" width="${cw}" height="${ch}" rx="${c.r ? Math.min(c.r * st.k, cw / 2, ch / 2) : 0}" fill="${col}" fill-opacity="${op}" stroke="${col}" stroke-width=".8"${dash} pointer-events="none"/>`; }
         }
       }

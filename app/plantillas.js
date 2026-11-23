@@ -87,6 +87,7 @@
     { id: "portapilas_18650", g: "Accesorios", n: "Portapilas 18650", params: [], gen: () => ({ prim: [caja(0, 0, 77, 21, 0, 4, C.negro), cil(0, 0, 18.4, 2, 20.4, C.azul)] }) },
     // Formas libres
     { id: "f_caja", g: "Formas libres", n: "Caja / rectángulo", params: [P("w", "Largo X", 10, 0.2, 300), P("h", "Ancho Y", 6, 0.2, 300), P("alto", "Alto Z", 3, 0.1, 100), P("r", "Radio esquinas", 0, 0, 50), P("color", "Color", "#64748b", null, null, null, "color")], gen: p => ({ prim: [caja(0, 0, p.w, p.h, 0, p.alto, p.color, p.r || 0)] }) },
+    { id: "importada", g: "Formas libres", n: "Pieza importada (STEP)", params: [], oculta: true, gen: p => ({ prim: (p.prim || []).map(q => Object.assign({}, q)), zona: p.zona || null, pines: p.pines || [] }) },
     { id: "f_cil", g: "Formas libres", n: "Cilindro / círculo", params: [P("d", "Diámetro", 6, 0.2, 300), P("alto", "Alto Z", 3, 0.1, 100), P("color", "Color", "#64748b", null, null, null, "color")], gen: p => ({ prim: [cil(0, 0, p.d, 0, p.alto, p.color)] }) },
   ];
   const BYID = Object.fromEntries(LIB.map(t => [t.id, t]));
@@ -98,7 +99,7 @@
     if (u) return { id: u.id, g: "Mis plantillas", n: u.nombre, params: [], propia: true, gen: () => ({ prim: u.prim || [], zona: u.zona || null, pines: u.pines || [] }) };
     return null;
   }
-  function todas() { return LIB.concat((window.Store && Store.db.plantillas || []).map(u => plantilla(u.id))); }
+  function todas() { return LIB.filter(t => !t.oculta).concat((window.Store && Store.db.plantillas || []).map(u => plantilla(u.id))); }
   function paramsDef(t) { return Object.fromEntries((t.params || []).map(p => [p.k, p.def])); }
 
   // -------- transformaciones
@@ -110,10 +111,50 @@
     const p = Object.assign(paramsDef(t), pz.params || {});
     try { const g = t.gen(p); return { prim: g.prim || [], zona: g.zona || null, pines: g.pines || [] }; } catch (e) { return { prim: [], zona: null, pines: [] }; }
   }
+  // -------- perfil extruido: {f:"perfil", eje:"z"|"x"|"y", pts:[[u,v]…] | circ:[u,v,r], a0, a1, color}
+  //   eje z: (u,v) = (x,y), extruido en z de a0 a a1 · eje x: (u,v) = (y,z), extruido en x · eje y: (u,v) = (x,z), extruido en y
+  const EJES = { x: [1, 2, 0], y: [0, 2, 1], z: [0, 1, 2] }, NOM = ["x", "y", "z"];
+  /** Transforma un perfil con una función de puntos (permutación de ejes con signos + traslación). Devuelve el perfil y su caja envolvente. */
+  function perfilMap(q, f) {
+    const [iu, iv, iw] = EJES[q.eje || "z"];
+    const P = (u, v, w) => { const p = [0, 0, 0]; p[iu] = u; p[iv] = v; p[iw] = w; return f(p); };
+    const o = P(0, 0, 0), d = P(0, 0, 1).map((v, i) => v - o[i]), jw = d.map(Math.abs).indexOf(Math.max(...d.map(Math.abs))), eje = NOM[jw], [ju, jv] = EJES[eje];
+    const out = { f: "perfil", eje, color: q.color };
+    if (q.circ) { const c = P(q.circ[0], q.circ[1], 0); out.circ = [r2(c[ju]), r2(c[jv]), q.circ[2]]; }
+    else out.pts = q.pts.map(([u, v]) => { const c = P(u, v, 0); return [r2(c[ju]), r2(c[jv])]; });
+    const a = [P(0, 0, q.a0)[jw], P(0, 0, q.a1)[jw]].sort((m, n) => m - n); out.a0 = r2(a[0]); out.a1 = r2(a[1]);
+    return Object.assign(out, cajaPerfil(out));
+  }
+  /** Caja envolvente (cx, cy, w, h, z0, z1) de un perfil en sus coordenadas. */
+  function cajaPerfil(q) {
+    const [iu, iv, iw] = EJES[q.eje || "z"], lo = [0, 0, 0], hi = [0, 0, 0];
+    let us, vs; if (q.circ) { us = [q.circ[0] - q.circ[2], q.circ[0] + q.circ[2]]; vs = [q.circ[1] - q.circ[2], q.circ[1] + q.circ[2]]; } else { us = q.pts.map(p => p[0]); vs = q.pts.map(p => p[1]); }
+    lo[iu] = Math.min(...us); hi[iu] = Math.max(...us); lo[iv] = Math.min(...vs); hi[iv] = Math.max(...vs); lo[iw] = q.a0; hi[iw] = q.a1;
+    return { cx: r2((lo[0] + hi[0]) / 2), cy: r2((lo[1] + hi[1]) / 2), w: r2(hi[0] - lo[0]), h: r2(hi[1] - lo[1]), z0: r2(lo[2]), z1: r2(hi[2]) };
+  }
+  /** Trazo SVG (atributo d) de un perfil visto desde arriba; toS(x, y) → [px, py] y k = px por mm. Solo perfiles de eje z. */
+  function trazoPerfil(q, toS, k) {
+    if (q.circ) { const [a, b] = toS(q.circ[0], q.circ[1]), r = Math.max(0.5, q.circ[2] * k); return `M${a - r} ${b}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0Z`; }
+    return q.pts.map((p, i) => { const [a, b] = toS(p[0], p[1]); return (i ? "L" : "M") + a.toFixed(2) + " " + b.toFixed(2); }).join("") + "Z";
+  }
+  /** Copia de una primitiva desplazada en planta. */
+  function desplazar(q, dx, dy) {
+    if (q.f !== "perfil") return Object.assign({}, q, { cx: r2(q.cx + dx), cy: r2(q.cy + dy) });
+    return perfilMap(q, ([x, y, z]) => [x + dx, y + dy, z]);
+  }
+  /** Volumen de una primitiva (mm³). */
+  function volumen(q) {
+    if (q.f === "cil") return Math.PI * q.d * q.d / 4 * (q.z1 - q.z0);
+    if (q.f === "perfil") { let A; if (q.circ) A = Math.PI * q.circ[2] ** 2; else { A = 0; q.pts.forEach((p, i) => { const n = q.pts[(i + 1) % q.pts.length]; A += p[0] * n[1] - n[0] * p[1]; }); A = Math.abs(A) / 2; } return A * (q.a1 - q.a0); }
+    return q.w * q.h * (q.z1 - q.z0);
+  }
+
   /** Primitivas en coordenadas del mundo (z absoluto). */
   function cuerposDe(pz, esp) {
     const g = geom(pz), off = +pz.z || 0, B = pz.cara === "B";
     return g.prim.map(q => {
+      if (q.f === "perfil") { const a = (pz.rot || 0) * Math.PI / 180, c = Math.round(Math.cos(a)), s = Math.round(Math.sin(a));
+        return Object.assign(perfilMap(q, ([x, y, z]) => [pz.x + x * c - y * s, pz.y + x * s + y * c, B ? -(z + off) : esp + z + off]), { pieza: pz.id }); }
       const [x, y] = rotar(q.cx, q.cy, pz.rot); const sw = (pz.rot / 90) % 2 === 1;
       const z0 = B ? -(q.z1 + off) : esp + q.z0 + off, z1 = B ? -(q.z0 + off) : esp + q.z1 + off;
       const o = { f: q.f, cx: r2(pz.x + x), cy: r2(pz.y + y), z0: r2(z0), z1: r2(z1), color: q.color, pieza: pz.id };
@@ -169,7 +210,7 @@
         zonas: [{ tipo: "conector", nombre: "Cable del servo", cx: r2(-m.L / 2), cy: 0, w: 2, h: 4, z: [2, 6], salida: "-X", holgura: 20 }, { tipo: "otra", nombre: "Giro del brazo (horn)", cx: m.sx, cy: 0, w: m.dome_d, h: m.dome_d, z: [m.alto + m.dome_h, m.alto + m.dome_h + m.sp_h], salida: "+Z", holgura: 6 }] };
     }
     const red = b.forma === "redonda", L = red ? b.d : b.L, W = red ? b.d : b.W;
-    return { tipo, L, W, top: +b.espesor || 1.6, forma: b.forma || "rect", prim: [], zonas: [] };
+    return { tipo, L, W, top: +b.espesor || 1.6, forma: b.forma === "contorno" && !(b.contorno && b.contorno.length > 2) ? "rect" : (b.forma || "rect"), prim: [], zonas: [] };
   }
 
   /** Recalcula montaje (placa, alturas), zonas automáticas, pines automáticos y cuerpos a partir de c.modelo. */
@@ -182,6 +223,7 @@
     c.montaje.pcb = [r2(L), r2(W), r2(esp)]; c.montaje.forma = bi.forma || "rect";
     if (bi.tipo !== "placa") c.montaje.base_tipo = bi.tipo; else delete c.montaje.base_tipo;
     if (b.forma === "redondeada" && bi.tipo !== "motor" && bi.tipo !== "servo") c.montaje.radio = b.radio || 0; else delete c.montaje.radio;
+    if (bi.forma === "contorno") c.montaje.contorno = b.contorno; else delete c.montaje.contorno;
     const cuerpos = bi.prim.map(q => Object.assign({}, q)), zonas = bi.zonas.map(z => Object.assign({}, z, { auto: true, pieza: "base", z: z.z.map(r2) })), pines = [];
     const prevPines = {}; (c.pines || []).filter(p => p.pieza).forEach(p => { prevPines[p.pieza + "#" + p.idx] = p; });
     let top = esp, bot = 0;
@@ -243,5 +285,5 @@
     return { version: 1, base, piezas, nota: piezas.length ? "Piezas iniciales creadas a partir de las zonas del componente." : "" };
   }
 
-  window.MLPlant = { BASES, MOTORES, SERVOS, baseInfo, tipoBase, LIB, GRUPOS, plantilla, todas, paramsDef, geom, cuerposDe, huella, sincronizar, revisar, desdeMontaje, rotar, C };
+  window.MLPlant = { BASES, MOTORES, SERVOS, baseInfo, tipoBase, LIB, GRUPOS, plantilla, todas, paramsDef, geom, cuerposDe, huella, perfilMap, cajaPerfil, volumen, trazoPerfil, desplazar, sincronizar, revisar, desdeMontaje, rotar, C };
 })();

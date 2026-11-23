@@ -74,6 +74,8 @@ def dxf(c, ruta):
 
     if m.get("forma") == "redonda":
         msp.add_circle((0, 0), L / 2, dxfattribs={"layer": "PCB"})
+    elif m.get("forma") == "contorno" and m.get("contorno"):
+        msp.add_lwpolyline([tuple(p) for p in m["contorno"]], close=True, dxfattribs={"layer": "PCB"})
     else:
         rect(0, 0, L, W, "PCB")
     e = max(L, W) * 0.08
@@ -91,6 +93,11 @@ def dxf(c, ruta):
         capa = "PCB" if q.get("base") else "PIEZAS_A" if q["z0"] >= m["pcb"][2] - 1e-6 else "PIEZAS_B"
         if q["f"] == "cil":
             msp.add_circle((q["cx"], q["cy"]), q["d"] / 2, dxfattribs={"layer": capa})
+        elif q["f"] == "perfil" and (q.get("eje") or "z") == "z":
+            if q.get("circ"):
+                msp.add_circle((q["circ"][0], q["circ"][1]), q["circ"][2], dxfattribs={"layer": capa})
+            else:
+                msp.add_lwpolyline([tuple(p) for p in q["pts"]], close=True, dxfattribs={"layer": capa})
         else:
             rect(q["cx"], q["cy"], q["w"], q["h"], capa)
     for p in c.get("pines", []):
@@ -267,6 +274,8 @@ def placa_solida(m):
     forma = m.get("forma", "rect")
     if forma == "redonda":
         return cq.Workplane("XY").circle(L / 2).extrude(T)
+    if forma == "contorno" and m.get("contorno"):
+        return cq.Workplane("XY").polyline([tuple(p) for p in m["contorno"]]).close().extrude(T)
     pcb = cq.Workplane("XY").box(L, W, T, centered=(True, True, False))
     r = float(m.get("radio") or 0)
     if forma == "redondeada" and r > 0.05:
@@ -276,6 +285,20 @@ def placa_solida(m):
 
 def cuerpo_solido(q):
     alto = max(q["z1"] - q["z0"], 0.05)
+    if q["f"] == "perfil":   # perfil extruido en z, x o y (piezas importadas de STEP)
+        eje = q.get("eje") or "z"
+        plano = {"z": "XY", "x": "YZ", "y": "XZ"}[eje]
+        largo = max(q["a1"] - q["a0"], 0.05)
+        wp = cq.Workplane(plano, origin=(q["a0"] if eje == "x" else 0, q["a0"] if eje == "y" else 0, q["a0"] if eje == "z" else 0))
+        if q.get("circ"):
+            u, v, r = q["circ"]
+            s = wp.center(u, v).circle(r).extrude(largo)
+        else:
+            s = wp.polyline([tuple(p) for p in q["pts"]]).close().extrude(largo)
+        if eje == "y":   # el plano XZ extruye hacia −Y: se corre para que ocupe a0..a1
+            bb = s.val().BoundingBox()
+            s = s.translate((0, q["a0"] - bb.ymin, 0))
+        return s
     if q["f"] == "cil":
         s = cq.Workplane("XY").circle(q["d"] / 2).extrude(alto)
     else:
@@ -321,13 +344,17 @@ def step(c, ruta):
     a.add(pcb, name="BASE" if m.get("base_tipo") in ("motor", "servo") else "PCB", color=hex_rgb(col_placa))
     # piezas del Modelo 3D (cada una con su color), agrupadas por pieza
     nombres = {p.get("id"): p.get("nombre") or p.get("plantilla") for p in mod.get("piezas", [])}
-    cont = {}
+    cont, usados = {}, set()
     for q in mod.get("cuerpos", []):
         if q.get("base"):
             continue
         pid = q.get("pieza", "pieza")
         cont[pid] = cont.get(pid, 0) + 1
-        nom = ascii(f"{'A' if q['z0'] >= T - 1e-6 else 'B'}_{nombres.get(pid, pid)}_{cont[pid]}").replace(" ", "_")[:60]
+        nom = ascii(f"{'A' if q['z0'] >= T - 1e-6 else 'B'}_{nombres.get(pid, pid)}_{cont[pid]}").replace(" ", "_")[:56]
+        base_nom, k = nom, 2
+        while nom in usados:   # dos piezas con el mismo nombre (p. ej. dos LED iguales)
+            nom = f"{base_nom}_{k}"; k += 1
+        usados.add(nom)
         try:
             a.add(cuerpo_solido(q), name=nom, color=hex_rgb(q.get("color") or "#64748b"))
         except Exception as e:

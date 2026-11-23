@@ -27,7 +27,8 @@
     const M = W.modelo; if (!M || !M.base) return [];
     const b = M.base, esp = +b.espesor || 1.6, bi = MLPlant.baseInfo(b), out = [], ag = (W.montaje && W.montaje.agujeros) || [];
     if (!bi.prim.length) {
-      const ext = b.forma === "redonda" ? circP(0, 0, (b.d || b.L) / 2, true) : rectP(0, 0, b.L, b.W, b.forma === "redondeada" ? b.radio : 0);
+      const ext = bi.forma === "contorno" ? (() => { const C = b.contorno; let A = 0; C.forEach((p, k) => { const q = C[(k + 1) % C.length]; A += p[0] * q[1] - q[0] * p[1]; }); return (A >= 0 ? C : C.slice().reverse()).map(p => ({ p: [p[0], p[1]], t: "L" })); })()
+        : b.forma === "redonda" ? circP(0, 0, (b.d || b.L) / 2, true) : rectP(0, 0, b.L, b.W, b.forma === "redondeada" ? b.radio : 0);
       out.push({ nombre: "PCB", color: b.color || "#166534", z0: 0, z1: esp, ext, huecos: ag.map(a => circP(a.x, a.y, a.d / 2, false)), tipo: "placa", cx: 0, cy: 0, w: b.L || b.d, h: b.W || b.d });
     }
     const lista = bi.prim.map(c => Object.assign({ esBase: true, nombreP: "Base" }, c)).concat((M.piezas || []).flatMap(p => MLPlant.cuerposDe(p, esp).map(c => Object.assign({ nombreP: p.nombre || p.plantilla }, c))));
@@ -35,6 +36,14 @@
       if (!(c.z1 > c.z0)) return;
       const nombre = `${c.nombreP || "Pieza"}_${i + 1}`;
       if (c.f === "cil") { out.push({ nombre, color: c.color, z0: c.z0, z1: c.z1, ext: circP(c.cx, c.cy, c.d / 2, true), huecos: [], tipo: "cil", cx: c.cx, cy: c.cy, w: c.d, h: c.d }); return; }
+      if (c.f === "perfil") {   // perfil extruido en z, x o y: el bucle va en (u, v) y el marco T lo lleva a su eje
+        let ext; if (c.circ) ext = circP(c.circ[0], c.circ[1], c.circ[2], true);
+        else { let A = 0; c.pts.forEach((p, k) => { const q = c.pts[(k + 1) % c.pts.length]; A += p[0] * q[1] - q[0] * p[1]; }); const P = A >= 0 ? c.pts : c.pts.slice().reverse(); ext = P.map(p => ({ p: [p[0], p[1]], t: "L" })); }
+        const T = c.eje === "x" ? { O: [0, 0, 0], X: [0, 1, 0], Y: [0, 0, 1], Z: [1, 0, 0] } : c.eje === "y" ? { O: [0, 0, 0], X: [1, 0, 0], Y: [0, 0, 1], Z: [0, -1, 0] } : null;
+        const z0 = c.eje === "y" ? -c.a1 : c.a0, z1 = c.eje === "y" ? -c.a0 : c.a1;
+        out.push(Object.assign({ nombre, color: c.color, z0: T ? z0 : c.z0, z1: T ? z1 : c.z1, ext, huecos: [], tipo: "perfil", cx: c.cx, cy: c.cy, w: c.w, h: c.h, perfil: { eje: c.eje || "z", pts: c.pts, circ: c.circ }, zz: [c.z0, c.z1] }, T ? { T } : {}));
+        return;
+      }
       const hs = c.orejas ? ag.filter(a => Math.abs(a.x - c.cx) < c.w / 2 && Math.abs(a.y - c.cy) < c.h / 2) : [];
       out.push({ nombre, color: c.color, z0: c.z0, z1: c.z1, ext: rectP(c.cx, c.cy, c.w, c.h, c.r), huecos: hs.map(a => circP(a.x, a.y, a.d / 2, false)), tipo: "caja", cx: c.cx, cy: c.cy, w: c.w, h: c.h, r: c.r });
     });
@@ -105,7 +114,7 @@
   }
   function step(W, titulo) {
     const K = emisor(), pr = K.producto(W.id, titulo || W.nombre), origen = K.ax([0, 0, 0], [0, 0, 1], [1, 0, 0]), ids = [];
-    for (const S of solidos(W)) { const sol = brep(K, S); ids.push(sol); K.color(sol, S.color); }
+    for (const S of solidos(W)) { const sol = brep(K, S, S.T); ids.push(sol); K.color(sol, S.color); }
     const rep = K.E(`ADVANCED_BREP_SHAPE_REPRESENTATION('${nmS(W.nombre)}',(#${origen}${ids.map(i => ",#" + i).join("")}),#${K.gc})`);
     K.E(`SHAPE_DEFINITION_REPRESENTATION(#${pr.pds},#${rep})`);
     return K.texto("modelo 3D de " + W.nombre, W.id + ".step");
@@ -155,6 +164,8 @@
       let ccw = s.ccw; if (sx < 0) { a0 = 180 - a0; a1 = 180 - a1; ccw = !ccw; }
       if (ccw) arc(l, c[0], c[1], s.r, a0, a1); else arc(l, c[0], c[1], s.r, a1, a0);
     });
+    // los perfiles extruidos de lado (eje x / y): en planta se ven como su caja envolvente; de frente, con su perfil
+    for (const s of S) if (s.T) { s.extPlanta = rectP(s.cx, s.cy, s.w, s.h, 0); s.z0 = s.zz[0]; s.z1 = s.zz[1]; }
     const bb = { x0: Math.min(...S.map(s => s.cx - s.w / 2)), x1: Math.max(...S.map(s => s.cx + s.w / 2)), y0: Math.min(...S.map(s => s.cy - s.h / 2)), y1: Math.max(...S.map(s => s.cy + s.h / 2)), z0: Math.min(...S.map(s => s.z0)), z1: Math.max(...S.map(s => s.z1)) };
     const LX = bb.x1 - bb.x0, LY = bb.y1 - bb.y0, LZ = bb.z1 - bb.z0, g = Math.max(15, Math.max(LX, LY, LZ) * 0.35);
     // centros de cada vista (el frontal en el origen del dibujo)
@@ -166,16 +177,22 @@
     const fuera = s => !placa || s.cx - s.w / 2 < placa.cx - placa.w / 2 - 1e-6 || s.cx + s.w / 2 > placa.cx + placa.w / 2 + 1e-6 || s.cy - s.h / 2 < placa.cy - placa.h / 2 - 1e-6 || s.cy + s.h / 2 > placa.cy + placa.h / 2 + 1e-6;
     const deArriba = orden.filter(s => s === placa || s.z1 > pz1 - 1e-6 || fuera(s)), deAbajo = orden.slice().reverse().filter(s => s === placa || s.z0 < pz0 + 1e-6 || fuera(s));
     // SUPERIOR (desde +Z): X → derecha, Y → arriba
-    for (const s of deArriba) { bucle("SUPERIOR", s.ext, sup[0] - cxm, sup[1] - cym, 1); s.huecos.forEach(h => bucle("AGUJEROS", h, sup[0] - cxm, sup[1] - cym, 1)); }
+    for (const s of deArriba) { bucle("SUPERIOR", s.extPlanta || s.ext, sup[0] - cxm, sup[1] - cym, 1); s.huecos.forEach(h => bucle("AGUJEROS", h, sup[0] - cxm, sup[1] - cym, 1)); }
     // INFERIOR (desde −Z): X espejado, Y → arriba
-    for (const s of deAbajo) { bucle("INFERIOR", s.ext, inf[0] + cxm, inf[1] - cym, -1); s.huecos.forEach(h => bucle("AGUJEROS", h, inf[0] + cxm, inf[1] - cym, -1)); }
+    for (const s of deAbajo) { bucle("INFERIOR", s.extPlanta || s.ext, inf[0] + cxm, inf[1] - cym, -1); s.huecos.forEach(h => bucle("AGUJEROS", h, inf[0] + cxm, inf[1] - cym, -1)); }
     // alzados: cada cuerpo es un rectángulo (ancho en el eje horizontal de la vista × alto z0..z1)
     const rectV = (l, c, ancho, ox, oy, z0, z1) => { const x0 = ox + c - ancho / 2, x1 = ox + c + ancho / 2, y0 = oy + z0 - czm, y1 = oy + z1 - czm; lin(l, x0, y0, x1, y0); lin(l, x1, y0, x1, y1); lin(l, x1, y1, x0, y1); lin(l, x0, y1, x0, y0); };
+    // perfil (u, v) dibujado en una vista de alzado: u → horizontal (con espejo sx), v = z → vertical
+    const perfilV = (l, s, cu, ox, oy, sx) => { const P = s.perfil; if (P.circ) { cir(l, ox + sx * (P.circ[0] - cu), oy + P.circ[1] - czm, P.circ[2]); return; }
+      P.pts.forEach((q, i) => { const q2 = P.pts[(i + 1) % P.pts.length]; lin(l, ox + sx * (q[0] - cu), oy + q[1] - czm, ox + sx * (q2[0] - cu), oy + q2[1] - czm); }); };
     for (const s of S) {
-      rectV("FRONTAL", s.cx - cxm, s.w, fr[0], fr[1], s.z0, s.z1);            // desde −Y: X → derecha
-      rectV("POSTERIOR", -(s.cx - cxm), s.w, post[0], post[1], s.z0, s.z1);   // desde +Y: X espejado
-      rectV("LATERAL_DER", s.cy - cym, s.h, der[0], der[1], s.z0, s.z1);      // desde +X: Y → derecha
-      rectV("LATERAL_IZQ", -(s.cy - cym), s.h, izq[0], izq[1], s.z0, s.z1);   // desde −X: Y espejado
+      const ey = s.perfil && s.perfil.eje === "y", ex = s.perfil && s.perfil.eje === "x";
+      if (ey) { perfilV("FRONTAL", s, cxm, fr[0], fr[1], 1); perfilV("POSTERIOR", s, cxm, post[0], post[1], -1); }
+      else { rectV("FRONTAL", s.cx - cxm, s.w, fr[0], fr[1], s.z0, s.z1);            // desde −Y: X → derecha
+        rectV("POSTERIOR", -(s.cx - cxm), s.w, post[0], post[1], s.z0, s.z1); }  // desde +Y: X espejado
+      if (ex) { perfilV("LATERAL_DER", s, cym, der[0], der[1], 1); perfilV("LATERAL_IZQ", s, cym, izq[0], izq[1], -1); }
+      else { rectV("LATERAL_DER", s.cy - cym, s.h, der[0], der[1], s.z0, s.z1);      // desde +X: Y → derecha
+        rectV("LATERAL_IZQ", -(s.cy - cym), s.h, izq[0], izq[1], s.z0, s.z1); }   // desde −X: Y espejado
     }
     // agujeros en los alzados como ejes
     for (const h of S.filter(s => s.tipo === "placa").flatMap(s => s.huecos.map(q => ({ x: q[0].c[0], y: q[0].c[1], r: q[0].r, z0: s.z0, z1: s.z1 })))) {
