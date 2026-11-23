@@ -86,7 +86,28 @@
    31.8
   ],
   "forma": "redonda",
-  "base_tipo": "cilindro"
+  "base_tipo": "cilindro",
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 19,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 19,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
  },
  "zonas": [
   {
@@ -119,6 +140,27 @@
    "nombre": "31_perno_ojo_14.dxf",
    "url": "https://drive.google.com/file/d/1gFwvpIz_rvl_5_5jmEF-3-CXyhmhnRzx/view",
    "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "perno_ojo_14_v2_huella.dxf",
+   "version": 2,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/perno_ojo_14 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/perno_ojo_14/perno_ojo_14_v2_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "perno_ojo_14_v2_montaje.step",
+   "version": 2,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/perno_ojo_14 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/perno_ojo_14/perno_ojo_14_v2_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "perno_ojo_14_v2_plano.dxf",
+   "version": 2,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/perno_ojo_14 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/perno_ojo_14/perno_ojo_14_v2_plano.dxf"
   }
  },
  "historial": [
@@ -254,6 +296,5 @@
    }
   ]
  },
- "cad_pendiente": true,
  "modificado": "2026-11-23T16:31:41.982Z"
 }
