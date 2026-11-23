@@ -105,7 +105,13 @@
    "func": "Recepción UART (comandos / correcciones RTK)"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "datasheet": {
+   "fuente": "https://co.mouser.com/es/c/?marcom=197924911",
+   "error": "la dirección no entrega un PDF directo (es una página web)",
+   "fecha": "2026-11-23"
+  }
+ },
  "historial": [
   {
    "v": 1,
