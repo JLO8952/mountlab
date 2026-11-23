@@ -9,6 +9,11 @@
    "id": "esp32_devkit_30p",
    "cantidad": 1,
    "nota": ""
+  },
+  {
+   "id": "modulo_rele_5v_1_canal",
+   "cantidad": 1,
+   "nota": ""
   }
  ],
  "documentacion": "",
@@ -20,6 +25,10 @@
   {
    "fecha": "2026-11-22",
    "nota": "Añadido esp32_devkit_30p"
+  },
+  {
+   "fecha": "2026-11-22",
+   "nota": "Añadido modulo_rele_5v_1_canal"
   }
  ],
  "subs": [
