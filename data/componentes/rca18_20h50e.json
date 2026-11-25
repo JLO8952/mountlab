@@ -1,0 +1,499 @@
+{
+ "id": "rca18_20h50e",
+ "nombre": "Amplificador RF de Alta Potencia 1800-2000 MHz 100W (RCA18-20H50E)",
+ "tipo": "electronico",
+ "categoria": "Comunicación RF",
+ "etiquetas": [
+  "RF",
+  "amplificador",
+  "HPA",
+  "alta potencia",
+  "1800-2000 MHz",
+  "100W",
+  "50dBm",
+  "RFcore",
+  "SSPA"
+ ],
+ "fabricante": "RFcore Co., Ltd.",
+ "referencia": "RCA18-20H50E",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Amplificador de potencia de banda ancha de estado sólido (SSPA) para la banda de 1800 a 2000 MHz con salida nominal de 50 dBm (100 W), diseñado por RFcore para comunicaciones, inhibición RF e instrumentación.",
+  "funcionamiento": "Amplifica señales RF en la banda de 1800–2000 MHz hasta ~100 W (50 dBm) sobre carga de 50 ohmios. Integra monitoreo analógico de temperatura, potencia directa y potencia reflejada, alarmas de falla por VSWR y sobretemperatura, y control de habilitación activo en bajo (Enable Active Low). Requiere montaje obligatorio sobre un disipador de calor adecuado.",
+  "voltaje": "+27 V DC (serigrafiado en el chasis; conector 3W3P)",
+  "corriente": "No verificada en datasheet oficial (referencia de la familia RFcore 100 W: ~10–13 A máx.)",
+  "interfaz": "Conector D-Sub 9 pines para monitoreo analógico, alarmas y control Enable (Active Low)",
+  "entradas": "RF IN (conector coaxial SMA hembra), Alimentación DC +27V / GND / N/C (conector 3W3P), Enable Active Low (D-Sub 9 pin 6)",
+  "salidas": "RF OUT (conector coaxial SMA hembra), Monitoreo de temperatura (pin 4), Potencia directa (pin 8), Potencia reflejada (pin 9), Alarma VSWR (pin 3), Alarma sobretemperatura (pin 5)",
+  "dimensiones": "170 x 136 x 25 mm (medición física del usuario; sin plano mecánico oficial del RCA18-20H50E)",
+  "datasheet": "https://www.rfcore.com/product-services/high-power-amplifiers/specific-band-amplifiers/",
+  "notas": "ATENCIÓN: El datasheet adjunto corresponde al RCA1822H48A (1800-2200 MHz, 48 dBm, 135x100x25 mm) y tiene un pinout y conector de alimentación distintos a la unidad física RCA18-20H50E. Usar siempre el pinout serigrafiado en el chasis. Requiere disipador térmico adecuado y carga de 50 ohmios en RF OUT antes de energizar."
+ },
+ "especificaciones": [
+  {
+   "param": "Banda de frecuencia",
+   "valor": "1800 ~ 2000 MHz (por nomenclatura RCA18-20)"
+  },
+  {
+   "param": "Potencia de salida nominal (Psat)",
+   "valor": "50 dBm (100 W) [por nomenclatura H50E]"
+  },
+  {
+   "param": "Voltaje de alimentación DC",
+   "valor": "+27 V DC (serigrafiado en chasis)"
+  },
+  {
+   "param": "Conector de alimentación",
+   "valor": "D-Sub mixto 3W3 (+27V, GND, N/C)"
+  },
+  {
+   "param": "Conector de control y monitoreo",
+   "valor": "D-Sub 9 pines"
+  },
+  {
+   "param": "Conectores RF IN / RF OUT",
+   "valor": "SMA hembra"
+  },
+  {
+   "param": "Impedancia",
+   "valor": "50 ohmios"
+  },
+  {
+   "param": "Refrigeración",
+   "valor": "Requiere disipador de calor externo"
+  }
+ ],
+ "imagen": {
+  "src": "img/rca18_20h50e.jpg?v=1795638902941",
+  "origen": "foto subida en el chat"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   170,
+   136,
+   25
+  ],
+  "forma": "rect",
+  "base_tipo": "prisma"
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "x": null,
+   "y": null,
+   "n": "1 (GND)",
+   "func": "Tierra de señal y control"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "2 (Do not Connect)",
+   "func": "No conectar"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "3 (VSWR Fail Alarm)",
+   "func": "Salida de alarma por falla de VSWR"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "4 (Temperature Monitor)",
+   "func": "Salida analógica de monitoreo de temperatura del chasis"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "5 (Over Temp Alarm)",
+   "func": "Salida de alarma por sobretemperatura"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "6 (Enable Active Low)",
+   "func": "Habilitación del amplificador (activo en bajo)"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "7 (Do not Connect)",
+   "func": "No conectar"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "8 (Forward Power Monitor)",
+   "func": "Salida analógica de monitoreo de potencia directa"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "9 (Reflected Power Monitor)",
+   "func": "Salida analógica de monitoreo de potencia reflejada"
+  }
+ ],
+ "archivos": {
+  "datasheet": {
+   "nombre": "rca18_20h50e_datasheet.pdf",
+   "fecha": "2026-11-25",
+   "subido": true,
+   "fuente": "subido desde el chat: 2bdc3a75-6a9b-4bee-8584-202b1e10be2e.pdf",
+   "carpeta": "archivos/rca18_20h50e (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca18_20h50e/rca18_20h50e_datasheet.pdf"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-25",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 170,
+   "W": 136,
+   "d": 25,
+   "espesor": 25,
+   "radio": 0,
+   "color": "#cbd5e1"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "f_cil",
+    "nombre": "RF IN (SMA)",
+    "cara": "-X",
+    "x": -85,
+    "y": -52,
+    "rot": 0,
+    "z": 12.5,
+    "params": {
+     "d": 8,
+     "alto": 10,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p2",
+    "plantilla": "f_caja",
+    "nombre": "D-Sub 9 Control",
+    "cara": "-X",
+    "x": -85,
+    "y": -26,
+    "rot": 0,
+    "z": 12.5,
+    "params": {
+     "w": 31,
+     "h": 12.5,
+     "alto": 11,
+     "r": 1,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p3",
+    "plantilla": "f_caja",
+    "nombre": "3W3P DC +27V",
+    "cara": "-X",
+    "x": -85,
+    "y": 12,
+    "rot": 0,
+    "z": 12.5,
+    "params": {
+     "w": 39,
+     "h": 12.5,
+     "alto": 11,
+     "r": 1,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p4",
+    "plantilla": "f_cil",
+    "nombre": "RF OUT (SMA)",
+    "cara": "-X",
+    "x": -85,
+    "y": 52,
+    "rot": 0,
+    "z": 12.5,
+    "params": {
+     "d": 8,
+     "alto": 10,
+     "color": "#64748b"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "perfil",
+    "eje": "x",
+    "color": "#64748b",
+    "circ": [
+     -52,
+     12.5,
+     4
+    ],
+    "a0": -95,
+    "a1": -85,
+    "cx": -90,
+    "cy": -52,
+    "w": 10,
+    "h": 8,
+    "z0": 8.5,
+    "z1": 16.5,
+    "pieza": "p1"
+   },
+   {
+    "f": "perfil",
+    "eje": "x",
+    "color": "#64748b",
+    "pts": [
+     [
+      -41.5,
+      17.75
+     ],
+     [
+      -41.424,
+      18.133
+     ],
+     [
+      -41.207,
+      18.457
+     ],
+     [
+      -40.883,
+      18.674
+     ],
+     [
+      -40.5,
+      18.75
+     ],
+     [
+      -11.5,
+      18.75
+     ],
+     [
+      -11.117,
+      18.674
+     ],
+     [
+      -10.793,
+      18.457
+     ],
+     [
+      -10.576,
+      18.133
+     ],
+     [
+      -10.5,
+      17.75
+     ],
+     [
+      -10.5,
+      7.25
+     ],
+     [
+      -10.576,
+      6.867
+     ],
+     [
+      -10.793,
+      6.543
+     ],
+     [
+      -11.117,
+      6.326
+     ],
+     [
+      -11.5,
+      6.25
+     ],
+     [
+      -40.5,
+      6.25
+     ],
+     [
+      -40.883,
+      6.326
+     ],
+     [
+      -41.207,
+      6.543
+     ],
+     [
+      -41.424,
+      6.867
+     ],
+     [
+      -41.5,
+      7.25
+     ]
+    ],
+    "a0": -96,
+    "a1": -85,
+    "cx": -90.5,
+    "cy": -26,
+    "w": 11,
+    "h": 31,
+    "z0": 6.25,
+    "z1": 18.75,
+    "pieza": "p2"
+   },
+   {
+    "f": "perfil",
+    "eje": "x",
+    "color": "#64748b",
+    "pts": [
+     [
+      -7.5,
+      17.75
+     ],
+     [
+      -7.424,
+      18.133
+     ],
+     [
+      -7.207,
+      18.457
+     ],
+     [
+      -6.883,
+      18.674
+     ],
+     [
+      -6.5,
+      18.75
+     ],
+     [
+      30.5,
+      18.75
+     ],
+     [
+      30.883,
+      18.674
+     ],
+     [
+      31.207,
+      18.457
+     ],
+     [
+      31.424,
+      18.133
+     ],
+     [
+      31.5,
+      17.75
+     ],
+     [
+      31.5,
+      7.25
+     ],
+     [
+      31.424,
+      6.867
+     ],
+     [
+      31.207,
+      6.543
+     ],
+     [
+      30.883,
+      6.326
+     ],
+     [
+      30.5,
+      6.25
+     ],
+     [
+      -6.5,
+      6.25
+     ],
+     [
+      -6.883,
+      6.326
+     ],
+     [
+      -7.207,
+      6.543
+     ],
+     [
+      -7.424,
+      6.867
+     ],
+     [
+      -7.5,
+      7.25
+     ]
+    ],
+    "a0": -96,
+    "a1": -85,
+    "cx": -90.5,
+    "cy": 12,
+    "w": 11,
+    "h": 39,
+    "z0": 6.25,
+    "z1": 18.75,
+    "pieza": "p3"
+   },
+   {
+    "f": "perfil",
+    "eje": "x",
+    "color": "#64748b",
+    "circ": [
+     52,
+     12.5,
+     4
+    ],
+    "a0": -95,
+    "a1": -85,
+    "cx": -90,
+    "cy": 52,
+    "w": 10,
+    "h": 8,
+    "z0": 8.5,
+    "z1": 16.5,
+    "pieza": "p4"
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-25T20:35:00.365Z"
+}
