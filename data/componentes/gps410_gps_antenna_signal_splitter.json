@@ -98,7 +98,28 @@
    22.2
   ],
   "forma": "rect",
-  "base_tipo": "prisma"
+  "base_tipo": "prisma",
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 0,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 0,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
  },
  "zonas": [],
  "pines": [
@@ -133,7 +154,34 @@
    "func": "Salida RF 4 hacia receptor (bloqueo DC con carga interna de 200 ohmios)"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "gps410_gps_antenna_signal_splitter_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-25",
+   "carpeta": "archivos/gps410_gps_antenna_signal_splitter (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/gps410_gps_antenna_signal_splitter/gps410_gps_antenna_signal_splitter_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "gps410_gps_antenna_signal_splitter_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-25",
+   "carpeta": "archivos/gps410_gps_antenna_signal_splitter (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/gps410_gps_antenna_signal_splitter/gps410_gps_antenna_signal_splitter_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "gps410_gps_antenna_signal_splitter_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-25",
+   "carpeta": "archivos/gps410_gps_antenna_signal_splitter (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/gps410_gps_antenna_signal_splitter/gps410_gps_antenna_signal_splitter_v1_plano.dxf"
+  },
+  "datasheet": {
+   "fuente": "https://www.instockwireless.com/gps-splitter-4way-SMA-gps410.htm",
+   "error": "la dirección no entrega un PDF directo (es una página web)",
+   "fecha": "2026-11-25"
+  }
+ },
  "historial": [
   {
    "v": 1,
@@ -358,6 +406,5 @@
    }
   ]
  },
- "cad_pendiente": true,
  "modificado": "2026-11-25T21:40:48.106Z"
 }
