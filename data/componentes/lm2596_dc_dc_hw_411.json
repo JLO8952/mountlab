@@ -99,7 +99,28 @@
    21,
    1.6
   ],
-  "forma": "rect"
+  "forma": "rect",
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 10.1,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 10.1,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
  },
  "zonas": [
   {
@@ -161,7 +182,37 @@
    "func": "Tierra / negativo de salida (GND común)"
   }
  ],
- "archivos": {},
+ "archivos": {
+  "dxf_huella": {
+   "nombre": "lm2596_dc_dc_hw_411_v1_huella.dxf",
+   "version": 1,
+   "fecha": "2026-11-25",
+   "carpeta": "archivos/lm2596_dc_dc_hw_411 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "lm2596_dc_dc_hw_411_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-25",
+   "carpeta": "archivos/lm2596_dc_dc_hw_411 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "lm2596_dc_dc_hw_411_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-25",
+   "carpeta": "archivos/lm2596_dc_dc_hw_411 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_v1_plano.dxf"
+  },
+  "datasheet": {
+   "nombre": "lm2596_dc_dc_hw_411_datasheet.pdf",
+   "fuente": "https://www.ti.com/lit/ds/symlink/lm2596.pdf",
+   "fecha": "2026-11-25",
+   "carpeta": "archivos/lm2596_dc_dc_hw_411 (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_datasheet.pdf",
+   "kb": 4976
+  }
+ },
  "historial": [
   {
    "v": 1,
