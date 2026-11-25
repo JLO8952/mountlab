@@ -81,29 +81,7 @@
   "src": "img/rca0810h50e.png?v=1795638383574",
   "origen": "render del modelo 3D"
  },
- "precios": [
-  {
-   "proveedor": "AliExpress",
-   "precio_cop": 2500,
-   "url": "https://es.aliexpress.com/w/wholesale-2S-4A-BMS-18650-protection-board.html",
-   "fecha": "2026-11",
-   "estimado": true
-  },
-  {
-   "proveedor": "Amazon",
-   "precio_cop": 12000,
-   "url": "https://www.amazon.com/s?k=2S+4A+BMS+18650+protection+board",
-   "fecha": "2026-11",
-   "estimado": true
-  },
-  {
-   "proveedor": "Mercado Libre CO",
-   "precio_cop": 6000,
-   "url": "https://listado.mercadolibre.com.co/2s-4a-bms-18650-protection-board",
-   "fecha": "2026-11",
-   "estimado": true
-  }
- ],
+ "precios": [],
  "busquedas": {
   "datasheet": "https://www.google.com/search?q=2S+4A+BMS+18650+protection+board+datasheet+pdf",
   "imagenes": "https://www.google.com/search?tbm=isch&q=2S+4A+BMS+18650+protection+board"
@@ -372,6 +350,14 @@
    "nota": "Actualizado: imagen",
    "cambios": [
     "imagen"
+   ]
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-25",
+   "nota": "Actualizado: precios",
+   "cambios": [
+    "precios"
    ]
   }
  ],
@@ -690,5 +676,5 @@
    }
   ]
  },
- "modificado": "2026-11-25T20:26:21.981Z"
+ "modificado": "2026-11-25T20:27:20.798Z"
 }
