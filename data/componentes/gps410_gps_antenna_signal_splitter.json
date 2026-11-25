@@ -1,0 +1,355 @@
+{
+ "id": "gps410_gps_antenna_signal_splitter",
+ "nombre": "Divisor de Señal de Antena GPS/GNSS de 4 Vías SMA (GPS410)",
+ "tipo": "electronico",
+ "categoria": "Comunicación RF",
+ "etiquetas": [
+  "GPS",
+  "GNSS",
+  "GLONASS",
+  "Galileo",
+  "L1-L5",
+  "splitter",
+  "divisor RF",
+  "4 vías",
+  "SMA",
+  "50 ohmios",
+  "InStock Wireless"
+ ],
+ "fabricante": "InStock Wireless Components",
+ "referencia": "GPS410",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Divisor pasivo de señal de antena GNSS de 4 vías con conectores SMA hembra (Tri Alloy) de 50 ohmios, compatible con bandas GPS L1 a L5, GLONASS y Galileo. Cuenta con un puerto de salida DC Pass y tres puertos DC Block con carga simulada de 200 ohmios.",
+  "funcionamiento": "Divide la señal RF proveniente de una única antena GNSS activa hacia 4 receptores simultáneamente con baja pérdida de inserción en exceso (0.4 dB promedio sobre la división nominal de 6 dB) y alto aislamiento entre puertos (30 dB promedio). El puerto DC Pass permite el paso de corriente continua desde un receptor hacia la antena activa, mientras que los otros tres puertos bloquean el paso de DC y presentan una carga interna de 200 ohmios para evitar falsas alarmas de antena abierta en los receptores.",
+  "voltaje": "15 V DC máx. en puertos DC Block",
+  "corriente": "75 mA máx. en puertos DC Block",
+  "interfaz": "RF coaxial 50 ohmios (5 conectores SMA hembra)",
+  "entradas": "1 puerto común de antena GNSS (SMA hembra, DC PASS)",
+  "salidas": "4 puertos de salida hacia receptores: 1 puerto DC PASS y 3 puertos DC BLOCK con carga interna de 200 ohmios (SMA hembra)",
+  "dimensiones": "101.1 x 75.7 x 22.2 mm (sin conectores); conectores sobresalen 11.1 mm; 2 agujeros pasantes de 3.18 mm separados 95.25 mm; paso entre conectores de salida 25.40 mm",
+  "datasheet": "https://www.instockwireless.com/gps-splitter-4way-SMA-gps410.htm",
+  "notas": "Solo el puerto de salida 1 (DC PASS) alimenta la antena activa. Los puertos 2, 3 y 4 son DC BLOCK con carga de 200 ohmios (máximo 15 VDC y 75 mA). No exceder estos límites en los puertos bloqueados."
+ },
+ "especificaciones": [
+  {
+   "param": "Bandas soportadas",
+   "valor": "GPS L1 - L5, GLONASS, Galileo"
+  },
+  {
+   "param": "Configuración",
+   "valor": "Divisor de 4 vías (1 entrada, 4 salidas)"
+  },
+  {
+   "param": "Pérdida de inserción (exceso)",
+   "valor": "0.4 dB promedio"
+  },
+  {
+   "param": "Aislamiento puerto a puerto",
+   "valor": "30 dB promedio"
+  },
+  {
+   "param": "VSWR",
+   "valor": "1.10:1 promedio"
+  },
+  {
+   "param": "Impedancia",
+   "valor": "50 ohmios"
+  },
+  {
+   "param": "Conectores",
+   "valor": "5x SMA hembra (Jack) Tri Alloy"
+  },
+  {
+   "param": "Límites en puertos DC Block",
+   "valor": "15 V DC máx., 75 mA máx. (carga interna 200 ohmios)"
+  }
+ ],
+ "imagen": {
+  "src": "img/gps410_gps_antenna_signal_splitter.jpg?v=1795642831374",
+  "origen": "foto subida en el chat"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -47.63,
+    "y": 0,
+    "d": 3.18
+   },
+   {
+    "x": 47.63,
+    "y": 0,
+    "d": 3.18
+   }
+  ],
+  "altura_superior": 0,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   101.1,
+   75.7,
+   22.2
+  ],
+  "forma": "rect",
+  "base_tipo": "prisma"
+ },
+ "zonas": [],
+ "pines": [
+  {
+   "x": null,
+   "y": null,
+   "n": "IN (DC PASS)",
+   "func": "Entrada común desde antena GNSS activa (permite paso de DC)"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "OUT 1 (DC PASS)",
+   "func": "Salida RF 1 hacia receptor (permite paso de alimentación DC hacia la antena)"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "OUT 2 (DC BLOCK)",
+   "func": "Salida RF 2 hacia receptor (bloqueo DC con carga interna de 200 ohmios)"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "OUT 3 (DC BLOCK)",
+   "func": "Salida RF 3 hacia receptor (bloqueo DC con carga interna de 200 ohmios)"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "OUT 4 (DC BLOCK)",
+   "func": "Salida RF 4 hacia receptor (bloqueo DC con carga interna de 200 ohmios)"
+  }
+ ],
+ "archivos": {},
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-25",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 101.1,
+   "W": 75.7,
+   "d": 25,
+   "espesor": 22.2,
+   "radio": 0,
+   "color": "#e2e8f0"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "f_cil",
+    "nombre": "IN DC PASS (SMA)",
+    "cara": "+Y",
+    "x": 0,
+    "y": 37.85,
+    "rot": 0,
+    "z": 12.7,
+    "params": {
+     "d": 8,
+     "alto": 11.1,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p2",
+    "plantilla": "f_cil",
+    "nombre": "OUT 1 DC PASS (SMA)",
+    "cara": "-Y",
+    "x": -38.1,
+    "y": -37.85,
+    "rot": 0,
+    "z": 12.7,
+    "params": {
+     "d": 8,
+     "alto": 11.1,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p3",
+    "plantilla": "f_cil",
+    "nombre": "OUT 2 DC BLOCK (SMA)",
+    "cara": "-Y",
+    "x": -12.7,
+    "y": -37.85,
+    "rot": 0,
+    "z": 12.7,
+    "params": {
+     "d": 8,
+     "alto": 11.1,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p4",
+    "plantilla": "f_cil",
+    "nombre": "OUT 3 DC BLOCK (SMA)",
+    "cara": "-Y",
+    "x": 12.7,
+    "y": -37.85,
+    "rot": 0,
+    "z": 12.7,
+    "params": {
+     "d": 8,
+     "alto": 11.1,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p5",
+    "plantilla": "f_cil",
+    "nombre": "OUT 4 DC BLOCK (SMA)",
+    "cara": "-Y",
+    "x": 38.1,
+    "y": -37.85,
+    "rot": 0,
+    "z": 12.7,
+    "params": {
+     "d": 8,
+     "alto": 11.1,
+     "color": "#64748b"
+    }
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "perfil",
+    "eje": "y",
+    "color": "#64748b",
+    "circ": [
+     0,
+     12.7,
+     4
+    ],
+    "a0": 37.85,
+    "a1": 48.95,
+    "cx": 0,
+    "cy": 43.4,
+    "w": 8,
+    "h": 11.1,
+    "z0": 8.7,
+    "z1": 16.7,
+    "pieza": "p1"
+   },
+   {
+    "f": "perfil",
+    "eje": "y",
+    "color": "#64748b",
+    "circ": [
+     -38.1,
+     12.7,
+     4
+    ],
+    "a0": -48.95,
+    "a1": -37.85,
+    "cx": -38.1,
+    "cy": -43.4,
+    "w": 8,
+    "h": 11.1,
+    "z0": 8.7,
+    "z1": 16.7,
+    "pieza": "p2"
+   },
+   {
+    "f": "perfil",
+    "eje": "y",
+    "color": "#64748b",
+    "circ": [
+     -12.7,
+     12.7,
+     4
+    ],
+    "a0": -48.95,
+    "a1": -37.85,
+    "cx": -12.7,
+    "cy": -43.4,
+    "w": 8,
+    "h": 11.1,
+    "z0": 8.7,
+    "z1": 16.7,
+    "pieza": "p3"
+   },
+   {
+    "f": "perfil",
+    "eje": "y",
+    "color": "#64748b",
+    "circ": [
+     12.7,
+     12.7,
+     4
+    ],
+    "a0": -48.95,
+    "a1": -37.85,
+    "cx": 12.7,
+    "cy": -43.4,
+    "w": 8,
+    "h": 11.1,
+    "z0": 8.7,
+    "z1": 16.7,
+    "pieza": "p4"
+   },
+   {
+    "f": "perfil",
+    "eje": "y",
+    "color": "#64748b",
+    "circ": [
+     38.1,
+     12.7,
+     4
+    ],
+    "a0": -48.95,
+    "a1": -37.85,
+    "cx": 38.1,
+    "cy": -43.4,
+    "w": 8,
+    "h": 11.1,
+    "z0": 8.7,
+    "z1": 16.7,
+    "pieza": "p5"
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-25T21:40:29.206Z"
+}
