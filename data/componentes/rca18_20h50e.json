@@ -17,7 +17,7 @@
  "fabricante": "RFcore Co., Ltd.",
  "referencia": "RCA18-20H50E",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Amplificador de potencia de banda ancha de estado sólido (SSPA) para la banda de 1800 a 2000 MHz con salida nominal de 50 dBm (100 W), diseñado por RFcore para comunicaciones, inhibición RF e instrumentación.",
@@ -81,7 +81,7 @@
   "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
   "pcb": [
    170,
-   136,
+   135,
    25
   ],
   "forma": "rect",
@@ -181,6 +181,15 @@
     "montaje",
     "modelo"
    ]
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-25",
+   "nota": "Actualizado: modelo 3D, montaje/agujeros",
+   "cambios": [
+    "modelo",
+    "montaje"
+   ]
   }
  ],
  "modelo": {
@@ -189,7 +198,7 @@
    "tipo": "prisma",
    "forma": "rect",
    "L": 170,
-   "W": 136,
+   "W": 135,
    "d": 25,
    "espesor": 25,
    "radio": 0,
@@ -208,7 +217,7 @@
     "params": {
      "d": 8,
      "alto": 10,
-     "color": "#64748b"
+     "color": "#b07c21"
     }
    },
    {
@@ -217,7 +226,7 @@
     "nombre": "D-Sub 9 Control",
     "cara": "-X",
     "x": -85,
-    "y": -26,
+    "y": -25.5,
     "rot": 0,
     "z": 12.5,
     "params": {
@@ -257,7 +266,7 @@
     "params": {
      "d": 8,
      "alto": 10,
-     "color": "#64748b"
+     "color": "#cb6410"
     }
    }
   ],
@@ -265,7 +274,7 @@
    {
     "f": "perfil",
     "eje": "x",
-    "color": "#64748b",
+    "color": "#b07c21",
     "circ": [
      -52,
      12.5,
@@ -287,90 +296,90 @@
     "color": "#64748b",
     "pts": [
      [
-      -41.5,
+      -41,
       17.75
      ],
      [
-      -41.424,
+      -40.924,
       18.133
      ],
      [
-      -41.207,
+      -40.707,
       18.457
      ],
      [
-      -40.883,
+      -40.383,
       18.674
      ],
      [
-      -40.5,
+      -40,
       18.75
      ],
      [
-      -11.5,
+      -11,
       18.75
      ],
      [
-      -11.117,
+      -10.617,
       18.674
      ],
      [
-      -10.793,
+      -10.293,
       18.457
      ],
      [
-      -10.576,
+      -10.076,
       18.133
      ],
      [
-      -10.5,
+      -10,
       17.75
      ],
      [
-      -10.5,
+      -10,
       7.25
      ],
      [
-      -10.576,
+      -10.076,
       6.867
      ],
      [
-      -10.793,
+      -10.293,
       6.543
      ],
      [
-      -11.117,
+      -10.617,
       6.326
      ],
      [
-      -11.5,
+      -11,
       6.25
      ],
      [
-      -40.5,
+      -40,
       6.25
      ],
      [
-      -40.883,
+      -40.383,
       6.326
      ],
      [
-      -41.207,
+      -40.707,
       6.543
      ],
      [
-      -41.424,
+      -40.924,
       6.867
      ],
      [
-      -41.5,
+      -41,
       7.25
      ]
     ],
     "a0": -96,
     "a1": -85,
     "cx": -90.5,
-    "cy": -26,
+    "cy": -25.5,
     "w": 11,
     "h": 31,
     "z0": 6.25,
@@ -476,7 +485,7 @@
    {
     "f": "perfil",
     "eje": "x",
-    "color": "#64748b",
+    "color": "#cb6410",
     "circ": [
      52,
      12.5,
@@ -495,5 +504,5 @@
   ]
  },
  "cad_pendiente": true,
- "modificado": "2026-11-25T20:35:00.365Z"
+ "modificado": "2026-11-25T20:36:14.187Z"
 }
