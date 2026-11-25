@@ -17,7 +17,7 @@
  "fabricante": "RFcore Co., Ltd.",
  "referencia": "RCA18-20H50E",
  "estado": "borrador",
- "version": 4,
+ "version": 5,
  "unidad": "und",
  "ficha": {
   "descripcion": "Amplificador de potencia de banda ancha de estado sólido (SSPA) para la banda de 1800 a 2000 MHz con salida nominal de 50 dBm (100 W), diseñado por RFcore para comunicaciones, inhibición RF e instrumentación.",
@@ -89,12 +89,6 @@
  },
  "zonas": [],
  "pines": [
-  {
-   "x": 92,
-   "y": 29.5,
-   "n": "1 (GND)",
-   "func": "Tierra de señal y control"
-  },
   {
    "x": null,
    "y": null,
@@ -196,6 +190,14 @@
   },
   {
    "v": 4,
+   "fecha": "2026-11-25",
+   "nota": "Actualizado: pines",
+   "cambios": [
+    "pines"
+   ]
+  },
+  {
+   "v": 5,
    "fecha": "2026-11-25",
    "nota": "Actualizado: pines",
    "cambios": [
@@ -515,5 +517,5 @@
   ]
  },
  "cad_pendiente": true,
- "modificado": "2026-11-25T20:38:12.619Z"
+ "modificado": "2026-11-25T20:38:28.355Z"
 }
