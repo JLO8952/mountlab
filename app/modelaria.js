@@ -45,6 +45,7 @@ TAREA: construir el modelo 3D SIMPLIFICADO y el MONTAJE del componente en el for
 - Milímetros. Origen en el CENTRO de la base vista desde arriba. X = lado más largo de la base, Y = ancho, Z hacia arriba.
 - La base ocupa de z = 0 (cara inferior) a z = espesor. Cara "A" = la de arriba (donde están los componentes principales); cara "B" = la de abajo.
 - Cada pieza tiene x, y = su centro en planta (mm desde el centro de la base), "rot" = 0, 90, 180 o 270 (antihorario, en planta) y "z" = elevación extra sobre su cara (normalmente 0).
+- CARAS LATERALES: si una pieza está en un COSTADO de la base (conectores SMA, D-Sub, jacks o bornes en el borde de un módulo encapsulado, una fuente o un amplificador), usa "cara": "-X", "+X", "-Y" o "+Y". Ahí "x","y" = punto de esa cara en planta (p. ej. x = −L/2 en la cara −X), "z" = ALTURA del centro de la pieza sobre la cara inferior de la base, y sus formas locales son: x a lo largo de la cara, y hacia arriba, z HACIA AFUERA (una "caja" con w = ancho, h = alto, z0..z1 = cuánto sobresale; un "cil" con d y z0..z1 = largo hacia afuera). NUNCA pongas arriba (cara A) algo que en la foto está en un costado.
 - Dentro de una pieza, las formas van en coordenadas LOCALES: x, y desde el centro de la pieza; z desde la superficie de su cara hacia afuera (en la cara B también hacia afuera, o sea hacia abajo: la app la voltea sola). Se permite z negativo para lo que atraviesa la placa.
 
 2. BASE ("modelo.base") — elige una:
@@ -52,7 +53,7 @@ TAREA: construir el modelo 3D SIMPLIFICADO y el MONTAJE del componente en el for
 - {"tipo":"prisma", …mismas formas…, "espesor" = alto del cuerpo} — cuerpo sólido: chip, carcasa, adaptador, batería, sensor encapsulado.
 - {"tipo":"cilindro", "forma":"redonda", "d", "espesor"} · {"tipo":"motor","modelo":"130|N20|370|TT"} · {"tipo":"servo","modelo":"SG90|MG90S|MG996R"}.
 
-3. PIEZAS ("modelo.piezas") — cada una: {"id","nombre","cara":"A"|"B","x","y","rot","z","plantilla", …}
+3. PIEZAS ("modelo.piezas") — cada una: {"id","nombre","cara":"A"|"B"|"-X"|"+X"|"-Y"|"+Y","x","y","rot","z","plantilla", …}
 3a. Si una PLANTILLA la describe, úsala con sus parámetros ("params"). Plantillas (id: parámetros=valor por defecto):
 ${plantillasTxt()}
 3b. Si no hay plantilla, usa "plantilla":"libre" con "prim": [formas] (y opcional "zona"). Formas:
@@ -134,7 +135,7 @@ ${JSON.stringify(corr.json)}
     (Array.isArray(M.piezas) ? M.piezas : []).forEach((p, i) => {
       if (!p || typeof p !== "object") return; let id = String(p.id || "p" + (i + 1)).replace(/[^\w-]/g, "_").slice(0, 20); while (ids.has(id)) id += "_"; ids.add(id);
       const nom = p.nombre || id, rot = ((Math.round(num(p.rot, 0) / 90) * 90) % 360 + 360) % 360; if (num(p.rot, 0) % 90) av.push(`${nom}: giro ${p.rot}° redondeado a ${rot}°`);
-      const o = { id, nombre: String(nom).slice(0, 70), cara: p.cara === "B" ? "B" : "A", x: num(p.x, 0), y: num(p.y, 0), rot, z: num(p.z, 0), origen: "ia" };
+      const o = { id, nombre: String(nom).slice(0, 70), cara: ["B", "-X", "+X", "-Y", "+Y"].includes(p.cara) ? p.cara : "A", x: num(p.x, 0), y: num(p.y, 0), rot, z: num(p.z, 0), origen: "ia" };
       const t = p.plantilla && p.plantilla !== "libre" ? MLPlant.plantilla(p.plantilla) : null;
       if (t && !t.oculta) { const par = {}; (t.params || []).forEach(q => { const v = (p.params || {})[q.k]; if (v != null) par[q.k] = Array.isArray(q.opts) || q.opts === "color" ? v : num(v, q.def); }); o.plantilla = t.id; o.params = par; }
       else {

@@ -150,8 +150,27 @@
   }
 
   /** Primitivas en coordenadas del mundo (z absoluto). */
+  // -------- caras laterales: la pieza se monta en un costado de la base (conectores de panel en un módulo, salidas laterales)
+  //   local: x a lo largo de la cara, y hacia arriba (+Z del mundo), z hacia afuera. pz.x, pz.y = punto de la cara en planta; pz.z = altura sobre la cara inferior de la base.
+  const LAT = { "-X": [[0, -1, 0], [0, 0, 1], [-1, 0, 0]], "+X": [[0, 1, 0], [0, 0, 1], [1, 0, 0]], "-Y": [[1, 0, 0], [0, 0, 1], [0, -1, 0]], "+Y": [[-1, 0, 0], [0, 0, 1], [0, 1, 0]] };
+  const esLateral = c => !!LAT[c];
+  /** Función local → mundo de una pieza en una cara lateral. */
+  function marcoLateral(pz) {
+    const [X, Y, Z] = LAT[pz.cara], a = (pz.rot || 0) * Math.PI / 180, c = Math.round(Math.cos(a)), s = Math.round(Math.sin(a)), O = [+pz.x || 0, +pz.y || 0, +pz.z || 0];
+    return ([x, y, z]) => { const u = x * c - y * s, v = x * s + y * c; return [0, 1, 2].map(i => O[i] + X[i] * u + Y[i] * v + Z[i] * z); };
+  }
+  /** Caja o cilindro → perfil en z (para poder llevarlo a cualquier eje). */
+  function aPerfil(q) {
+    if (q.f === "perfil") return q;
+    if (q.f === "cil") return { f: "perfil", eje: "z", circ: [q.cx, q.cy, q.d / 2], a0: q.z0, a1: q.z1, color: q.color };
+    const w = q.w / 2, h = q.h / 2, r = Math.min(q.r || 0, w - 0.01, h - 0.01), pts = [];
+    if (r > 0.05) { [[w - r, h - r, 0], [-w + r, h - r, 90], [-w + r, -h + r, 180], [w - r, -h + r, 270]].forEach(([x, y, a0]) => { for (let k = 0; k <= 4; k++) { const a = (a0 + k * 22.5) * Math.PI / 180; pts.push([q.cx + x + r * Math.cos(a), q.cy + y + r * Math.sin(a)]); } }); }
+    else pts.push([q.cx - w, q.cy - h], [q.cx + w, q.cy - h], [q.cx + w, q.cy + h], [q.cx - w, q.cy + h]);
+    return { f: "perfil", eje: "z", pts: pts.map(p => p.map(r2)), a0: q.z0, a1: q.z1, color: q.color };
+  }
   function cuerposDe(pz, esp) {
     const g = geom(pz), off = +pz.z || 0, B = pz.cara === "B";
+    if (esLateral(pz.cara)) { const f = marcoLateral(pz); return g.prim.map(q => Object.assign(perfilMap(aPerfil(q), f), { pieza: pz.id })); }
     return g.prim.map(q => {
       if (q.f === "perfil") { const a = (pz.rot || 0) * Math.PI / 180, c = Math.round(Math.cos(a)), s = Math.round(Math.sin(a));
         return Object.assign(perfilMap(q, ([x, y, z]) => [pz.x + x * c - y * s, pz.y + x * s + y * c, B ? -(z + off) : esp + z + off]), { pieza: pz.id }); }
@@ -232,7 +251,12 @@
       const cs = cuerposDe(pz, esp); cuerpos.push(...cs);
       cs.forEach(q => { top = Math.max(top, q.z1); bot = Math.min(bot, q.z0); });
       const g = geom(pz), off = +pz.z || 0, B = pz.cara === "B";
-      if (g.zona) {
+      if (g.zona && esLateral(pz.cara)) {   // zona de una pieza lateral: su caja envolvente en el mundo, saliendo por esa cara
+        const z = g.zona, f = marcoLateral(pz), P = [];
+        for (const x of [z.cx - z.w / 2, z.cx + z.w / 2]) for (const y of [z.cy - z.h / 2, z.cy + z.h / 2]) for (const zz of [z.z0, z.z1]) P.push(f([x, y, zz]));
+        const mn = i => Math.min(...P.map(p => p[i])), mx = i => Math.max(...P.map(p => p[i]));
+        zonas.push({ tipo: z.tipo, nombre: pz.nombre || plantilla(pz.plantilla)?.n || z.tipo, cx: r2((mn(0) + mx(0)) / 2), cy: r2((mn(1) + mx(1)) / 2), w: r2(mx(0) - mn(0)), h: r2(mx(1) - mn(1)), z: [r2(mn(2)), r2(mx(2))], salida: pz.cara, holgura: z.holgura, auto: true, pieza: pz.id });
+      } else if (g.zona) {
         const z = g.zona, [x, y] = rotar(z.cx, z.cy, pz.rot), sw = (pz.rot / 90) % 2 === 1;
         let sal = rotDir(z.salida, pz.rot); if (sal === "+Z" && B) sal = "-Z";
         zonas.push({ tipo: z.tipo, nombre: pz.nombre || plantilla(pz.plantilla)?.n || z.tipo, cx: r2(pz.x + x), cy: r2(pz.y + y), w: r2(sw ? z.h : z.w), h: r2(sw ? z.w : z.h),
@@ -257,8 +281,9 @@
     const hs = (M.piezas || []).map(pz => ({ pz, h: huella(pz) })).filter(x => x.h);
     for (const { pz, h } of hs) {
       const fuera = b.forma === "redonda" ? [[h.x0, h.y0], [h.x1, h.y0], [h.x0, h.y1], [h.x1, h.y1]].some(([x, y]) => Math.hypot(x, y) > b.d / 2 + 0.01) : (h.x0 < -L / 2 - 0.01 || h.x1 > L / 2 + 0.01 || h.y0 < -W / 2 - 0.01 || h.y1 > W / 2 + 0.01);
-      const tp = plantilla(pz.plantilla), sobresaleOk = (tp && ["micro_usb", "usb_c", "jack_dc", "patas_dip", "patas_smd"].includes(tp.id)) || /^zona:(usb|conector|antena)/.test(pz.origen || "") || !!pz.sobresale;
+      const tp = plantilla(pz.plantilla), sobresaleOk = (tp && ["micro_usb", "usb_c", "jack_dc", "patas_dip", "patas_smd"].includes(tp.id)) || /^zona:(usb|conector|antena)/.test(pz.origen || "") || !!pz.sobresale || esLateral(pz.cara);
       if (fuera && !sobresaleOk) out.push({ nivel: "amarillo", pieza: pz.id, msg: `${pz.nombre || tp?.n} sale de la placa.` });
+      if (esLateral(pz.cara)) continue;   // los agujeros están en la cara de arriba/abajo
       for (const a of (c.montaje && c.montaje.agujeros) || []) {
         const m = a.d / 2 + 1.5; if (a.x + m > h.x0 && a.x - m < h.x1 && a.y + m > h.y0 && a.y - m < h.y1 && !(tp && ["separador", "tornillo", "tuerca"].includes(tp.id))) out.push({ nivel: "rojo", pieza: pz.id, msg: `${pz.nombre || tp?.n} queda sobre el agujero (x ${a.x}, y ${a.y}) o sin espacio para la cabeza del tornillo.` });
       }
@@ -285,5 +310,5 @@
     return { version: 1, base, piezas, nota: piezas.length ? "Piezas iniciales creadas a partir de las zonas del componente." : "" };
   }
 
-  window.MLPlant = { BASES, MOTORES, SERVOS, baseInfo, tipoBase, LIB, GRUPOS, plantilla, todas, paramsDef, geom, cuerposDe, huella, perfilMap, cajaPerfil, volumen, trazoPerfil, desplazar, sincronizar, revisar, desdeMontaje, rotar, C };
+  window.MLPlant = { BASES, MOTORES, SERVOS, baseInfo, tipoBase, LIB, GRUPOS, plantilla, todas, paramsDef, geom, cuerposDe, huella, perfilMap, cajaPerfil, volumen, esLateral, LATERALES: Object.keys(LAT), trazoPerfil, desplazar, sincronizar, revisar, desdeMontaje, rotar, C };
 })();

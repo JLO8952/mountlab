@@ -1560,7 +1560,7 @@ RESPONDE ÚNICAMENTE con un bloque \`\`\`json con este formato (JSON válido, si
   "especificaciones": [{"param": "…", "valor": "…"}],
   "pines": [{"n": "VCC", "func": "…"}],
   "montaje": {"pcb": [largo, ancho, espesor_o_alto], "agujeros": [{"x": 0, "y": 0, "d": 3.0}]},
-  "modelo": {"base": {"tipo": "placa|prisma", "forma": "rect", "L": largo, "W": ancho, "espesor": 1.6, "color": "#1d4ed8"}, "piezas": [{"plantilla": "header_macho", "nombre": "…", "cara": "A|B", "x": 0, "y": 0, "rot": 0, "params": {}}]},
+  "modelo": {"base": {"tipo": "placa|prisma", "forma": "rect", "L": largo, "W": ancho, "espesor": 1.6, "color": "#1d4ed8"}, "piezas": [{"plantilla": "header_macho", "nombre": "…", "cara": "A|B|-X|+X|-Y|+Y", "x": 0, "y": 0, "rot": 0, "params": {}}]},
   "precios": [{"proveedor": "Mercado Libre CO", "precio_cop": 0, "url": "…", "fecha": "AAAA-MM", "estimado": true}]
  },
  "fuentes": {"campo": "URL de donde salió"},
@@ -1573,6 +1573,7 @@ REGLAS DE GEOMETRÍA (importantes)
 - Agujeros y piezas DENTRO de la placa: |x| ≤ L/2 y |y| ≤ W/2.
 - "pines": en el ORDEN FÍSICO del conector (pin 1 primero), solo nombre y función, sin coordenadas. La pieza conector del modelo (header o patas) debe tener el mismo número de pines; la app les pone los nombres en ese orden.
 - MÓDULO: base "placa" (espesor del PCB, normalmente 1.6) + header ("cara": "B" si va soldado hacia abajo) + chip principal, regulador, conectores y LED en su posición aproximada.
+- CONECTORES EN UN COSTADO (módulos encapsulados, amplificadores, fuentes, cajas con SMA/D-Sub/jacks en un lado): usa "cara": "-X", "+X", "-Y" o "+Y" (la cara lateral de la base donde está). Ahí "x","y" = punto de esa cara en planta (p. ej. x = −L/2 para la cara −X), "z" = ALTURA del centro del conector sobre la cara inferior de la base, y la pieza crece HACIA AFUERA: en "f_caja" w = ancho a lo largo de la cara, h = alto, alto = cuánto sobresale; en "f_cil" d = diámetro y alto = cuánto sobresale. NUNCA pongas en la cara A (arriba) un conector que en la foto está en un costado.
 - CHIP SUELTO (DIP, SOIC, TSSOP…): base "prisma" con las medidas del CUERPO (espesor = alto del cuerpo, color "#1f2937") + UNA pieza de patas en "cara": "B", x 0, y 0: "patas_dip" {n, paso, fila, largo} o "patas_smd" {n, paso, ancho (punta a punta), cuerpo (ancho del cuerpo)}. Pin 1 abajo a la izquierda, numeración antihoraria. montaje.pcb = [largo, ancho, alto] del cuerpo.
 - Si no hallas medidas confiables, omite "montaje" y "modelo" y dilo en el resumen.
 
@@ -1596,7 +1597,7 @@ ${catalogoPlantillas()}`;
   }
   function importarExterno(txt, quien, extra) {
     const p = leerRespuestaExterna(txt), ya = comp(p.componente), g = S.gen;
-    if (g && g.completar && comp(g.completar)) p.componente = g.completar;   // completar: siempre sobre el elegido
+    if (g && g.completar && comp(g.completar)) { p.componente = g.completar; g.completar = ""; genGuardar(); }   // completar: solo esta vez sobre el elegido (luego se olvida)
     const ya2 = comp(p.componente), imgs = (extra && extra.imagenes) || [];
     if (imgs.length && !(ya2 && ya2.imagen && ya2.imagen.src) && !p.cambios.imagen) { p.cambios.imagen = imgs[0].dataUrl; (p.confianza = p.confianza || {}).imagen = "alta"; }
     if (extra && extra.pdf) p._adjIds = [extra.pdf.id];
@@ -1701,7 +1702,7 @@ ${catalogoPlantillas()}`;
     const tipo = MLPlant.BASES[mo.base.tipo] ? mo.base.tipo : "placa", b = Object.assign({ tipo }, clone(MLPlant.BASES[tipo].def), mo.base);
     if (b.forma === "redonda" && !b.d) b.d = b.L || 20; if (!b.L) b.L = b.d || 20; if (!b.W) b.W = b.forma === "redonda" ? b.L : 20;
     const cuenta = {}, piezas = (mo.piezas || []).filter(q => q && MLPlant.plantilla(q.plantilla)).map((q, i) => { const t = MLPlant.plantilla(q.plantilla); cuenta[t.id] = (cuenta[t.id] || 0) + 1;
-      return { id: "p" + (i + 1), plantilla: t.id, nombre: q.nombre || `${t.n.split(" (")[0]} ${cuenta[t.id]}`, cara: q.cara === "B" ? "B" : "A", x: +q.x || 0, y: +q.y || 0, rot: +q.rot || 0, z: +q.z || 0, params: Object.assign(MLPlant.paramsDef(t), q.params || {}) }; });
+      return { id: "p" + (i + 1), plantilla: t.id, nombre: q.nombre || `${t.n.split(" (")[0]} ${cuenta[t.id]}`, cara: ["B", "-X", "+X", "-Y", "+Y"].includes(q.cara) ? q.cara : "A", x: +q.x || 0, y: +q.y || 0, rot: +q.rot || 0, z: +q.z || 0, params: Object.assign(MLPlant.paramsDef(t), q.params || {}) }; });
     return { version: 1, base: b, piezas };
   }
   /** Los pines con nombre que propone la IA (sin x/y o en la misma posición) pasan a los pines del header del modelo, en orden físico. */
@@ -1757,7 +1758,34 @@ ${catalogoPlantillas()}`;
     } catch (e) { av("No pude revisar la propuesta: " + e.message); }
     return out;
   }
+  /** ¿La propuesta describe OTRO producto distinto del componente que va a actualizar? (evita sobrescribir, p. ej., un BMS con un amplificador RF) */
+  function otroProducto(base, cambios) {
+    const nom = cambios.nombre || "", ref = cambios.referencia || ""; if (!nom && !ref) return false;
+    const n = t => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim(), rb = n(base.referencia).replace(/ /g, ""), rn = n(ref).replace(/ /g, "");
+    if (rb && rn && (rb === rn || rb.includes(rn) || rn.includes(rb))) return false;
+    const VAC = new Set(["de", "del", "la", "el", "para", "con", "modulo", "module", "sensor", "placa", "tarjeta", "y", "a", "en", "mm", "v"]);
+    const tok = t => new Set(n(t).split(" ").filter(w => w.length >= 3 && !VAC.has(w)));
+    const A = tok(base.nombre + " " + (base.referencia || "") + " " + base.id.replace(/_/g, " ")), B = tok(nom + " " + ref);
+    if (!A.size || !B.size) return false;
+    let k = 0; B.forEach(w => { if (A.has(w)) k++; });
+    return k / Math.min(A.size, B.size) < 0.25;
+  }
+  /** Pregunta qué hacer cuando la propuesta es de otro producto: crear uno nuevo (recomendado), reemplazar o cancelar. */
+  function elegirDestino(base, cambios) {
+    return new Promise(res => modal(`<h3 style="margin-top:0">⚠ ¿Es otro componente?</h3>
+      <p>La propuesta describe <b>${esc(cambios.nombre || cambios.referencia)}</b>, pero iba a <b>reemplazar</b> a <b>${esc(base.nombre)}</b> (${esc(base.id)}).</p>
+      <p class="small muted">Esto pasa cuando el asistente o el generador quedaron apuntando al componente que tenías abierto.</p>
+      <div class="row" style="justify-content:flex-end;gap:6px;flex-wrap:wrap"><button data-close>Cancelar</button><button id="mRe">Reemplazar «${esc(base.nombre.slice(0, 30))}»</button><button class="pri" id="mNu">✚ Crear componente nuevo</button></div>`,
+      (b, c) => { $("#mNu", b).onclick = () => { res("nuevo"); c(true); }; $("#mRe", b).onclick = () => { res("reemplazar"); c(true); }; $$("[data-close]", b).forEach(x => x.addEventListener("click", () => res("cancelar"))); }).then(v => { if (v == null) res("cancelar"); }));
+  }
   async function guardarPropuesta(p, claves, fuenteTxt, adjIds) {
+    const base0 = comp(p.componente);
+    if (base0 && !p._destinoOk && otroProducto(base0, p.cambios)) {
+      const r = await elegirDestino(base0, p.cambios);
+      if (r === "cancelar") throw new Error("Cancelado: no se modificó nada");
+      if (r === "nuevo") { let id = slug(p.cambios.referencia || p.cambios.nombre); if (!id) id = "componente_nuevo"; let k = 2, id0 = id; while (comp(id)) id = id0 + "_" + k++; p.componente = id; p._nuevo = true; if (!claves.includes("nombre")) claves = claves.concat(["nombre"]); }
+      p._destinoOk = true;
+    }
     const base = comp(p.componente);
     if (!base && !p.cambios.nombre) throw new Error("La propuesta no trae nombre para el componente nuevo");
     const c = aplicarCambios(base, p.componente, p.cambios, claves.filter(k => k !== "imagen" || !String(p.cambios.imagen).startsWith("data:")), fuenteTxt);

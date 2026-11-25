@@ -109,7 +109,9 @@
     const dl2 = new T.DirectionalLight(0xffffff, 0.35); dl2.position.set(-80, -60, -40); scene.add(dl2);
     const g = new T.Group(); scene.add(g); construir(T, W, { grupo: g });
     const { R, zc } = encuadre(W), cam = new T.PerspectiveCamera(35, ancho / alto, 0.1, 5000);
-    cam.position.set(R * 0.75, zc + R * 0.8, R * 0.95); cam.lookAt(0, zc, 0);
+    // mira desde el lado donde están los conectores laterales (si los hay)
+    const sal = (W.zonas || []).map(z => z.salida), sx = sal.includes("-X") && !sal.includes("+X") ? -1 : 1, sz = sal.includes("+Y") && !sal.includes("-Y") ? -1 : 1;
+    cam.position.set(sx * R * 0.75, zc + R * 0.8, sz * R * 0.95); cam.lookAt(0, zc, 0);
     ren.setClearColor(0x000000, 0); ren.render(scene, cam);
     const src = ren.domElement.toDataURL("image/png");
     g.children.forEach(o => { o.geometry && o.geometry.dispose(); o.material && o.material.dispose(); });
@@ -271,7 +273,7 @@
       // piezas: primero la otra cara (fantasma), luego la activa
       const ps = M().piezas || [];
       for (const fase of [0, 1]) for (const pz of ps) {
-        const act = (pz.cara || "A") === st.cara; if ((fase === 1) !== act) continue;
+        const act = (pz.cara || "A") === st.cara || (st.cara === "A" && MLPlant.esLateral(pz.cara)); if ((fase === 1) !== act) continue;
         const sel = st.sel.includes(pz.id);
         for (const c of MLPlant.cuerposDe(pz, esp)) {
           const op = act ? 0.95 : 0.22;
@@ -338,7 +340,7 @@
       if (st.drag && st.drag.pinch) { if (st.ptrs.size === 0) st.drag = null; return; }
       const d = st.drag; st.drag = null; if (!d) return;
       if (d.rect) { const [a, b, c, e2] = d.rect, x0 = Math.min(a, c), x1 = Math.max(a, c), y0 = Math.min(b, e2), y1 = Math.max(b, e2);
-        st.sel = (M().piezas || []).filter(p => (p.cara || "A") === st.cara && p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1).map(p => p.id); panel(); dibujar(); return; }
+        st.sel = (M().piezas || []).filter(p => ((p.cara || "A") === st.cara || (st.cara === "A" && MLPlant.esLateral(p.cara))) && p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1).map(p => p.id); panel(); dibujar(); return; }
       if (d.moved) changed();
     }
     function tecla(e) {
@@ -356,7 +358,7 @@
       if (!S.length) return opt.toast && opt.toast("Selecciona una pieza primero");
       if (a === "rot") { S.forEach(p => p.rot = ((p.rot || 0) + 90) % 360); changed(); }
       if (a === "dup") { const nuevos = S.map(p => Object.assign(JSON.parse(JSON.stringify(p)), { id: nuevoId(), x: r2(p.x + 2.54), y: r2(p.y - 2.54) })); M().piezas.push(...nuevos); st.sel = nuevos.map(p => p.id); changed(); }
-      if (a === "cara") { S.forEach(p => p.cara = (p.cara || "A") === "A" ? "B" : "A"); st.cara = S[0].cara; st.sel = S.map(p => p.id); barra(); changed(); }
+      if (a === "cara") { S.forEach(p => { if (!MLPlant.esLateral(p.cara)) p.cara = (p.cara || "A") === "A" ? "B" : "A"; }); st.cara = S[0].cara; st.sel = S.map(p => p.id); barra(); changed(); }
       if (a === "fila") fila(S);
     }
     function fila(S) {
@@ -394,15 +396,23 @@
       if (S.length === 1) {
         const p = S[0], tp = MLPlant.plantilla(p.plantilla), vals = Object.assign(MLPlant.paramsDef(tp || {}), p.params || {});
         box.innerHTML = `<div class="row" style="justify-content:space-between"><h3 style="margin:0">${esc(p.nombre)}</h3><span class="tag">${esc(tp ? tp.n : p.plantilla)}</span></div>
-          <div class="grid2" style="margin-top:8px"><div><label>Nombre</label><input id="pN" value="${esc(p.nombre)}"></div><div><label>Cara</label><select id="pC"><option value="A" ${p.cara !== "B" ? "selected" : ""}>A (arriba)</option><option value="B" ${p.cara === "B" ? "selected" : ""}>B (abajo)</option></select></div></div>
-          <div class="kv" style="margin-top:8px"><div><label>X (mm)</label><input type="number" step="0.1" id="pX" value="${p.x}"></div><div><label>Y (mm)</label><input type="number" step="0.1" id="pY" value="${p.y}"></div><div><label>Elevación Z</label><input type="number" step="0.1" id="pZ" value="${p.z || 0}" title="0 = apoyada en la superficie"></div></div>
+          <div class="grid2" style="margin-top:8px"><div><label>Nombre</label><input id="pN" value="${esc(p.nombre)}"></div><div><label>Cara</label><select id="pC">${[["A", "A (arriba)"], ["B", "B (abajo)"], ["-X", "Lateral −X (izquierda)"], ["+X", "Lateral +X (derecha)"], ["-Y", "Lateral −Y (frente)"], ["+Y", "Lateral +Y (atrás)"]].map(([v, n]) => `<option value="${v}" ${(p.cara || "A") === v ? "selected" : ""}>${n}</option>`).join("")}</select></div></div>
+          <div class="kv" style="margin-top:8px"><div><label>X (mm)</label><input type="number" step="0.1" id="pX" value="${p.x}"></div><div><label>Y (mm)</label><input type="number" step="0.1" id="pY" value="${p.y}"></div><div><label>${MLPlant.esLateral(p.cara) ? "Altura Z (centro)" : "Elevación Z"}</label><input type="number" step="0.1" id="pZ" value="${p.z || 0}" title="0 = apoyada en la superficie"></div></div>
           <div style="margin-top:8px"><label>Giro</label><div class="row" style="gap:4px">${[0, 90, 180, 270].map(r => `<button class="sm ${(p.rot || 0) === r ? "on" : ""}" data-rot="${r}">${r}°</button>`).join("")}</div></div>
           ${(tp && tp.params || []).length ? `<div class="kv" style="margin-top:8px">${tp.params.map(q => campoParam(q, vals[q.k])).join("")}</div>` : ""}
           <div class="row" style="margin-top:10px"><button class="sm" data-a2="dup">⧉ Duplicar</button><button class="sm" data-a2="fila">⋯ Fila</button><button class="sm" id="pTpl">★ Guardar como plantilla</button><button class="sm danger" data-a2="del">Eliminar</button></div>
           <div class="small muted" style="margin-top:6px">Elevación 0 = apoyada en la superficie de su cara. Atajos: R girar · Supr eliminar · Ctrl+D duplicar · flechas mover.</div>`;
         const set = (k, v, d3 = true) => { p[k] = v; changed(d3); };
         box.querySelector("#pN").onchange = e => set("nombre", e.target.value.trim() || p.nombre);
-        box.querySelector("#pC").onchange = e => { st.cara = e.target.value; set("cara", e.target.value); barra(); };
+        box.querySelector("#pC").onchange = e => {
+          const v = e.target.value, antes = p.cara || "A";
+          if (MLPlant.esLateral(v)) {   // a un costado: se pega a esa cara de la base, a media altura, apuntando hacia afuera
+            const bi = MLPlant.baseInfo(M().base), L = bi.L / 2, Wd = bi.W / 2;
+            if (v === "-X") p.x = -L; if (v === "+X") p.x = L; if (v === "-Y") p.y = -Wd; if (v === "+Y") p.y = Wd;
+            if (!MLPlant.esLateral(antes)) { p.z = Math.round(bi.top / 2 * 100) / 100; p.rot = 0; }
+            opt.toast && opt.toast(`${p.nombre}: montada en la cara ${v}. «Altura Z» = altura de su centro sobre la base; su eje apunta hacia afuera.`, 6000);
+          } else if (MLPlant.esLateral(antes)) { p.z = 0; }
+          st.cara = MLPlant.esLateral(v) ? "A" : v; set("cara", v); barra(); panel(); };
         box.querySelector("#pX").onchange = e => set("x", r2(num(e.target.value, p.x)));
         box.querySelector("#pY").onchange = e => set("y", r2(num(e.target.value, p.y)));
         box.querySelector("#pZ").onchange = e => set("z", Math.max(0, r2(num(e.target.value, 0))));
@@ -478,7 +488,7 @@
     function revisiones() {
       const R = MLPlant.revisar(W), box = host.querySelector("#moRev"); if (!box) return;
       box.innerHTML = R.length ? `<div class="panel" style="margin-top:12px"><b class="small">Revisión</b>${R.slice(0, 8).map(r => `<div class="small" style="margin-top:4px;cursor:pointer" data-rp="${esc(r.pieza)}">${r.nivel === "rojo" ? "🔴" : "🟡"} ${esc(r.msg)}</div>`).join("")}</div>` : "";
-      box.querySelectorAll("[data-rp]").forEach(d => d.onclick = () => { const p = M().piezas.find(x => x.id === d.dataset.rp); if (p) { st.cara = p.cara || "A"; st.sel = [p.id]; barra(); dibujar(); panel(); } });
+      box.querySelectorAll("[data-rp]").forEach(d => d.onclick = () => { const p = M().piezas.find(x => x.id === d.dataset.rp); if (p) { st.cara = MLPlant.esLateral(p.cara) ? "A" : (p.cara || "A"); st.sel = [p.id]; barra(); dibujar(); panel(); } });
     }
     async function guardarPlantilla(S) {
       const nombre = await new Promise(res => dialogo(`<h3>Guardar como plantilla</h3><p class="small muted">Queda en <b>Mis plantillas</b> para usarla en cualquier componente.</p><div><label>Nombre</label><input id="tN" value="${esc(S.length === 1 ? S[0].nombre.replace(/\s\d+$/, "") : "Grupo de " + S.length + " piezas")}"></div>`, b => res(b.querySelector("#tN").value.trim())));
@@ -513,7 +523,7 @@
       let raf = 0; const loop = () => { raf = requestAnimationFrame(loop); ctl.update(); ren.render(scene, cam); }; loop();
       const resize = () => { const w = cont.clientWidth || 360, h = cont.clientHeight || 280; ren.setSize(w, h); cam.aspect = w / h; cam.updateProjectionMatrix(); };
       const vista = v => { const { R, zc } = encuadre(W); ctl.target.set(0, zc, 0);
-        if (v === "arriba") cam.position.set(0, R * 1.3, 0.001); else if (v === "abajo") cam.position.set(0, -R * 1.3, 0.001); else cam.position.set(R * 0.75, zc + R * 0.8, R * 0.95); cam.lookAt(0, zc, 0); ctl.update(); };
+        if (v === "arriba") cam.position.set(0, R * 1.3, 0.001); else if (v === "abajo") cam.position.set(0, -R * 1.3, 0.001); else { const sal = (W.zonas || []).map(z => z.salida), sx = sal.includes("-X") && !sal.includes("+X") ? -1 : 1, sz = sal.includes("+Y") && !sal.includes("-Y") ? -1 : 1; cam.position.set(sx * R * 0.75, zc + R * 0.8, sz * R * 0.95); } cam.lookAt(0, zc, 0); ctl.update(); };
       v3 = { T, ren, scene, cam, ctl, grupo, rej, resize, vista, stop: () => { cancelAnimationFrame(raf); ren.dispose(); } };
       resize(); vista("iso"); render3d();
     }

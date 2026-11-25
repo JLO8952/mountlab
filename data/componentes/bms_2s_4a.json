@@ -1,0 +1,679 @@
+{
+ "id": "bms_2s_4a",
+ "nombre": "Cargador/BMS de litio 2 celdas 4 A",
+ "tipo": "electronico",
+ "categoria": "Energía",
+ "etiquetas": [],
+ "fabricante": "",
+ "referencia": "",
+ "estado": "borrador",
+ "version": 4,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Placa de protección para 2 celdas Li-ion en serie (7.4 V), 4 A.",
+  "funcionamiento": "Supervisa cada celda y corta con MOSFETs por sobrecarga (4.25–4.35 V), sobredescarga (2.5–3.0 V), sobrecorriente y cortocircuito. La carga se hace con una fuente CC/CV de 8.4 V.",
+  "voltaje": "Carga 8.4–9 V; pack 7.4 V nominal",
+  "corriente": "4 A continuos (≈6–8 A protección)",
+  "interfaz": "N/A",
+  "entradas": "B−, BM (punto medio), B+",
+  "salidas": "P+ / P− (carga y cargador)",
+  "dimensiones": "≈30 × 16 × 3.5 mm",
+  "datasheet": "https://makerhero.com/img/files/download/HY2120-Datasheet.PDF",
+  "notas": "Un BMS protege pero no regula la carga: usar un cargador de 8.4 V o un módulo de carga 2S."
+ },
+ "especificaciones": [
+  {
+   "param": "Sobrecarga",
+   "valor": "4.25–4.35 V/celda"
+  },
+  {
+   "param": "Sobredescarga",
+   "valor": "2.5–3.0 V/celda"
+  },
+  {
+   "param": "Consumo en reposo",
+   "valor": "< 10 µA"
+  }
+ ],
+ "imagen": {
+  "src": "img/bms_2s_4a.png?v=1795451823645",
+  "origen": "render del modelo 3D"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 2500,
+   "url": "https://es.aliexpress.com/w/wholesale-2S-4A-BMS-18650-protection-board.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 12000,
+   "url": "https://www.amazon.com/s?k=2S+4A+BMS+18650+protection+board",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 6000,
+   "url": "https://listado.mercadolibre.com.co/2s-4a-bms-18650-protection-board",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=2S+4A+BMS+18650+protection+board+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=2S+4A+BMS+18650+protection+board"
+ },
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 1.1,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "pcb": [
+   30,
+   16,
+   1.6
+  ],
+  "forma": "rect",
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 1.1,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 1.1,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
+ },
+ "zonas": [
+  {
+   "tipo": "calor",
+   "nombre": "MOSFET",
+   "cx": -8,
+   "cy": 2.5,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    2.6
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "calor",
+   "nombre": "MOSFET",
+   "cx": -2.5,
+   "cy": 2.5,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    2.6
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "calor",
+   "nombre": "MOSFET",
+   "cx": 3,
+   "cy": 2.5,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    2.6
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "calor",
+   "nombre": "MOSFET",
+   "cx": 8.5,
+   "cy": 2.5,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    2.6
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "soldadura",
+   "nombre": "Pads B-/BM/B+ P-/P+",
+   "cx": 0,
+   "cy": -1,
+   "w": 29.4,
+   "h": 12,
+   "z": [
+    1.6,
+    1.65
+   ],
+   "salida": "+Z",
+   "holgura": 3
+  }
+ ],
+ "pines": [
+  {
+   "n": "B−",
+   "func": "Negativo celda 1",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "BM",
+   "func": "Unión entre celdas",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "B+",
+   "func": "Positivo celda 2",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "P−",
+   "func": "Salida/entrada negativa",
+   "x": null,
+   "y": null
+  },
+  {
+   "n": "P+",
+   "func": "Salida/entrada positiva",
+   "x": null,
+   "y": null
+  }
+ ],
+ "archivos": {
+  "step": {
+   "drive_id": "1VZSJdjfKdu2rtxQ_ndf-xdAWsXRd8jZa",
+   "nombre": "14_bms_2s_4a.step",
+   "url": "https://drive.google.com/file/d/1VZSJdjfKdu2rtxQ_ndf-xdAWsXRd8jZa/view",
+   "carpeta": "Controladores/STEP"
+  },
+  "dxf": {
+   "drive_id": "1JcpXXxk5n6tMB_TS8Fj3ZqUeZkwAaeUo",
+   "nombre": "14_bms_2s_4a.dxf",
+   "url": "https://drive.google.com/file/d/1JcpXXxk5n6tMB_TS8Fj3ZqUeZkwAaeUo/view",
+   "carpeta": "Controladores/DXF"
+  },
+  "dxf_huella": {
+   "nombre": "bms_2s_4a_v2_huella.dxf",
+   "version": 2,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/bms_2s_4a (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_v2_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "bms_2s_4a_v2_montaje.step",
+   "version": 2,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/bms_2s_4a (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_v2_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "bms_2s_4a_v2_plano.dxf",
+   "version": 2,
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/bms_2s_4a (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_v2_plano.dxf"
+  },
+  "datasheet": {
+   "nombre": "bms_2s_4a_datasheet.pdf",
+   "fuente": "https://makerhero.com/img/files/download/HY2120-Datasheet.PDF",
+   "fecha": "2026-11-23",
+   "carpeta": "archivos/bms_2s_4a (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_datasheet.pdf",
+   "kb": 1017
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-16",
+   "nota": "Migrado desde MountLab Catalog (Controladores). Medidas típicas, sin verificar."
+  },
+  {
+   "fecha": "2026-11-21",
+   "nota": "Modelo 3D armado por MountLab (para la caja en 3D y la exportación STEP/DXF)"
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado con datos de datasheet subido (lectura local) (aprobado): ficha.datasheet",
+   "cambios": [
+    "ficha.datasheet"
+   ]
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-23",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
+   ]
+  },
+  {
+   "v": 4,
+   "fecha": "2026-11-25",
+   "nota": "Restaurado: el 25-nov se sobrescribió por error con el amplificador RF RCA0810H50E (ahora es el componente rca0810h50e)",
+   "cambios": [
+    "todo"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 30,
+   "W": 16,
+   "d": 30,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "m207",
+    "plantilla": "f_caja",
+    "nombre": "MOSFET",
+    "cara": "A",
+    "x": -8,
+    "y": 2.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 4,
+     "h": 3,
+     "alto": 1,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m208",
+    "plantilla": "f_caja",
+    "nombre": "MOSFET",
+    "cara": "A",
+    "x": -2.5,
+    "y": 2.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 4,
+     "h": 3,
+     "alto": 1,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m209",
+    "plantilla": "f_caja",
+    "nombre": "MOSFET",
+    "cara": "A",
+    "x": 3,
+    "y": 2.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 4,
+     "h": 3,
+     "alto": 1,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m210",
+    "plantilla": "f_caja",
+    "nombre": "MOSFET",
+    "cara": "A",
+    "x": 8.5,
+    "y": 2.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 4,
+     "h": 3,
+     "alto": 1,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m211",
+    "plantilla": "f_caja",
+    "nombre": "Protección",
+    "cara": "A",
+    "x": 0,
+    "y": -3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3,
+     "h": 1.6,
+     "alto": 1.1,
+     "r": 0,
+     "color": "#111827"
+    }
+   },
+   {
+    "id": "m212",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": -6,
+    "y": -3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "m213",
+    "plantilla": "smd",
+    "nombre": "SMD",
+    "cara": "A",
+    "x": 6,
+    "y": -3,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "tam": "0805"
+    }
+   },
+   {
+    "id": "m214",
+    "plantilla": "f_caja",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": -12,
+    "y": -6.2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3,
+     "h": 2,
+     "alto": 0.05,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m215",
+    "plantilla": "f_caja",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": -6,
+    "y": -6.2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3,
+     "h": 2,
+     "alto": 0.05,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m216",
+    "plantilla": "f_caja",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 0,
+    "y": -6.2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3,
+     "h": 2,
+     "alto": 0.05,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m217",
+    "plantilla": "f_caja",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 6,
+    "y": -6.2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3,
+     "h": 2,
+     "alto": 0.05,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   },
+   {
+    "id": "m218",
+    "plantilla": "f_caja",
+    "nombre": "Pad",
+    "cara": "A",
+    "x": 12,
+    "y": -6.2,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 3,
+     "h": 2,
+     "alto": 0.05,
+     "r": 0,
+     "color": "#d4a017"
+    }
+   }
+  ],
+  "nota": "BMS 2S con pads para celdas y carga.",
+  "cuerpos": [
+   {
+    "f": "caja",
+    "cx": -8,
+    "cy": 2.5,
+    "z0": 1.6,
+    "z1": 2.6,
+    "color": "#111827",
+    "pieza": "m207",
+    "w": 4,
+    "h": 3
+   },
+   {
+    "f": "caja",
+    "cx": -2.5,
+    "cy": 2.5,
+    "z0": 1.6,
+    "z1": 2.6,
+    "color": "#111827",
+    "pieza": "m208",
+    "w": 4,
+    "h": 3
+   },
+   {
+    "f": "caja",
+    "cx": 3,
+    "cy": 2.5,
+    "z0": 1.6,
+    "z1": 2.6,
+    "color": "#111827",
+    "pieza": "m209",
+    "w": 4,
+    "h": 3
+   },
+   {
+    "f": "caja",
+    "cx": 8.5,
+    "cy": 2.5,
+    "z0": 1.6,
+    "z1": 2.6,
+    "color": "#111827",
+    "pieza": "m210",
+    "w": 4,
+    "h": 3
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.7,
+    "color": "#111827",
+    "pieza": "m211",
+    "w": 3,
+    "h": 1.6
+   },
+   {
+    "f": "caja",
+    "cx": -6,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "m212",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -6.8,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m212",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -5.2,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m212",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 6,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#1f2937",
+    "pieza": "m213",
+    "w": 1.2,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 5.2,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m213",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": 6.8,
+    "cy": -3,
+    "z0": 1.6,
+    "z1": 2.1,
+    "color": "#cbd5e1",
+    "pieza": "m213",
+    "w": 0.4,
+    "h": 1.25
+   },
+   {
+    "f": "caja",
+    "cx": -12,
+    "cy": -6.2,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m214",
+    "w": 3,
+    "h": 2
+   },
+   {
+    "f": "caja",
+    "cx": -6,
+    "cy": -6.2,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m215",
+    "w": 3,
+    "h": 2
+   },
+   {
+    "f": "caja",
+    "cx": 0,
+    "cy": -6.2,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m216",
+    "w": 3,
+    "h": 2
+   },
+   {
+    "f": "caja",
+    "cx": 6,
+    "cy": -6.2,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m217",
+    "w": 3,
+    "h": 2
+   },
+   {
+    "f": "caja",
+    "cx": 12,
+    "cy": -6.2,
+    "z0": 1.6,
+    "z1": 1.65,
+    "color": "#d4a017",
+    "pieza": "m218",
+    "w": 3,
+    "h": 2
+   }
+  ]
+ },
+ "modificado": "2026-11-23T16:37:01.551Z",
+ "cad_pendiente": true
+}

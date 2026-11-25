@@ -1,0 +1,666 @@
+{
+ "id": "rca0810h50e",
+ "nombre": "Amplificador RF de Alta Potencia 800-1000 MHz 100W (RCA0810H50E)",
+ "tipo": "electronico",
+ "categoria": "Comunicación RF",
+ "etiquetas": [
+  "RF",
+  "amplificador",
+  "HPA",
+  "alta potencia",
+  "800-1000 MHz",
+  "100W",
+  "50dBm",
+  "RFcore",
+  "SSPA"
+ ],
+ "fabricante": "RFcore Co., Ltd.",
+ "referencia": "RCA0810H50E",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Amplificador de potencia de estado sólido (SSPA) de banda ancha para la banda de 800 a 1000 MHz con potencia de salida nominal de 50 dBm (100 W), diseñado por RFcore para aplicaciones de comunicaciones, inhibición (jamming) e instrumentación RF.",
+  "funcionamiento": "Amplifica señales RF de baja potencia en la banda de 800–1000 MHz hasta un nivel aproximado de 100 W (50 dBm) sobre carga de 50 ohmios. Incluye acoplador/detector integrado para monitoreo de potencia directa y reflejada, sensor de temperatura, alarmas de VSWR y sobretemperatura, y control de habilitación activo en bajo (Enable Active Low). Requiere montaje obligatorio sobre un disipador de calor adecuado.",
+  "voltaje": "+27 V DC (serigrafiado en el chasis; conector 3W3P)",
+  "corriente": "No verificada en datasheet oficial (referencia de la familia RFcore 100 W: ~10–13 A máx.)",
+  "interfaz": "Conector D-Sub 9 pines para monitoreo analógico, alarmas y control Enable (Active Low)",
+  "entradas": "RF IN (conector SMA hembra), Alimentación DC +27V / GND / N.C (conector 3W3P), Enable (Active Low) en D-Sub 9 pin 6",
+  "salidas": "RF OUT (conector coaxial con tapa roja en la foto, tipo SMA/N hembra), Monitoreo de temperatura (pin 4), Potencia directa (pin 8), Potencia reflejada (pin 9), Alarma VSWR (pin 3), Alarma sobretemperatura (pin 5)",
+  "dimensiones": "190 x 150 x 25 mm (medición física del usuario; sin plano mecánico oficial del RCA0810H50E)",
+  "datasheet": "https://www.rfcore.com/product-services/high-power-amplifiers/specific-band-amplifiers/",
+  "notas": "ATENCIÓN: El datasheet adjunto corresponde al RCA0810H53S (200 W, 28 V, 250x170x28 mm) y tiene un pinout de D-Sub 9 diferente al serigrafiado en la unidad física RCA08-10H50E. Usar siempre el pinout impreso en el chasis. Requiere disipador térmico adecuado y nunca debe operarse sin carga de 50 ohmios en RF OUT."
+ },
+ "especificaciones": [
+  {
+   "param": "Sobrecarga",
+   "valor": "4.25–4.35 V/celda"
+  },
+  {
+   "param": "Sobredescarga",
+   "valor": "2.5–3.0 V/celda"
+  },
+  {
+   "param": "Consumo en reposo",
+   "valor": "< 10 µA"
+  },
+  {
+   "param": "Banda de frecuencia",
+   "valor": "800 ~ 1000 MHz"
+  },
+  {
+   "param": "Potencia de salida nominal (Psat)",
+   "valor": "50 dBm (100 W) [por nomenclatura RFcore H50E]"
+  },
+  {
+   "param": "Voltaje de alimentación DC",
+   "valor": "+27 V DC (serigrafiado en chasis)"
+  },
+  {
+   "param": "Conector de alimentación",
+   "valor": "D-Sub mixto 3W3 (+27V, GND, N/C)"
+  },
+  {
+   "param": "Conector de control y monitoreo",
+   "valor": "D-Sub 9 pines"
+  },
+  {
+   "param": "Conector RF IN",
+   "valor": "SMA hembra"
+  },
+  {
+   "param": "Impedancia",
+   "valor": "50 ohmios"
+  },
+  {
+   "param": "Refrigeración",
+   "valor": "Requiere disipador de calor externo"
+  }
+ ],
+ "imagen": {
+  "src": "img/rca0810h50e.png",
+  "origen": "foto de referencia"
+ },
+ "precios": [
+  {
+   "proveedor": "AliExpress",
+   "precio_cop": 2500,
+   "url": "https://es.aliexpress.com/w/wholesale-2S-4A-BMS-18650-protection-board.html",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Amazon",
+   "precio_cop": 12000,
+   "url": "https://www.amazon.com/s?k=2S+4A+BMS+18650+protection+board",
+   "fecha": "2026-11",
+   "estimado": true
+  },
+  {
+   "proveedor": "Mercado Libre CO",
+   "precio_cop": 6000,
+   "url": "https://listado.mercadolibre.com.co/2s-4a-bms-18650-protection-board",
+   "fecha": "2026-11",
+   "estimado": true
+  }
+ ],
+ "busquedas": {
+  "datasheet": "https://www.google.com/search?q=2S+4A+BMS+18650+protection+board+datasheet+pdf",
+  "imagenes": "https://www.google.com/search?tbm=isch&q=2S+4A+BMS+18650+protection+board"
+ },
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "guia_deslizante",
+  "agujeros": [],
+  "altura_superior": 0,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador. Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   190,
+   150,
+   25
+  ],
+  "forma": "rect",
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 1.1,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 1.1,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  },
+  "base_tipo": "prisma"
+ },
+ "zonas": [
+  {
+   "tipo": "calor",
+   "nombre": "MOSFET",
+   "cx": -8,
+   "cy": 2.5,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    2.6
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "calor",
+   "nombre": "MOSFET",
+   "cx": -2.5,
+   "cy": 2.5,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    2.6
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "calor",
+   "nombre": "MOSFET",
+   "cx": 3,
+   "cy": 2.5,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    2.6
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "calor",
+   "nombre": "MOSFET",
+   "cx": 8.5,
+   "cy": 2.5,
+   "w": 4,
+   "h": 3,
+   "z": [
+    1.6,
+    2.6
+   ],
+   "salida": "+Z",
+   "holgura": 15
+  },
+  {
+   "tipo": "soldadura",
+   "nombre": "Pads B-/BM/B+ P-/P+",
+   "cx": 0,
+   "cy": -1,
+   "w": 29.4,
+   "h": 12,
+   "z": [
+    1.6,
+    1.65
+   ],
+   "salida": "+Z",
+   "holgura": 3
+  },
+  {
+   "tipo": "antena",
+   "nombre": "RF IN (SMA)",
+   "cx": -100,
+   "cy": -60,
+   "w": 10,
+   "h": 8,
+   "z": [
+    8.5,
+    16.5
+   ],
+   "salida": "-X",
+   "holgura": 25
+  },
+  {
+   "tipo": "conector",
+   "nombre": "D-Sub 9 Control",
+   "cx": -98,
+   "cy": -30,
+   "w": 6,
+   "h": 31,
+   "z": [
+    6.5,
+    18.5
+   ],
+   "salida": "-X",
+   "holgura": 30
+  },
+  {
+   "tipo": "conector",
+   "nombre": "3W3P DC +27V",
+   "cx": -98,
+   "cy": 15,
+   "w": 6,
+   "h": 39,
+   "z": [
+    6.5,
+    18.5
+   ],
+   "salida": "-X",
+   "holgura": 30
+  },
+  {
+   "tipo": "antena",
+   "nombre": "RF OUT",
+   "cx": -102,
+   "cy": 55,
+   "w": 14,
+   "h": 12,
+   "z": [
+    6.5,
+    18.5
+   ],
+   "salida": "-X",
+   "holgura": 25
+  }
+ ],
+ "pines": [
+  {
+   "x": null,
+   "y": null,
+   "n": "1 (GND)",
+   "func": "Tierra de señal y control"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "2 (N.C)",
+   "func": "No conectado"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "3 (VSWR Alarm)",
+   "func": "Salida de alarma por alto VSWR"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "4 (Temperature Monitor)",
+   "func": "Salida analógica de monitoreo de temperatura del chasis"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "5 (Over Temp Alarm)",
+   "func": "Salida de alarma por sobretemperatura"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "6 (Enable Active Low)",
+   "func": "Habilitación del amplificador (activo en bajo)"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "7 (N.C)",
+   "func": "No conectado"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "8 (Forward Power Monitor)",
+   "func": "Salida analógica de monitoreo de potencia directa"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "9 (Reflected Power Monitor)",
+   "func": "Salida analógica de monitoreo de potencia reflejada"
+  }
+ ],
+ "archivos": {
+  "datasheet": {
+   "nombre": "rca0810h50e_datasheet.pdf",
+   "fecha": "2026-11-25",
+   "carpeta": "archivos/rca0810h50e (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca0810h50e/rca0810h50e_datasheet.pdf"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-25",
+   "nota": "Creado como componente propio (los datos estaban por error en bms_2s_4a); conectores RF, D-Sub y 3W3 en la cara lateral −X según la foto de referencia",
+   "cambios": [
+    "todo"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "prisma",
+   "forma": "rect",
+   "L": 190,
+   "W": 150,
+   "d": 25,
+   "espesor": 25,
+   "radio": 0,
+   "color": "#cbd5e1"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "f_cil",
+    "nombre": "RF IN (SMA)",
+    "cara": "-X",
+    "x": -95,
+    "y": -60,
+    "rot": 0,
+    "z": 12.5,
+    "params": {
+     "d": 8,
+     "alto": 10,
+     "color": "#d4a017"
+    },
+    "origen": "lateral"
+   },
+   {
+    "id": "p2",
+    "plantilla": "f_caja",
+    "nombre": "D-Sub 9 Control",
+    "cara": "-X",
+    "x": -95,
+    "y": -30,
+    "rot": 0,
+    "z": 12.5,
+    "params": {
+     "w": 31,
+     "h": 12,
+     "alto": 6,
+     "r": 1,
+     "color": "#94a3b8"
+    },
+    "origen": "lateral"
+   },
+   {
+    "id": "p3",
+    "plantilla": "f_caja",
+    "nombre": "3W3P DC +27V",
+    "cara": "-X",
+    "x": -95,
+    "y": 15,
+    "rot": 0,
+    "z": 12.5,
+    "params": {
+     "w": 39,
+     "h": 12,
+     "alto": 6,
+     "r": 1,
+     "color": "#94a3b8"
+    },
+    "origen": "lateral"
+   },
+   {
+    "id": "p4",
+    "plantilla": "f_cil",
+    "nombre": "RF OUT",
+    "cara": "-X",
+    "x": -95,
+    "y": 55,
+    "rot": 0,
+    "z": 12.5,
+    "params": {
+     "d": 12,
+     "alto": 14,
+     "color": "#d4a017"
+    },
+    "origen": "lateral"
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "perfil",
+    "eje": "x",
+    "color": "#d4a017",
+    "circ": [
+     -60,
+     12.5,
+     4
+    ],
+    "a0": -105,
+    "a1": -95,
+    "cx": -100,
+    "cy": -60,
+    "w": 10,
+    "h": 8,
+    "z0": 8.5,
+    "z1": 16.5,
+    "pieza": "p1"
+   },
+   {
+    "f": "perfil",
+    "eje": "x",
+    "color": "#94a3b8",
+    "pts": [
+     [
+      -45.5,
+      17.5
+     ],
+     [
+      -45.424,
+      17.883
+     ],
+     [
+      -45.207,
+      18.207
+     ],
+     [
+      -44.883,
+      18.424
+     ],
+     [
+      -44.5,
+      18.5
+     ],
+     [
+      -15.5,
+      18.5
+     ],
+     [
+      -15.117,
+      18.424
+     ],
+     [
+      -14.793,
+      18.207
+     ],
+     [
+      -14.576,
+      17.883
+     ],
+     [
+      -14.5,
+      17.5
+     ],
+     [
+      -14.5,
+      7.5
+     ],
+     [
+      -14.576,
+      7.117
+     ],
+     [
+      -14.793,
+      6.793
+     ],
+     [
+      -15.117,
+      6.576
+     ],
+     [
+      -15.5,
+      6.5
+     ],
+     [
+      -44.5,
+      6.5
+     ],
+     [
+      -44.883,
+      6.576
+     ],
+     [
+      -45.207,
+      6.793
+     ],
+     [
+      -45.424,
+      7.117
+     ],
+     [
+      -45.5,
+      7.5
+     ]
+    ],
+    "a0": -101,
+    "a1": -95,
+    "cx": -98,
+    "cy": -30,
+    "w": 6,
+    "h": 31,
+    "z0": 6.5,
+    "z1": 18.5,
+    "pieza": "p2"
+   },
+   {
+    "f": "perfil",
+    "eje": "x",
+    "color": "#94a3b8",
+    "pts": [
+     [
+      -4.5,
+      17.5
+     ],
+     [
+      -4.424,
+      17.883
+     ],
+     [
+      -4.207,
+      18.207
+     ],
+     [
+      -3.883,
+      18.424
+     ],
+     [
+      -3.5,
+      18.5
+     ],
+     [
+      33.5,
+      18.5
+     ],
+     [
+      33.883,
+      18.424
+     ],
+     [
+      34.207,
+      18.207
+     ],
+     [
+      34.424,
+      17.883
+     ],
+     [
+      34.5,
+      17.5
+     ],
+     [
+      34.5,
+      7.5
+     ],
+     [
+      34.424,
+      7.117
+     ],
+     [
+      34.207,
+      6.793
+     ],
+     [
+      33.883,
+      6.576
+     ],
+     [
+      33.5,
+      6.5
+     ],
+     [
+      -3.5,
+      6.5
+     ],
+     [
+      -3.883,
+      6.576
+     ],
+     [
+      -4.207,
+      6.793
+     ],
+     [
+      -4.424,
+      7.117
+     ],
+     [
+      -4.5,
+      7.5
+     ]
+    ],
+    "a0": -101,
+    "a1": -95,
+    "cx": -98,
+    "cy": 15,
+    "w": 6,
+    "h": 39,
+    "z0": 6.5,
+    "z1": 18.5,
+    "pieza": "p3"
+   },
+   {
+    "f": "perfil",
+    "eje": "x",
+    "color": "#d4a017",
+    "circ": [
+     55,
+     12.5,
+     6
+    ],
+    "a0": -109,
+    "a1": -95,
+    "cx": -102,
+    "cy": 55,
+    "w": 14,
+    "h": 12,
+    "z0": 6.5,
+    "z1": 18.5,
+    "pieza": "p4"
+   }
+  ]
+ },
+ "cad_pendiente": true
+}
