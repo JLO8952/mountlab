@@ -68,8 +68,8 @@
   }
  ],
  "imagen": {
-  "src": "img/gps410_gps_antenna_signal_splitter.jpg?v=1795642831374",
-  "origen": "foto subida en el chat"
+  "src": "img/gps410_gps_antenna_signal_splitter.png?v=1795642849829",
+  "origen": "render del modelo 3D"
  },
  "precios": [],
  "busquedas": {},
@@ -160,6 +160,14 @@
     "pines",
     "montaje",
     "modelo"
+   ]
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-25",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
    ]
   }
  ],
@@ -351,5 +359,5 @@
   ]
  },
  "cad_pendiente": true,
- "modificado": "2026-11-25T21:40:29.206Z"
+ "modificado": "2026-11-25T21:40:48.106Z"
 }
