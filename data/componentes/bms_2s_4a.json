@@ -1,25 +1,35 @@
 {
  "id": "bms_2s_4a",
- "nombre": "Cargador/BMS de litio 2 celdas 4 A",
+ "nombre": "Amplificador RF de Alta Potencia 800-1000 MHz 100W (RCA0810H50E)",
  "tipo": "electronico",
- "categoria": "Energía",
- "etiquetas": [],
- "fabricante": "",
- "referencia": "",
+ "categoria": "Comunicación RF",
+ "etiquetas": [
+  "RF",
+  "amplificador",
+  "HPA",
+  "alta potencia",
+  "800-1000 MHz",
+  "100W",
+  "50dBm",
+  "RFcore",
+  "SSPA"
+ ],
+ "fabricante": "RFcore Co., Ltd.",
+ "referencia": "RCA0810H50E",
  "estado": "borrador",
- "version": 2,
+ "version": 3,
  "unidad": "und",
  "ficha": {
-  "descripcion": "Placa de protección para 2 celdas Li-ion en serie (7.4 V), 4 A.",
-  "funcionamiento": "Supervisa cada celda y corta con MOSFETs por sobrecarga (4.25–4.35 V), sobredescarga (2.5–3.0 V), sobrecorriente y cortocircuito. La carga se hace con una fuente CC/CV de 8.4 V.",
-  "voltaje": "Carga 8.4–9 V; pack 7.4 V nominal",
-  "corriente": "4 A continuos (≈6–8 A protección)",
-  "interfaz": "N/A",
-  "entradas": "B−, BM (punto medio), B+",
-  "salidas": "P+ / P− (carga y cargador)",
-  "dimensiones": "≈30 × 16 × 3.5 mm",
-  "datasheet": "https://makerhero.com/img/files/download/HY2120-Datasheet.PDF",
-  "notas": "Un BMS protege pero no regula la carga: usar un cargador de 8.4 V o un módulo de carga 2S."
+  "descripcion": "Amplificador de potencia de estado sólido (SSPA) de banda ancha para la banda de 800 a 1000 MHz con potencia de salida nominal de 50 dBm (100 W), diseñado por RFcore para aplicaciones de comunicaciones, inhibición (jamming) e instrumentación RF.",
+  "funcionamiento": "Amplifica señales RF de baja potencia en la banda de 800–1000 MHz hasta un nivel aproximado de 100 W (50 dBm) sobre carga de 50 ohmios. Incluye acoplador/detector integrado para monitoreo de potencia directa y reflejada, sensor de temperatura, alarmas de VSWR y sobretemperatura, y control de habilitación activo en bajo (Enable Active Low). Requiere montaje obligatorio sobre un disipador de calor adecuado.",
+  "voltaje": "+27 V DC (serigrafiado en el chasis; conector 3W3P)",
+  "corriente": "No verificada en datasheet oficial (referencia de la familia RFcore 100 W: ~10–13 A máx.)",
+  "interfaz": "Conector D-Sub 9 pines para monitoreo analógico, alarmas y control Enable (Active Low)",
+  "entradas": "RF IN (conector SMA hembra), Alimentación DC +27V / GND / N.C (conector 3W3P), Enable (Active Low) en D-Sub 9 pin 6",
+  "salidas": "RF OUT (conector coaxial con tapa roja en la foto, tipo SMA/N hembra), Monitoreo de temperatura (pin 4), Potencia directa (pin 8), Potencia reflejada (pin 9), Alarma VSWR (pin 3), Alarma sobretemperatura (pin 5)",
+  "dimensiones": "190 x 150 x 25 mm (medición física del usuario; sin plano mecánico oficial del RCA0810H50E)",
+  "datasheet": "https://www.rfcore.com/product-services/high-power-amplifiers/specific-band-amplifiers/",
+  "notas": "ATENCIÓN: El datasheet adjunto corresponde al RCA0810H53S (200 W, 28 V, 250x170x28 mm) y tiene un pinout de D-Sub 9 diferente al serigrafiado en la unidad física RCA08-10H50E. Usar siempre el pinout impreso en el chasis. Requiere disipador térmico adecuado y nunca debe operarse sin carga de 50 ohmios en RF OUT."
  },
  "especificaciones": [
   {
@@ -33,6 +43,38 @@
   {
    "param": "Consumo en reposo",
    "valor": "< 10 µA"
+  },
+  {
+   "param": "Banda de frecuencia",
+   "valor": "800 ~ 1000 MHz"
+  },
+  {
+   "param": "Potencia de salida nominal (Psat)",
+   "valor": "50 dBm (100 W) [por nomenclatura RFcore H50E]"
+  },
+  {
+   "param": "Voltaje de alimentación DC",
+   "valor": "+27 V DC (serigrafiado en chasis)"
+  },
+  {
+   "param": "Conector de alimentación",
+   "valor": "D-Sub mixto 3W3 (+27V, GND, N/C)"
+  },
+  {
+   "param": "Conector de control y monitoreo",
+   "valor": "D-Sub 9 pines"
+  },
+  {
+   "param": "Conector RF IN",
+   "valor": "SMA hembra"
+  },
+  {
+   "param": "Impedancia",
+   "valor": "50 ohmios"
+  },
+  {
+   "param": "Refrigeración",
+   "valor": "Requiere disipador de calor externo"
   }
  ],
  "imagen": {
@@ -70,14 +112,14 @@
   "origen": "centro",
   "fijacion": "guia_deslizante",
   "agujeros": [],
-  "altura_superior": 1.1,
+  "altura_superior": 14,
   "altura_inferior": 0,
   "holgura_inferior_cableado": 0,
-  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador.",
+  "nota": "Borrador generado del modelo 3D simplificado. Verificar con calibrador. Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
   "pcb": [
-   30,
-   16,
-   1.6
+   190,
+   150,
+   25
   ],
   "forma": "rect",
   "conexiones": {
@@ -100,7 +142,8 @@
     "cable": "Jumper Dupont 2.54 mm sobre headers",
     "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
    }
-  }
+  },
+  "base_tipo": "prisma"
  },
  "zonas": [
   {
@@ -176,34 +219,58 @@
  ],
  "pines": [
   {
-   "n": "B−",
-   "func": "Negativo celda 1",
    "x": null,
-   "y": null
+   "y": null,
+   "n": "1 (GND)",
+   "func": "Tierra de señal y control"
   },
   {
-   "n": "BM",
-   "func": "Unión entre celdas",
    "x": null,
-   "y": null
+   "y": null,
+   "n": "2 (N.C)",
+   "func": "No conectado"
   },
   {
-   "n": "B+",
-   "func": "Positivo celda 2",
    "x": null,
-   "y": null
+   "y": null,
+   "n": "3 (VSWR Alarm)",
+   "func": "Salida de alarma por alto VSWR"
   },
   {
-   "n": "P−",
-   "func": "Salida/entrada negativa",
    "x": null,
-   "y": null
+   "y": null,
+   "n": "4 (Temperature Monitor)",
+   "func": "Salida analógica de monitoreo de temperatura del chasis"
   },
   {
-   "n": "P+",
-   "func": "Salida/entrada positiva",
    "x": null,
-   "y": null
+   "y": null,
+   "n": "5 (Over Temp Alarm)",
+   "func": "Salida de alarma por sobretemperatura"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "6 (Enable Active Low)",
+   "func": "Habilitación del amplificador (activo en bajo)"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "7 (N.C)",
+   "func": "No conectado"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "8 (Forward Power Monitor)",
+   "func": "Salida analógica de monitoreo de potencia directa"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "9 (Reflected Power Monitor)",
+   "func": "Salida analógica de monitoreo de potencia reflejada"
   }
  ],
  "archivos": {
@@ -242,11 +309,11 @@
   },
   "datasheet": {
    "nombre": "bms_2s_4a_datasheet.pdf",
-   "fuente": "https://makerhero.com/img/files/download/HY2120-Datasheet.PDF",
-   "fecha": "2026-11-23",
+   "fecha": "2026-11-25",
+   "subido": true,
+   "fuente": "subido desde el chat: 14ecec65-21fc-4fdf-8bd1-fa7a37009550.pdf",
    "carpeta": "archivos/bms_2s_4a (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_datasheet.pdf",
-   "kb": 1017
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/bms_2s_4a/bms_2s_4a_datasheet.pdf"
   }
  },
  "historial": [
@@ -274,397 +341,160 @@
    "cambios": [
     "imagen"
    ]
+  },
+  {
+   "v": 3,
+   "fecha": "2026-11-25",
+   "nota": "Actualizado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo"
+   ]
   }
  ],
  "modelo": {
   "version": 1,
   "base": {
-   "tipo": "placa",
+   "tipo": "prisma",
    "forma": "rect",
-   "L": 30,
-   "W": 16,
-   "d": 30,
-   "espesor": 1.6,
+   "L": 190,
+   "W": 150,
+   "d": 25,
+   "espesor": 25,
    "radio": 0,
-   "color": "#1d4ed8"
+   "color": "#cbd5e1"
   },
   "piezas": [
    {
-    "id": "m207",
+    "id": "p1",
+    "plantilla": "f_cil",
+    "nombre": "RF IN (SMA)",
+    "cara": "A",
+    "x": -88,
+    "y": -60,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 8,
+     "alto": 10,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p2",
     "plantilla": "f_caja",
-    "nombre": "MOSFET",
+    "nombre": "D-Sub 9 Control",
     "cara": "A",
-    "x": -8,
-    "y": 2.5,
+    "x": -88,
+    "y": -30,
     "rot": 0,
     "z": 0,
     "params": {
-     "w": 4,
-     "h": 3,
-     "alto": 1,
-     "r": 0,
-     "color": "#111827"
+     "w": 12,
+     "h": 31,
+     "alto": 12,
+     "r": 1,
+     "color": "#64748b"
     }
    },
    {
-    "id": "m208",
+    "id": "p3",
     "plantilla": "f_caja",
-    "nombre": "MOSFET",
+    "nombre": "3W3P DC +27V",
     "cara": "A",
-    "x": -2.5,
-    "y": 2.5,
+    "x": -88,
+    "y": 15,
     "rot": 0,
     "z": 0,
     "params": {
-     "w": 4,
-     "h": 3,
-     "alto": 1,
-     "r": 0,
-     "color": "#111827"
+     "w": 12,
+     "h": 39,
+     "alto": 12,
+     "r": 1,
+     "color": "#64748b"
     }
    },
    {
-    "id": "m209",
-    "plantilla": "f_caja",
-    "nombre": "MOSFET",
+    "id": "p4",
+    "plantilla": "f_cil",
+    "nombre": "RF OUT",
     "cara": "A",
-    "x": 3,
-    "y": 2.5,
+    "x": -88,
+    "y": 55,
     "rot": 0,
     "z": 0,
     "params": {
-     "w": 4,
-     "h": 3,
-     "alto": 1,
-     "r": 0,
-     "color": "#111827"
-    }
-   },
-   {
-    "id": "m210",
-    "plantilla": "f_caja",
-    "nombre": "MOSFET",
-    "cara": "A",
-    "x": 8.5,
-    "y": 2.5,
-    "rot": 0,
-    "z": 0,
-    "params": {
-     "w": 4,
-     "h": 3,
-     "alto": 1,
-     "r": 0,
-     "color": "#111827"
-    }
-   },
-   {
-    "id": "m211",
-    "plantilla": "f_caja",
-    "nombre": "Protección",
-    "cara": "A",
-    "x": 0,
-    "y": -3,
-    "rot": 0,
-    "z": 0,
-    "params": {
-     "w": 3,
-     "h": 1.6,
-     "alto": 1.1,
-     "r": 0,
-     "color": "#111827"
-    }
-   },
-   {
-    "id": "m212",
-    "plantilla": "smd",
-    "nombre": "SMD",
-    "cara": "A",
-    "x": -6,
-    "y": -3,
-    "rot": 0,
-    "z": 0,
-    "params": {
-     "tam": "0805"
-    }
-   },
-   {
-    "id": "m213",
-    "plantilla": "smd",
-    "nombre": "SMD",
-    "cara": "A",
-    "x": 6,
-    "y": -3,
-    "rot": 0,
-    "z": 0,
-    "params": {
-     "tam": "0805"
-    }
-   },
-   {
-    "id": "m214",
-    "plantilla": "f_caja",
-    "nombre": "Pad",
-    "cara": "A",
-    "x": -12,
-    "y": -6.2,
-    "rot": 0,
-    "z": 0,
-    "params": {
-     "w": 3,
-     "h": 2,
-     "alto": 0.05,
-     "r": 0,
-     "color": "#d4a017"
-    }
-   },
-   {
-    "id": "m215",
-    "plantilla": "f_caja",
-    "nombre": "Pad",
-    "cara": "A",
-    "x": -6,
-    "y": -6.2,
-    "rot": 0,
-    "z": 0,
-    "params": {
-     "w": 3,
-     "h": 2,
-     "alto": 0.05,
-     "r": 0,
-     "color": "#d4a017"
-    }
-   },
-   {
-    "id": "m216",
-    "plantilla": "f_caja",
-    "nombre": "Pad",
-    "cara": "A",
-    "x": 0,
-    "y": -6.2,
-    "rot": 0,
-    "z": 0,
-    "params": {
-     "w": 3,
-     "h": 2,
-     "alto": 0.05,
-     "r": 0,
-     "color": "#d4a017"
-    }
-   },
-   {
-    "id": "m217",
-    "plantilla": "f_caja",
-    "nombre": "Pad",
-    "cara": "A",
-    "x": 6,
-    "y": -6.2,
-    "rot": 0,
-    "z": 0,
-    "params": {
-     "w": 3,
-     "h": 2,
-     "alto": 0.05,
-     "r": 0,
-     "color": "#d4a017"
-    }
-   },
-   {
-    "id": "m218",
-    "plantilla": "f_caja",
-    "nombre": "Pad",
-    "cara": "A",
-    "x": 12,
-    "y": -6.2,
-    "rot": 0,
-    "z": 0,
-    "params": {
-     "w": 3,
-     "h": 2,
-     "alto": 0.05,
-     "r": 0,
-     "color": "#d4a017"
+     "d": 12,
+     "alto": 14,
+     "color": "#64748b"
     }
    }
   ],
-  "nota": "BMS 2S con pads para celdas y carga.",
   "cuerpos": [
    {
-    "f": "caja",
-    "cx": -8,
-    "cy": 2.5,
-    "z0": 1.6,
-    "z1": 2.6,
-    "color": "#111827",
-    "pieza": "m207",
-    "w": 4,
-    "h": 3
+    "f": "cil",
+    "cx": -88,
+    "cy": -60,
+    "z0": 25,
+    "z1": 35,
+    "color": "#64748b",
+    "pieza": "p1",
+    "d": 8
    },
    {
     "f": "caja",
-    "cx": -2.5,
-    "cy": 2.5,
-    "z0": 1.6,
-    "z1": 2.6,
-    "color": "#111827",
-    "pieza": "m208",
-    "w": 4,
-    "h": 3
+    "cx": -88,
+    "cy": -30,
+    "z0": 25,
+    "z1": 37,
+    "color": "#64748b",
+    "pieza": "p2",
+    "w": 12,
+    "h": 31,
+    "r": 1
    },
    {
     "f": "caja",
-    "cx": 3,
-    "cy": 2.5,
-    "z0": 1.6,
-    "z1": 2.6,
-    "color": "#111827",
-    "pieza": "m209",
-    "w": 4,
-    "h": 3
+    "cx": -88,
+    "cy": 15,
+    "z0": 25,
+    "z1": 37,
+    "color": "#64748b",
+    "pieza": "p3",
+    "w": 12,
+    "h": 39,
+    "r": 1
    },
    {
-    "f": "caja",
-    "cx": 8.5,
-    "cy": 2.5,
-    "z0": 1.6,
-    "z1": 2.6,
-    "color": "#111827",
-    "pieza": "m210",
-    "w": 4,
-    "h": 3
-   },
-   {
-    "f": "caja",
-    "cx": 0,
-    "cy": -3,
-    "z0": 1.6,
-    "z1": 2.7,
-    "color": "#111827",
-    "pieza": "m211",
-    "w": 3,
-    "h": 1.6
-   },
-   {
-    "f": "caja",
-    "cx": -6,
-    "cy": -3,
-    "z0": 1.6,
-    "z1": 2.1,
-    "color": "#1f2937",
-    "pieza": "m212",
-    "w": 1.2,
-    "h": 1.25
-   },
-   {
-    "f": "caja",
-    "cx": -6.8,
-    "cy": -3,
-    "z0": 1.6,
-    "z1": 2.1,
-    "color": "#cbd5e1",
-    "pieza": "m212",
-    "w": 0.4,
-    "h": 1.25
-   },
-   {
-    "f": "caja",
-    "cx": -5.2,
-    "cy": -3,
-    "z0": 1.6,
-    "z1": 2.1,
-    "color": "#cbd5e1",
-    "pieza": "m212",
-    "w": 0.4,
-    "h": 1.25
-   },
-   {
-    "f": "caja",
-    "cx": 6,
-    "cy": -3,
-    "z0": 1.6,
-    "z1": 2.1,
-    "color": "#1f2937",
-    "pieza": "m213",
-    "w": 1.2,
-    "h": 1.25
-   },
-   {
-    "f": "caja",
-    "cx": 5.2,
-    "cy": -3,
-    "z0": 1.6,
-    "z1": 2.1,
-    "color": "#cbd5e1",
-    "pieza": "m213",
-    "w": 0.4,
-    "h": 1.25
-   },
-   {
-    "f": "caja",
-    "cx": 6.8,
-    "cy": -3,
-    "z0": 1.6,
-    "z1": 2.1,
-    "color": "#cbd5e1",
-    "pieza": "m213",
-    "w": 0.4,
-    "h": 1.25
-   },
-   {
-    "f": "caja",
-    "cx": -12,
-    "cy": -6.2,
-    "z0": 1.6,
-    "z1": 1.65,
-    "color": "#d4a017",
-    "pieza": "m214",
-    "w": 3,
-    "h": 2
-   },
-   {
-    "f": "caja",
-    "cx": -6,
-    "cy": -6.2,
-    "z0": 1.6,
-    "z1": 1.65,
-    "color": "#d4a017",
-    "pieza": "m215",
-    "w": 3,
-    "h": 2
-   },
-   {
-    "f": "caja",
-    "cx": 0,
-    "cy": -6.2,
-    "z0": 1.6,
-    "z1": 1.65,
-    "color": "#d4a017",
-    "pieza": "m216",
-    "w": 3,
-    "h": 2
-   },
-   {
-    "f": "caja",
-    "cx": 6,
-    "cy": -6.2,
-    "z0": 1.6,
-    "z1": 1.65,
-    "color": "#d4a017",
-    "pieza": "m217",
-    "w": 3,
-    "h": 2
-   },
-   {
-    "f": "caja",
-    "cx": 12,
-    "cy": -6.2,
-    "z0": 1.6,
-    "z1": 1.65,
-    "color": "#d4a017",
-    "pieza": "m218",
-    "w": 3,
-    "h": 2
+    "f": "cil",
+    "cx": -88,
+    "cy": 55,
+    "z0": 25,
+    "z1": 39,
+    "color": "#64748b",
+    "pieza": "p4",
+    "d": 12
    }
   ]
  },
- "modificado": "2026-11-23T16:37:01.551Z"
+ "modificado": "2026-11-25T20:08:14.759Z",
+ "cad_pendiente": true
 }
