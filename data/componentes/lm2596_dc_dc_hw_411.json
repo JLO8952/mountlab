@@ -17,7 +17,7 @@
  "fabricante": "Genérico (IC LM2596S de Texas Instruments / equivalente)",
  "referencia": "HW-411 (LM2596S-ADJ)",
  "estado": "borrador",
- "version": 1,
+ "version": 2,
  "unidad": "und",
  "ficha": {
   "descripcion": "Módulo convertidor DC-DC reductor (step-down) conmutado de voltaje ajustable basado en el circuito integrado LM2596S-ADJ en encapsulado TO-263, con potenciómetro multivuelta de precisión para ajuste fino del voltaje de salida.",
@@ -70,8 +70,8 @@
   }
  ],
  "imagen": {
-  "src": "img/lm2596_dc_dc_hw_411.jpg?v=1795643431360",
-  "origen": "foto subida en el chat"
+  "src": "img/lm2596_dc_dc_hw_411.png?v=1795643508046",
+  "origen": "render del modelo 3D"
  },
  "precios": [],
  "busquedas": {},
@@ -105,8 +105,8 @@
   {
    "tipo": "ajuste",
    "nombre": "Trimmer 10k (103)",
-   "cx": -9.5,
-   "cy": -5,
+   "cx": 7,
+   "cy": 5,
    "w": 6.5,
    "h": 6.5,
    "z": [
@@ -121,8 +121,8 @@
   {
    "tipo": "led",
    "nombre": "LED Indicador",
-   "cx": -17.5,
-   "cy": -4,
+   "cx": -17,
+   "cy": -7.5,
    "w": 2,
    "h": 1.25,
    "z": [
@@ -189,6 +189,16 @@
     "montaje",
     "modelo"
    ]
+  },
+  {
+   "v": 2,
+   "fecha": "2026-11-25",
+   "nota": "Actualizado: modelo 3D, zonas, imagen",
+   "cambios": [
+    "modelo",
+    "zonas",
+    "imagen"
+   ]
   }
  ],
  "modelo": {
@@ -209,8 +219,8 @@
     "plantilla": "electrolitico",
     "nombre": "C_IN 100uF 50V",
     "cara": "A",
-    "x": 14,
-    "y": 4,
+    "x": 16,
+    "y": 0,
     "rot": 0,
     "z": 0,
     "params": {
@@ -223,8 +233,8 @@
     "plantilla": "electrolitico",
     "nombre": "C_OUT 220uF 35V",
     "cara": "A",
-    "x": -14,
-    "y": 4,
+    "x": -16,
+    "y": -0.5,
     "rot": 0,
     "z": 0,
     "params": {
@@ -237,8 +247,8 @@
     "plantilla": "inductor",
     "nombre": "L1 47uH (470)",
     "cara": "A",
-    "x": -1,
-    "y": 4,
+    "x": -5,
+    "y": 3,
     "rot": 0,
     "z": 0,
     "params": {
@@ -251,8 +261,8 @@
     "plantilla": "f_caja",
     "nombre": "LM2596S-ADJ (TO-263)",
     "cara": "A",
-    "x": 4,
-    "y": -5.5,
+    "x": 6.5,
+    "y": -5,
     "rot": 0,
     "z": 0,
     "params": {
@@ -268,8 +278,8 @@
     "plantilla": "trimmer",
     "nombre": "Trimmer 10k (103)",
     "cara": "A",
-    "x": -9.5,
-    "y": -5,
+    "x": 7,
+    "y": 5,
     "rot": 0,
     "z": 0,
     "params": {}
@@ -279,8 +289,8 @@
     "plantilla": "led_smd",
     "nombre": "LED Indicador",
     "cara": "A",
-    "x": -17.5,
-    "y": -4,
+    "x": -17,
+    "y": -7.5,
     "rot": 0,
     "z": 0,
     "params": {}
@@ -289,8 +299,8 @@
   "cuerpos": [
    {
     "f": "cil",
-    "cx": 14,
-    "cy": 4,
+    "cx": 16,
+    "cy": 0,
     "z0": 1.6,
     "z1": 11.6,
     "color": "#2563eb",
@@ -299,8 +309,8 @@
    },
    {
     "f": "cil",
-    "cx": 14,
-    "cy": 4,
+    "cx": 16,
+    "cy": 0,
     "z0": 11.6,
     "z1": 11.7,
     "color": "#cbd5e1",
@@ -309,8 +319,8 @@
    },
    {
     "f": "cil",
-    "cx": -14,
-    "cy": 4,
+    "cx": -16,
+    "cy": -0.5,
     "z0": 1.6,
     "z1": 11.6,
     "color": "#2563eb",
@@ -319,8 +329,8 @@
    },
    {
     "f": "cil",
-    "cx": -14,
-    "cy": 4,
+    "cx": -16,
+    "cy": -0.5,
     "z0": 11.6,
     "z1": 11.7,
     "color": "#cbd5e1",
@@ -329,8 +339,8 @@
    },
    {
     "f": "caja",
-    "cx": -1,
-    "cy": 4,
+    "cx": -5,
+    "cy": 3,
     "z0": 1.6,
     "z1": 8.6,
     "color": "#334155",
@@ -341,8 +351,8 @@
    },
    {
     "f": "caja",
-    "cx": 4,
-    "cy": -5.5,
+    "cx": 6.5,
+    "cy": -5,
     "z0": 1.6,
     "z1": 6.1,
     "color": "#64748b",
@@ -353,8 +363,8 @@
    },
    {
     "f": "caja",
-    "cx": -9.5,
-    "cy": -5,
+    "cx": 7,
+    "cy": 5,
     "z0": 1.6,
     "z1": 6.1,
     "color": "#2563eb",
@@ -364,8 +374,8 @@
    },
    {
     "f": "cil",
-    "cx": -9.5,
-    "cy": -5,
+    "cx": 7,
+    "cy": 5,
     "z0": 6.1,
     "z1": 7.1,
     "color": "#f1f5f9",
@@ -374,8 +384,8 @@
    },
    {
     "f": "caja",
-    "cx": -17.5,
-    "cy": -4,
+    "cx": -17,
+    "cy": -7.5,
     "z0": 1.6,
     "z1": 2.4,
     "color": "#facc15",
@@ -386,5 +396,5 @@
   ]
  },
  "cad_pendiente": true,
- "modificado": "2026-11-25T21:50:29.159Z"
+ "modificado": "2026-11-25T21:51:45.881Z"
 }
