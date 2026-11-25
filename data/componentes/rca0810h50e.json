@@ -78,8 +78,8 @@
   }
  ],
  "imagen": {
-  "src": "img/rca0810h50e.png",
-  "origen": "foto de referencia"
+  "src": "img/rca0810h50e.png?v=1795638383574",
+  "origen": "render del modelo 3D"
  },
  "precios": [
   {
@@ -364,6 +364,14 @@
    "nota": "Creado como componente propio (los datos estaban por error en bms_2s_4a); conectores RF, D-Sub y 3W3 en la cara lateral −X según la foto de referencia",
    "cambios": [
     "todo"
+   ]
+  },
+  {
+   "v": 1,
+   "fecha": "2026-11-25",
+   "nota": "Actualizado: imagen",
+   "cambios": [
+    "imagen"
    ]
   }
  ],
@@ -681,5 +689,6 @@
     "pieza": "p4"
    }
   ]
- }
+ },
+ "modificado": "2026-11-25T20:26:21.981Z"
 }
