@@ -1,0 +1,390 @@
+{
+ "id": "lm2596_dc_dc_hw_411",
+ "nombre": "Módulo Convertidor DC-DC Step-Down Ajustable LM2596 (HW-411)",
+ "tipo": "electronico",
+ "categoria": "Energía",
+ "etiquetas": [
+  "LM2596",
+  "LM2596S",
+  "HW-411",
+  "buck",
+  "step-down",
+  "DC-DC",
+  "regulador",
+  "fuente conmutada",
+  "ajustable"
+ ],
+ "fabricante": "Genérico (IC LM2596S de Texas Instruments / equivalente)",
+ "referencia": "HW-411 (LM2596S-ADJ)",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Módulo convertidor DC-DC reductor (step-down) conmutado de voltaje ajustable basado en el circuito integrado LM2596S-ADJ en encapsulado TO-263, con potenciómetro multivuelta de precisión para ajuste fino del voltaje de salida.",
+  "funcionamiento": "Reduce un voltaje de entrada DC (3.2 V a 40 V) a un voltaje de salida DC regulado y menor (1.25 V a 35 V) mediante conmutación PWM a través de un inductor de 47 uH y un diodo Schottky. El voltaje de salida se ajusta girando el potenciómetro multivuelta azul de 10 kOhm (código 103); el voltaje de entrada debe ser al menos 1.5 V superior al de salida.",
+  "voltaje": "Entrada: 3.2 V – 40 V DC (recomendado <= 35 V); Salida: 1.25 V – 35 V DC ajustable",
+  "corriente": "2 A continua (hasta 3 A máx. con disipador adicional)",
+  "interfaz": "Ajuste analógico mediante trimmer multivuelta; pads soldables IN+/IN-/OUT+/OUT-",
+  "entradas": "IN+ (voltaje positivo DC), IN- (GND)",
+  "salidas": "OUT+ (voltaje positivo DC regulado), OUT- (GND común con IN-)",
+  "dimensiones": "43.0 x 21.0 x 14.0 mm (PCB de 1.6 mm); 2 agujeros de montaje diagonales de ~3.0 mm",
+  "datasheet": "https://www.ti.com/lit/ds/symlink/lm2596.pdf",
+  "notas": "Solo reduce voltaje (no eleva). No tiene protección contra inversión de polaridad. Para cargas sostenidas superiores a 2 A o 15 W es obligatorio instalar un disipador en el LM2596S. Al recibirlo nuevo puede requerir varias vueltas del trimmer en sentido antihorario antes de ver bajar el voltaje."
+ },
+ "especificaciones": [
+  {
+   "param": "Circuito integrado",
+   "valor": "LM2596S-ADJ (TO-263 / D2PAK)"
+  },
+  {
+   "param": "Voltaje de entrada",
+   "valor": "3.2 V – 40 V DC (Vin >= Vout + 1.5 V)"
+  },
+  {
+   "param": "Voltaje de salida",
+   "valor": "1.25 V – 35 V DC (ajustable)"
+  },
+  {
+   "param": "Corriente de salida",
+   "valor": "2 A continua / 3 A pico (con disipador)"
+  },
+  {
+   "param": "Eficiencia de conversión",
+   "valor": "Hasta 92% (típica 80–88%)"
+  },
+  {
+   "param": "Frecuencia de conmutación",
+   "valor": "150 kHz (LM2596 original)"
+  },
+  {
+   "param": "Inductor",
+   "valor": "47 uH SMD (marcado 470)"
+  },
+  {
+   "param": "Capacitores electrolíticos",
+   "valor": "Entrada: 100 uF / 50 V; Salida: 220 uF / 35 V"
+  },
+  {
+   "param": "Temperatura de operación",
+   "valor": "-40 °C a +85 °C"
+  }
+ ],
+ "imagen": {
+  "src": "img/lm2596_dc_dc_hw_411.jpg?v=1795643431360",
+  "origen": "foto subida en el chat"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": {
+  "origen": "centro",
+  "fijacion": "tornillo",
+  "agujeros": [
+   {
+    "x": -15,
+    "y": 6.5,
+    "d": 3
+   },
+   {
+    "x": 15,
+    "y": -6.5,
+    "d": 3
+   }
+  ],
+  "altura_superior": 10.1,
+  "altura_inferior": 0,
+  "holgura_inferior_cableado": 0,
+  "nota": "Propuesto por el asistente a partir del datasheet: verificar con calibrador.",
+  "pcb": [
+   43,
+   21,
+   1.6
+  ],
+  "forma": "rect"
+ },
+ "zonas": [
+  {
+   "tipo": "ajuste",
+   "nombre": "Trimmer 10k (103)",
+   "cx": -9.5,
+   "cy": -5,
+   "w": 6.5,
+   "h": 6.5,
+   "z": [
+    1.6,
+    7.1
+   ],
+   "salida": "+Z",
+   "holgura": 5,
+   "auto": true,
+   "pieza": "p5"
+  },
+  {
+   "tipo": "led",
+   "nombre": "LED Indicador",
+   "cx": -17.5,
+   "cy": -4,
+   "w": 2,
+   "h": 1.25,
+   "z": [
+    1.6,
+    2.4
+   ],
+   "salida": "+Z",
+   "holgura": 2,
+   "auto": true,
+   "pieza": "p6"
+  }
+ ],
+ "pines": [
+  {
+   "x": null,
+   "y": null,
+   "n": "IN+",
+   "func": "Entrada de alimentación positiva DC (3.2 V – 40 V)"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "IN-",
+   "func": "Tierra / negativo de entrada (GND)"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "OUT+",
+   "func": "Salida de voltaje positivo DC regulado (1.25 V – 35 V)"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "OUT-",
+   "func": "Tierra / negativo de salida (GND común)"
+  }
+ ],
+ "archivos": {},
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-25",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines, montaje, modelo",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines",
+    "montaje",
+    "modelo"
+   ]
+  }
+ ],
+ "modelo": {
+  "version": 1,
+  "base": {
+   "tipo": "placa",
+   "forma": "rect",
+   "L": 43,
+   "W": 21,
+   "d": 30,
+   "espesor": 1.6,
+   "radio": 0,
+   "color": "#1d4ed8"
+  },
+  "piezas": [
+   {
+    "id": "p1",
+    "plantilla": "electrolitico",
+    "nombre": "C_IN 100uF 50V",
+    "cara": "A",
+    "x": 14,
+    "y": 4,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 8,
+     "alto": 10
+    }
+   },
+   {
+    "id": "p2",
+    "plantilla": "electrolitico",
+    "nombre": "C_OUT 220uF 35V",
+    "cara": "A",
+    "x": -14,
+    "y": 4,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "d": 8,
+     "alto": 10
+    }
+   },
+   {
+    "id": "p3",
+    "plantilla": "inductor",
+    "nombre": "L1 47uH (470)",
+    "cara": "A",
+    "x": -1,
+    "y": 4,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "lado": 12,
+     "alto": 7
+    }
+   },
+   {
+    "id": "p4",
+    "plantilla": "f_caja",
+    "nombre": "LM2596S-ADJ (TO-263)",
+    "cara": "A",
+    "x": 4,
+    "y": -5.5,
+    "rot": 0,
+    "z": 0,
+    "params": {
+     "w": 10,
+     "h": 9,
+     "alto": 4.5,
+     "r": 0.5,
+     "color": "#64748b"
+    }
+   },
+   {
+    "id": "p5",
+    "plantilla": "trimmer",
+    "nombre": "Trimmer 10k (103)",
+    "cara": "A",
+    "x": -9.5,
+    "y": -5,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   },
+   {
+    "id": "p6",
+    "plantilla": "led_smd",
+    "nombre": "LED Indicador",
+    "cara": "A",
+    "x": -17.5,
+    "y": -4,
+    "rot": 0,
+    "z": 0,
+    "params": {}
+   }
+  ],
+  "cuerpos": [
+   {
+    "f": "cil",
+    "cx": 14,
+    "cy": 4,
+    "z0": 1.6,
+    "z1": 11.6,
+    "color": "#2563eb",
+    "pieza": "p1",
+    "d": 8
+   },
+   {
+    "f": "cil",
+    "cx": 14,
+    "cy": 4,
+    "z0": 11.6,
+    "z1": 11.7,
+    "color": "#cbd5e1",
+    "pieza": "p1",
+    "d": 6.4
+   },
+   {
+    "f": "cil",
+    "cx": -14,
+    "cy": 4,
+    "z0": 1.6,
+    "z1": 11.6,
+    "color": "#2563eb",
+    "pieza": "p2",
+    "d": 8
+   },
+   {
+    "f": "cil",
+    "cx": -14,
+    "cy": 4,
+    "z0": 11.6,
+    "z1": 11.7,
+    "color": "#cbd5e1",
+    "pieza": "p2",
+    "d": 6.4
+   },
+   {
+    "f": "caja",
+    "cx": -1,
+    "cy": 4,
+    "z0": 1.6,
+    "z1": 8.6,
+    "color": "#334155",
+    "pieza": "p3",
+    "w": 12,
+    "h": 12,
+    "r": 0.8
+   },
+   {
+    "f": "caja",
+    "cx": 4,
+    "cy": -5.5,
+    "z0": 1.6,
+    "z1": 6.1,
+    "color": "#64748b",
+    "pieza": "p4",
+    "w": 10,
+    "h": 9,
+    "r": 0.5
+   },
+   {
+    "f": "caja",
+    "cx": -9.5,
+    "cy": -5,
+    "z0": 1.6,
+    "z1": 6.1,
+    "color": "#2563eb",
+    "pieza": "p5",
+    "w": 6.5,
+    "h": 6.5
+   },
+   {
+    "f": "cil",
+    "cx": -9.5,
+    "cy": -5,
+    "z0": 6.1,
+    "z1": 7.1,
+    "color": "#f1f5f9",
+    "pieza": "p5",
+    "d": 3
+   },
+   {
+    "f": "caja",
+    "cx": -17.5,
+    "cy": -4,
+    "z0": 1.6,
+    "z1": 2.4,
+    "color": "#facc15",
+    "pieza": "p6",
+    "w": 2,
+    "h": 1.25
+   }
+  ]
+ },
+ "cad_pendiente": true,
+ "modificado": "2026-11-25T21:50:29.159Z"
+}
