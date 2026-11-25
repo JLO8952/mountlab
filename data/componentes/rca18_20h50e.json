@@ -17,7 +17,7 @@
  "fabricante": "RFcore Co., Ltd.",
  "referencia": "RCA18-20H50E",
  "estado": "borrador",
- "version": 2,
+ "version": 3,
  "unidad": "und",
  "ficha": {
   "descripcion": "Amplificador de potencia de banda ancha de estado sólido (SSPA) para la banda de 1800 a 2000 MHz con salida nominal de 50 dBm (100 W), diseñado por RFcore para comunicaciones, inhibición RF e instrumentación.",
@@ -66,8 +66,8 @@
   }
  ],
  "imagen": {
-  "src": "img/rca18_20h50e.jpg?v=1795638902941",
-  "origen": "foto subida en el chat"
+  "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXoAAAE2CAYAAABvOlmHAAAQAElEQVR4Aeyde4xc113Hz8z4GdtN0jQ0TRylKYgIIYPSP5CAFHkRQvBH1QYkJFSBkOh/SE0LUv+D2H+g8lCBP0rbP1oKFUK8ShsQpYVKu0iJEolKzsOJk9jxOn7E6931+rVr79q7cznf2b3r2dl5nLlz751zzv2s5vg+5txzf+fzm/3k5Nw7d+uGHwhAAAIQiJoAoo86vXQOAhCAgDGInk8BBCDgRoBawRJA9MGmjsAhAAEIuBFA9G6cqAUBCEAgWAKIPtjUhRo4cUMAAmUTQPRlE+d8EIAABEomgOhLBs7pIAABCJRNIFTRl82J80EAAhAIlgCiDzZ1BA4BCEDAjQCid+NELQhAIFQCxM0XpvgMQAACEIidACP62DNM/yAAgcoTQPSV/wgAwI0AtSAQLgFEH27uiBwCEICAEwFE74SJShCAAATCJYDoy80dZ4MABCBQOgFEXzpyTggBCECgXAKIvlzenA0CEICAG4EcayH6HGHSFAQgAAEfCSB6H7NCTBCAAARyJIDoc4RJUxDwjwARQcDwCAQ+BBCAAARiJ8CIPvYM0z8IQKDyBBB95T8CTgCoBAEIBEwA0QecPEKHAAQg4EIA0btQog4EIACBgAmUKvqAORE6BCAAgWAJIPpgU0fgEIAABNwIIHo3TtSCAARKJcDJ8iSA6POkSVsQgAAEPCSA6D1MCiFBAAIQyJMAos+TJm35RoB4IAABSwDRWwi8IAABCMRMANHHnF36BgEIQMASQPQWwqAX70MAAhAImQCiDzl7xA4BCEDAgQCid4BEFQhAAAJuBPyshej9zAtRQQACEMiNAKLPDSUNQQACEPCTAKL3My9EVW0C9B4CuRJA9LnipDEIQAAC/hFA9P7lhIggAAEI5EoA0eeK06/GiAYCEICACCB6UaBAAAIQiJgAoo84uXQNAhCAgAgMFr1qUSAAAQhAIFgCiD7Y1BE4BCAAATcCiN6NE7UgAIHBBKjhKQFE72liCAsCEIBAXgQQfV4kaQcCEICApwQQvaeJqXJY9B0CEMiXAKLPlyetQQACEPCOAKL3LiUEBAEIQCBfAvGKPl9OtAYBCEAgWAKIPtjUETgEIAABNwKI3o0TtSAAgXgJRN8zRB99iukgBCBQdQKIvuqfAPoPAQhETwDRR59iOlgWAc4DAV8JIHpfM0NcEIAABHIigOhzAkkzEIAABHwlgOh9ywzxQAACEMiZAKLPGSjNQQACEPCNAKL3LSPEAwEIQMCNgHMtRO+MiooQgAAEwiSA6MPMG1FDAAIQcCaA6J1RURECcRKgV/ETQPTx55geQgACFSeA6Cv+AaD7EIBA/AQQffw5LqeHnAUCEPCWAKL3NjUEBgEIQCAfAog+H460AgEIQMBbAp6J3ltOBAYBCEAgWAKIPtjUETgEIAABNwKI3o0TtSAAAc8IEI47AUTvzoqaEIAABIIkgOiDTBtBQwACEHAngOjdWVEzRgL0CQIVIIDoK5BkuggBCFSbAKKvdv7pPQQgUAECiD6XJNMIBCAAAX8JIHp/c0NkEIAABHIhgOhzwUgjEIAABNwIjKMWoh8Hdc65jUCSJM8mSTKZrJfD2yqwAwIQyEwA0WdGx4F5ELBil+AT29YRWyR4lU3h2/e1bd/iBQEIZCWA6LOS47iRCFiBtwu+W1sS/KR9Y1P6dp1XSoAlBIYggOiHgEXV0Qk4CL7bSVrSt8fqJfFru1s99kEAAl0IIPouUNiVPwFr6EEjeNeTSvKSvW0y0VLbrsdSDwKVJIDoK5n2tNPFL5MkyUvw3YKV5CeT9R8ttd2tHvsgUGkCiL7S6S+u89a9RQq+W+CSvGSfFm13q8c+CFSOAKKvXMqL7fAYBN/ZIQleZVP4NiZtd9ZjGwKVIZCH6CsDi472JmBlqhH8s7aGbpO0Cy9eEjx37niRCoIYJwFEP076EZy7Q/A+Sb6Tbkv6Nl69NNrXdmcdtiEQJQFEH2Vai++UtWX7CN5nwXeDIclL9rYbiZba7laPfXkToL2xEED0Y8Ee9kmTJEmnaEITfDfwkvyk7ZNeWmq7Wz32QSBYAog+2NSVH7g1oUbx6eMKyg+g+DNK8pJ9WrRd/Fk5AwQKJoDoCwYcQ/P+Cb5wqhK8yqbwLQNtF35iTgCBIggg+iKoRtKmlVvsI3iXTEnw3LnjQoo63hJA9N6mZnyBIfie7FvSt3z00mhf2z0r8wYEfCFQZdH7kgNv4rD2YgTvng1JXrK32BItte1+NDUhUCIBRF8ibF9PlSQJgh8tOZL8ZLL+o6W2R2uRoyGQIwFEnyPM0JqyXkLw+SdNkpfs06Lt/M9Ci+USCPxsiD7wBGYJH8FnoTb0MRK8Sip8/UdV20M3xAEQGJUAoh+VYEDHI/ixJUuC15fLUukftrnQvrEFxImrRQDRVyDfVioaTcb8RadAstgKU4Lnds0WCv4piwCiL4v0GM6zIXhJRaPJMUTAKQcQaEnf5kkvjfa1PeAQ3obA8AQQ/fDMvD/CWkMj+PR5NMjD+4y1AlSeJHubvkRLbbfe4B8IjEoA0Y9KsPzje54xSZJ2wTOK70nK+zck+ckkSdKibe+DJkB/CSB6f3PjHFmSJAjemVZQFSV4lclkXfrKs7aD6gTBjp8Aoh9/DkaKwAognaJhBD8SSe8PluCV41T63Lnjfco8CHAjBES/ASK0hQRvC3fShJa4fOKV9HWRfVP6+TRLK7ESQPSBZdbKXf/7juADy1uB4bakbz8Xekn82i7wdDQdIgFEH0jW7G8xgg8kV2MMU5KX7O3HJdFS2zmEQxOhE0D0nmcwSRIE73mOPA1Pkp9M1n+01LanoRJW0QQQfdGEM7Zvfz8RfEZ2HLaNgCQv2adF29sqsSNeAojes9xGLHjPSFcyHAleZVP49vOm7UrCqFKnEb0n2ba/cIzgPclFRcKQ4LlzpyLJRvRjTjSCH3MCOL0ItKRvP4t6abSvbe2nREIgONFHwt3Y3yhG8LEkM65+SPKSvf2IJlpqO64eVrA3iL7kpCdJguBLZs7pMhOQ5CeT9R8ttZ25MQ4cHwFEXxJ7+7siwWtOVF9jL+msnAYCuRGQ5CX7tGg7t8aLaYhWUwKIPiVR0HJD8OnzaPjlKIgzzZZGQJ9hlU3h28+4tksLgBMNTwDRD8/M6Qj74dcIPhU8o3gnalQKjIAEr/9L3ZR+YPFXJlxEn3OqEXzOQMffHBG4EWhJ337+9ZL4te12JLUKJ4Doc0RsP+GM4HPkSVPBEpDkJXv7K5Foqe1gOxND4Ig+hywmSaJpGp4omQNLmoiOgCQ/maz/aKnt6Drpe4cQ/QgZsp9dZ8GPcBoOhUAsBCR5yT4t2o6lb173A9FnSA+CzwCNQyBwl4AEr7IpfPs7pe27NVjLlQCiHwKn/TAygh+CF1Uh4EBAgufOnS2g8t9A9A5MEbwDJKpAYHQCLenb3ze9NNrX9uit0oJB9H0+BPbTxgi+Dx/egkCBBCR5yd7+GiZaarvA08XdNKLvkt8kSRB8Fy7sCopATMFK8pPJ+o+W2o6pf4X3BdG3IbafIwTfxoNVCHhIQJKX7NOibQ/D9CskRG/zgeAtBF4QCIuABK+yKXz7e6ztsHpRUrSVFr39YDCCH/BB420IBEBAgufOnT6JqqToNwSfPq6gDx7eggAEAiPQkr79HddLo31tB9aF/MOtlOht5jWCTwXPEyXz/zzRIgR8IiDJS/b2Vz/RUts+xVdaLOWIvrTudD9RkiQIvjsa9kKgKgQk+clk/UdLbVel73HfR29zetgWRvCV+TjTUQg4EZDkJfu0aNvpwFArRTui3xC8LtAwRRPqp5O4q0igzD5L8Cqp8PV//touM4ZSzhWd6CV4W3hkcCkfH04CgWgISPAaFLak/+3JY9qOpnNRif7cpRvPXltaUbKiSRAdgQAEyiXw5vRMVJIXvahEf3b2ujk+Pd8qVvjqH6WiBOg2BLIQsJI3b52ZyXKo18dEJfqmaf6vaEvyCF8kKBCAgCuBdsk/PfHklOtxIdSLSvQfO/ToluQg/BA+gsQIgfETaJe8jWaLR+x28K+oRN8rG5mF36tB9kMAAtEQ6JB8NP1q70iMou/5X2OE35561iEAgW6Sr9VMT4eYQH+iE33N1AYmCeEH+mklbAjkSKCb5NV805jWtT6tD1G8rhqd6IehjfCHoUVdCMRD4IVjp3reXRPbhVhlLTrRp3feqHOuBeG7kqIeBMInIMnPX10MvyND9CA60XfeeTMEC4Pwh6FF3SII0GaxBBwkP3Dqt9gIi2k9OtFvYBopWQh/gyILCEREwEHyJsYLsUphlKKvOVyQVecHFYQ/iBDvQ8B/ApqmeW7yZaPloGhjvBCrPkcpenUszxKc8PPsPG1BIGACkrtG8gF3IZfQoxR9lguyLjQRvgsl6kDADwJZJB/jHTfKRpSiH+WCrKAMKqnw9RC1QXV5HwIQKJ9AFsnbKEe6tmeP9/bVR/TexuxNYOdmb5gXjl8wCN+blBAIBIy+CMV0zdYPQsyiL+2/zgh/64eKLQiMi4Ak3+8xw6vnjxmVbvHFeseN+hqt6PO680aQXAvCdyVFvdgI+NCfQZLfMfOyOfDfnzM7v/tZc/NLv2Cu/ctntkg/1jtulJtoRa/Ojasg/HGR57xVJTBI8uJy/xvfNPfurpv799TNQ/sb5qEbr5r6f37WrD33jGleeNmc+uOPqVqUJVrRF3XnzTCfAoQ/DC3qQiAbARfJP3jim+aBK6+aA1b0Kvt31cyBXXXzgJX+/suv2FH+M+bx++uT//D0gclvfHI/f0owWyrKP6roO2+G6ZGEr794pbt1hjmucnXpMASGJOAieTW577VvmjW70qjXzD1W8Put8PdZ2WupUf4DexvmwXus+PfVD79/jxX+rx1Ivvbx/dFIP9oRvc2pXqVdkNXJ+hVJXrJX0Xq/urwHAQgMJuAq+drFl83Craa5upyY5bXE3LZFwt+7s24k+wN2VN9aWvlL+vfZ5Yfs1M6j9zYOX102k59/6p5nB0fjd42oRT+OC7KD0i3JS/YqWh9Un/chAIHtBFwlryMXX/yGmVlaM5dvNs3s4pq5stw011aa5tZqYpqmZnbYUb6kv3dnzbzPSv9eWyT+89eb5uJi0yQmCX4qJ0LRK7X+F0leslfRuv8REyEE/CAwjOQV8YIdyS/cTMwlK/uZpaa5ZGU/c2N9efnmWkv6K3aUb2o1sz7Sr5nFO8a8taDJHmN8HDCaIX+iFn3TNL3/SzGSvGSvovUh80d1CFSKwLCSF5y3j//QjuibZs7Kfk6iX0rMrBX8ZTudo+15u++qHeUv3m6alY1R/iuXrOl1sC1rAXjEhtn3FbXofbog2zcL9k1JXrJX0brdxQsCEGgjkEXyOvycnYI5e33NTsOoNM2MnY5ZuJWY2aWmmbXTORL+jB3lX7SjfE3xvDm/aus2dWirfPH5ZW+u9bUCyvBP1KIXDzu/NmGXwSRKkpfsup+idAAAEABJREFUVbRuY+cFgcoT0CMN+n3jtR+gX/7Ml83Bw79rrj/w0+aknY6R9M9Z8c9tjPA1D39pY5R/yf5H4LXZu6N5649g3NGPQfSi16j+qUMHJ2zCEH6/TwLvQcBTApK8HlLWGd7F2avmxMlz5tqNpc63tmw//OMfNT/z8U+bp//gK0bSbzzypDm3Mcp/z4r9oh3Na5Q/25J906zeHczbi7XJ0S2NBboRvejTvKTCtxdWjqT7QlhqVK/RvYrWQ4i5cjHS4cII9JP8zNw1s2zn1U+fnTcnz1wyF2YWBkr/kSc+aj7x+182v/Oll6bOXlmdOLnQnDp9pWnO2hG+hK85+2U7T68OJSaZimHaRn2pjOjVWZWfP/TIUTvCt9fXa0e0HUqR5CV7Fa2HEjdxQiArgUGSb293cWnZzF6+YU5NX3IZ5U998hefnJg6szr1g1MrE0t3ahOXFpOpM9eaVvh3h/N//vwtzQK0nybY9cqJPs2UhJ+YRIkMag5OkpfsVbSe9oclBGIhMH910fT603+artFIvldf643G5ij/xR++YV45frJzlN+SfPvxPzi1PPX9kysT/3FipfbetVU54ciaaWrZXi3o9cqKXllLp3P8EL4ici+SvGSvonX3I6kJAX8JSPIayXeLUNMz/STfecyevftMs7arNcp/6533zNXrS9sk33nMlB3l/9nzN49+MYI7bdr7VmnRpyAQfkqCJQTGR2CQ5DU9kyW6eqNhbi7fMdPn5g//4V99K/n05//y2SzthHwMom/LXofw297xf1Wjeo3uVbTuf8RECIG7BIqS/N0zrK+9O/22WZi/tL4R8L/Dho7ouxDbEH5wF2zVFUleslfRuvZRIOAzgbIkP33qhFlavG7q9cT7b8znnS9E34doqBds1SVJXrLn79mKBsVXAvq2a785+azTNZ39nZ0535J85/6qbCP6AZneGN0H94WrtFt6Fj5/wDylwXILgTFvSPJvnZnpGoUuvOYp+dmZC5vn+dev/WlQd9ptBj7CCqJ3hIfwHUFRDQIOBPpJ/tjr75qiJG9Dq5zkbZ8NoheFIQrCHwIWVSHQhUAvyUvuknyXQzLtmrXTNbNtI/lMjURyEKLPmMhU+DVTO5KxibEelt+Uzli7wckDI9BP8pquyas7sz0kX6s1j+Z1jpDaQfQjZksXbEN8pELabQlfF2118TbdxxICRRAYt+SL6FMobSL6nDIl4ScBPlJB3ZfkJXsVrWsfBQJ5EvBF8lW8EKs8+iJ6xRJ8SadzEH7wqaQDORLwRfK2S5W8EGv7zcVYQci7IPy8idJeqAQ8knyoCHOJmxF9Lhi7N5IKvxboBVtN42g6R0Xr3XvJXgh0J9BL8noC5UgXXjtO1+vCa0c1kyQJI/pOKGznR0Dz9yFfsJXkJXsVredHhpZiJaBvu3b7MpQkP8wTKAfxcZW82qniow/UbxVG9KJQUpHwQ52/FyJJXrJX0br2USDQSUCS1/NrOvePU/J2NH+kqhdilQdELwollnQ6B+GXCL3rqdhZBAFfJf9vf/Mnlbx/Ps0xok9JlLxE+CUD53SFE0DyhSPOfAJEnxldPgci/Hw40sr4CGiaBsmPj7/LmRG9C6XedXJ7JxV+qHfoCITm7TV/r6J17aPETQDJh5FfRO9ZnnTBVnfo2LCCvRVMkpfsVbRu+8IrQgKp5Lt1bf7qLTN3ZcnU6/koZpi7a3Thtepz8p05yScLna2yPTIBK/tgn4Gfdl6Sl+xVtJ7uZxk+gX6SV+8uL1wzO3buNnv3vc/s3rN3JOFHI3mBGVNB9GMC73LadDon5Dt01E9JXrJX0br2UcIlMEjy6tkbr79m3jt3xly7smCazcTK/h5bhhf+MJK3551iJG8pdHkh+i5QfNuF8H3LSHXj0bdddeG1GwHdJ3/i5Dlz6vQ5s7a6aq4uzJnzZ0+Zs9MnzcUL58zyrWUr+3XhN3bs6NbEln3DSv5bX//CxJYG2NgkgOg3Ufi/kgo/5Au2oqxRvUb3/D1b0Ri2jK++JP9Wjz/9J8nrG6/Lt5vm2uId8yMffNjs2r2nJfybSzfM5bmL5t3pt6z4pzeEv8/sO3CfFX/3UT6SzzfPiD5fnqW0ll6wDV34ehb+C8cvGIRfysdmpJO4SD49Qb3RMAfuvc88+thHzEMPP2r27r2n9VY6ypfwz5051XNaB8m3cOX6D6LPFWe5jUn4oc/fixjCFwV/yzCS7+zFvv0HzMOPftg8/qNPmPvuf7+pGdMa5bdP61yen92cx799e8XMuv/5vymmayxQhxeid4Dkc5V0OmdI4XvZJYTvX1pGkXx7b+qNhnngwYfMh63wO6d1Lp4/Y06fPNGa1rlwbrr9sL7rVf2zgH2h9HgT0fcAE9puhB9axvyPNy/Jt/e03lif1nnk4GOb8/h6//bKrdbF26Ub17Q5sFjJT1T5IWUDAXVUQPQdQELf7BB+0N1hhD++9PWTvJ4lrwuvo0RXb6wLX/P4991/v2murbWKS5tI3oXS1jojiX5rU2z5RGBD+LVaoH/0pJ2lhK+7dHS3Tvt+1oshMEjyi0vLuZ14afG6uXjhrHN7SN4Z1ZaKiH4Ljvg2dMH2qUMHa7ZnwT5SwcZuJHnJXkXr2kfJn0DZkp8+daLViXqj0Vr2+wfJ96PT/z1E359PNO9a2Qf/SAUlQ5KX7FW0rn2UfAgUK/mtMWokn0o+fWetuZqublvq+TXMyW/D4rwD0TujCr/ixnQOwg8/lbn3QN927fVlKM3J5z1d0y75en19NK95+m4dk+R5tEE3Mu77EL07q2hqIvxoUplLRyR5Pb+mW2NFS77bOdv3Ifl2GtnXEX12dsEfmQq/Fs4F257MNY2j6RwVrfesyBtbCPgg+XpjY0TfXNsSG5LfgmOkDUQ/Er44Dk4v2CL8OPLp2otektc0zbHX3zVaurY1qF63Ofn0mEZ9x7ZbK5F8SiefJaLPh2MUrUj4MXzDVsnQqF6jexWtax/lLoF+ktd0zd2ao6/1k3y31pF8Nyqj7auk6EdDFvfR6XQOwo8zz5qLf27yZaNlZw81gh9e8jXbTP8y6Nk19UbDpHfcIHmLs4AXoi8AagxNIvwYsri1D5K7RvJb965vrUt+1m70l7ZpPZasvY7p+zN96g2jEX2/Squrd1pTN0i+H6XR3kP0o/GL/ugO4QffX03jaDpHRevBd8ixA26Sd2zMsZqL5G1TU8ePvTiRJHcm/LyF0kYYwQvRR5DEMrqwIfwoHqkgXpK8ZK+ide2LtXgs+Rby4y99b4ovQ7VQFPYPoi8MbZwNx3TBVhmS5CV7Fa1rX0xF33YdPF2Tb48dR/Ktk9ZqzaOtFf4plACiLxRvnI1vjO6j+IZtmiFJXrJX0Xq6P6flWJqR5Ht92/Xi7DVz8ozm5PMNbRjJ2zMzkrcQyngh+jIoR3oOhO9vYgdJftTHDHfr+bCS569DdaNYzD5EXwzXSrUas/BD/Hu2/SR/a2XNLNxYMfV6vr/6SN7vX/l8s+13X4OPzvcOpMKvRfBIhZS1noX/wvELJhTh95O8+jR9dsY015pm1569ZrcteQh/SMkbRvLKRLkF0ZfLuxJn0wXbpw4djOYOHSUtBOEPkrz6MTdz3kyfetNcnps1a2trLeHvuWefaezYobeHLsNK3l58nRj6JBwwMgFEPzJCGuhFQMKP5Ru2aR99Fb6L5NM+6O+zzlw40xL+zIVz5ubSotm5a7cZVvhZJM9tlGkWil5ubR/Rb+XBVs4E0ukchJ8z2LbmhpH83PzC5pES/uW5i+bC2WmTCl/TOffsO9ASf79pHSS/iTGIFUQfRJrCDxLhF5PDYSTfK4JU+Gen3zZnp0+ZxcXrVvS7zJ69++xy97YLt7N2+mfQYw3az6XpGkby7UTKX6+Xf0rOWGUCqfBjumCrfGpKp+x78IeVfPtoXjF3lrXVVXPtyryVvRX+mZbwreh3mb12hK+Rvkb4krxK57G9tpF8LzLl7q+XezrOBoF1Apq/j+2Crb5oJdmraH29p8X8O6zkh4miJfyFu8K/cf1q62Lt5fkZM4zk9ZAyRvLDkC+uLqIvji0tOxCQ8GObv5fkJXsVrTtgGKqKHmnQ6xuvQzU0oHKn8C+cPT3giLtvS/I8pOwuj3GvIfpxZ6AC5x/UxXQ6B+EPImWMJK+HlA2uub3G3Nzl7Tsd9kj4V+YuOdRcr4Lk1zn49C+i9ykbFY8F4ff/AIwi+f4t5/cuks+PZZ4tIfo8adJWLgQQ/naMrpLfde6fzZ2T/7i9Abtn0MVYW2WkF5IfCV+hB4cj+kIx0LiPBFLhx3aHjubtNX+vovV+7DVN0+tP/7Ufd2DlhDl0+lPmsaXvmEdufNvUJn+9p/Dbj3NdT//UX6/6SL4XGT/2I3o/8kAUfQjogq3u0LFVpmyJ5iXJS/YqWu/smCSvkXzn/s7t++68aX7q6hfMvr1187576uaD9+0wP/ah3bkKv7m21nnazW0kv4nC2xVE721qCKyTgJV9VM/AT/snyUv2KlrXflfJq+5Hlp8zOxsNs6tRN3t213sKf//8d43+PqvJ8cdTyefYwziaQvRx5LEyvUinc2K7Q0cJlOQl+2Nvv9e6u0b7BhWN5u+785ZpNGpmx466lX3Dlu7C/9XH3jS/+YG/M4+bl3IRPpI3wfwg+mBSRaDtBOIW/u32rvZdP7j4HbPaTEzTFmNqpm6Fv1PC39Ewu+yy2wg/i/CbzW1TN1PcJ2+C+UH0waSKQLsRSIVfK+AZ+N3O59O+/csnzM7FN8zy7aa5vZpsCj+R8Os1O51Tt7JvmN1W+HvtlM7+jjl8V+F3mZ+f4pnyJqgfRB9Uugi2F4H0gm2tQsJvXH/DXF1cNTdurZmbVva9hL/Dzt3v3Bjhdwr/wXt3mA+sHjM/a75m5mYvTDnM4SP5Xh9Cj/cjeo+TQ2jDE5DwE5Poj1sEe4fOndtuUze35l4z163kr91cyyT8mytN83/v3NqE/Cv3P3f0+LEXJ/oIH8lv0gprBdEXnS/aL51AOp0TuvAHgbty/lWzcGPNXLeizyL8N86vbDvF8Ze+N/X9f/rriXbhrzVXVQ/Ji0KgBdEHmjjCHkwgduHPN54wF6+umku2DCv8V87cMjP2uHaKn/vq+c3/C2oX/qX33j1SqzWPttdlPSwCiD6sfBFtBgIdws/Qgp+HLO7+CXP83Vvm7PydrsJfXF4zN1VW7LJjDv/Y6ZudndqUfPsbx+0If+rf//Yojxtup1LYemENI/rC0NKwbwQ2hF/z/YLtnTt3nND95Md+2/zSZ75v6o//hnnz/PI24V9ZXDPzN1aN5vBvtgn/2DvbJG+aScKI3Yl6mJUQfZh5I+oRCMRwwba9+0/83G+Zw7/3PWfhX7yy7T8kU+3TNu1tsx4HAUQfRx7pxZAENkb3UT1SIRV+vxH+9Oxtc9mO8ttxMZpvpxHnOqKPM6/0ypFArMJ//6FPHXn97K2p9imdy5EgU+IAAAR1SURBVDfWzNJys5MMo/lOIhFuI/oIk0qXhifgk/Bd5+h79TKpmYk/OvIXR//+fy5PnLm0MnHqvZWpd2ZWzOlLt82Fha3TNozme1GMaz+ijyuf+fWmoi2lwvf9gm2v9EjyT088uXkHzXeevzr19f+amzh5Ybkl/AV7gTY91kp+grn5lEbcS0Qfd37pXUYCumD71KGD3t+h0969Tsm3v5cK/9XpmxMmSY4885VzNSTfTijudUQfd37p3YgEJPwQvmHbT/LtCCT8Z756nlsp26FUYL1g0VeAIF2MnkA6nVOG8LPMz7tKPvpE0cGeBBB9TzS8AYGtBMoU/tYz995C8r3Z8M5dAoj+LgvWIOBEIBX+uC/YxiZ5J/hUykQA0WfCxkEQMEbz9+O6YIvk+QQOQwDRD0OLuhDoQkDCL2P+Pj01kk9JsHQlgOhdSVEvDAJjijKdzhlV+IP+6AiSH1OCAz8tog88gYTvF4G8hN+tV0i+GxX2uRBA9C6UqAOBIQnkLXwkP2QCqL6FAKLfgiPdYAmBfAikwne9Q6fbffRIPp9cVLkVRF/l7NP30gjogq3u0LEn3HwOjV0f+ELyAxFRwYEAoneARBUI5EXAyt75GfhIPi/qxbYTQuuIPoQsEWNUBNLpnH536CD5qFI+9s4g+rGngACqSqCX8Gs1c6T9UcNV5UO/8yOA6PNjSUsQyESgJfxDByd0wXZ19c6RT0w8ydMlM5HkoF4EEH0vMuyHQMkEdMEWyZcMvSKnQ/QVSTTdhAAEqksA0UeVezoDAQhAYDsBRL+dCXsgAAEIREUA0UeVTjoDAQhAYDuBbqLfXos9EIAABCAQLAFEH2zqCBwCEICAGwFE78aJWhCAQDcC7AuCAKIPIk0ECQEIQCA7AUSfnR1HQgACEAiCAKIPIk2xB0n/IACBIgkg+iLp0jYEIAABDwggeg+SQAgQgAAEiiQQk+iL5ETbEIAABIIlgOiDTR2BQwACEHAjgOjdOFELAhCIiUDF+oLoK5ZwugsBCFSPAKKvXs7pMQQgUDECiL5iCae7eRKgLQiEQQDRh5EnooQABCCQmQCiz4yOAyEAAQiEQQDRjz9PRAABCECgUAKIvlC8NA4BCEBg/AQQ/fhzQAQQgAAE3AhkrIXoM4LjMAhAAAKhEED0oWSKOCEAAQhkJIDoM4LjMAiES4DIq0YA0Vct4/QXAhCoHAFEX7mU02EIQKBqBBB91TKeX39pCQIQCIQAog8kUYQJAQhAICsBRJ+VHMdBAAIQCITA2EUfCCfChAAEIBAsAUQfbOoIHAIQgIAbAUTvxolaEIDA2AkQQFYCiD4rOY6DAAQgEAgBRB9IoggTAhCAQFYCiD4rOY4LlQBxQ6ByBBB95VJOhyEAgaoRQPRVyzj9hQAEKkcA0WdMOYdBAAIQCIUAog8lU8QJAQhAICMBRJ8RHIdBAAIQcCMw/lqIfvw5IAIIQAAChRJA9IXipXEIQAAC4yeA6MefAyKAgAsB6kAgMwFEnxkdB0IAAhAIg8D/AwAA//9IKt/OAAAABklEQVQDAIZAeIrkQZaJAAAAAElFTkSuQmCC",
+  "origen": "render del modelo 3D"
  },
  "precios": [],
  "busquedas": {},
@@ -85,28 +85,7 @@
    25
   ],
   "forma": "rect",
-  "base_tipo": "prisma",
-  "conexiones": {
-   "header": "ninguno",
-   "header_alto": 0,
-   "defecto": "soldado",
-   "soldado": {
-    "altura_superior": 0,
-    "altura_inferior": 0,
-    "holgura_inferior_cableado": 0,
-    "holgura_superior_cableado": 6,
-    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
-    "nota": "Pads o terminales: cables soldados directo."
-   },
-   "jumper": {
-    "altura_superior": 0,
-    "altura_inferior": 8.5,
-    "holgura_inferior_cableado": 22,
-    "holgura_superior_cableado": 0,
-    "cable": "Jumper Dupont 2.54 mm sobre headers",
-    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
-   }
-  }
+  "base_tipo": "prisma"
  },
  "zonas": [],
  "pines": [
@@ -173,27 +152,6 @@
    "fuente": "subido desde el chat: 2bdc3a75-6a9b-4bee-8584-202b1e10be2e.pdf",
    "carpeta": "archivos/rca18_20h50e (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca18_20h50e/rca18_20h50e_datasheet.pdf"
-  },
-  "dxf_huella": {
-   "nombre": "rca18_20h50e_v1_huella.dxf",
-   "version": 1,
-   "fecha": "2026-11-25",
-   "carpeta": "archivos/rca18_20h50e (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca18_20h50e/rca18_20h50e_v1_huella.dxf"
-  },
-  "step_montaje": {
-   "nombre": "rca18_20h50e_v1_montaje.step",
-   "version": 1,
-   "fecha": "2026-11-25",
-   "carpeta": "archivos/rca18_20h50e (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca18_20h50e/rca18_20h50e_v1_montaje.step"
-  },
-  "dxf_plano": {
-   "nombre": "rca18_20h50e_v1_plano.dxf",
-   "version": 1,
-   "fecha": "2026-11-25",
-   "carpeta": "archivos/rca18_20h50e (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca18_20h50e/rca18_20h50e_v1_plano.dxf"
   }
  },
  "historial": [
@@ -232,6 +190,15 @@
     "modelo",
     "montaje"
    ]
+  },
+  {
+   "v": 3,
+   "fecha": "2026-11-25",
+   "nota": "Actualizado: modelo 3D, imagen",
+   "cambios": [
+    "modelo",
+    "imagen"
+   ]
   }
  ],
  "modelo": {
@@ -251,8 +218,8 @@
     "id": "p1",
     "plantilla": "f_cil",
     "nombre": "RF IN (SMA)",
-    "cara": "-X",
-    "x": -85,
+    "cara": "+X",
+    "x": 85,
     "y": -52,
     "rot": 0,
     "z": 12.5,
@@ -266,8 +233,8 @@
     "id": "p2",
     "plantilla": "f_caja",
     "nombre": "D-Sub 9 Control",
-    "cara": "-X",
-    "x": -85,
+    "cara": "+X",
+    "x": 85,
     "y": -25.5,
     "rot": 0,
     "z": 12.5,
@@ -283,8 +250,8 @@
     "id": "p3",
     "plantilla": "f_caja",
     "nombre": "3W3P DC +27V",
-    "cara": "-X",
-    "x": -85,
+    "cara": "+X",
+    "x": 85,
     "y": 12,
     "rot": 0,
     "z": 12.5,
@@ -300,8 +267,8 @@
     "id": "p4",
     "plantilla": "f_cil",
     "nombre": "RF OUT (SMA)",
-    "cara": "-X",
-    "x": -85,
+    "cara": "+X",
+    "x": 85,
     "y": 52,
     "rot": 0,
     "z": 12.5,
@@ -322,9 +289,9 @@
      12.5,
      4
     ],
-    "a0": -95,
-    "a1": -85,
-    "cx": -90,
+    "a0": 85,
+    "a1": 95,
+    "cx": 90,
     "cy": -52,
     "w": 10,
     "h": 8,
@@ -338,89 +305,89 @@
     "color": "#64748b",
     "pts": [
      [
-      -41,
+      -10,
       17.75
-     ],
-     [
-      -40.924,
-      18.133
-     ],
-     [
-      -40.707,
-      18.457
-     ],
-     [
-      -40.383,
-      18.674
-     ],
-     [
-      -40,
-      18.75
-     ],
-     [
-      -11,
-      18.75
-     ],
-     [
-      -10.617,
-      18.674
-     ],
-     [
-      -10.293,
-      18.457
      ],
      [
       -10.076,
       18.133
      ],
      [
-      -10,
+      -10.293,
+      18.457
+     ],
+     [
+      -10.617,
+      18.674
+     ],
+     [
+      -11,
+      18.75
+     ],
+     [
+      -40,
+      18.75
+     ],
+     [
+      -40.383,
+      18.674
+     ],
+     [
+      -40.707,
+      18.457
+     ],
+     [
+      -40.924,
+      18.133
+     ],
+     [
+      -41,
       17.75
      ],
      [
-      -10,
+      -41,
       7.25
      ],
      [
-      -10.076,
+      -40.924,
       6.867
-     ],
-     [
-      -10.293,
-      6.543
-     ],
-     [
-      -10.617,
-      6.326
-     ],
-     [
-      -11,
-      6.25
-     ],
-     [
-      -40,
-      6.25
-     ],
-     [
-      -40.383,
-      6.326
      ],
      [
       -40.707,
       6.543
      ],
      [
-      -40.924,
+      -40.383,
+      6.326
+     ],
+     [
+      -40,
+      6.25
+     ],
+     [
+      -11,
+      6.25
+     ],
+     [
+      -10.617,
+      6.326
+     ],
+     [
+      -10.293,
+      6.543
+     ],
+     [
+      -10.076,
       6.867
      ],
      [
-      -41,
+      -10,
       7.25
      ]
     ],
-    "a0": -96,
-    "a1": -85,
-    "cx": -90.5,
+    "a0": 85,
+    "a1": 96,
+    "cx": 90.5,
     "cy": -25.5,
     "w": 11,
     "h": 31,
@@ -434,89 +401,89 @@
     "color": "#64748b",
     "pts": [
      [
-      -7.5,
+      31.5,
       17.75
-     ],
-     [
-      -7.424,
-      18.133
-     ],
-     [
-      -7.207,
-      18.457
-     ],
-     [
-      -6.883,
-      18.674
-     ],
-     [
-      -6.5,
-      18.75
-     ],
-     [
-      30.5,
-      18.75
-     ],
-     [
-      30.883,
-      18.674
-     ],
-     [
-      31.207,
-      18.457
      ],
      [
       31.424,
       18.133
      ],
      [
-      31.5,
+      31.207,
+      18.457
+     ],
+     [
+      30.883,
+      18.674
+     ],
+     [
+      30.5,
+      18.75
+     ],
+     [
+      -6.5,
+      18.75
+     ],
+     [
+      -6.883,
+      18.674
+     ],
+     [
+      -7.207,
+      18.457
+     ],
+     [
+      -7.424,
+      18.133
+     ],
+     [
+      -7.5,
       17.75
      ],
      [
-      31.5,
+      -7.5,
       7.25
      ],
      [
-      31.424,
+      -7.424,
       6.867
-     ],
-     [
-      31.207,
-      6.543
-     ],
-     [
-      30.883,
-      6.326
-     ],
-     [
-      30.5,
-      6.25
-     ],
-     [
-      -6.5,
-      6.25
-     ],
-     [
-      -6.883,
-      6.326
      ],
      [
       -7.207,
       6.543
      ],
      [
-      -7.424,
+      -6.883,
+      6.326
+     ],
+     [
+      -6.5,
+      6.25
+     ],
+     [
+      30.5,
+      6.25
+     ],
+     [
+      30.883,
+      6.326
+     ],
+     [
+      31.207,
+      6.543
+     ],
+     [
+      31.424,
       6.867
      ],
      [
-      -7.5,
+      31.5,
       7.25
      ]
     ],
-    "a0": -96,
-    "a1": -85,
-    "cx": -90.5,
+    "a0": 85,
+    "a1": 96,
+    "cx": 90.5,
     "cy": 12,
     "w": 11,
     "h": 39,
@@ -533,9 +500,9 @@
      12.5,
      4
     ],
-    "a0": -95,
-    "a1": -85,
-    "cx": -90,
+    "a0": 85,
+    "a1": 95,
+    "cx": 90,
     "cy": 52,
     "w": 10,
     "h": 8,
@@ -546,5 +513,5 @@
   ]
  },
  "cad_pendiente": true,
- "modificado": "2026-11-25T20:36:14.187Z"
+ "modificado": "2026-11-25T20:37:08.217Z"
 }
