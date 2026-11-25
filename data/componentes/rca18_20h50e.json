@@ -85,7 +85,28 @@
    25
   ],
   "forma": "rect",
-  "base_tipo": "prisma"
+  "base_tipo": "prisma",
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 0,
+    "altura_inferior": 0,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 0,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
  },
  "zonas": [],
  "pines": [
@@ -152,6 +173,27 @@
    "fuente": "subido desde el chat: 2bdc3a75-6a9b-4bee-8584-202b1e10be2e.pdf",
    "carpeta": "archivos/rca18_20h50e (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca18_20h50e/rca18_20h50e_datasheet.pdf"
+  },
+  "dxf_huella": {
+   "nombre": "rca18_20h50e_v3_huella.dxf",
+   "version": 3,
+   "fecha": "2026-11-25",
+   "carpeta": "archivos/rca18_20h50e (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca18_20h50e/rca18_20h50e_v3_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "rca18_20h50e_v3_montaje.step",
+   "version": 3,
+   "fecha": "2026-11-25",
+   "carpeta": "archivos/rca18_20h50e (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca18_20h50e/rca18_20h50e_v3_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "rca18_20h50e_v3_plano.dxf",
+   "version": 3,
+   "fecha": "2026-11-25",
+   "carpeta": "archivos/rca18_20h50e (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca18_20h50e/rca18_20h50e_v3_plano.dxf"
   }
  },
  "historial": [
@@ -512,6 +554,5 @@
    }
   ]
  },
- "cad_pendiente": true,
  "modificado": "2026-11-25T20:37:08.217Z"
 }
