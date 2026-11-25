@@ -17,7 +17,7 @@
  "fabricante": "Genérico (IC LM2596S de Texas Instruments / equivalente)",
  "referencia": "HW-411 (LM2596S-ADJ)",
  "estado": "borrador",
- "version": 2,
+ "version": 3,
  "unidad": "und",
  "ficha": {
   "descripcion": "Módulo convertidor DC-DC reductor (step-down) conmutado de voltaje ajustable basado en el circuito integrado LM2596S-ADJ en encapsulado TO-263, con potenciómetro multivuelta de precisión para ajuste fino del voltaje de salida.",
@@ -99,35 +99,14 @@
    21,
    1.6
   ],
-  "forma": "rect",
-  "conexiones": {
-   "header": "ninguno",
-   "header_alto": 0,
-   "defecto": "soldado",
-   "soldado": {
-    "altura_superior": 10.1,
-    "altura_inferior": 0,
-    "holgura_inferior_cableado": 0,
-    "holgura_superior_cableado": 6,
-    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
-    "nota": "Pads o terminales: cables soldados directo."
-   },
-   "jumper": {
-    "altura_superior": 10.1,
-    "altura_inferior": 8.5,
-    "holgura_inferior_cableado": 22,
-    "holgura_superior_cableado": 0,
-    "cable": "Jumper Dupont 2.54 mm sobre headers",
-    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
-   }
-  }
+  "forma": "rect"
  },
  "zonas": [
   {
    "tipo": "ajuste",
    "nombre": "Trimmer 10k (103)",
-   "cx": 7,
-   "cy": 5,
+   "cx": -7,
+   "cy": -6.5,
    "w": 6.5,
    "h": 6.5,
    "z": [
@@ -182,37 +161,7 @@
    "func": "Tierra / negativo de salida (GND común)"
   }
  ],
- "archivos": {
-  "dxf_huella": {
-   "nombre": "lm2596_dc_dc_hw_411_v1_huella.dxf",
-   "version": 1,
-   "fecha": "2026-11-25",
-   "carpeta": "archivos/lm2596_dc_dc_hw_411 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_v1_huella.dxf"
-  },
-  "step_montaje": {
-   "nombre": "lm2596_dc_dc_hw_411_v1_montaje.step",
-   "version": 1,
-   "fecha": "2026-11-25",
-   "carpeta": "archivos/lm2596_dc_dc_hw_411 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_v1_montaje.step"
-  },
-  "dxf_plano": {
-   "nombre": "lm2596_dc_dc_hw_411_v1_plano.dxf",
-   "version": 1,
-   "fecha": "2026-11-25",
-   "carpeta": "archivos/lm2596_dc_dc_hw_411 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_v1_plano.dxf"
-  },
-  "datasheet": {
-   "nombre": "lm2596_dc_dc_hw_411_datasheet.pdf",
-   "fuente": "https://www.ti.com/lit/ds/symlink/lm2596.pdf",
-   "fecha": "2026-11-25",
-   "carpeta": "archivos/lm2596_dc_dc_hw_411 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_datasheet.pdf",
-   "kb": 4976
-  }
- },
+ "archivos": {},
  "historial": [
   {
    "v": 1,
@@ -249,6 +198,15 @@
     "modelo",
     "zonas",
     "imagen"
+   ]
+  },
+  {
+   "v": 3,
+   "fecha": "2026-11-25",
+   "nota": "Actualizado: modelo 3D, zonas",
+   "cambios": [
+    "modelo",
+    "zonas"
    ]
   }
  ],
@@ -298,8 +256,8 @@
     "plantilla": "inductor",
     "nombre": "L1 47uH (470)",
     "cara": "A",
-    "x": -5,
-    "y": 3,
+    "x": 5.5,
+    "y": -3.5,
     "rot": 0,
     "z": 0,
     "params": {
@@ -312,8 +270,8 @@
     "plantilla": "f_caja",
     "nombre": "LM2596S-ADJ (TO-263)",
     "cara": "A",
-    "x": 6.5,
-    "y": -5,
+    "x": -6.5,
+    "y": 3.5,
     "rot": 0,
     "z": 0,
     "params": {
@@ -329,8 +287,8 @@
     "plantilla": "trimmer",
     "nombre": "Trimmer 10k (103)",
     "cara": "A",
-    "x": 7,
-    "y": 5,
+    "x": -7,
+    "y": -6.5,
     "rot": 0,
     "z": 0,
     "params": {}
@@ -390,8 +348,8 @@
    },
    {
     "f": "caja",
-    "cx": -5,
-    "cy": 3,
+    "cx": 5.5,
+    "cy": -3.5,
     "z0": 1.6,
     "z1": 8.6,
     "color": "#334155",
@@ -402,8 +360,8 @@
    },
    {
     "f": "caja",
-    "cx": 6.5,
-    "cy": -5,
+    "cx": -6.5,
+    "cy": 3.5,
     "z0": 1.6,
     "z1": 6.1,
     "color": "#64748b",
@@ -414,8 +372,8 @@
    },
    {
     "f": "caja",
-    "cx": 7,
-    "cy": 5,
+    "cx": -7,
+    "cy": -6.5,
     "z0": 1.6,
     "z1": 6.1,
     "color": "#2563eb",
@@ -425,8 +383,8 @@
    },
    {
     "f": "cil",
-    "cx": 7,
-    "cy": 5,
+    "cx": -7,
+    "cy": -6.5,
     "z0": 6.1,
     "z1": 7.1,
     "color": "#f1f5f9",
@@ -447,5 +405,5 @@
   ]
  },
  "cad_pendiente": true,
- "modificado": "2026-11-25T21:51:45.881Z"
+ "modificado": "2026-11-25T21:52:15.833Z"
 }
