@@ -331,10 +331,30 @@
  ],
  "archivos": {
   "datasheet": {
-   "nombre": "rca0810h50e_datasheet.pdf",
+   "fuente": "https://www.rfcore.com/product-services/high-power-amplifiers/specific-band-amplifiers/",
+   "error": "la dirección no entrega un PDF directo (es una página web)",
+   "fecha": "2026-11-25"
+  },
+  "dxf_huella": {
+   "nombre": "rca0810h50e_v1_huella.dxf",
+   "version": 1,
    "fecha": "2026-11-25",
    "carpeta": "archivos/rca0810h50e (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca0810h50e/rca0810h50e_datasheet.pdf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca0810h50e/rca0810h50e_v1_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "rca0810h50e_v1_montaje.step",
+   "version": 1,
+   "fecha": "2026-11-25",
+   "carpeta": "archivos/rca0810h50e (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca0810h50e/rca0810h50e_v1_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "rca0810h50e_v1_plano.dxf",
+   "version": 1,
+   "fecha": "2026-11-25",
+   "carpeta": "archivos/rca0810h50e (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/rca0810h50e/rca0810h50e_v1_plano.dxf"
   }
  },
  "historial": [
@@ -661,6 +681,5 @@
     "pieza": "p4"
    }
   ]
- },
- "cad_pendiente": true
+ }
 }
