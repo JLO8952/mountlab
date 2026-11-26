@@ -184,25 +184,25 @@
  ],
  "archivos": {
   "dxf_huella": {
-   "nombre": "lm2596_dc_dc_hw_411_v3_huella.dxf",
-   "version": 3,
-   "fecha": "2026-11-25",
+   "nombre": "lm2596_dc_dc_hw_411_v4_huella.dxf",
+   "version": 4,
+   "fecha": "2026-11-26",
    "carpeta": "archivos/lm2596_dc_dc_hw_411 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_v3_huella.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_v4_huella.dxf"
   },
   "step_montaje": {
-   "nombre": "lm2596_dc_dc_hw_411_v3_montaje.step",
-   "version": 3,
-   "fecha": "2026-11-25",
+   "nombre": "lm2596_dc_dc_hw_411_v4_montaje.step",
+   "version": 4,
+   "fecha": "2026-11-26",
    "carpeta": "archivos/lm2596_dc_dc_hw_411 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_v3_montaje.step"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_v4_montaje.step"
   },
   "dxf_plano": {
-   "nombre": "lm2596_dc_dc_hw_411_v3_plano.dxf",
-   "version": 3,
-   "fecha": "2026-11-25",
+   "nombre": "lm2596_dc_dc_hw_411_v4_plano.dxf",
+   "version": 4,
+   "fecha": "2026-11-26",
    "carpeta": "archivos/lm2596_dc_dc_hw_411 (repositorio)",
-   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_v3_plano.dxf"
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lm2596_dc_dc_hw_411/lm2596_dc_dc_hw_411_v4_plano.dxf"
   },
   "datasheet": {
    "nombre": "lm2596_dc_dc_hw_411_datasheet.pdf",
@@ -482,6 +482,5 @@
    }
   ]
  },
- "modificado": "2026-11-26T17:11:30.234Z",
- "cad_pendiente": true
+ "modificado": "2026-11-26T17:11:30.234Z"
 }
