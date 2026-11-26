@@ -1,0 +1,122 @@
+{
+ "id": "lcca30686_ft5_conector_tipo_n_hembra",
+ "nombre": "Ensamble Coaxial RG58 N Hembra Bulkhead a SMA Hembra Bulkhead 5 ft (LCCA30686-FT5)",
+ "tipo": "electronico",
+ "categoria": "Cableado",
+ "etiquetas": [
+  "RF",
+  "coaxial",
+  "RG58",
+  "Tipo N",
+  "N hembra",
+  "SMA hembra",
+  "bulkhead",
+  "pasamuros",
+  "L-com",
+  "50 ohmios",
+  "1 GHz"
+ ],
+ "fabricante": "L-com",
+ "referencia": "LCCA30686-FT5",
+ "estado": "borrador",
+ "version": 1,
+ "unidad": "und",
+ "ficha": {
+  "descripcion": "Ensamble de cable coaxial RF flexible RG58 de blindaje simple (single shielded) de 5 pies de longitud, terminado en un conector Tipo N hembra pasamuros (bulkhead) y un conector SMA hembra pasamuros (bulkhead), apto para aplicaciones de telecomunicaciones, laboratorio, defensa e industria.",
+  "funcionamiento": "Interconecta señales RF de 50 ohmios entre un puerto Tipo N macho y un puerto SMA macho a través de un panel o chasis metálico, permitiendo montaje firme tipo bulkhead en ambos extremos hasta una frecuencia máxima de 1 GHz. Es bidireccional.",
+  "voltaje": "No especificado en las notas (consultar datasheet del RG58 / LCCA30686-FT5)",
+  "corriente": "N/A (línea de transmisión RF pasiva)",
+  "interfaz": "Coaxial RF 50 ohmios: Tipo N hembra (jack) bulkhead a SMA hembra (jack) bulkhead",
+  "entradas": "Conector Tipo N hembra (bulkhead) — bidireccional",
+  "salidas": "Conector SMA hembra (bulkhead) — bidireccional",
+  "dimensiones": "Longitud del ensamble: 1524 mm (5 ft); cotas exactas de los conectores bulkhead no disponibles (datasheet PDF no adjunto)",
+  "datasheet": "https://www.l-com.com/n-female-bulkhead-to-sma-female-bulkhead-cable-assembly-using-rg58-coax-5-ft",
+  "notas": "El componente LCCA30686-FT5 corresponde al ensamble completo con cable RG58 de 5 pies (no únicamente el conector N hembra suelto). El archivo ds_LCCA30686-FT5.pdf falló al adjuntarse; adjuntar el PDF para registrar el diámetro exacto de perforación (D-hole) y longitud del cuerpo del conector N hembra."
+ },
+ "especificaciones": [
+  {
+   "param": "Conector 1",
+   "valor": "Tipo N hembra (jack), montaje en panel (bulkhead)"
+  },
+  {
+   "param": "Conector 2",
+   "valor": "SMA hembra (jack), montaje en panel (bulkhead)"
+  },
+  {
+   "param": "Tipo de cable",
+   "valor": "RG58 flexible, blindaje simple (single shielded)"
+  },
+  {
+   "param": "Longitud",
+   "valor": "5 pies (1524 mm)"
+  },
+  {
+   "param": "Frecuencia máxima",
+   "valor": "1 GHz"
+  },
+  {
+   "param": "Impedancia",
+   "valor": "50 ohmios"
+  }
+ ],
+ "imagen": {
+  "src": "img/lcca30686_ft5_conector_tipo_n_hembra.jpg?v=1795713178469",
+  "origen": "foto subida en el chat"
+ },
+ "precios": [],
+ "busquedas": {},
+ "montaje": null,
+ "zonas": [],
+ "pines": [
+  {
+   "x": null,
+   "y": null,
+   "n": "Centro (Señal RF)",
+   "func": "Conductor central coaxial (50 ohmios) entre N hembra y SMA hembra"
+  },
+  {
+   "x": null,
+   "y": null,
+   "n": "Blindaje (GND)",
+   "func": "Malla exterior y cuerpo metálico del conector (tierra / chasis)"
+  }
+ ],
+ "archivos": {
+  "datasheet": {
+   "nombre": "lcca30686_ft5_conector_tipo_n_hembra_datasheet.pdf",
+   "fecha": "2026-11-26",
+   "subido": true,
+   "fuente": "subido desde el chat: ds_LCCA30686-FT5.pdf",
+   "carpeta": "archivos/lcca30686_ft5_conector_tipo_n_hembra (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lcca30686_ft5_conector_tipo_n_hembra/lcca30686_ft5_conector_tipo_n_hembra_datasheet.pdf"
+  }
+ },
+ "historial": [
+  {
+   "v": 1,
+   "fecha": "2026-11-26",
+   "nota": "Creado con datos de datasheet subido (lectura local) (aprobado): nombre, tipo, categoria, etiquetas, fabricante, referencia, ficha.descripcion, ficha.funcionamiento, ficha.voltaje, ficha.corriente, ficha.interfaz, ficha.entradas, ficha.salidas, ficha.dimensiones, ficha.datasheet, ficha.notas, especificaciones, pines",
+   "cambios": [
+    "nombre",
+    "tipo",
+    "categoria",
+    "etiquetas",
+    "fabricante",
+    "referencia",
+    "ficha.descripcion",
+    "ficha.funcionamiento",
+    "ficha.voltaje",
+    "ficha.corriente",
+    "ficha.interfaz",
+    "ficha.entradas",
+    "ficha.salidas",
+    "ficha.dimensiones",
+    "ficha.datasheet",
+    "ficha.notas",
+    "especificaciones",
+    "pines"
+   ]
+  }
+ ],
+ "modificado": "2026-11-26T17:12:56.459Z"
+}
