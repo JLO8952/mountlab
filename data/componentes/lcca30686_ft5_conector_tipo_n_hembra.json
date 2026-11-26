@@ -80,7 +80,28 @@
   ],
   "forma": "redondeada",
   "base_tipo": "prisma",
-  "radio": 1
+  "radio": 1,
+  "conexiones": {
+   "header": "ninguno",
+   "header_alto": 0,
+   "defecto": "soldado",
+   "soldado": {
+    "altura_superior": 5.5,
+    "altura_inferior": 5.5,
+    "holgura_inferior_cableado": 0,
+    "holgura_superior_cableado": 6,
+    "cable": "Cable soldado directo a la placa (AWG 24–28, silicona)",
+    "nota": "Pads o terminales: cables soldados directo."
+   },
+   "jumper": {
+    "altura_superior": 5.5,
+    "altura_inferior": 8.5,
+    "holgura_inferior_cableado": 22,
+    "holgura_superior_cableado": 0,
+    "cable": "Jumper Dupont 2.54 mm sobre headers",
+    "nota": "No trae header: para usar jumpers hay que soldar un header 2.54 mm hacia abajo."
+   }
+  }
  },
  "zonas": [
   {
@@ -138,6 +159,27 @@
    "fuente": "subido desde el chat: ds_LCCA30686-FT5.pdf",
    "carpeta": "archivos/lcca30686_ft5_conector_tipo_n_hembra (repositorio)",
    "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lcca30686_ft5_conector_tipo_n_hembra/lcca30686_ft5_conector_tipo_n_hembra_datasheet.pdf"
+  },
+  "dxf_huella": {
+   "nombre": "lcca30686_ft5_conector_tipo_n_hembra_v2_huella.dxf",
+   "version": 2,
+   "fecha": "2026-11-26",
+   "carpeta": "archivos/lcca30686_ft5_conector_tipo_n_hembra (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lcca30686_ft5_conector_tipo_n_hembra/lcca30686_ft5_conector_tipo_n_hembra_v2_huella.dxf"
+  },
+  "step_montaje": {
+   "nombre": "lcca30686_ft5_conector_tipo_n_hembra_v2_montaje.step",
+   "version": 2,
+   "fecha": "2026-11-26",
+   "carpeta": "archivos/lcca30686_ft5_conector_tipo_n_hembra (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lcca30686_ft5_conector_tipo_n_hembra/lcca30686_ft5_conector_tipo_n_hembra_v2_montaje.step"
+  },
+  "dxf_plano": {
+   "nombre": "lcca30686_ft5_conector_tipo_n_hembra_v2_plano.dxf",
+   "version": 2,
+   "fecha": "2026-11-26",
+   "carpeta": "archivos/lcca30686_ft5_conector_tipo_n_hembra (repositorio)",
+   "url": "https://github.com/JLO8952/mountlab/raw/main/archivos/lcca30686_ft5_conector_tipo_n_hembra/lcca30686_ft5_conector_tipo_n_hembra_v2_plano.dxf"
   }
  },
  "historial": [
@@ -453,6 +495,5 @@
     "pieza": "trasera_crimp"
    }
   ]
- },
- "cad_pendiente": true
+ }
 }
